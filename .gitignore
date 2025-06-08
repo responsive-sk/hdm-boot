@@ -1,0 +1,50 @@
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+
+# Composer
+/vendor/
+composer.lock
+
+# Runtime files
+/var/logs/*.log
+/var/cache/*
+/var/storage/*.db
+/var/uploads/*
+/var/sessions/*
+
+# Keep directory structure
+!/var/logs/.gitkeep
+!/var/cache/.gitkeep
+!/var/storage/.gitkeep
+!/var/uploads/.gitkeep
+!/var/sessions/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+test-*.php
+phpunit.xml
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Coverage reports
+/var/coverage/
+
+# Temporary files
+*.tmp
+*.temp
