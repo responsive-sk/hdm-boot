@@ -14,9 +14,9 @@ return function (App $app): void {
             $group->get('/paths', function (ServerRequestInterface $request, ResponseInterface $response) {
                 $container = $this->get(\DI\Container::class);
                 $pathHelper = $container->get(\MvaBootstrap\Shared\Helpers\SecurePathHelper::class);
-                
+
                 $tests = [];
-                
+
                 // Test 1: Valid path
                 try {
                     $validPath = $pathHelper->securePath('test.txt', 'var');
@@ -24,7 +24,7 @@ return function (App $app): void {
                 } catch (Exception $e) {
                     $tests[] = ['test' => 'Valid path', 'result' => 'FAIL', 'error' => $e->getMessage()];
                 }
-                
+
                 // Test 2: Path traversal attempt
                 try {
                     $pathHelper->securePath('../../../etc/passwd', 'var');
@@ -32,7 +32,7 @@ return function (App $app): void {
                 } catch (Exception $e) {
                     $tests[] = ['test' => 'Path traversal protection', 'result' => 'PASS', 'blocked' => $e->getMessage()];
                 }
-                
+
                 // Test 3: Forbidden path access
                 try {
                     $pathHelper->securePath('config/container.php', 'public');
@@ -40,30 +40,32 @@ return function (App $app): void {
                 } catch (Exception $e) {
                     $tests[] = ['test' => 'Forbidden path protection', 'result' => 'PASS', 'blocked' => $e->getMessage()];
                 }
-                
+
                 $data = [
-                    'title' => 'Path Security Tests',
-                    'timestamp' => date('c'),
-                    'tests' => $tests,
+                    'title'               => 'Path Security Tests',
+                    'timestamp'           => date('c'),
+                    'tests'               => $tests,
                     'allowed_directories' => $pathHelper->getAllowedDirectories(),
                 ];
-                
+
                 $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+
                 return $response->withHeader('Content-Type', 'application/json');
             })->setName('test.paths');
-            
+
             // Environment info
             $group->get('/env', function (ServerRequestInterface $request, ResponseInterface $response) {
                 $data = [
-                    'php_version' => PHP_VERSION,
-                    'app_env' => $_ENV['APP_ENV'] ?? 'dev',
-                    'app_debug' => ($_ENV['APP_DEBUG'] ?? 'false') === 'true',
-                    'loaded_extensions' => get_loaded_extensions(),
-                    'memory_limit' => ini_get('memory_limit'),
+                    'php_version'        => PHP_VERSION,
+                    'app_env'            => $_ENV['APP_ENV'] ?? 'dev',
+                    'app_debug'          => ($_ENV['APP_DEBUG'] ?? 'false') === 'true',
+                    'loaded_extensions'  => get_loaded_extensions(),
+                    'memory_limit'       => ini_get('memory_limit'),
                     'max_execution_time' => ini_get('max_execution_time'),
                 ];
-                
+
                 $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+
                 return $response->withHeader('Content-Type', 'application/json');
             })->setName('test.env');
         });

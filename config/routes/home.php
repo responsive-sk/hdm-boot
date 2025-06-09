@@ -11,7 +11,7 @@ return function (App $app): void {
     $app->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
         $container = $this->get(\DI\Container::class);
         $pathHelper = $container->get(\MvaBootstrap\Shared\Helpers\SecurePathHelper::class);
-        
+
         $html = '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,11 +45,11 @@ return function (App $app): void {
             
             <div class="paths">
                 <h4>📁 Allowed Directories:</h4>';
-                
+
         foreach ($pathHelper->getAllowedDirectories() as $dir) {
             $html .= '<div class="path-item">' . htmlspecialchars($dir) . '</div>';
         }
-        
+
         $html .= '
             </div>
         </div>
@@ -88,6 +88,7 @@ return function (App $app): void {
 </html>';
 
         $response->getBody()->write($html);
+
         return $response->withHeader('Content-Type', 'text/html');
     })->setName('home');
 };

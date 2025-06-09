@@ -17,6 +17,7 @@ use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
 final class User implements JsonSerializable
 {
     private DateTimeImmutable $createdAt;
+
     private DateTimeImmutable $updatedAt;
 
     public function __construct(
@@ -39,7 +40,7 @@ final class User implements JsonSerializable
         $this->name = $this->validateName($name);
         $this->validateRole($role);
         $this->validateStatus($status);
-        
+
         $this->createdAt = $createdAt ?? new DateTimeImmutable();
         $this->updatedAt = $updatedAt ?? new DateTimeImmutable();
     }
@@ -65,6 +66,7 @@ final class User implements JsonSerializable
     /**
      * Create user from database data.
      */
+    /** @param array<string, mixed> $data */
     public static function fromDatabase(array $data): self
     {
         return new self(
@@ -74,16 +76,16 @@ final class User implements JsonSerializable
             passwordHash: $data['password_hash'],
             role: $data['role'] ?? 'user',
             status: $data['status'] ?? 'active',
-            emailVerified: (bool)($data['email_verified'] ?? false),
+            emailVerified: (bool) ($data['email_verified'] ?? false),
             emailVerificationToken: $data['email_verification_token'] ?? null,
             passwordResetToken: $data['password_reset_token'] ?? null,
-            passwordResetExpires: isset($data['password_reset_expires']) 
-                ? new DateTimeImmutable($data['password_reset_expires']) 
+            passwordResetExpires: isset($data['password_reset_expires'])
+                ? new DateTimeImmutable($data['password_reset_expires'])
                 : null,
-            lastLoginAt: isset($data['last_login_at']) 
-                ? new DateTimeImmutable($data['last_login_at']) 
+            lastLoginAt: isset($data['last_login_at'])
+                ? new DateTimeImmutable($data['last_login_at'])
                 : null,
-            loginCount: (int)($data['login_count'] ?? 0),
+            loginCount: (int) ($data['login_count'] ?? 0),
             createdAt: new DateTimeImmutable($data['created_at']),
             updatedAt: new DateTimeImmutable($data['updated_at'])
         );
@@ -248,6 +250,8 @@ final class User implements JsonSerializable
     {
         $this->emailVerificationToken = bin2hex(random_bytes(32));
         $this->touch();
+
+        assert($this->emailVerificationToken !== null);
         return $this->emailVerificationToken;
     }
 
@@ -256,35 +260,39 @@ final class User implements JsonSerializable
         $this->passwordResetToken = bin2hex(random_bytes(32));
         $this->passwordResetExpires = new DateTimeImmutable('+1 hour');
         $this->touch();
+
+        assert($this->passwordResetToken !== null);
         return $this->passwordResetToken;
     }
 
     public function recordLogin(): void
     {
         $this->lastLoginAt = new DateTimeImmutable();
-        $this->loginCount++;
+        ++$this->loginCount;
         $this->touch();
     }
 
+    /** @return array<string, mixed> */
     public function toArray(): array
     {
         return [
-            'id' => $this->id->toString(),
-            'email' => $this->email,
-            'name' => $this->name,
-            'role' => $this->role,
-            'status' => $this->status,
+            'id'             => $this->id->toString(),
+            'email'          => $this->email,
+            'name'           => $this->name,
+            'role'           => $this->role,
+            'status'         => $this->status,
             'email_verified' => $this->emailVerified,
-            'last_login_at' => $this->lastLoginAt?->format('Y-m-d H:i:s'),
-            'login_count' => $this->loginCount,
-            'is_active' => $this->isActive(),
-            'is_admin' => $this->isAdmin(),
-            'is_editor' => $this->isEditor(),
-            'created_at' => $this->createdAt->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updatedAt->format('Y-m-d H:i:s'),
+            'last_login_at'  => $this->lastLoginAt?->format('Y-m-d H:i:s'),
+            'login_count'    => $this->loginCount,
+            'is_active'      => $this->isActive(),
+            'is_admin'       => $this->isAdmin(),
+            'is_editor'      => $this->isEditor(),
+            'created_at'     => $this->createdAt->format('Y-m-d H:i:s'),
+            'updated_at'     => $this->updatedAt->format('Y-m-d H:i:s'),
         ];
     }
 
+    /** @return array<string, mixed> */
     public function jsonSerialize(): array
     {
         return $this->toArray();

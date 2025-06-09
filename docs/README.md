@@ -18,6 +18,7 @@ Welcome to the comprehensive documentation for the MVA Bootstrap Application. Th
 - [Module Development Guide](MODULES.md) - Creating and integrating modules
 - [User Module Guide](USER_MODULE.md) - Complete user management system ✅
 - [User API Guide](USER_API.md) - User API endpoints and examples ✅
+- [Database Manager Guide](DATABASE_MANAGER.md) - Database management and operations ✅
 - [API Documentation](API.md) - REST API endpoints and usage
 - [Contributing Guide](../CONTRIBUTING.md) - How to contribute to the project
 

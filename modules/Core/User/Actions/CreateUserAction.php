@@ -30,16 +30,20 @@ final class CreateUserAction
         // Validate required fields
         $validationErrors = $this->validateInput($data);
         if (!empty($validationErrors)) {
+            if (!is_array($data)) {
+                $data = [];
+            }
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'VALIDATION_ERROR',
+                'error'   => [
+                    'code'    => 'VALIDATION_ERROR',
                     'message' => 'Validation failed',
                     'details' => $validationErrors,
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/CreateUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(422);
@@ -55,43 +59,50 @@ final class CreateUserAction
 
             $responseData = [
                 'success' => true,
-                'data' => $user->toArray(),
+                'data'    => $user->toArray(),
                 'message' => 'User created successfully',
             ];
 
-            $response->getBody()->write(json_encode($responseData, JSON_PRETTY_PRINT));
+            $response->getBody()->write(json_encode($responseData, JSON_PRETTY_PRINT) ?: "modules/Core/User/Actions/CreateUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(201);
         } catch (InvalidArgumentException $e) {
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'VALIDATION_ERROR',
+                'error'   => [
+                    'code'    => 'VALIDATION_ERROR',
                     'message' => $e->getMessage(),
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/CreateUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(422);
         } catch (\Exception $e) {
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'INTERNAL_ERROR',
+                'error'   => [
+                    'code'    => 'INTERNAL_ERROR',
                     'message' => 'Failed to create user',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/CreateUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);
         }
     }
 
+    /**
+     * @param array<string, mixed>|null $data
+     * @return array<string, array<string>>
+     */
     private function validateInput(?array $data): array
     {
         $errors = [];
@@ -119,23 +130,23 @@ final class CreateUserAction
             $errors['password'] = ['Password is required'];
         } else {
             $passwordErrors = [];
-            
+
             if (strlen($data['password']) < 8) {
                 $passwordErrors[] = 'Password must be at least 8 characters long';
             }
-            
+
             if (!preg_match('/[a-z]/', $data['password'])) {
                 $passwordErrors[] = 'Password must contain at least one lowercase letter';
             }
-            
+
             if (!preg_match('/[A-Z]/', $data['password'])) {
                 $passwordErrors[] = 'Password must contain at least one uppercase letter';
             }
-            
+
             if (!preg_match('/\d/', $data['password'])) {
                 $passwordErrors[] = 'Password must contain at least one number';
             }
-            
+
             if (!empty($passwordErrors)) {
                 $errors['password'] = $passwordErrors;
             }

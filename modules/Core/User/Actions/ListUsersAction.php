@@ -27,8 +27,8 @@ final class ListUsersAction
         $queryParams = $request->getQueryParams();
 
         // Pagination parameters
-        $page = max(1, (int)($queryParams['page'] ?? 1));
-        $limit = min(100, max(1, (int)($queryParams['limit'] ?? 20)));
+        $page = max(1, (int) ($queryParams['page'] ?? 1));
+        $limit = min(100, max(1, (int) ($queryParams['limit'] ?? 20)));
 
         // Filter parameters
         $filters = [];
@@ -45,31 +45,38 @@ final class ListUsersAction
         try {
             $result = $this->userService->getUsersWithPagination($page, $limit, $filters);
 
+            $users = $result['users'] ?? [];
+            if (!is_array($users)) {
+                throw new \RuntimeException('Invalid users data format');
+            }
+
             $data = [
-                'success' => true,
-                'data' => array_map(fn($user) => $user->toArray(), $result['users']),
+                'success'    => true,
+                'data'       => array_map(fn ($user) => $user->toArray(), $users),
                 'pagination' => [
                     'current_page' => $result['page'],
-                    'per_page' => $result['limit'],
-                    'total' => $result['total'],
-                    'total_pages' => $result['total_pages'],
-                    'has_next' => $result['page'] < $result['total_pages'],
-                    'has_prev' => $result['page'] > 1,
+                    'per_page'     => $result['limit'],
+                    'total'        => $result['total'],
+                    'total_pages'  => $result['total_pages'],
+                    'has_next'     => $result['page'] < $result['total_pages'],
+                    'has_prev'     => $result['page'] > 1,
                 ],
             ];
 
-            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: "modules/Core/User/Actions/ListUsersAction.php");
+
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'INTERNAL_ERROR',
+                'error'   => [
+                    'code'    => 'INTERNAL_ERROR',
                     'message' => 'Failed to retrieve users',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/ListUsersAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Slim\App;
 
-/**
+/*
  * MVA Bootstrap Application Routes Loader.
  *
  * This file loads all route definitions from core application route files.

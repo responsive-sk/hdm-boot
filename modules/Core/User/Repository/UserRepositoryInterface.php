@@ -38,6 +38,7 @@ interface UserRepositoryInterface
      * Find all users with optional filters.
      *
      * @param array<string, mixed> $filters
+     *
      * @return User[]
      */
     public function findAll(array $filters = []): array;
@@ -101,6 +102,7 @@ interface UserRepositoryInterface
      * Find users with pagination.
      *
      * @param array<string, mixed> $filters
+     *
      * @return array{users: User[], total: int, page: int, limit: int}
      */
     public function findWithPagination(

@@ -2,136 +2,138 @@
 
 declare(strict_types=1);
 
+use MvaBootstrap\Modules\Core\Security\Middleware\AuthenticationMiddleware;
+use MvaBootstrap\Modules\Core\Security\Middleware\AuthorizationMiddleware;
+use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
 use MvaBootstrap\Modules\Core\User\Actions\CreateUserAction;
 use MvaBootstrap\Modules\Core\User\Actions\GetUserAction;
 use MvaBootstrap\Modules\Core\User\Actions\ListUsersAction;
 use Slim\App;
 
-/**
+/*
  * User Module Routes.
  *
  * Defines all HTTP routes for user management functionality.
+ * All routes are protected with JWT authentication.
  */
 return function (App $app): void {
+    // User API routes (protected with JWT authentication)
     $app->group('/api/users', function ($group) {
         // List users with pagination and filters
         // GET /api/users?page=1&limit=20&role=admin&status=active&search=john
         $group->get('', ListUsersAction::class)
-            ->setName('users.list');
+            ->setName('users.list')
+            ->add(new AuthorizationMiddleware(
+                $this->get(AuthorizationService::class),
+                'user.view'
+            ));
 
         // Create new user
         // POST /api/users
         $group->post('', CreateUserAction::class)
-            ->setName('users.create');
+            ->setName('users.create')
+            ->add(new AuthorizationMiddleware(
+                $this->get(AuthorizationService::class),
+                'user.create'
+            ));
 
         // Get single user by ID
         // GET /api/users/{id}
         $group->get('/{id}', GetUserAction::class)
-            ->setName('users.get');
+            ->setName('users.get')
+            ->add(new AuthorizationMiddleware(
+                $this->get(AuthorizationService::class),
+                'user.view'
+            ));
 
-        // Update user (to be implemented)
+        // Update user (placeholder for future implementation)
         // PUT /api/users/{id}
-        // $group->put('/{id}', UpdateUserAction::class)
-        //     ->setName('users.update');
+        $group->put('/{id}', function ($request, $response) {
+            $data = [
+                'success' => false,
+                'error'   => [
+                    'code'    => 'NOT_IMPLEMENTED',
+                    'message' => 'User update not yet implemented',
+                ],
+            ];
 
-        // Delete user (to be implemented)
+            $response->getBody()->write(json_encode($data) ?: "modules/Core/User/routes.php");
+
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(501);
+        })->setName('users.update')
+          ->add(new AuthorizationMiddleware(
+              $this->get(AuthorizationService::class),
+              'user.edit'
+          ));
+
+        // Delete user (placeholder for future implementation)
         // DELETE /api/users/{id}
-        // $group->delete('/{id}', DeleteUserAction::class)
-        //     ->setName('users.delete');
-
-        // User status management (to be implemented)
-        // POST /api/users/{id}/activate
-        // $group->post('/{id}/activate', ActivateUserAction::class)
-        //     ->setName('users.activate');
-
-        // POST /api/users/{id}/deactivate
-        // $group->post('/{id}/deactivate', DeactivateUserAction::class)
-        //     ->setName('users.deactivate');
-
-        // POST /api/users/{id}/suspend
-        // $group->post('/{id}/suspend', SuspendUserAction::class)
-        //     ->setName('users.suspend');
-
-        // Password management (to be implemented)
-        // POST /api/users/{id}/change-password
-        // $group->post('/{id}/change-password', ChangePasswordAction::class)
-        //     ->setName('users.change-password');
-
-        // Email verification (to be implemented)
-        // POST /api/users/{id}/send-verification
-        // $group->post('/{id}/send-verification', SendEmailVerificationAction::class)
-        //     ->setName('users.send-verification');
-
-        // GET /api/users/verify-email/{token}
-        // $group->get('/verify-email/{token}', VerifyEmailAction::class)
-        //     ->setName('users.verify-email');
-    });
-
-    // User statistics endpoint (admin only)
-    $app->get('/api/admin/users/statistics', function ($request, $response) {
-        $container = $this->get(\DI\Container::class);
-        $userService = $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class);
-
-        try {
-            $statistics = $userService->getStatistics();
-
+        $group->delete('/{id}', function ($request, $response) {
             $data = [
-                'success' => true,
-                'data' => $statistics,
-            ];
-
-            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
-            return $response->withHeader('Content-Type', 'application/json');
-        } catch (\Exception $e) {
-            $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'INTERNAL_ERROR',
-                    'message' => 'Failed to retrieve statistics',
+                'error'   => [
+                    'code'    => 'NOT_IMPLEMENTED',
+                    'message' => 'User deletion not yet implemented',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500);
-        }
-    })->setName('admin.users.statistics');
+            $response->getBody()->write(json_encode($data) ?: "modules/Core/User/routes.php");
 
-    // Authentication routes (to be moved to Security module later)
-    $app->group('/api/auth', function ($group) {
-        // Login endpoint (to be implemented in Security module)
-        // POST /api/auth/login
-        $group->post('/login', function ($request, $response) {
-            $data = [
-                'success' => false,
-                'error' => [
-                    'code' => 'NOT_IMPLEMENTED',
-                    'message' => 'Authentication not yet implemented. Will be available in Security module.',
-                ],
-            ];
-
-            $response->getBody()->write(json_encode($data));
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(501);
-        })->setName('auth.login');
+        })->setName('users.delete')
+          ->add(new AuthorizationMiddleware(
+              $this->get(AuthorizationService::class),
+              'user.delete'
+          ));
+    })
+    ->add(AuthenticationMiddleware::class); // Require authentication for all user endpoints
 
-        // Logout endpoint (to be implemented in Security module)
-        // POST /api/auth/logout
-        $group->post('/logout', function ($request, $response) {
-            $data = [
-                'success' => false,
-                'error' => [
-                    'code' => 'NOT_IMPLEMENTED',
-                    'message' => 'Authentication not yet implemented. Will be available in Security module.',
-                ],
-            ];
+    // Admin routes for user management
+    $app->group('/api/admin/users', function ($group) {
+        // Get user statistics
+        // GET /api/admin/users/statistics
+        $group->get('/statistics', function ($request, $response) {
+            try {
+                /** @var Container $container */
+                $container = $this->get(\DI\Container::class);
+                $userService = $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class);
 
-            $response->getBody()->write(json_encode($data));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(501);
-        })->setName('auth.logout');
-    });
+                $statistics = $userService->getUserStatistics();
+
+                $data = [
+                    'success' => true,
+                    'data'    => $statistics,
+                ];
+
+                $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: "modules/Core/User/routes.php");
+
+                return $response->withHeader('Content-Type', 'application/json');
+            } catch (\Exception $e) {
+                $errorData = [
+                    'success' => false,
+                    'error'   => [
+                        'code'    => 'INTERNAL_ERROR',
+                        'message' => 'Failed to retrieve statistics',
+                    ],
+                ];
+
+                $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/routes.php");
+
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(500);
+            }
+        })->setName('admin.users.statistics');
+    })
+    ->add(AuthenticationMiddleware::class)
+    ->add(new AuthorizationMiddleware(
+        $app->getContainer()->get(AuthorizationService::class),
+        'admin.users'
+    ));
+
+    // Authentication routes are now handled by the Security module
 };

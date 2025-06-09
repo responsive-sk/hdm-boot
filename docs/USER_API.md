@@ -305,3 +305,73 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 This User API provides a solid foundation for user management with comprehensive validation, error handling, and security features.
+
+
+---
+
+## 🔐 Security API Integration
+
+The User API is now integrated with the **Security Module** that provides JWT-based authentication:
+
+### Authentication Endpoints
+
+#### Login
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "Password123"
+}
+```
+
+**Response:**
+```json
+{
+    "success": true,
+    "data": {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "expires_at": "2025-06-08 17:16:00",
+        "user": {
+            "id": "fc7303de-af9f-4743-92f7-0a8d44d03de3",
+            "email": "admin@example.com",
+            "name": "Admin User",
+            "role": "admin",
+            "status": "active"
+        }
+    },
+    "message": "Login successful"
+}
+```
+
+#### Get Current User
+```http
+GET /api/auth/me
+Authorization: Bearer {token}
+```
+
+#### Refresh Token
+```http
+POST /api/auth/refresh
+Authorization: Bearer {token}
+```
+
+#### Logout
+```http
+POST /api/auth/logout
+Authorization: Bearer {token}
+```
+
+### Protected Endpoints
+
+User management endpoints will be protected with JWT authentication in future versions:
+
+```http
+GET /api/users
+Authorization: Bearer {token}
+```
+
+For complete Security API documentation, see [Security Module Documentation](SECURITY_MODULE.md).

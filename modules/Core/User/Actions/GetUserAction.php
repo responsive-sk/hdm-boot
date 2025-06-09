@@ -20,6 +20,9 @@ final class GetUserAction
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $args
+     */
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response,
@@ -27,16 +30,17 @@ final class GetUserAction
     ): ResponseInterface {
         $userId = $args['id'] ?? '';
 
-        if (empty($userId)) {
+        if (!is_string($userId) || empty($userId)) {
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'VALIDATION_ERROR',
+                'error'   => [
+                    'code'    => 'VALIDATION_ERROR',
                     'message' => 'User ID is required',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/GetUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(400);
@@ -48,13 +52,14 @@ final class GetUserAction
             if (!$user) {
                 $errorData = [
                     'success' => false,
-                    'error' => [
-                        'code' => 'USER_NOT_FOUND',
+                    'error'   => [
+                        'code'    => 'USER_NOT_FOUND',
                         'message' => 'User not found',
                     ],
                 ];
 
-                $response->getBody()->write(json_encode($errorData));
+                $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/GetUserAction.php");
+
                 return $response
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus(404);
@@ -62,21 +67,23 @@ final class GetUserAction
 
             $data = [
                 'success' => true,
-                'data' => $user->toArray(),
+                'data'    => $user->toArray(),
             ];
 
-            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: "modules/Core/User/Actions/GetUserAction.php");
+
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
             $errorData = [
                 'success' => false,
-                'error' => [
-                    'code' => 'INTERNAL_ERROR',
+                'error'   => [
+                    'code'    => 'INTERNAL_ERROR',
                     'message' => 'Failed to retrieve user',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($errorData));
+            $response->getBody()->write(json_encode($errorData) ?: "modules/Core/User/Actions/GetUserAction.php");
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

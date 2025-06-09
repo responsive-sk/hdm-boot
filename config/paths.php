@@ -2,7 +2,7 @@
 
 /**
  * Paths Configuration for responsive/path package.
- * 
+ *
  * Adapted from the parent MVA project for the bootstrap application.
  */
 
@@ -14,23 +14,23 @@ return [
 
     // Application paths
     'paths' => [
-        'config' => dirname(__DIR__) . '/config',
-        'src' => dirname(__DIR__) . '/src',
+        'config'    => dirname(__DIR__) . '/config',
+        'src'       => dirname(__DIR__) . '/src',
         'bootstrap' => dirname(__DIR__) . '/bootstrap',
-        'modules' => dirname(__DIR__) . '/modules',
-        'public' => dirname(__DIR__) . '/public',
-        'vendor' => dirname(__DIR__) . '/vendor',
+        'modules'   => dirname(__DIR__) . '/modules',
+        'public'    => dirname(__DIR__) . '/public',
+        'vendor'    => dirname(__DIR__) . '/vendor',
 
         // Variable/runtime paths
-        'var' => dirname(__DIR__) . '/var',
-        'logs' => dirname(__DIR__) . '/var/logs',
-        'cache' => dirname(__DIR__) . '/var/cache',
-        'uploads' => dirname(__DIR__) . '/var/uploads',
-        'storage' => dirname(__DIR__) . '/var/storage',
+        'var'      => dirname(__DIR__) . '/var',
+        'logs'     => dirname(__DIR__) . '/var/logs',
+        'cache'    => dirname(__DIR__) . '/var/cache',
+        'uploads'  => dirname(__DIR__) . '/var/uploads',
+        'storage'  => dirname(__DIR__) . '/var/storage',
         'sessions' => dirname(__DIR__) . '/var/sessions',
 
         // Test paths
-        'tests' => dirname(__DIR__) . '/tests',
+        'tests'    => dirname(__DIR__) . '/tests',
         'fixtures' => dirname(__DIR__) . '/tests/fixtures',
 
         // Documentation
@@ -66,7 +66,7 @@ return [
 
         // File upload restrictions
         'upload_restrictions' => [
-            'max_size' => 5 * 1024 * 1024, // 5MB
+            'max_size'           => 5 * 1024 * 1024, // 5MB
             'allowed_extensions' => [
                 'jpg', 'jpeg', 'png', 'gif', 'webp',
                 'pdf', 'doc', 'docx', 'txt', 'md',
@@ -92,7 +92,7 @@ return [
 
     // Permissions for created directories
     'permissions' => [
-        'directories' => 0755,
-        'files' => 0644,
+        'directories' => 0o755,
+        'files'       => 0o644,
     ],
 ];

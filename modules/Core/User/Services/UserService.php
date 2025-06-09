@@ -55,6 +55,7 @@ final class UserService
     {
         try {
             $userId = UserId::fromString($id);
+
             return $this->userRepository->findById($userId);
         } catch (InvalidArgumentException) {
             return null;
@@ -72,6 +73,7 @@ final class UserService
     /**
      * Update user information.
      */
+    /** @param array<string, mixed> $data */
     public function updateUser(string $id, array $data): User
     {
         $user = $this->getUserById($id);
@@ -269,6 +271,8 @@ final class UserService
 
     /**
      * Get all users with optional filters.
+     * @param array<string, mixed> $filters
+     * @return array<User>
      */
     public function getUsers(array $filters = []): array
     {
@@ -277,6 +281,8 @@ final class UserService
 
     /**
      * Get users with pagination.
+     * @param array<string, mixed> $filters
+     * @return array<string, mixed>
      */
     public function getUsersWithPagination(
         int $page = 1,
@@ -288,6 +294,7 @@ final class UserService
 
     /**
      * Get user statistics.
+     * @return array<string, mixed>
      */
     public function getStatistics(): array
     {
@@ -301,12 +308,12 @@ final class UserService
     {
         // Basic role-based permissions
         return match ($permission) {
-            'user.view' => true, // All authenticated users can view
-            'user.edit' => $user->isAdmin() || $user->isEditor(),
-            'user.delete' => $user->isAdmin(),
-            'user.manage' => $user->isAdmin(),
+            'user.view'    => true, // All authenticated users can view
+            'user.edit'    => $user->isAdmin() || $user->isEditor(),
+            'user.delete'  => $user->isAdmin(),
+            'user.manage'  => $user->isAdmin(),
             'admin.access' => $user->isAdmin(),
-            default => false,
+            default        => false,
         };
     }
 

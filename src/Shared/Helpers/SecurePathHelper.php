@@ -9,23 +9,50 @@ use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Secure Path Helper.
- * 
+ *
  * Provides secure file and directory operations with path traversal protection.
  * Adapted from the parent MVA project.
  */
 final class SecurePathHelper
 {
+    /** @var array<string, string> */
     private array $allowedDirectories;
+
+    /** @var array<string> */
     private array $forbiddenPaths;
+
+    /** @var array<string, mixed> */
     private array $uploadRestrictions;
 
     public function __construct(private readonly Paths $paths)
     {
-        $pathsConfig = require __DIR__ . '/../../../config/paths.php';
-        
-        $this->allowedDirectories = $pathsConfig['paths'];
-        $this->forbiddenPaths = $pathsConfig['security']['forbidden_paths'];
-        $this->uploadRestrictions = $pathsConfig['security']['upload_restrictions'];
+        // Use Paths service instead of loading config file directly
+        $this->allowedDirectories = [
+            'public' => $this->paths->public(),
+            'uploads' => $this->paths->uploads(),
+            'assets' => $this->paths->assets(),
+            'templates' => $this->paths->templates(),
+            'storage' => $this->paths->storage(),
+            'cache' => $this->paths->cache(),
+            'logs' => $this->paths->logs(),
+            'config' => $this->paths->config(),
+            'var' => $this->paths->var(),
+        ];
+
+        // Security configuration - these should be moved to a proper config service
+        $this->forbiddenPaths = [
+            '.env',
+            '.git',
+            'vendor',
+            'config',
+            'bootstrap',
+        ];
+
+        $this->uploadRestrictions = [
+            'max_size' => 5242880, // 5MB
+            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'txt', 'md'],
+            'forbidden_extensions' => ['php', 'exe', 'bat', 'sh', 'js', 'html'],
+        ];
     }
 
     /**
@@ -86,6 +113,7 @@ final class SecurePathHelper
     {
         try {
             $securePath = $this->securePath($relativePath, $baseDirectory);
+
             return file_exists($securePath);
         } catch (InvalidArgumentException) {
             return false;
@@ -125,7 +153,7 @@ final class SecurePathHelper
         // Ensure directory exists
         $directory = dirname($securePath);
         if (!is_dir($directory)) {
-            if (!mkdir($directory, 0755, true)) {
+            if (!mkdir($directory, 0o755, true)) {
                 throw new InvalidArgumentException("Failed to create directory for '{$relativePath}'");
             }
         }
@@ -135,6 +163,7 @@ final class SecurePathHelper
 
     /**
      * Get allowed directories for file operations.
+     * @return array<string>
      */
     public function getAllowedDirectories(): array
     {
@@ -147,6 +176,7 @@ final class SecurePathHelper
     public function getUploadPath(string $filename): string
     {
         $sanitizedFilename = $this->sanitizeFilename($filename);
+
         return $this->securePath('uploads/' . $sanitizedFilename, 'var');
     }
 
@@ -156,21 +186,32 @@ final class SecurePathHelper
     public function validateUpload(string $filename, int $fileSize): void
     {
         // Check file size
-        if ($fileSize > $this->uploadRestrictions['max_size']) {
+        $maxSize = $this->uploadRestrictions['max_size'];
+        if (!is_int($maxSize)) {
+            throw new InvalidArgumentException('Invalid max_size configuration');
+        }
+        if ($fileSize > $maxSize) {
             throw new InvalidArgumentException(
-                'File size exceeds maximum allowed size of ' . 
-                $this->formatBytes($this->uploadRestrictions['max_size'])
+                'File size exceeds maximum allowed size of ' .
+                $this->formatBytes($maxSize)
             );
         }
 
         // Check file extension
         $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        
-        if (in_array($extension, $this->uploadRestrictions['forbidden_extensions'], true)) {
+
+        $forbiddenExtensions = $this->uploadRestrictions['forbidden_extensions'];
+        $allowedExtensions = $this->uploadRestrictions['allowed_extensions'];
+
+        if (!is_array($forbiddenExtensions) || !is_array($allowedExtensions)) {
+            throw new InvalidArgumentException('Invalid extensions configuration');
+        }
+
+        if (in_array($extension, $forbiddenExtensions, true)) {
             throw new InvalidArgumentException("File extension '{$extension}' is not allowed");
         }
 
-        if (!in_array($extension, $this->uploadRestrictions['allowed_extensions'], true)) {
+        if (!in_array($extension, $allowedExtensions, true)) {
             throw new InvalidArgumentException("File extension '{$extension}' is not allowed");
         }
     }
@@ -182,10 +223,10 @@ final class SecurePathHelper
     {
         // Convert all separators to forward slashes
         $path = str_replace('\\', '/', $path);
-        
+
         // Remove multiple consecutive slashes
-        $path = preg_replace('#/+#', '/', $path);
-        
+        $path = preg_replace('#/+#', '/', $path) ?? $path;
+
         return $path;
     }
 
@@ -196,7 +237,7 @@ final class SecurePathHelper
     {
         // Check for obvious path traversal patterns
         $dangerousPatterns = ['../', '..\\', '../', '..\\'];
-        
+
         foreach ($dangerousPatterns as $pattern) {
             if (str_contains($path, $pattern)) {
                 throw new InvalidArgumentException("Path traversal detected in '{$path}'");
@@ -217,22 +258,22 @@ final class SecurePathHelper
     {
         $directory = dirname($path);
         $realDirectory = realpath($directory);
-        
+
         if ($realDirectory === false) {
             // Directory doesn't exist, check if we can create it
             $realBasePath = realpath($basePath);
             if ($realBasePath === false) {
-                throw new InvalidArgumentException("Base directory does not exist");
+                throw new InvalidArgumentException('Base directory does not exist');
             }
-            
+
             // Validate that the directory would be within bounds
             if (!str_starts_with($directory, $realBasePath)) {
-                throw new InvalidArgumentException("Directory would be outside allowed base path");
+                throw new InvalidArgumentException('Directory would be outside allowed base path');
             }
-            
+
             return $path;
         }
-        
+
         return $realDirectory . DIRECTORY_SEPARATOR . basename($path);
     }
 
@@ -243,15 +284,15 @@ final class SecurePathHelper
     {
         // Remove path components
         $filename = basename($filename);
-        
+
         // Remove or replace dangerous characters
-        $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename);
-        
+        $filename = preg_replace('/[^a-zA-Z0-9._-]/', '_', $filename) ?? $filename;
+
         // Ensure filename is not empty
         if (empty($filename) || $filename === '.') {
             $filename = 'file_' . time();
         }
-        
+
         return $filename;
     }
 
@@ -261,8 +302,8 @@ final class SecurePathHelper
     private function formatBytes(int $bytes): string
     {
         $units = ['B', 'KB', 'MB', 'GB'];
-        $factor = floor((strlen((string)$bytes) - 1) / 3);
-        
-        return sprintf("%.1f %s", $bytes / (1024 ** $factor), $units[$factor]);
+        $factor = floor((strlen((string) $bytes) - 1) / 3);
+
+        return sprintf('%.1f %s', $bytes / (1024 ** $factor), $units[$factor]);
     }
 }

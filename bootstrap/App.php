@@ -6,22 +6,23 @@ namespace MvaBootstrap\Bootstrap;
 
 use DI\Container;
 use Dotenv\Dotenv;
-use MvaBootstrap\Bootstrap\ModuleManager;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Slim\App as SlimApp;
 use Slim\Factory\AppFactory;
 
 /**
  * Main Bootstrap Application Class.
- * 
+ *
  * Handles application initialization, module loading, and request processing.
  */
 final class App
 {
+    /** @var SlimApp<Container> */
     private SlimApp $slimApp;
+
     private Container $container;
+
     private ModuleManager $moduleManager;
+
     private bool $isInitialized = false;
 
     public function __construct(string $rootPath)
@@ -43,24 +44,24 @@ final class App
 
         // Load core modules first (will be silent if modules don't exist yet)
         $this->moduleManager->loadCoreModules();
-        
+
         // Load optional modules based on configuration
         $this->moduleManager->loadOptionalModules();
-        
+
         // Register all module routes
         $this->moduleManager->registerRoutes($this->slimApp);
-        
+
         // Load main routes configuration
         $this->loadRoutes();
-        
+
         // Setup middleware
         $this->setupMiddleware();
-        
+
         // Setup error handling
         $this->setupErrorHandling();
 
         $this->isInitialized = true;
-        
+
         return $this;
     }
 
@@ -79,6 +80,7 @@ final class App
     /**
      * Get the Slim application instance.
      */
+    /** @return SlimApp<Container> */
     public function getSlimApp(): SlimApp
     {
         return $this->slimApp;
@@ -118,10 +120,14 @@ final class App
     /**
      * Create Slim application.
      */
+    /** @return SlimApp<Container> */
     private function createSlimApp(): SlimApp
     {
         AppFactory::setContainer($this->container);
-        return AppFactory::create();
+
+        $app = AppFactory::create();
+        assert($app instanceof SlimApp);
+        return $app;
     }
 
     /**
@@ -130,7 +136,7 @@ final class App
     private function loadRoutes(): void
     {
         $routesFile = __DIR__ . '/../config/routes.php';
-        
+
         if (file_exists($routesFile)) {
             $routes = require $routesFile;
             if (is_callable($routes)) {
@@ -146,7 +152,7 @@ final class App
     {
         // Add routing middleware
         $this->slimApp->addRoutingMiddleware();
-        
+
         // Add body parsing middleware
         $this->slimApp->addBodyParsingMiddleware();
     }

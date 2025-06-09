@@ -1,0 +1,17 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - modules
+        - public
+    excludePaths:
+        - vendor
+        - var
+        - tests/fixtures
+        - bootstrap  # Complex DI container setup
+        - config     # Configuration files with mixed types
+        - modules/Optional/Security  # Legacy code from parent project
+    ignoreErrors:
+        # Ignore some common issues during development
+        - '#Cannot call method.*on mixed#'
+

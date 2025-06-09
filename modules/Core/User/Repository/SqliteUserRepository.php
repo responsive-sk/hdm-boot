@@ -26,9 +26,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = ?');
         $stmt->execute([$id->toString()]);
-        
+
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$data) {
+        if (!is_array($data)) {
             return null;
         }
 
@@ -39,9 +39,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = ?');
         $stmt->execute([strtolower($email)]);
-        
+
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$data) {
+        if (!is_array($data)) {
             return null;
         }
 
@@ -52,9 +52,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email_verification_token = ?');
         $stmt->execute([$token]);
-        
+
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$data) {
+        if (!is_array($data)) {
             return null;
         }
 
@@ -69,9 +69,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
             AND password_reset_expires > datetime("now")
         ');
         $stmt->execute([$token]);
-        
+
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$data) {
+        if (!is_array($data)) {
             return null;
         }
 
@@ -95,7 +95,7 @@ final class SqliteUserRepository implements UserRepositoryInterface
             $params[] = $filters['status'];
         }
 
-        if (!empty($filters['email_verified'])) {
+        if (isset($filters['email_verified'])) {
             $conditions[] = 'email_verified = ?';
             $params[] = $filters['email_verified'] ? 1 : 0;
         }
@@ -111,7 +111,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
 
         $users = [];
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $users[] = User::fromDatabase($data);
+            if (is_array($data)) {
+                $users[] = User::fromDatabase($data);
+            }
         }
 
         return $users;
@@ -155,14 +157,19 @@ final class SqliteUserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE email = ?');
         $stmt->execute([strtolower($email)]);
-        
-        return (int)$stmt->fetchColumn() > 0;
+
+        return (int) $stmt->fetchColumn() > 0;
     }
 
     public function count(): int
     {
         $stmt = $this->pdo->query('SELECT COUNT(*) FROM users');
-        return (int)$stmt->fetchColumn();
+        if ($stmt === false) {
+            throw new RuntimeException('Failed to execute count query');
+        }
+
+        $result = $stmt->fetchColumn();
+        return $result !== false ? (int) $result : 0;
     }
 
     public function countByStatus(): array
@@ -174,8 +181,12 @@ final class SqliteUserRepository implements UserRepositoryInterface
         ');
 
         $counts = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $counts[$row['status']] = (int)$row['count'];
+        if ($stmt !== false) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if (is_array($row) && isset($row['status'], $row['count'])) {
+                    $counts[(string) $row['status']] = (int) $row['count'];
+                }
+            }
         }
 
         return $counts;
@@ -190,8 +201,12 @@ final class SqliteUserRepository implements UserRepositoryInterface
         ');
 
         $counts = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $counts[$row['role']] = (int)$row['count'];
+        if ($stmt !== false) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if (is_array($row) && isset($row['role'], $row['count'])) {
+                    $counts[(string) $row['role']] = (int) $row['count'];
+                }
+            }
         }
 
         return $counts;
@@ -200,11 +215,11 @@ final class SqliteUserRepository implements UserRepositoryInterface
     public function getStatistics(): array
     {
         return [
-            'total_users' => $this->count(),
-            'by_status' => $this->countByStatus(),
-            'by_role' => $this->countByRole(),
+            'total_users'    => $this->count(),
+            'by_status'      => $this->countByStatus(),
+            'by_role'        => $this->countByRole(),
             'email_verified' => $this->countEmailVerified(),
-            'recent_logins' => $this->countRecentLogins(),
+            'recent_logins'  => $this->countRecentLogins(),
         ];
     }
 
@@ -214,7 +229,7 @@ final class SqliteUserRepository implements UserRepositoryInterface
         array $filters = []
     ): array {
         $offset = ($page - 1) * $limit;
-        
+
         $sql = 'SELECT * FROM users';
         $countSql = 'SELECT COUNT(*) FROM users';
         $params = [];
@@ -247,7 +262,7 @@ final class SqliteUserRepository implements UserRepositoryInterface
         // Get total count
         $countStmt = $this->pdo->prepare($countSql);
         $countStmt->execute($params);
-        $total = (int)$countStmt->fetchColumn();
+        $total = (int) $countStmt->fetchColumn();
 
         // Get paginated results
         $sql .= ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
@@ -259,15 +274,17 @@ final class SqliteUserRepository implements UserRepositoryInterface
 
         $users = [];
         while ($data = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $users[] = User::fromDatabase($data);
+            if (is_array($data)) {
+                $users[] = User::fromDatabase($data);
+            }
         }
 
         return [
-            'users' => $users,
-            'total' => $total,
-            'page' => $page,
-            'limit' => $limit,
-            'total_pages' => (int)ceil($total / $limit),
+            'users'       => $users,
+            'total'       => $total,
+            'page'        => $page,
+            'limit'       => $limit,
+            'total_pages' => (int) ceil($total / $limit),
         ];
     }
 
@@ -275,8 +292,8 @@ final class SqliteUserRepository implements UserRepositoryInterface
     {
         $stmt = $this->pdo->prepare('SELECT COUNT(*) FROM users WHERE id = ?');
         $stmt->execute([$id->toString()]);
-        
-        return (int)$stmt->fetchColumn() > 0;
+
+        return (int) $stmt->fetchColumn() > 0;
     }
 
     private function insertUser(User $user): void
@@ -334,6 +351,9 @@ final class SqliteUserRepository implements UserRepositoryInterface
         ]);
     }
 
+    /**
+     * @return array<string, int>
+     */
     private function countEmailVerified(): array
     {
         $stmt = $this->pdo->query('
@@ -343,10 +363,15 @@ final class SqliteUserRepository implements UserRepositoryInterface
             FROM users
         ');
 
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt !== false ? $stmt->fetch(PDO::FETCH_ASSOC) : false;
+
+        if (!is_array($result)) {
+            return ['verified' => 0, 'unverified' => 0];
+        }
+
         return [
-            'verified' => (int)$result['verified'],
-            'unverified' => (int)$result['unverified'],
+            'verified'   => isset($result['verified']) ? (int) $result['verified'] : 0,
+            'unverified' => isset($result['unverified']) ? (int) $result['unverified'] : 0,
         ];
     }
 
@@ -357,8 +382,8 @@ final class SqliteUserRepository implements UserRepositoryInterface
             WHERE last_login_at > datetime("now", "-7 days")
         ');
         $stmt->execute();
-        
-        return (int)$stmt->fetchColumn();
+
+        return (int) $stmt->fetchColumn();
     }
 
     private function initializeDatabase(): void

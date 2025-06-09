@@ -9,13 +9,18 @@ use Slim\App;
 
 /**
  * Module Manager.
- * 
+ *
  * Handles loading and registration of application modules.
  */
 final class ModuleManager
 {
+    /** @var array<string, array<string, mixed>> */
     private array $loadedModules = [];
+
+    /** @var array<string> */
     private array $coreModules = ['User', 'Security'];
+
+    /** @var array<string> */
     private array $optionalModules = ['Article'];
 
     public function __construct(
@@ -44,7 +49,7 @@ final class ModuleManager
     public function loadOptionalModules(): void
     {
         $enabledModules = $this->getEnabledOptionalModules();
-        
+
         foreach ($enabledModules as $moduleName) {
             if (in_array($moduleName, $this->optionalModules, true)) {
                 try {
@@ -62,13 +67,13 @@ final class ModuleManager
     private function loadModule(string $moduleName, string $type): void
     {
         $moduleKey = "{$type}.{$moduleName}";
-        
+
         if (isset($this->loadedModules[$moduleKey])) {
             return; // Already loaded
         }
 
         $modulePath = __DIR__ . "/../modules/{$type}/{$moduleName}";
-        
+
         if (!is_dir($modulePath)) {
             throw new \RuntimeException("Module {$moduleName} not found in {$type}");
         }
@@ -87,16 +92,17 @@ final class ModuleManager
         }
 
         $this->loadedModules[$moduleKey] = [
-            'name' => $moduleName,
-            'type' => $type,
-            'path' => $modulePath,
-            'loaded_at' => time()
+            'name'      => $moduleName,
+            'type'      => $type,
+            'path'      => $modulePath,
+            'loaded_at' => time(),
         ];
     }
 
     /**
      * Register module services in DI container.
      */
+    /** @param array<string, mixed> $config */
     private function registerModuleServices(array $config): void
     {
         if (isset($config['services']) && is_array($config['services'])) {
@@ -113,16 +119,17 @@ final class ModuleManager
     {
         // Routes will be registered when Slim app is available
         // For now, we store the route file path
-        $this->container->set('module.routes.' . basename($routesFile, '.php'), $routesFile);
+        $this->container->set('module.routes.' . str_replace(['/', '\\'], '.', dirname($routesFile)), $routesFile);
     }
 
     /**
      * Get enabled optional modules from configuration.
      */
+    /** @return array<string> */
     private function getEnabledOptionalModules(): array
     {
         $enabledModules = $_ENV['ENABLED_MODULES'] ?? '';
-        
+
         if (empty($enabledModules)) {
             return [];
         }
@@ -133,6 +140,7 @@ final class ModuleManager
     /**
      * Get loaded modules information.
      */
+    /** @return array<string, array<string, mixed>> */
     public function getLoadedModules(): array
     {
         return $this->loadedModules;
@@ -161,7 +169,7 @@ final class ModuleManager
 
         // Load each route file
         foreach ($routeFiles as $routeFile) {
-            if (file_exists($routeFile)) {
+            if (is_string($routeFile) && file_exists($routeFile)) {
                 $routes = require $routeFile;
                 if (is_callable($routes)) {
                     $routes($app);
