@@ -5,21 +5,70 @@ declare(strict_types=1);
 namespace MvaBootstrap\Modules\Core\User\Services;
 
 use InvalidArgumentException;
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
 use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 /**
- * User Service.
+ * Simplified User Service.
  *
- * Handles user business logic and operations.
+ * Handles basic user operations without complex domain entities.
  */
 final class UserService
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository
+        private readonly UserRepositoryInterface $userRepository,
+        private readonly LoggerInterface $logger
     ) {
+    }
+
+    /**
+     * Get user by ID.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getUserById(string $id): ?array
+    {
+        try {
+            return $this->userRepository->findById($id);
+        } catch (InvalidArgumentException) {
+            return null;
+        }
+    }
+
+    /**
+     * Get user by email.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function getUserByEmail(string $email): ?array
+    {
+        return $this->userRepository->findByEmail($email);
+    }
+
+    /**
+     * Authenticate user.
+     */
+    public function authenticate(string $email, string $password): ?array
+    {
+        $user = $this->userRepository->findByEmail($email);
+        if (!$user) {
+            $this->logger->warning('Authentication failed: user not found', ['email' => $email]);
+            return null;
+        }
+
+        if (!isset($user['password']) || !password_verify($password, $user['password'])) {
+            $this->logger->warning('Authentication failed: invalid password', ['email' => $email]);
+            return null;
+        }
+
+        if ($user['status'] !== 'active') {
+            $this->logger->warning('Authentication failed: user not active', ['email' => $email]);
+            return null;
+        }
+
+        $this->logger->info('User authenticated successfully', ['user_id' => $user['id']]);
+        return $user;
     }
 
     /**
@@ -30,7 +79,7 @@ final class UserService
         string $name,
         string $password,
         string $role = 'user'
-    ): User {
+    ): array {
         // Validate input
         $this->validateUserInput($email, $name, $password);
 
@@ -39,70 +88,52 @@ final class UserService
             throw new InvalidArgumentException('Email address is already in use');
         }
 
-        // Create user
-        $user = User::create($email, $name, $password, $role);
+        // Create user data
+        $userData = [
+            'email' => $email,
+            'name' => $name,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'role' => $role,
+            'status' => 'active',
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
 
         // Save to repository
-        $this->userRepository->save($user);
+        $user = $this->userRepository->save($userData);
 
+        $this->logger->info('User created successfully', ['user_id' => $user['id']]);
         return $user;
-    }
-
-    /**
-     * Get user by ID.
-     */
-    public function getUserById(string $id): ?User
-    {
-        try {
-            $userId = UserId::fromString($id);
-
-            return $this->userRepository->findById($userId);
-        } catch (InvalidArgumentException) {
-            return null;
-        }
-    }
-
-    /**
-     * Get user by email.
-     */
-    public function getUserByEmail(string $email): ?User
-    {
-        return $this->userRepository->findByEmail($email);
     }
 
     /**
      * Update user information.
      */
-    /** @param array<string, mixed> $data */
-    public function updateUser(string $id, array $data): User
+    public function updateUser(string $id, array $data): array
     {
         $user = $this->getUserById($id);
         if (!$user) {
             throw new RuntimeException('User not found');
         }
 
-        // Update email if provided
-        if (isset($data['email']) && $data['email'] !== $user->getEmail()) {
-            if ($this->userRepository->emailExists($data['email'])) {
+        // Update allowed fields
+        $allowedFields = ['name', 'email', 'role', 'status'];
+        $updateData = array_intersect_key($data, array_flip($allowedFields));
+
+        if (empty($updateData)) {
+            return $user;
+        }
+
+        // Check email uniqueness if email is being updated
+        if (isset($updateData['email']) && $updateData['email'] !== $user['email']) {
+            if ($this->userRepository->emailExists($updateData['email'])) {
                 throw new InvalidArgumentException('Email address is already in use');
             }
-            $user->updateEmail($data['email']);
         }
 
-        // Update name if provided
-        if (isset($data['name'])) {
-            $user->updateName($data['name']);
-        }
+        $updatedUser = $this->userRepository->update($id, $updateData);
 
-        // Update role if provided (admin only operation)
-        if (isset($data['role'])) {
-            $user->changeRole($data['role']);
-        }
-
-        // Save changes
-        $this->userRepository->save($user);
-
-        return $user;
+        $this->logger->info('User updated successfully', ['user_id' => $id]);
+        return $updatedUser;
     }
 
     /**
@@ -116,148 +147,16 @@ final class UserService
         }
 
         // Verify current password
-        if (!$user->verifyPassword($currentPassword)) {
+        if (!password_verify($currentPassword, $user['password'])) {
             throw new InvalidArgumentException('Current password is incorrect');
         }
 
-        // Change password
-        $user->changePassword($newPassword);
+        // Update password
+        $this->userRepository->update($id, [
+            'password' => password_hash($newPassword, PASSWORD_DEFAULT)
+        ]);
 
-        // Save changes
-        $this->userRepository->save($user);
-    }
-
-    /**
-     * Reset user password with token.
-     */
-    public function resetPassword(string $token, string $newPassword): void
-    {
-        $user = $this->userRepository->findByPasswordResetToken($token);
-        if (!$user) {
-            throw new InvalidArgumentException('Invalid or expired password reset token');
-        }
-
-        // Change password
-        $user->changePassword($newPassword);
-
-        // Save changes
-        $this->userRepository->save($user);
-    }
-
-    /**
-     * Generate password reset token.
-     */
-    public function generatePasswordResetToken(string $email): ?string
-    {
-        $user = $this->userRepository->findByEmail($email);
-        if (!$user) {
-            // Don't reveal if email exists or not
-            return null;
-        }
-
-        $token = $user->generatePasswordResetToken();
-        $this->userRepository->save($user);
-
-        return $token;
-    }
-
-    /**
-     * Verify email with token.
-     */
-    public function verifyEmail(string $token): bool
-    {
-        $user = $this->userRepository->findByEmailVerificationToken($token);
-        if (!$user) {
-            return false;
-        }
-
-        $user->verifyEmail();
-        $this->userRepository->save($user);
-
-        return true;
-    }
-
-    /**
-     * Generate email verification token.
-     */
-    public function generateEmailVerificationToken(string $id): string
-    {
-        $user = $this->getUserById($id);
-        if (!$user) {
-            throw new RuntimeException('User not found');
-        }
-
-        $token = $user->generateEmailVerificationToken();
-        $this->userRepository->save($user);
-
-        return $token;
-    }
-
-    /**
-     * Authenticate user.
-     */
-    public function authenticate(string $email, string $password): User
-    {
-        $user = $this->userRepository->findByEmail($email);
-        if (!$user) {
-            throw new InvalidArgumentException('Invalid credentials');
-        }
-
-        if (!$user->isActive()) {
-            throw new InvalidArgumentException('User account is not active');
-        }
-
-        if (!$user->verifyPassword($password)) {
-            throw new InvalidArgumentException('Invalid credentials');
-        }
-
-        // Record login
-        $user->recordLogin();
-        $this->userRepository->save($user);
-
-        return $user;
-    }
-
-    /**
-     * Activate user.
-     */
-    public function activateUser(string $id): void
-    {
-        $user = $this->getUserById($id);
-        if (!$user) {
-            throw new RuntimeException('User not found');
-        }
-
-        $user->activate();
-        $this->userRepository->save($user);
-    }
-
-    /**
-     * Deactivate user.
-     */
-    public function deactivateUser(string $id): void
-    {
-        $user = $this->getUserById($id);
-        if (!$user) {
-            throw new RuntimeException('User not found');
-        }
-
-        $user->deactivate();
-        $this->userRepository->save($user);
-    }
-
-    /**
-     * Suspend user.
-     */
-    public function suspendUser(string $id): void
-    {
-        $user = $this->getUserById($id);
-        if (!$user) {
-            throw new RuntimeException('User not found');
-        }
-
-        $user->suspend();
-        $this->userRepository->save($user);
+        $this->logger->info('User password changed successfully', ['user_id' => $id]);
     }
 
     /**
@@ -265,14 +164,12 @@ final class UserService
      */
     public function deleteUser(string $id): void
     {
-        $userId = UserId::fromString($id);
-        $this->userRepository->delete($userId);
+        $this->userRepository->delete($id);
+        $this->logger->info('User deleted successfully', ['user_id' => $id]);
     }
 
     /**
      * Get all users with optional filters.
-     * @param array<string, mixed> $filters
-     * @return array<User>
      */
     public function getUsers(array $filters = []): array
     {
@@ -280,39 +177,17 @@ final class UserService
     }
 
     /**
-     * Get users with pagination.
-     * @param array<string, mixed> $filters
-     * @return array<string, mixed>
-     */
-    public function getUsersWithPagination(
-        int $page = 1,
-        int $limit = 20,
-        array $filters = []
-    ): array {
-        return $this->userRepository->findWithPagination($page, $limit, $filters);
-    }
-
-    /**
-     * Get user statistics.
-     * @return array<string, mixed>
-     */
-    public function getStatistics(): array
-    {
-        return $this->userRepository->getStatistics();
-    }
-
-    /**
      * Check if user has permission.
      */
-    public function hasPermission(User $user, string $permission): bool
+    public function hasPermission(array $user, string $permission): bool
     {
         // Basic role-based permissions
         return match ($permission) {
             'user.view'    => true, // All authenticated users can view
-            'user.edit'    => $user->isAdmin() || $user->isEditor(),
-            'user.delete'  => $user->isAdmin(),
-            'user.manage'  => $user->isAdmin(),
-            'admin.access' => $user->isAdmin(),
+            'user.edit'    => in_array($user['role'], ['admin', 'editor']),
+            'user.delete'  => $user['role'] === 'admin',
+            'user.manage'  => $user['role'] === 'admin',
+            'admin.access' => $user['role'] === 'admin',
             default        => false,
         };
     }
@@ -334,19 +209,8 @@ final class UserService
             throw new InvalidArgumentException('Name is required');
         }
 
-        if (strlen(trim($name)) < 2) {
-            throw new InvalidArgumentException('Name must be at least 2 characters long');
-        }
-
         if (strlen($password) < 8) {
             throw new InvalidArgumentException('Password must be at least 8 characters long');
-        }
-
-        // Additional password strength validation
-        if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/', $password)) {
-            throw new InvalidArgumentException(
-                'Password must contain at least one lowercase letter, one uppercase letter, and one number'
-            );
         }
     }
 }

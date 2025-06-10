@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Translate Action - API endpoint for translations.
- * 
+ *
  * Based on samuelgfeller TranslateAction with enterprise enhancements.
  */
 final class TranslateAction
@@ -24,7 +24,7 @@ final class TranslateAction
 
     /**
      * Translate strings via API.
-     * 
+     *
      * Accepts:
      * - GET /api/translate?strings[]=Hello&strings[]=World
      * - POST /api/translate with JSON: {"strings": ["Hello", "World"]}
@@ -33,82 +33,81 @@ final class TranslateAction
     {
         try {
             $strings = $this->extractStringsFromRequest($request);
-            
+
             if (empty($strings)) {
                 return $this->errorResponse($response, 'No strings provided for translation', 400);
             }
 
             $translations = $this->translateStrings($strings);
-            
+
             $this->logger->info('Strings translated via API', [
                 'count' => count($strings),
                 'locale' => $this->localeService->getCurrentLocale(),
             ]);
 
             return $this->successResponse($response, $translations);
-            
         } catch (\Exception $e) {
             $this->logger->error('Translation API error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
-            
+
             return $this->errorResponse($response, 'Translation failed', 500);
         }
     }
 
     /**
      * Extract strings from request (GET or POST).
-     * 
+     *
      * @return array<string>
      */
     private function extractStringsFromRequest(ServerRequestInterface $request): array
     {
         $method = $request->getMethod();
-        
+
         if ($method === 'GET') {
             $queryParams = $request->getQueryParams();
             return $queryParams['strings'] ?? [];
         }
-        
+
         if ($method === 'POST') {
             $body = (string) $request->getBody();
             $data = json_decode($body, true);
-            
+
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new \InvalidArgumentException('Invalid JSON in request body');
             }
-            
+
             return $data['strings'] ?? [];
         }
-        
+
         return [];
     }
 
     /**
      * Translate array of strings.
-     * 
+     *
      * @param array<string> $strings
      * @return array<string, string>
      */
     private function translateStrings(array $strings): array
     {
         $translations = [];
-        
+
         foreach ($strings as $string) {
             if (!is_string($string)) {
                 continue;
             }
-            
+
             $translations[$string] = $this->localeService->translate($string);
         }
-        
+
         return $translations;
     }
 
     /**
      * Create success JSON response.
-     * 
+     *
      * @param array<string, string> $translations
      */
     private function successResponse(ResponseInterface $response, array $translations): ResponseInterface
@@ -124,7 +123,7 @@ final class TranslateAction
         ];
 
         $response->getBody()->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        
+
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
@@ -144,7 +143,7 @@ final class TranslateAction
         ];
 
         $response->getBody()->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        
+
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($status);

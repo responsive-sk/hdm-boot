@@ -50,7 +50,26 @@ final class LoginSubmitAction
 
             // Authenticate user
             $clientIp = $request->getServerParams()['REMOTE_ADDR'] ?? '127.0.0.1';
-            $user = $this->authenticationService->authenticateUser($data['email'], $data['password'], $clientIp);
+            $user = $this->authenticationService->authenticateForWeb($data['email'], $data['password'], $clientIp);
+
+            // Check if authentication failed
+            if (!$user) {
+                $this->logger->notice('Login failed - invalid credentials', [
+                    'email' => $data['email'],
+                    'ip' => $clientIp,
+                ]);
+
+                return $this->templateRenderer->render(
+                    $response->withStatus(401),
+                    'auth/login.php',
+                    [
+                        'title' => 'Login',
+                        'error' => 'Invalid email or password. Please try again.',
+                        'email' => $data['email'] ?? '',
+                        'queryParams' => $request->getQueryParams(),
+                    ]
+                );
+            }
 
             // Start session if not started, then regenerate ID for security
             if (!$this->session->isStarted()) {
@@ -60,14 +79,14 @@ final class LoginSubmitAction
 
             // Add user to session
             $currentTime = time();
-            $this->session->set('user_id', $user->getId()->toString());
+            $this->session->set('user_id', $user['id']);
             $this->session->set('login_time', $currentTime);
             $this->session->set('last_activity', $currentTime);
             $this->session->set('user_data', [
-                'email' => $user->getEmail(),
-                'name' => $user->getName(),
-                'role' => $user->getRole(),
-                'status' => $user->getStatus(),
+                'email' => $user['email'],
+                'name' => $user['name'],
+                'role' => $user['role'],
+                'status' => $user['status'],
             ]);
 
             // Session data set successfully
@@ -78,16 +97,16 @@ final class LoginSubmitAction
             // Log successful login
             $this->securityLogger->info('🔐 User login successful', [
                 'event' => 'user_login_success',
-                'user_id' => $user->getId()->toString(),
-                'email' => $user->getEmail(),
+                'user_id' => $user['id'],
+                'email' => $user['email'],
                 'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
                 'user_agent' => $request->getServerParams()['HTTP_USER_AGENT'] ?? 'unknown',
                 'session_id' => session_id(),
             ]);
 
             $this->logger->info('User logged in successfully', [
-                'user_id' => $user->getId()->toString(),
-                'email' => $user->getEmail(),
+                'user_id' => $user['id'],
+                'email' => $user['email'],
             ]);
 
             // Redirect to profile

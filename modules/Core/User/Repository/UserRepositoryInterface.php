@@ -4,68 +4,42 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Modules\Core\User\Repository;
 
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
-
 /**
- * User Repository Interface.
+ * Simplified User Repository Interface.
  *
- * Defines the contract for user data persistence operations.
+ * Defines the contract for user data persistence operations using arrays.
  */
 interface UserRepositoryInterface
 {
     /**
      * Find user by ID.
      */
-    public function findById(UserId $id): ?User;
+    public function findById(string $id): ?array;
 
     /**
      * Find user by email address.
      */
-    public function findByEmail(string $email): ?User;
-
-    /**
-     * Find user by email verification token.
-     */
-    public function findByEmailVerificationToken(string $token): ?User;
-
-    /**
-     * Find user by password reset token.
-     */
-    public function findByPasswordResetToken(string $token): ?User;
+    public function findByEmail(string $email): ?array;
 
     /**
      * Find all users with optional filters.
-     *
-     * @param array<string, mixed> $filters
-     *
-     * @return User[]
      */
     public function findAll(array $filters = []): array;
 
     /**
-     * Find users by role.
-     *
-     * @return User[]
+     * Save user data (create or update).
      */
-    public function findByRole(string $role): array;
+    public function save(array $userData): array;
 
     /**
-     * Find users by status.
-     *
-     * @return User[]
+     * Update user data.
      */
-    public function findByStatus(string $status): array;
-
-    /**
-     * Save user (create or update).
-     */
-    public function save(User $user): void;
+    public function update(string $id, array $data): array;
 
     /**
      * Delete user by ID.
      */
-    public function delete(UserId $id): void;
+    public function delete(string $id): void;
 
     /**
      * Check if email exists.
@@ -73,41 +47,7 @@ interface UserRepositoryInterface
     public function emailExists(string $email): bool;
 
     /**
-     * Count total users.
-     */
-    public function count(): int;
-
-    /**
-     * Count users by status.
-     *
-     * @return array<string, int>
-     */
-    public function countByStatus(): array;
-
-    /**
-     * Count users by role.
-     *
-     * @return array<string, int>
-     */
-    public function countByRole(): array;
-
-    /**
      * Get user statistics.
-     *
-     * @return array<string, mixed>
      */
     public function getStatistics(): array;
-
-    /**
-     * Find users with pagination.
-     *
-     * @param array<string, mixed> $filters
-     *
-     * @return array{users: User[], total: int, page: int, limit: int}
-     */
-    public function findWithPagination(
-        int $page = 1,
-        int $limit = 20,
-        array $filters = []
-    ): array;
 }

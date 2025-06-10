@@ -56,28 +56,28 @@
             
             <div class="info-row">
                 <span class="info-label">Full Name:</span>
-                <span class="info-value"><?= htmlspecialchars($user->getName() ?? 'Not set', ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="info-value"><?= htmlspecialchars($user['name'] ?? 'Not set', ENT_QUOTES, 'UTF-8') ?></span>
             </div>
-            
+
             <div class="info-row">
                 <span class="info-label">Email:</span>
-                <span class="info-value"><?= htmlspecialchars($user->getEmail() ?? 'Not set', ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="info-value"><?= htmlspecialchars($user['email'] ?? 'Not set', ENT_QUOTES, 'UTF-8') ?></span>
             </div>
-            
+
             <div class="info-row">
                 <span class="info-label">Role:</span>
-                <span class="info-value"><?= htmlspecialchars(strtoupper($user->getRole() ?? 'user'), ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="info-value"><?= htmlspecialchars(strtoupper($user['role'] ?? 'user'), ENT_QUOTES, 'UTF-8') ?></span>
             </div>
-            
+
             <div class="info-row">
                 <span class="info-label">Status:</span>
-                <span class="info-value"><?= htmlspecialchars(strtoupper($user->getStatus() ?? 'unknown'), ENT_QUOTES, 'UTF-8') ?></span>
+                <span class="info-value"><?= htmlspecialchars(strtoupper($user['status'] ?? 'unknown'), ENT_QUOTES, 'UTF-8') ?></span>
             </div>
-            
+
             <div class="info-row">
                 <span class="info-label">User ID:</span>
                 <span class="info-value" style="font-family: monospace; font-size: 12px;">
-                    <?= htmlspecialchars($user->getId()->toString() ?? 'Not set', ENT_QUOTES, 'UTF-8') ?>
+                    <?= htmlspecialchars($user['id'] ?? 'Not set', ENT_QUOTES, 'UTF-8') ?>
                 </span>
             </div>
         </div>

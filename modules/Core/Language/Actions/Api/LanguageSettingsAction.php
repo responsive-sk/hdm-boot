@@ -22,27 +22,26 @@ final class LanguageSettingsAction
 
     /**
      * Handle language settings requests.
-     * 
+     *
      * GET: Get current language settings
      * POST: Set new language
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $method = $request->getMethod();
-        
+
         try {
             return match ($method) {
                 'GET' => $this->getLanguageSettings($response),
                 'POST' => $this->setLanguage($request, $response),
                 default => $this->errorResponse($response, 'Method not allowed', 405),
             };
-            
         } catch (\Exception $e) {
             $this->logger->error('Language settings error', [
                 'method' => $method,
                 'error' => $e->getMessage(),
             ]);
-            
+
             return $this->errorResponse($response, 'Language settings operation failed', 500);
         }
     }
@@ -53,7 +52,7 @@ final class LanguageSettingsAction
     private function getLanguageSettings(ResponseInterface $response): ResponseInterface
     {
         $availableLocales = [];
-        
+
         foreach ($this->localeService->getAvailableLocales() as $locale) {
             $availableLocales[] = [
                 'code' => $locale,
@@ -75,7 +74,7 @@ final class LanguageSettingsAction
         ];
 
         $response->getBody()->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        
+
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
@@ -88,13 +87,13 @@ final class LanguageSettingsAction
     {
         $body = (string) $request->getBody();
         $data = json_decode($body, true);
-        
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             return $this->errorResponse($response, 'Invalid JSON in request body', 400);
         }
 
         $locale = $data['locale'] ?? null;
-        
+
         if (!$locale) {
             return $this->errorResponse($response, 'Locale is required', 400);
         }
@@ -104,7 +103,7 @@ final class LanguageSettingsAction
         }
 
         $result = $this->localeService->setLanguage($locale);
-        
+
         if ($result === false) {
             return $this->errorResponse($response, 'Failed to set language', 500);
         }
@@ -124,7 +123,7 @@ final class LanguageSettingsAction
         ];
 
         $response->getBody()->write(json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        
+
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus(200);
@@ -144,7 +143,7 @@ final class LanguageSettingsAction
         ];
 
         $response->getBody()->write(json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-        
+
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($status);

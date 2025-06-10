@@ -3646,3 +3646,1059 @@ Extra: {"process_id":48419,"memory_usage":"2 MB","url":"/profile","ip":"::1","ht
 Context: {"timezone":"Europe/Bratislava"}
 Extra: {"process_id":64379,"memory_usage":"6 MB","uid":"5e395d3"}
 ---
+[2025-06-10 18:02:05] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5c693ff"}
+---
+[2025-06-10 18:02:05] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5c693ff"}
+---
+[2025-06-10 18:02:05] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5c693ff"}
+---
+[2025-06-10 18:02:05] app.INFO: User logged out
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":67371,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5c693ff"}
+---
+[2025-06-10 18:02:05] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b6f6593"}
+---
+[2025-06-10 18:02:05] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b6f6593"}
+---
+[2025-06-10 18:02:05] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b6f6593"}
+---
+[2025-06-10 18:02:10] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ccd7bc5"}
+---
+[2025-06-10 18:02:10] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ccd7bc5"}
+---
+[2025-06-10 18:02:10] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ccd7bc5"}
+---
+[2025-06-10 19:45:27] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"8ba1d3c"}
+---
+[2025-06-10 19:45:27] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"8ba1d3c"}
+---
+[2025-06-10 19:45:27] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"8ba1d3c"}
+---
+[2025-06-10 19:45:32] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"dc71cc9"}
+---
+[2025-06-10 19:45:32] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"dc71cc9"}
+---
+[2025-06-10 19:45:32] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"dc71cc9"}
+---
+[2025-06-10 19:45:35] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5718021"}
+---
+[2025-06-10 19:45:35] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5718021"}
+---
+[2025-06-10 19:45:35] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"5718021"}
+---
+[2025-06-10 19:45:39] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"421836d"}
+---
+[2025-06-10 19:45:39] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"421836d"}
+---
+[2025-06-10 19:45:39] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"421836d"}
+---
+[2025-06-10 19:45:43] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"05ad22e"}
+---
+[2025-06-10 19:45:43] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"05ad22e"}
+---
+[2025-06-10 19:45:43] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"05ad22e"}
+---
+[2025-06-10 19:45:43] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"05ad22e"}
+---
+[2025-06-10 19:45:48] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:48] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:48] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:49] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:49] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"c9ad68fc9a1225221bc469233727c604"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:49] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"04b9f8a"}
+---
+[2025-06-10 19:45:49] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"4970c3b"}
+---
+[2025-06-10 19:45:49] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"4970c3b"}
+---
+[2025-06-10 19:45:49] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"4970c3b"}
+---
+[2025-06-10 19:58:53] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":75920,"memory_usage":"6 MB","uid":"1a97889"}
+---
+[2025-06-10 20:03:05] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"6bcee8d"}
+---
+[2025-06-10 20:03:08] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8c5ebe1"}
+---
+[2025-06-10 20:04:03] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":76390,"memory_usage":"6 MB","uid":"bff9ef7"}
+---
+[2025-06-10 20:04:09] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"edfff1d"}
+---
+[2025-06-10 20:04:34] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":76493,"memory_usage":"6 MB","uid":"4114773"}
+---
+[2025-06-10 20:05:59] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8284cd5"}
+---
+[2025-06-10 20:09:08] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77048,"memory_usage":"6 MB","uid":"00fe26c"}
+---
+[2025-06-10 20:09:15] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"6068479"}
+---
+[2025-06-10 20:09:16] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":67371,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"1284811"}
+---
+[2025-06-10 20:11:54] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77438,"memory_usage":"6 MB","uid":"016400f"}
+---
+[2025-06-10 20:12:08] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"50c897f"}
+---
+[2025-06-10 20:12:08] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"50c897f"}
+---
+[2025-06-10 20:12:08] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"50c897f"}
+---
+[2025-06-10 20:12:08] app.INFO: User logged out
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"4 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"50c897f"}
+---
+[2025-06-10 20:12:08] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"f171cf0"}
+---
+[2025-06-10 20:12:08] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"f171cf0"}
+---
+[2025-06-10 20:12:08] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"f171cf0"}
+---
+[2025-06-10 20:12:13] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"f3db474"}
+---
+[2025-06-10 20:12:13] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"f3db474"}
+---
+[2025-06-10 20:12:13] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"f3db474"}
+---
+[2025-06-10 20:12:17] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"95d751c"}
+---
+[2025-06-10 20:12:17] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"95d751c"}
+---
+[2025-06-10 20:12:17] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"95d751c"}
+---
+[2025-06-10 20:14:16] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77699,"memory_usage":"6 MB","uid":"f9b94a1"}
+---
+[2025-06-10 20:14:37] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"a08e0f6"}
+---
+[2025-06-10 20:14:37] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"a08e0f6"}
+---
+[2025-06-10 20:14:37] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"a08e0f6"}
+---
+[2025-06-10 20:17:12] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"e321b25"}
+---
+[2025-06-10 20:17:12] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"e321b25"}
+---
+[2025-06-10 20:17:12] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"e321b25"}
+---
+[2025-06-10 20:20:07] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78326,"memory_usage":"6 MB","uid":"be481ab"}
+---
+[2025-06-10 20:20:26] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:26] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:26] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:26] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:26] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:26] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"9d769bf"}
+---
+[2025-06-10 20:20:28] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:28] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:28] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:28] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:28] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:28] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cc5d01"}
+---
+[2025-06-10 20:20:29] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:29] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:29] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:29] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:29] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:29] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"f41d1eb"}
+---
+[2025-06-10 20:20:53] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78435,"memory_usage":"6 MB","uid":"667ac8f"}
+---
+[2025-06-10 20:20:53] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":78435,"memory_usage":"6 MB","uid":"667ac8f"}
+---
+[2025-06-10 20:22:24] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78634,"memory_usage":"6 MB","uid":"495460f"}
+---
+[2025-06-10 20:22:24] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":78634,"memory_usage":"6 MB","uid":"495460f"}
+---
+[2025-06-10 20:23:41] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78775,"memory_usage":"6 MB","uid":"56a9916"}
+---
+[2025-06-10 20:23:41] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":78775,"memory_usage":"6 MB","uid":"56a9916"}
+---
+[2025-06-10 20:24:07] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78812,"memory_usage":"6 MB","uid":"1cb0100"}
+---
+[2025-06-10 20:24:48] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"fd4751f32dda76cfd46cd7725d2deaf4"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:48] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"24f1036"}
+---
+[2025-06-10 20:24:49] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"012565b"}
+---
+[2025-06-10 20:24:49] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"012565b"}
+---
+[2025-06-10 20:24:49] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"012565b"}
+---
+[2025-06-10 20:24:58] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"87dd03a"}
+---
+[2025-06-10 20:24:58] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"87dd03a"}
+---
+[2025-06-10 20:24:58] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"87dd03a"}
+---
+[2025-06-10 20:24:58] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"11984f8"}
+---
+[2025-06-10 20:24:58] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"11984f8"}
+---
+[2025-06-10 20:24:58] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"11984f8"}
+---
+[2025-06-10 20:25:10] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78944,"memory_usage":"6 MB","uid":"d5e0def"}
+---
+[2025-06-10 20:25:10] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":78944,"memory_usage":"6 MB","uid":"d5e0def"}
+---
+[2025-06-10 20:25:43] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":78984,"memory_usage":"6 MB","uid":"1f0b753"}
+---
+[2025-06-10 20:28:30] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":79218,"memory_usage":"6 MB","uid":"b508020"}
+---
+[2025-06-10 20:29:04] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"e3759f1"}
+---
+[2025-06-10 20:29:04] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"e3759f1"}
+---
+[2025-06-10 20:29:04] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"e3759f1"}
+---
+[2025-06-10 20:29:12] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"ddd79e8"}
+---
+[2025-06-10 20:29:12] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"ddd79e8"}
+---
+[2025-06-10 20:29:12] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"ddd79e8"}
+---
+[2025-06-10 20:29:14] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"c1ff018"}
+---
+[2025-06-10 20:29:14] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"c1ff018"}
+---
+[2025-06-10 20:29:14] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/api/status","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"c1ff018"}
+---
+[2025-06-10 20:29:17] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"45d35ac"}
+---
+[2025-06-10 20:29:17] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"45d35ac"}
+---
+[2025-06-10 20:29:17] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"45d35ac"}
+---
+[2025-06-10 20:29:18] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"4065ece"}
+---
+[2025-06-10 20:29:18] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"4065ece"}
+---
+[2025-06-10 20:29:18] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"4065ece"}
+---
+[2025-06-10 20:29:18] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"48c465f"}
+---
+[2025-06-10 20:29:18] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"48c465f"}
+---
+[2025-06-10 20:29:18] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"48c465f"}
+---
+[2025-06-10 20:30:32] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ea85a83"}
+---
+[2025-06-10 20:30:32] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ea85a83"}
+---
+[2025-06-10 20:30:32] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"ea85a83"}
+---
+[2025-06-10 20:30:36] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8ec550a"}
+---
+[2025-06-10 20:30:36] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8ec550a"}
+---
+[2025-06-10 20:30:36] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8ec550a"}
+---
+[2025-06-10 20:30:36] app.INFO: User logged out
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"8ec550a"}
+---
+[2025-06-10 20:30:36] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"c7e7d01"}
+---
+[2025-06-10 20:30:36] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"c7e7d01"}
+---
+[2025-06-10 20:30:36] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"c7e7d01"}
+---
+[2025-06-10 20:30:39] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"695a3df"}
+---
+[2025-06-10 20:30:39] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"695a3df"}
+---
+[2025-06-10 20:30:39] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"695a3df"}
+---
+[2025-06-10 20:30:43] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:43] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:43] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:43] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:43] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:43] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"3b74cd7"}
+---
+[2025-06-10 20:30:45] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"42f0af418a3b474d559c0b5b714a057a"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"77d3e1c"}
+---
+[2025-06-10 20:30:45] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"c601a51"}
+---
+[2025-06-10 20:30:45] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"c601a51"}
+---
+[2025-06-10 20:30:45] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"c601a51"}
+---
+[2025-06-10 20:30:45] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/favicon.ico","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"05f5e95"}
+---
+[2025-06-10 20:30:52] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"618107f"}
+---
+[2025-06-10 20:30:52] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"618107f"}
+---
+[2025-06-10 20:30:52] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"618107f"}
+---
+[2025-06-10 20:30:52] app.INFO: User logged out
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"618107f"}
+---
+[2025-06-10 20:30:53] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b2b77ce"}
+---
+[2025-06-10 20:30:53] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b2b77ce"}
+---
+[2025-06-10 20:30:53] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"b2b77ce"}
+---
+[2025-06-10 20:30:55] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"a8f35bf"}
+---
+[2025-06-10 20:30:55] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"a8f35bf"}
+---
+[2025-06-10 20:30:55] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"a8f35bf"}
+---
+[2025-06-10 20:30:57] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"2614b87"}
+---
+[2025-06-10 20:30:57] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"2614b87"}
+---
+[2025-06-10 20:30:57] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"2614b87"}
+---
+[2025-06-10 20:31:02] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:02] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:02] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:02] app.WARNING: Authentication failed: user not found
+Context: {"email":"evanmcdan@yandex.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:02] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"evanmcdan@yandex.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:02] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"evanmcdan@yandex.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"56ace6a"}
+---
+[2025-06-10 20:31:28] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":79542,"memory_usage":"6 MB","uid":"6dafb53"}
+---
+[2025-06-10 20:43:02] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:43:02] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:43:02] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:43:02] app.WARNING: Authentication failed: user not found
+Context: {"email":"evanmcdan@yandex.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:43:02] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"evanmcdan@yandex.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:43:02] app.ERROR: Login error
+Context: {"message":"Invalid email or password","email":"evanmcdan@yandex.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"35cfadc"}
+---
+[2025-06-10 20:45:08] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":80891,"memory_usage":"6 MB","uid":"df85cb4"}
+---
+[2025-06-10 20:45:40] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"68fc603"}
+---
+[2025-06-10 20:45:40] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"68fc603"}
+---
+[2025-06-10 20:45:40] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"68fc603"}
+---
+[2025-06-10 20:45:43] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:43] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:43] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:43] app.WARNING: Authentication failed: user not found
+Context: {"email":"steve.norton@email.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:43] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"steve.norton@email.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:43] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"steve.norton@email.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"4d7a0e1"}
+---
+[2025-06-10 20:45:52] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"a3fdcd3a85d684b39bd1dcb1936759dd"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"8cbcb15"}
+---
+[2025-06-10 20:45:52] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d47cc28"}
+---
+[2025-06-10 20:45:52] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d47cc28"}
+---
+[2025-06-10 20:45:52] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d47cc28"}
+---
+[2025-06-10 20:46:02] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:02] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:02] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:02] app.WARNING: Authentication failed: user not found
+Context: {"email":"steve.norton@email.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:02] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"steve.norton@email.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:02] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"steve.norton@email.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"cd15ecc"}
+---
+[2025-06-10 20:46:13] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:13] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:13] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:13] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:13] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:13] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2b34787"}
+---
+[2025-06-10 20:46:27] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"8892a27"}
+---
+[2025-06-10 20:46:27] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"8892a27"}
+---
+[2025-06-10 20:46:27] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":null,"uid":"8892a27"}
+---
+[2025-06-10 20:59:28] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:28] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:28] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:28] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:28] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:28] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"aecbd51"}
+---
+[2025-06-10 20:59:32] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:32] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:32] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:33] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:33] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:33] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"108443cd1a9ea067207e5bae8a652135"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:33] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"2ce39ee"}
+---
+[2025-06-10 20:59:33] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d60e746"}
+---
+[2025-06-10 20:59:33] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d60e746"}
+---
+[2025-06-10 20:59:33] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"d60e746"}
+---
+[2025-06-10 20:59:38] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"34800ce"}
+---
+[2025-06-10 20:59:38] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"34800ce"}
+---
+[2025-06-10 20:59:38] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"34800ce"}
+---
+[2025-06-10 20:59:38] app.INFO: User logged out
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/logout","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"34800ce"}
+---
+[2025-06-10 20:59:38] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"a839c6a"}
+---
+[2025-06-10 20:59:38] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"a839c6a"}
+---
+[2025-06-10 20:59:38] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/profile","uid":"a839c6a"}
+---
+[2025-06-10 20:59:40] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"fa18a78"}
+---
+[2025-06-10 20:59:40] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"fa18a78"}
+---
+[2025-06-10 20:59:40] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/","uid":"fa18a78"}
+---
+[2025-06-10 20:59:45] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:45] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:45] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:45] app.WARNING: Authentication failed: invalid password
+Context: {"email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:45] app.WARNING: Authentication failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:45] app.NOTICE: Login failed - invalid credentials
+Context: {"email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"ff59d37"}
+---
+[2025-06-10 20:59:47] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.INFO: User authenticated successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.INFO: 🔐 User login successful
+Context: {"event":"user_login_success","user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com","ip":"::1","user_agent":"Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0","session_id":"dc39476c476092ebbffff9fffd89263b"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.INFO: User logged in successfully
+Context: {"user_id":"550e8400-e29b-41d4-a716-446655440000","email":"admin@example.com"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/login","ip":"::1","http_method":"POST","server":"localhost","referrer":"http://localhost:8080/login","uid":"c4576b0"}
+---
+[2025-06-10 20:59:47] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"461e2ca"}
+---
+[2025-06-10 20:59:47] app.INFO: Language set successfully
+Context: {"locale":"en_US","domain":"messages","setlocale_result":false}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"461e2ca"}
+---
+[2025-06-10 20:59:47] app.WARNING: Failed to set locale via middleware
+Context: {"locale":"en_US"}
+Extra: {"process_id":77478,"memory_usage":"2 MB","url":"/profile","ip":"::1","http_method":"GET","server":"localhost","referrer":"http://localhost:8080/login","uid":"461e2ca"}
+---
+[2025-06-10 21:00:49] app.DEBUG: Timezone set successfully
+Context: {"timezone":"Europe/Bratislava"}
+Extra: {"process_id":82895,"memory_usage":"6 MB","uid":"84a45f9"}
+---

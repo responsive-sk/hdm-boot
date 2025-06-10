@@ -57,7 +57,7 @@ final class UserAuthenticationMiddleware implements MiddlewareInterface
                 // Verify user exists and is active
                 $user = $this->userService->getUserById($userIdString);
 
-                if ($user && $user->getStatus() === 'active') {
+                if ($user && isset($user['status']) && $user['status'] === 'active') {
                     // User is authenticated and active, continue
                     return $handler->handle($request);
                 }

@@ -15,13 +15,13 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Locale Middleware - Automatic Language Detection and Setting.
- * 
+ *
  * Based on samuelgfeller LocaleMiddleware with enterprise enhancements.
- * 
+ *
  * Priority order:
  * 1. User preference from database (if authenticated)
  * 2. Session language preference
- * 3. Cookie language preference  
+ * 3. Cookie language preference
  * 4. Browser Accept-Language header
  * 5. Default locale from config
  */
@@ -60,7 +60,6 @@ final class LocaleMiddleware implements MiddlewareInterface
                     ]);
                 }
             }
-
         } catch (\Exception $e) {
             $this->logger->error('Locale middleware error', [
                 'error' => $e->getMessage(),
@@ -130,13 +129,13 @@ final class LocaleMiddleware implements MiddlewareInterface
     {
         try {
             $userId = $this->session->get('user_id');
-            
+
             if (!$userId) {
                 return null;
             }
 
             $user = $this->userService->getUserById($userId);
-            
+
             if (!$user) {
                 return null;
             }
@@ -144,12 +143,11 @@ final class LocaleMiddleware implements MiddlewareInterface
             // TODO: Add language field to User entity
             // For now, return null - this would be implemented when User has language preference
             return null;
-            
         } catch (\Exception $e) {
             $this->logger->warning('Failed to get user locale', [
                 'error' => $e->getMessage(),
             ]);
-            
+
             return null;
         }
     }
@@ -161,9 +159,9 @@ final class LocaleMiddleware implements MiddlewareInterface
     {
         $config = $this->localeService->getConfig();
         $cookieName = $config['detection']['cookie_name'] ?? 'app_language';
-        
+
         $cookies = $request->getCookieParams();
-        
+
         return $cookies[$cookieName] ?? null;
     }
 
@@ -173,7 +171,7 @@ final class LocaleMiddleware implements MiddlewareInterface
     private function getBrowserLocale(ServerRequestInterface $request): ?string
     {
         $acceptLanguage = $request->getHeaderLine('Accept-Language');
-        
+
         if (empty($acceptLanguage)) {
             return null;
         }
@@ -181,19 +179,19 @@ final class LocaleMiddleware implements MiddlewareInterface
         // Parse Accept-Language header
         // Example: "en-GB,en;q=0.9,de;q=0.8,de-DE;q=0.7,en-US;q=0.6"
         $languages = explode(',', $acceptLanguage);
-        
+
         foreach ($languages as $language) {
             // Remove quality factor (q=0.9)
             $locale = trim(explode(';', $language)[0]);
-            
+
             // Convert hyphen to underscore (en-GB -> en_GB)
             $locale = str_replace('-', '_', $locale);
-            
+
             // Try exact match first
             if ($this->localeService->isLocaleSupported($locale)) {
                 return $locale;
             }
-            
+
             // Try language code only (en_GB -> en_US if available)
             $languageCode = explode('_', $locale)[0];
             foreach ($this->localeService->getAvailableLocales() as $availableLocale) {
@@ -213,14 +211,14 @@ final class LocaleMiddleware implements MiddlewareInterface
     {
         $config = $this->localeService->getConfig();
         $detection = $config['detection'] ?? [];
-        
+
         if (!($detection['use_cookie'] ?? true)) {
             return $response;
         }
 
         $cookieName = $detection['cookie_name'] ?? 'app_language';
         $cookieLifetime = $detection['cookie_lifetime'] ?? 2592000; // 30 days
-        
+
         $cookieValue = sprintf(
             '%s=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax',
             $cookieName,
@@ -244,15 +242,15 @@ final class LocaleMiddleware implements MiddlewareInterface
         if ($userId && $this->getUserLocale() === $locale) {
             return 'user_preference';
         }
-        
+
         if ($sessionLocale === $locale) {
             return 'session';
         }
-        
+
         if ($cookieLocale === $locale) {
             return 'cookie';
         }
-        
+
         if ($browserLocale === $locale) {
             return 'browser';
         }

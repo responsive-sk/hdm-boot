@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Locale Service - Enterprise Language Management.
- * 
+ *
  * Based on samuelgfeller LocaleConfigurator with enterprise enhancements.
  */
 final class LocaleService
@@ -43,7 +43,7 @@ final class LocaleService
 
     /**
      * Set application language/locale.
-     * 
+     *
      * @param string|null $locale Locale code (e.g., 'sk_SK', 'en_US')
      * @param string $domain Text domain for gettext (default: 'messages')
      * @return bool|string New locale string or false on failure
@@ -52,30 +52,29 @@ final class LocaleService
     {
         try {
             $codeset = 'UTF-8';
-            
+
             // Normalize locale (replace hyphen with underscore)
             $locale = $this->normalizeLocale($locale);
-            
+
             // Get available locale (with fallback)
             $locale = $this->getAvailableLocale($locale);
-            
+
             // Set system locale
             $localeWithHyphen = str_replace('_', '-', $locale);
             $setLocaleResult = setlocale(LC_ALL, $locale, $localeWithHyphen);
-            
+
             // Setup gettext if translation file exists
             $this->setupGettext($locale, $domain, $codeset);
-            
+
             $this->currentLocale = $locale;
-            
+
             $this->logger->info('Language set successfully', [
                 'locale' => $locale,
                 'domain' => $domain,
                 'setlocale_result' => $setLocaleResult,
             ]);
-            
+
             return $setLocaleResult;
-            
         } catch (\Exception $e) {
             $this->logger->error('Failed to set language', [
                 'locale' => $locale,
@@ -112,14 +111,14 @@ final class LocaleService
     public function getLanguageCodeForPath(): string
     {
         $langCode = $this->getCurrentLanguageCode();
-        
+
         // English is default, no subdirectory needed
         return $langCode === 'en' ? '' : $langCode . '/';
     }
 
     /**
      * Get all available locales.
-     * 
+     *
      * @return array<string>
      */
     public function getAvailableLocales(): array
@@ -210,7 +209,7 @@ final class LocaleService
         if ($locale === null) {
             return null;
         }
-        
+
         // Replace hyphen with underscore
         return str_contains($locale, '-') ? str_replace('-', '_', $locale) : $locale;
     }
@@ -228,7 +227,7 @@ final class LocaleService
         // Try to find locale with same language but different region
         if ($locale) {
             $languageCode = $this->getLanguageCodeFromLocale($locale);
-            
+
             foreach ($this->availableLocales as $availableLocale) {
                 if ($this->getLanguageCodeFromLocale($availableLocale) === $languageCode) {
                     return $availableLocale;
@@ -248,7 +247,7 @@ final class LocaleService
         if ($locale === null) {
             return null;
         }
-        
+
         $locale = $this->normalizeLocale($locale);
         return $locale ? explode('_', $locale)[0] : null;
     }
@@ -273,14 +272,14 @@ final class LocaleService
                 'locale' => $locale,
                 'file' => $translationFile,
             ]);
-            
+
             // Don't throw exception, just log warning and continue with English
             return;
         }
 
         // Generate text domain
         $textDomain = sprintf('%s_%s', $domain, $locale);
-        
+
         // Set up gettext
         bindtextdomain($textDomain, $this->translationsPath);
         bind_textdomain_codeset($textDomain, $codeset);
