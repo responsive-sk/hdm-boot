@@ -19,4 +19,5 @@ enum SecurityType: string
     case USER_EMAIL = 'user_email';
     case API_REQUESTS = 'api_requests'; // New for API throttling
     case JWT_VALIDATION = 'jwt_validation'; // New for JWT security
+    case CSRF_TOKEN_INVALID = 'csrf_token_invalid'; // CSRF protection
 }

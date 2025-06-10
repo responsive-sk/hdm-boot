@@ -5,12 +5,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "cakephp/database": "^5.2",
+        "cakephp/log": "^5.2",
+        "cakephp/validation": "^5.2",
         "firebase/php-jwt": "^6.8",
-        "monolog/monolog": "^3.4",
+        "monolog/monolog": "^3.9",
         "odan/session": "^6.1",
         "php-di/php-di": "^7.0",
         "ramsey/uuid": "^4.7",
         "responsive-sk/slim4-paths": "^1.0",
+        "slim/php-view": "^3.4",
         "slim/psr7": "^1.6",
         "slim/slim": "^4.12",
         "vlucas/phpdotenv": "^5.5"

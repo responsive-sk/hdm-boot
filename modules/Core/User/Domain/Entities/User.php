@@ -69,23 +69,43 @@ final class User implements JsonSerializable
     /** @param array<string, mixed> $data */
     public static function fromDatabase(array $data): self
     {
+        // Validate required fields
+        if (!is_string($data['id'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing id');
+        }
+        if (!is_string($data['email'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing email');
+        }
+        if (!is_string($data['name'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing name');
+        }
+        if (!is_string($data['password_hash'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing password_hash');
+        }
+        if (!is_string($data['created_at'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing created_at');
+        }
+        if (!is_string($data['updated_at'] ?? null)) {
+            throw new InvalidArgumentException('Invalid or missing updated_at');
+        }
+
         return new self(
             id: UserId::fromString($data['id']),
             email: $data['email'],
             name: $data['name'],
             passwordHash: $data['password_hash'],
-            role: $data['role'] ?? 'user',
-            status: $data['status'] ?? 'active',
+            role: is_string($data['role'] ?? null) ? $data['role'] : 'user',
+            status: is_string($data['status'] ?? null) ? $data['status'] : 'active',
             emailVerified: (bool) ($data['email_verified'] ?? false),
-            emailVerificationToken: $data['email_verification_token'] ?? null,
-            passwordResetToken: $data['password_reset_token'] ?? null,
-            passwordResetExpires: isset($data['password_reset_expires'])
+            emailVerificationToken: is_string($data['email_verification_token'] ?? null) ? $data['email_verification_token'] : null,
+            passwordResetToken: is_string($data['password_reset_token'] ?? null) ? $data['password_reset_token'] : null,
+            passwordResetExpires: isset($data['password_reset_expires']) && is_string($data['password_reset_expires'])
                 ? new DateTimeImmutable($data['password_reset_expires'])
                 : null,
-            lastLoginAt: isset($data['last_login_at'])
+            lastLoginAt: isset($data['last_login_at']) && is_string($data['last_login_at'])
                 ? new DateTimeImmutable($data['last_login_at'])
                 : null,
-            loginCount: (int) ($data['login_count'] ?? 0),
+            loginCount: is_numeric($data['login_count'] ?? 0) ? (int) ($data['login_count'] ?? 0) : 0,
             createdAt: new DateTimeImmutable($data['created_at']),
             updatedAt: new DateTimeImmutable($data['updated_at'])
         );

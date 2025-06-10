@@ -38,7 +38,7 @@ class UserApiTest extends TestCase
         $request = $this->createRequest('GET', '/api/users');
 
         $response = $this->executeRequest($request);
-        $this->assertErrorResponse($response, 401, 'MISSING_TOKEN');
+        $this->assertErrorResponse($response, 401, 'UNAUTHORIZED');
     }
 
     public function testListUsersWithPagination(): void
@@ -70,16 +70,15 @@ class UserApiTest extends TestCase
         }
     }
 
+    /**
+     * @covers \MvaBootstrap\Modules\Core\User\Actions\GetUserAction
+     */
     public function testGetUserById(): void
     {
-        // First get the test user ID
-        $listRequest = $this->createAuthenticatedRequest('GET', '/api/users');
-        $listResponse = $this->executeRequest($listRequest);
-        $listData = $this->getJsonResponse($listResponse);
-        $userId = $listData['data'][0]['id'];
+        // Use the fixed admin user UUID from TestCase
+        $adminUserId = '550e8400-e29b-41d4-a716-446655440000';
 
-        // Now get specific user
-        $request = $this->createAuthenticatedRequest('GET', "/api/users/{$userId}");
+        $request = $this->createAuthenticatedRequest('GET', "/api/users/{$adminUserId}");
 
         $response = $this->executeRequest($request);
         $data = $this->assertJsonResponse($response, 200, true);
@@ -87,7 +86,7 @@ class UserApiTest extends TestCase
         $this->assertArrayHasKey('data', $data);
         $user = $data['data'];
 
-        $this->assertSame($userId, $user['id']);
+        $this->assertSame($adminUserId, $user['id']);
         $this->assertSame('admin@example.com', $user['email']);
         $this->assertSame('Admin User', $user['name']);
     }
@@ -105,13 +104,16 @@ class UserApiTest extends TestCase
         $request = $this->createRequest('GET', '/api/users/some-id');
 
         $response = $this->executeRequest($request);
-        $this->assertErrorResponse($response, 401, 'MISSING_TOKEN');
+        $this->assertErrorResponse($response, 401, 'UNAUTHORIZED');
     }
 
     public function testCreateUser(): void
     {
+        // Use unique email with timestamp to avoid conflicts
+        $uniqueEmail = 'newuser' . time() . '@example.com';
+
         $userData = [
-            'email' => 'newuser@example.com',
+            'email' => $uniqueEmail,
             'name' => 'New User',
             'password' => 'NewPassword123',
             'role' => 'user',
@@ -174,7 +176,7 @@ class UserApiTest extends TestCase
         $request = $this->createJsonRequest('POST', '/api/users', $userData);
 
         $response = $this->executeRequest($request);
-        $this->assertErrorResponse($response, 401, 'MISSING_TOKEN');
+        $this->assertErrorResponse($response, 401, 'UNAUTHORIZED');
     }
 
     public function testUpdateUserNotImplemented(): void

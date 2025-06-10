@@ -10,6 +10,7 @@ use MvaBootstrap\Database\DatabaseManager;
 use MvaBootstrap\Helpers\SecurePathHelper;
 use Odan\Session\PhpSession;
 use Odan\Session\SessionInterface;
+use Odan\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 
@@ -31,7 +32,12 @@ $containerBuilder->addDefinitions([
         // Load paths configuration
         $pathsConfig = require __DIR__ . '/paths.php';
 
-        return new Paths($pathsConfig['base_path']);
+        // Create custom paths array for the Paths service
+        $customPaths = [
+            'var' => $pathsConfig['paths']['var'],
+        ];
+
+        return new Paths($pathsConfig['base_path'], $customPaths);
     },
 
     // Secure Path Helper
@@ -50,12 +56,41 @@ $containerBuilder->addDefinitions([
         return $logger;
     },
 
-    // Session
-    SessionInterface::class => function (): SessionInterface {
-        $session = new PhpSession();
-        $session->start();
+    // PSR-7 Response Factory (using Slim's factory)
+    \Psr\Http\Message\ResponseFactoryInterface::class => function (): \Psr\Http\Message\ResponseFactoryInterface {
+        return \Slim\Factory\AppFactory::determineResponseFactory();
+    },
 
-        return $session;
+    // Session with proper configuration (like samuelgfeller)
+    SessionInterface::class => function (Container $container): SessionInterface {
+        $settings = $container->get('settings');
+        $sessionOptions = [
+            'name' => $_ENV['SESSION_NAME'] ?? 'mva_bootstrap_session',
+            'lifetime' => (int) ($_ENV['SESSION_LIFETIME'] ?? 7200), // 2 hours
+            'save_path' => null,  // Use default save path
+            'domain' => null,     // Use default domain (localhost)
+            'secure' => ($_ENV['SESSION_COOKIE_SECURE'] ?? 'false') === 'true',
+            'httponly' => ($_ENV['SESSION_COOKIE_HTTPONLY'] ?? 'true') === 'true',
+            'cookie_samesite' => $_ENV['SESSION_COOKIE_SAMESITE'] ?? 'Lax',
+            'cache_limiter' => 'nocache',  // Prevent caching issues
+        ];
+
+        // Debug: Log session configuration
+        error_log('SessionInterface creation: ' . json_encode($sessionOptions));
+
+        return new PhpSession($sessionOptions);
+    },
+
+    // SessionManagerInterface (like samuelgfeller)
+    SessionManagerInterface::class => function (Container $container): SessionManagerInterface {
+        return $container->get(SessionInterface::class);
+    },
+
+    // SessionStartMiddleware
+    \Odan\Session\Middleware\SessionStartMiddleware::class => function (Container $container): \Odan\Session\Middleware\SessionStartMiddleware {
+        return new \Odan\Session\Middleware\SessionStartMiddleware(
+            $container->get(SessionManagerInterface::class)
+        );
     },
 
     // Database connection (will be configured by modules)
@@ -89,6 +124,160 @@ $containerBuilder->addDefinitions([
             return $c->get(Paths::class);
         },
     ],
+
+    // Security Services
+    \MvaBootstrap\Modules\Core\Security\Services\CsrfService::class => function (Container $container): \MvaBootstrap\Modules\Core\Security\Services\CsrfService {
+        $session = $container->get(\Odan\Session\SessionInterface::class);
+        return new \MvaBootstrap\Modules\Core\Security\Services\CsrfService($session);
+    },
+
+    \MvaBootstrap\Modules\Core\Security\Services\SessionService::class => function (Container $container): \MvaBootstrap\Modules\Core\Security\Services\SessionService {
+        return new \MvaBootstrap\Modules\Core\Security\Services\SessionService(
+            $container->get(SessionInterface::class)
+        );
+    },
+
+    // Authentication Validator
+    \MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator::class => function (): \MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator {
+        return new \MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator();
+    },
+
+    // Logger Factory
+    \MvaBootstrap\Shared\Services\LoggerFactory::class => function (Container $container): \MvaBootstrap\Shared\Services\LoggerFactory {
+        $paths = $container->get(Paths::class);
+        return new \MvaBootstrap\Shared\Services\LoggerFactory(
+            $paths,
+            $_ENV['APP_ENV'] ?? 'development',
+            ($_ENV['APP_DEBUG'] ?? 'true') === 'true'
+        );
+    },
+
+    // Main Application Logger
+    \Psr\Log\LoggerInterface::class => function (Container $container): \Psr\Log\LoggerInterface {
+        $factory = $container->get(\MvaBootstrap\Shared\Services\LoggerFactory::class);
+        return $factory->createLogger('app');
+    },
+
+    // Security Logger
+    'security.logger' => function (Container $container): \Psr\Log\LoggerInterface {
+        $factory = $container->get(\MvaBootstrap\Shared\Services\LoggerFactory::class);
+        return $factory->createSecurityLogger();
+    },
+
+    // Performance Logger
+    'performance.logger' => function (Container $container): \Psr\Log\LoggerInterface {
+        $factory = $container->get(\MvaBootstrap\Shared\Services\LoggerFactory::class);
+        return $factory->createPerformanceLogger();
+    },
+
+    // Let Slim handle Actions with autowiring (like samuelgfeller)
+
+    // Repository Factory (PROPERLY ABSTRACT!)
+    \MvaBootstrap\Shared\Factories\RepositoryFactory::class => function (): \MvaBootstrap\Shared\Factories\RepositoryFactory {
+        return new \MvaBootstrap\Shared\Factories\RepositoryFactory(
+            $_ENV['REPOSITORY_TYPE'] ?? 'sqlite',
+            $_ENV['DATABASE_MANAGER'] ?? 'pdo'
+        );
+    },
+
+    // User Repository (using ABSTRACT factory)
+    \MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface::class => function (Container $container): \MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface {
+        $factory = $container->get(\MvaBootstrap\Shared\Factories\RepositoryFactory::class);
+        $pdo = $container->get(PDO::class);
+        $databaseManager = $container->get(\MvaBootstrap\Shared\Contracts\DatabaseManagerInterface::class);
+
+        return $factory->createUserRepository($pdo, $databaseManager);
+    },
+
+    // User Services
+    \MvaBootstrap\Modules\Core\User\Services\UserService::class => function (Container $container): \MvaBootstrap\Modules\Core\User\Services\UserService {
+        $userRepository = $container->get(\MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface::class);
+        return new \MvaBootstrap\Modules\Core\User\Services\UserService($userRepository);
+    },
+
+    // Language Services
+    \MvaBootstrap\Modules\Core\Language\Services\LocaleService::class => function (Container $container): \MvaBootstrap\Modules\Core\Language\Services\LocaleService {
+        return new \MvaBootstrap\Modules\Core\Language\Services\LocaleService(
+            $container->get(Paths::class),
+            $container->get(\Psr\Log\LoggerInterface::class)
+        );
+    },
+
+    // SecurityLoginChecker
+    \MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker::class => function (Container $container): \MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker {
+        return new \MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker(
+            $container->get(\PDO::class)
+        );
+    },
+
+    // ProfilePageAction (using Slim PhpRenderer like samuelgfeller)
+    \MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction::class => function (Container $container): \MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction {
+        return new \MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction(
+            $container->get(\Slim\Views\PhpRenderer::class),
+            $container->get(\Odan\Session\SessionInterface::class),
+            $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class)
+        );
+    },
+
+    // Database Managers with Abstraction
+    \MvaBootstrap\Shared\Services\DatabaseConnectionManager::class => function (Container $container): \MvaBootstrap\Shared\Services\DatabaseConnectionManager {
+        $paths = $container->get(Paths::class);
+        return new \MvaBootstrap\Shared\Services\DatabaseConnectionManager(
+            $paths,
+            $_ENV['APP_ENV'] ?? 'development'
+        );
+    },
+
+    // Default Database Manager (CakePHP for now, can switch to Doctrine later)
+    \MvaBootstrap\Shared\Contracts\DatabaseManagerInterface::class => function (Container $container): \MvaBootstrap\Shared\Contracts\DatabaseManagerInterface {
+        return $container->get(\MvaBootstrap\Shared\Services\DatabaseConnectionManager::class);
+    },
+
+    // Query Builder Interface (same as DatabaseManager for CakePHP)
+    \MvaBootstrap\Shared\Contracts\QueryBuilderInterface::class => function (Container $container): \MvaBootstrap\Shared\Contracts\QueryBuilderInterface {
+        return $container->get(\MvaBootstrap\Shared\Services\DatabaseConnectionManager::class);
+    },
+
+
+
+    // Slim PhpRenderer (like samuelgfeller)
+    \Slim\Views\PhpRenderer::class => function (Container $container): \Slim\Views\PhpRenderer {
+        $paths = $container->get(Paths::class);
+        return new \Slim\Views\PhpRenderer($paths->base() . '/templates');
+    },
+
+    // UserAuthenticationMiddleware
+    \MvaBootstrap\Shared\Middleware\UserAuthenticationMiddleware::class => function (Container $container): \MvaBootstrap\Shared\Middleware\UserAuthenticationMiddleware {
+        return new \MvaBootstrap\Shared\Middleware\UserAuthenticationMiddleware(
+            $container->get(\Odan\Session\SessionInterface::class),
+            $container->get(\Psr\Http\Message\ResponseFactoryInterface::class),
+            $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class),
+            $container->get(\Psr\Log\LoggerInterface::class)
+        );
+    },
+
+    // LocaleMiddleware
+    \MvaBootstrap\Shared\Middleware\LocaleMiddleware::class => function (Container $container): \MvaBootstrap\Shared\Middleware\LocaleMiddleware {
+        return new \MvaBootstrap\Shared\Middleware\LocaleMiddleware(
+            $container->get(\MvaBootstrap\Modules\Core\Language\Services\LocaleService::class),
+            $container->get(\Odan\Session\SessionInterface::class),
+            $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class),
+            $container->get(\Psr\Log\LoggerInterface::class)
+        );
+    },
+
+    // Template Renderer (wrapper around PhpRenderer)
+    \MvaBootstrap\Shared\Services\TemplateRenderer::class => function (Container $container): \MvaBootstrap\Shared\Services\TemplateRenderer {
+        $paths = $container->get(Paths::class);
+        $csrfService = $container->get(\MvaBootstrap\Modules\Core\Security\Services\CsrfService::class);
+        $session = $container->get(\Odan\Session\SessionInterface::class);
+
+        return new \MvaBootstrap\Shared\Services\TemplateRenderer(
+            $paths->base() . '/templates',
+            $csrfService,
+            $session
+        );
+    },
 ]);
 
 return $containerBuilder->build();

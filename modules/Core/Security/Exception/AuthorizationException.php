@@ -47,7 +47,7 @@ class AuthorizationException extends RuntimeException
         return [
             'code'                => 'AUTHORIZATION_FAILED',
             'message'             => $this->getMessage(),
-            'required_permission' => $this->requiredPermission,
+            'required_permission' => $this->requiredPermission ?? 'unknown',
             'user_role'           => $this->userRole ?? 'unknown',
         ];
     }

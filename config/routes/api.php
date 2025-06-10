@@ -61,5 +61,9 @@ return function (App $app): void {
 
             return $response->withHeader('Content-Type', 'application/json');
         })->setName('api.info');
+
+        // Language/Localization routes
+        $group->map(['GET', 'POST'], '/translate', \MvaBootstrap\Modules\Core\Language\Actions\Api\TranslateAction::class);
+        $group->map(['GET', 'POST'], '/language', \MvaBootstrap\Modules\Core\Language\Actions\Api\LanguageSettingsAction::class);
     });
 };

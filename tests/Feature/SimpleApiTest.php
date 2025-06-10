@@ -11,6 +11,9 @@ use MvaBootstrap\Tests\TestCase;
  */
 class SimpleApiTest extends TestCase
 {
+    /**
+     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     */
     public function testLoginEndpoint(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
@@ -26,6 +29,9 @@ class SimpleApiTest extends TestCase
         $this->assertIsString($data['data']['token']);
     }
 
+    /**
+     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     */
     public function testMeEndpoint(): void
     {
         $token = $this->loginAndGetToken();
@@ -35,9 +41,13 @@ class SimpleApiTest extends TestCase
         $data = $this->assertJsonResponse($response, 200, true);
 
         $this->assertArrayHasKey('data', $data);
-        $this->assertSame('admin@example.com', $data['data']['email']);
+        $this->assertArrayHasKey('user', $data['data']);
+        $this->assertSame('admin@example.com', $data['data']['user']['email']);
     }
 
+    /**
+     * @covers \MvaBootstrap\Modules\Core\User\Actions\ListUsersAction
+     */
     public function testUsersEndpoint(): void
     {
         $token = $this->loginAndGetToken();
@@ -51,6 +61,9 @@ class SimpleApiTest extends TestCase
         $this->assertGreaterThanOrEqual(1, count($data['data']));
     }
 
+    /**
+     * @covers \MvaBootstrap\Modules\Core\User\Actions\ListUsersAction
+     */
     public function testUnauthorizedAccess(): void
     {
         $request = $this->createRequest('GET', '/api/users');
@@ -59,6 +72,9 @@ class SimpleApiTest extends TestCase
         $this->assertErrorResponse($response, 401);
     }
 
+    /**
+     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     */
     public function testInvalidLogin(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [

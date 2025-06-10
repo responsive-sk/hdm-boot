@@ -15,6 +15,7 @@ $_ENV['APP_DEBUG'] = 'true';
 $_ENV['DATABASE_URL'] = 'sqlite::memory:';
 $_ENV['JWT_SECRET'] = 'test-secret-key-for-testing-only';
 $_ENV['JWT_EXPIRY'] = '3600';
+$_ENV['SECURITY_THROTTLING_DISABLED'] = 'true';
 
 // Create necessary directories for testing
 $testDirs = [

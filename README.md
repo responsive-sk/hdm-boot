@@ -8,6 +8,8 @@ Modern PHP application with modular architecture, secure path handling, and opti
 - **Secure Path Management** - Path traversal protection with `responsive-sk/slim4-paths`
 - **Secure Authentication** - JWT tokens, password hashing, RBAC (planned)
 - **User Management** - Complete user system with roles ✅ **IMPLEMENTED**
+- **Session Management** - Enterprise session handling with CSRF protection ✅ **IMPLEMENTED** 🔧 **FIXED**
+- **Multilingual Support** - Enterprise language system with 8 languages ✅ **IMPLEMENTED**
 - **Optional Modules** - Enable/disable features as needed
 - **PSR Standards** - PSR-4, PSR-7, PSR-11, PSR-15 compliant
 - **Modern PHP** - PHP 8.1+, strict types, modern practices
@@ -17,6 +19,7 @@ Modern PHP application with modular architecture, secure path handling, and opti
 
 ### Core Modules (Required)
 - **User** - User management and profiles ✅ **IMPLEMENTED**
+- **Language** - Multilingual support system ✅ **IMPLEMENTED**
 - **Security** - Authentication and authorization (planned)
 
 ### Optional Modules
@@ -29,6 +32,8 @@ Modern PHP application with modular architecture, secure path handling, and opti
 - ✅ **Route System** - Modular routing
 - ✅ **API Endpoints** - RESTful API foundation
 - ✅ **User Module** - Complete user management system
+- ✅ **Session Module** - Enterprise session management with CSRF protection
+- ✅ **Language Module** - Enterprise multilingual support (8 languages)
 - 🔄 **Security Module** - In development
 - ⏳ **Article Module** - Planned
 
@@ -67,6 +72,12 @@ php -S localhost:8001 -t public
 - `DATABASE_URL` - Database connection string
 - `JWT_SECRET` - Secret key for JWT tokens
 - `ENABLED_MODULES` - Comma-separated list of optional modules
+- `SESSION_NAME` - Session cookie name (mva_bootstrap_session)
+- `SESSION_LIFETIME` - Session lifetime in seconds (7200)
+- `SESSION_COOKIE_HTTPONLY` - HttpOnly cookie flag (true/false)
+- `DEFAULT_LOCALE` - Default application language (en_US)
+- `ENABLE_SLOVAK` - Enable Slovak language support (true/false)
+- `ENABLE_CZECH` - Enable Czech language support (true/false)
 
 ### Module Configuration
 
@@ -133,6 +144,9 @@ mva-bootstrap/
 - `GET /` - Application dashboard
 - `GET /api/status` - API status check
 - `GET /api/info` - Detailed application information
+- `GET /api/language` - Get language settings
+- `POST /api/language` - Change application language
+- `GET /api/translate` - Translate strings
 - `GET /test/paths` - Path security testing (dev only)
 - `GET /test/env` - Environment information (dev only)
 
@@ -169,6 +183,8 @@ curl http://localhost:8001/test/paths
 
 - [Architecture Overview](docs/ARCHITECTURE.md)
 - [Security Guide](docs/SECURITY.md)
+- [Session Management](docs/SESSION.md) ✅ **NEW**
+- [Language & Localization](docs/LANGUAGE.md) ✅ **NEW**
 - [Module Development](docs/MODULES.md)
 - [API Documentation](docs/API.md)
 - [Deployment Guide](docs/DEPLOYMENT.md)

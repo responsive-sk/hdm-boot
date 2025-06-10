@@ -1,0 +1,286 @@
+# MVA Bootstrap Application Translation Template
+# Copyright (C) 2024 MVA Bootstrap
+# This file is distributed under the same license as the MVA Bootstrap package.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: MVA Bootstrap 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Common UI strings
+msgid "Login"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+# Authentication strings
+msgid "Please log in to continue"
+msgstr ""
+
+msgid "Invalid credentials"
+msgstr ""
+
+msgid "Login successful"
+msgstr ""
+
+msgid "Logout successful"
+msgstr ""
+
+msgid "Session expired"
+msgstr ""
+
+msgid "Access denied"
+msgstr ""
+
+msgid "Authentication required"
+msgstr ""
+
+# User management strings
+msgid "User Profile"
+msgstr ""
+
+msgid "User Management"
+msgstr ""
+
+msgid "Create User"
+msgstr ""
+
+msgid "Edit User"
+msgstr ""
+
+msgid "Delete User"
+msgstr ""
+
+msgid "User created successfully"
+msgstr ""
+
+msgid "User updated successfully"
+msgstr ""
+
+msgid "User deleted successfully"
+msgstr ""
+
+msgid "Email address is already in use"
+msgstr ""
+
+msgid "User not found"
+msgstr ""
+
+msgid "User account is not active"
+msgstr ""
+
+# Validation strings
+msgid "This field is required"
+msgstr ""
+
+msgid "Invalid email format"
+msgstr ""
+
+msgid "Password is too short"
+msgstr ""
+
+msgid "Password must contain at least one uppercase letter"
+msgstr ""
+
+msgid "Password must contain at least one lowercase letter"
+msgstr ""
+
+msgid "Password must contain at least one number"
+msgstr ""
+
+msgid "Passwords do not match"
+msgstr ""
+
+# Error messages
+msgid "An error occurred"
+msgstr ""
+
+msgid "Page not found"
+msgstr ""
+
+msgid "Internal server error"
+msgstr ""
+
+msgid "Bad request"
+msgstr ""
+
+msgid "Forbidden"
+msgstr ""
+
+msgid "Method not allowed"
+msgstr ""
+
+msgid "Service unavailable"
+msgstr ""
+
+# Success messages
+msgid "Operation completed successfully"
+msgstr ""
+
+msgid "Changes saved successfully"
+msgstr ""
+
+msgid "Data updated successfully"
+msgstr ""
+
+# Language strings
+msgid "Language"
+msgstr ""
+
+msgid "Select Language"
+msgstr ""
+
+msgid "Language changed successfully"
+msgstr ""
+
+msgid "Unsupported language"
+msgstr ""
+
+# Enterprise features
+msgid "Enterprise Architecture"
+msgstr ""
+
+msgid "Advanced Features"
+msgstr ""
+
+msgid "Security Features"
+msgstr ""
+
+msgid "Audit Log"
+msgstr ""
+
+msgid "System Monitoring"
+msgstr ""
+
+msgid "Performance Metrics"
+msgstr ""
+
+msgid "Database Management"
+msgstr ""
+
+msgid "Cache Management"
+msgstr ""
+
+msgid "Session Management"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+# Time and date
+msgid "Today"
+msgstr ""
+
+msgid "Yesterday"
+msgstr ""
+
+msgid "Tomorrow"
+msgstr ""
+
+msgid "Last week"
+msgstr ""
+
+msgid "Last month"
+msgstr ""
+
+msgid "Last year"
+msgstr ""
+
+# Plurals
+msgid "1 user"
+msgid_plural "%d users"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 day"
+msgid_plural "%d days"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 hour"
+msgid_plural "%d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "1 minute"
+msgid_plural "%d minutes"
+msgstr[0] ""
+msgstr[1] ""

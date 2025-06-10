@@ -150,6 +150,12 @@ final class App
      */
     private function setupMiddleware(): void
     {
+        // Add locale middleware (early in stack for language detection)
+        $this->slimApp->add($this->container->get(\MvaBootstrap\Shared\Middleware\LocaleMiddleware::class));
+
+        // Add session start middleware
+        $this->slimApp->add(\Odan\Session\Middleware\SessionStartMiddleware::class);
+
         // Add routing middleware
         $this->slimApp->addRoutingMiddleware();
 

@@ -14,6 +14,7 @@ return function (App $app): void {
     // Load core application route files
     $routeFiles = [
         __DIR__ . '/routes/home.php',
+        __DIR__ . '/routes/web.php',
         __DIR__ . '/routes/api.php',
         __DIR__ . '/routes/test.php',
     ];

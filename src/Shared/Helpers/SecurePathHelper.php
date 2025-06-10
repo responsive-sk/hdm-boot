@@ -36,7 +36,7 @@ final class SecurePathHelper
             'cache' => $this->paths->cache(),
             'logs' => $this->paths->logs(),
             'config' => $this->paths->config(),
-            'var' => $this->paths->var(),
+            'var' => $this->paths->storage(), // Use storage for var directory
         ];
 
         // Security configuration - these should be moved to a proper config service

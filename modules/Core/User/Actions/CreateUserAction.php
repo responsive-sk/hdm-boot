@@ -25,7 +25,10 @@ final class CreateUserAction
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        $data = $request->getParsedBody();
+        $rawData = $request->getParsedBody();
+
+        // Ensure data is array or null
+        $data = is_array($rawData) ? $rawData : null;
 
         // Validate required fields
         $validationErrors = $this->validateInput($data);
@@ -50,11 +53,16 @@ final class CreateUserAction
         }
 
         try {
+            // Ensure data is array at this point
+            if (!is_array($data)) {
+                throw new InvalidArgumentException('Invalid request data');
+            }
+
             $user = $this->userService->createUser(
-                email: $data['email'],
-                name: $data['name'],
-                password: $data['password'],
-                role: $data['role'] ?? 'user'
+                email: (string) ($data['email'] ?? ''),
+                name: (string) ($data['name'] ?? ''),
+                password: (string) ($data['password'] ?? ''),
+                role: is_string($data['role'] ?? null) ? $data['role'] : 'user'
             );
 
             $responseData = [
@@ -121,13 +129,15 @@ final class CreateUserAction
         // Name validation
         if (empty($data['name'])) {
             $errors['name'] = ['Name is required'];
-        } elseif (strlen(trim($data['name'])) < 2) {
+        } elseif (!is_string($data['name']) || strlen(trim($data['name'])) < 2) {
             $errors['name'] = ['Name must be at least 2 characters long'];
         }
 
         // Password validation
         if (empty($data['password'])) {
             $errors['password'] = ['Password is required'];
+        } elseif (!is_string($data['password'])) {
+            $errors['password'] = ['Password must be a string'];
         } else {
             $passwordErrors = [];
 

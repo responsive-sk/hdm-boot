@@ -28,7 +28,87 @@ final class AuthenticationService
     }
 
     /**
-     * Authenticate user with email and password.
+     * Authenticate user with email and password (for web sessions).
+     * Returns User entity instead of JWT token.
+     */
+    public function authenticateUser(string $email, string $password, string $clientIp = '127.0.0.1'): User
+    {
+        try {
+            // Security check before authentication attempt
+            $this->securityChecker->checkLoginSecurity($email, $clientIp);
+
+            // Find user by email
+            $user = $this->userService->getUserByEmail($email);
+
+            if ($user === null) {
+                // Record failed attempt
+                $this->securityChecker->recordFailedAttempt($email, $clientIp);
+
+                throw new AuthenticationException(
+                    'Invalid credentials',
+                    'INVALID_CREDENTIALS'
+                );
+            }
+
+            // Verify password
+            if (!$user->verifyPassword($password)) {
+                // Record failed attempt
+                $this->securityChecker->recordFailedAttempt($email, $clientIp);
+
+                throw new AuthenticationException(
+                    'Invalid credentials',
+                    'INVALID_CREDENTIALS'
+                );
+            }
+
+            // Check if user is active
+            if (!$user->isActive()) {
+                throw new AuthenticationException(
+                    'Account is not active',
+                    'ACCOUNT_INACTIVE'
+                );
+            }
+
+            // Record successful attempt
+            $this->securityChecker->recordSuccessfulAttempt($email, $clientIp);
+
+            // Update user login info
+            $user->recordLogin();
+            // Note: For now, we skip updating the user in database
+            // This can be implemented later if needed
+
+            // Log successful authentication
+            $this->logger->info('User authenticated successfully', [
+                'user_id' => $user->getId()->toString(),
+                'email'   => $user->getEmail(),
+                'ip'      => $clientIp,
+            ]);
+
+            return $user;
+        } catch (AuthenticationException $e) {
+            // Re-throw authentication exceptions
+            throw $e;
+        } catch (SecurityException $e) {
+            // Re-throw security exceptions (throttling, etc.)
+            throw $e;
+        } catch (\Exception $e) {
+            // Log unexpected errors
+            $this->logger->error('Authentication error', [
+                'email' => $email,
+                'error' => $e->getMessage(),
+                'ip'    => $clientIp,
+            ]);
+
+            throw new AuthenticationException(
+                'Authentication failed',
+                'AUTHENTICATION_ERROR',
+                $e
+            );
+        }
+    }
+
+    /**
+     * Authenticate user with email and password (for API/JWT).
      */
     public function authenticate(string $email, string $password, string $clientIp): JwtToken
     {
