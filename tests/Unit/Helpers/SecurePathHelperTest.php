@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MvaBootstrap\Tests\Unit\Helpers;
 
 use InvalidArgumentException;
-use MvaBootstrap\Helpers\SecurePathHelper;
+use MvaBootstrap\Shared\Helpers\SecurePathHelper;
 use MvaBootstrap\Tests\TestCase;
 
 /**

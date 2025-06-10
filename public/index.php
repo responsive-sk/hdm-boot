@@ -4,12 +4,6 @@ declare(strict_types=1);
 
 use MvaBootstrap\Bootstrap\App;
 
-// Define root path
-$rootPath = dirname(__DIR__);
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// Autoloader
-require_once $rootPath . '/vendor/autoload.php';
-
-// Create and run application
-$app = new App($rootPath);
-$app->run();
+(new App())->run();

@@ -48,3 +48,9 @@ phpunit.xml
 # Temporary files
 *.tmp
 *.temp
+
+# Example projects and cloned modules
+modules/Optional/slim-example-project-master/
+modules/Optional/Authentication/
+modules/Optional/Authorization/
+modules/Optional/Validation/

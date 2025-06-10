@@ -1,98 +1,52 @@
 <?php
 
-/**
- * Paths Configuration for responsive/path package.
- *
- * Adapted from the parent MVA project for the bootstrap application.
- */
-
 declare(strict_types=1);
 
+/**
+ * Simplified Paths Configuration.
+ */
+
+$basePath = dirname(__DIR__);
+
 return [
-    // Base application directory
-    'base_path' => dirname(__DIR__),
+    'base_path' => $basePath,
 
-    // Application paths
     'paths' => [
-        'config'    => dirname(__DIR__) . '/config',
-        'src'       => dirname(__DIR__) . '/src',
-        'bootstrap' => dirname(__DIR__) . '/bootstrap',
-        'modules'   => dirname(__DIR__) . '/modules',
-        'public'    => dirname(__DIR__) . '/public',
-        'vendor'    => dirname(__DIR__) . '/vendor',
+        // Core directories
+        'config'    => $basePath . '/config',
+        'src'       => $basePath . '/src',
+        'bootstrap' => $basePath . '/bootstrap',
+        'modules'   => $basePath . '/modules',
+        'public'    => $basePath . '/public',
+        'vendor'    => $basePath . '/vendor',
 
-        // Variable/runtime paths
-        'var'      => dirname(__DIR__) . '/var',
-        'logs'     => dirname(__DIR__) . '/var/logs',
-        'cache'    => dirname(__DIR__) . '/var/cache',
-        'uploads'  => dirname(__DIR__) . '/var/uploads',
-        'storage'  => dirname(__DIR__) . '/var/storage',
-        'sessions' => dirname(__DIR__) . '/var/sessions',
+        // Runtime directories
+        'var'      => $basePath . '/var',
+        'logs'     => $basePath . '/var/logs',
+        'cache'    => $basePath . '/var/cache',
+        'uploads'  => $basePath . '/var/uploads',
+        'storage'  => $basePath . '/var/storage',
+        'sessions' => $basePath . '/var/sessions',
+        'database' => $basePath . '/database',
 
-        // Test paths
-        'tests'    => dirname(__DIR__) . '/tests',
-        'fixtures' => dirname(__DIR__) . '/tests/fixtures',
-
-        // Documentation
-        'docs' => dirname(__DIR__) . '/docs',
-
-        // Binary/scripts
-        'bin' => dirname(__DIR__) . '/bin',
+        // Development directories
+        'tests'    => $basePath . '/tests',
+        'fixtures' => $basePath . '/tests/fixtures',
+        'docs'     => $basePath . '/docs',
+        'bin'      => $basePath . '/bin',
     ],
 
-    // Security settings
+    // Security and runtime settings
     'security' => [
-        // Allowed directories for file operations
-        'allowed_directories' => [
-            'var',
-            'logs',
-            'cache',
-            'uploads',
-            'storage',
-            'sessions',
-            'fixtures',
-        ],
-
-        // Forbidden paths (additional security)
-        'forbidden_paths' => [
-            '.env',
-            'config',
-            'src',
-            'bootstrap',
-            'modules',
-            'vendor',
-            'bin',
-        ],
-
-        // File upload restrictions
+        'allowed_directories' => ['var', 'logs', 'cache', 'uploads', 'storage', 'sessions', 'fixtures'],
+        'forbidden_paths' => ['.env', 'config', 'src', 'bootstrap', 'modules', 'vendor', 'bin'],
         'upload_restrictions' => [
-            'max_size'           => 5 * 1024 * 1024, // 5MB
-            'allowed_extensions' => [
-                'jpg', 'jpeg', 'png', 'gif', 'webp',
-                'pdf', 'doc', 'docx', 'txt', 'md',
-                'zip', 'csv', 'json', 'xml',
-            ],
-            'forbidden_extensions' => [
-                'php', 'phtml', 'php3', 'php4', 'php5',
-                'exe', 'bat', 'cmd', 'com', 'scr',
-                'js', 'html', 'htm', 'asp', 'aspx',
-            ],
+            'max_size' => 5 * 1024 * 1024, // 5MB
+            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'txt', 'md', 'zip', 'csv', 'json'],
+            'forbidden_extensions' => ['php', 'exe', 'bat', 'js', 'html', 'asp'],
         ],
     ],
 
-    // Directory creation settings
-    'auto_create' => [
-        'var',
-        'logs',
-        'cache',
-        'uploads',
-        'storage',
-        'sessions',
-    ],
-
-    // Permissions for created directories
-    'permissions' => [
-        'directories' => 0o755,
-        'files'       => 0o644,
-    ],
+    'auto_create' => ['var', 'logs', 'cache', 'uploads', 'storage', 'sessions'],
+    'permissions' => ['directories' => 0o755, 'files' => 0o644],
 ];

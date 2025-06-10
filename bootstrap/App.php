@@ -10,9 +10,9 @@ use Slim\App as SlimApp;
 use Slim\Factory\AppFactory;
 
 /**
- * Main Bootstrap Application Class.
+ * Simplified Bootstrap Application Class.
  *
- * Handles application initialization, module loading, and request processing.
+ * Handles application initialization and request processing with minimal complexity.
  */
 final class App
 {
@@ -21,15 +21,13 @@ final class App
 
     private Container $container;
 
-    private ModuleManager $moduleManager;
-
     private bool $isInitialized = false;
 
-    public function __construct(string $rootPath)
+    public function __construct(?string $rootPath = null)
     {
+        $rootPath = $rootPath ?? dirname(__DIR__);
         $this->loadEnvironment($rootPath);
         $this->container = $this->createContainer();
-        $this->moduleManager = new ModuleManager($this->container);
         $this->slimApp = $this->createSlimApp();
     }
 
@@ -42,19 +40,10 @@ final class App
             return $this;
         }
 
-        // Load core modules first (will be silent if modules don't exist yet)
-        $this->moduleManager->loadCoreModules();
-
-        // Load optional modules based on configuration
-        $this->moduleManager->loadOptionalModules();
-
-        // Register all module routes
-        $this->moduleManager->registerRoutes($this->slimApp);
-
-        // Load main routes configuration
+        // Load routes
         $this->loadRoutes();
 
-        // Setup middleware
+        // Setup middleware stack
         $this->setupMiddleware();
 
         // Setup error handling
@@ -95,7 +84,7 @@ final class App
     }
 
     /**
-     * Load environment variables.
+     * Load environment and create core components.
      */
     private function loadEnvironment(string $rootPath): void
     {
@@ -103,40 +92,30 @@ final class App
         $dotenv->safeLoad();
 
         // Set error reporting for development
-        if ($this->isDebugMode()) {
+        if (($_ENV['APP_DEBUG'] ?? 'false') === 'true') {
             error_reporting(E_ALL);
             ini_set('display_errors', '1');
         }
     }
 
-    /**
-     * Create DI container.
-     */
     private function createContainer(): Container
     {
-        return require __DIR__ . '/../config/container.php';
+        $configPath = dirname(__DIR__) . '/config/container.php';
+        return require $configPath;
     }
 
-    /**
-     * Create Slim application.
-     */
     /** @return SlimApp<Container> */
     private function createSlimApp(): SlimApp
     {
         AppFactory::setContainer($this->container);
-
         $app = AppFactory::create();
         assert($app instanceof SlimApp);
         return $app;
     }
 
-    /**
-     * Load routes from configuration.
-     */
     private function loadRoutes(): void
     {
-        $routesFile = __DIR__ . '/../config/routes.php';
-
+        $routesFile = dirname(__DIR__) . '/config/routes.php';
         if (file_exists($routesFile)) {
             $routes = require $routesFile;
             if (is_callable($routes)) {
@@ -145,41 +124,18 @@ final class App
         }
     }
 
-    /**
-     * Setup middleware stack.
-     */
     private function setupMiddleware(): void
     {
-        // Add locale middleware (early in stack for language detection)
+        // Application middleware stack (order matters!)
         $this->slimApp->add($this->container->get(\MvaBootstrap\Shared\Middleware\LocaleMiddleware::class));
-
-        // Add session start middleware
         $this->slimApp->add(\Odan\Session\Middleware\SessionStartMiddleware::class);
-
-        // Add routing middleware
         $this->slimApp->addRoutingMiddleware();
-
-        // Add body parsing middleware
         $this->slimApp->addBodyParsingMiddleware();
     }
 
-    /**
-     * Setup error handling.
-     */
     private function setupErrorHandling(): void
     {
-        $this->slimApp->addErrorMiddleware(
-            displayErrorDetails: $this->isDebugMode(),
-            logErrors: true,
-            logErrorDetails: true
-        );
-    }
-
-    /**
-     * Check if application is in debug mode.
-     */
-    private function isDebugMode(): bool
-    {
-        return ($_ENV['APP_DEBUG'] ?? 'false') === 'true';
+        $isDebug = ($_ENV['APP_DEBUG'] ?? 'false') === 'true';
+        $this->slimApp->addErrorMiddleware($isDebug, true, true);
     }
 }

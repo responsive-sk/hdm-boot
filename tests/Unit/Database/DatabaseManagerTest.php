@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Tests\Unit\Database;
 
-use MvaBootstrap\Database\DatabaseManager;
+use MvaBootstrap\Shared\Services\DatabaseManager;
 use MvaBootstrap\Tests\TestCase;
 use PDO;
 use RuntimeException;
