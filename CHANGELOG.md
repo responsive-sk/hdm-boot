@@ -8,6 +8,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Dependency Injection & IoC Implementation** - Comprehensive DI/IoC system with interface-based bindings
+- **Interface-based Service Bindings** - UserRepositoryInterface, LoggerInterface, SessionInterface bindings
+- **Auto-wired Services** - Automatic dependency resolution for services and middleware
+- **AuthorizationMiddleware** - Proper DI-based authorization middleware with injected dependencies
+- **AuthorizationService** - Array-based authorization service with proper logging
+- **Domain-Driven Design Implementation** - Pure business logic separated from framework concerns
+- **Clean Architecture** - Clear layer boundaries with dependency inversion
+- **DTOs and Domain Models** - Type-safe data transfer objects and domain entities
+- **Domain Services** - Pure business logic without framework dependencies
+- **Application Layer** - HTTP/CLI adapters that delegate to domain services
+- **Module Isolation Implementation** - Contract-based communication between modules
+- **Event-Driven Architecture** - Asynchronous inter-module communication through events
+- **Module Registry** - Centralized module lifecycle management and dependency resolution
+- **Module Contracts** - Public APIs for User, Security, and Language modules
+- **Module Event Bus** - Event-driven communication infrastructure
+- **RFC 7807 Problem Details** - Standardized error format for API responses
+- **Error Handler Middleware** - Centralized exception handling and error response generation
+- **Standardized Exceptions** - ProblemDetailsException hierarchy for consistent error handling
+- **Error Helper Utilities** - Convenient validation and error throwing methods
+- **Module-Specific Exceptions** - Domain-specific exceptions for User and Security modules
+- **Centralized Logging System** - Multiple specialized loggers with environment-specific configuration
+- **Health Check System** - Database, filesystem, and application health checks with /_status endpoint
+- **Performance Monitoring** - Timers, counters, memory tracking, and automatic performance alerts
+- **Web Documentation Viewer** - Built-in web interface for viewing project documentation at /docs
+- **DDD Documentation** - Comprehensive documentation for domain-driven design and clean architecture
+- **Module Isolation Documentation** - Complete guide for module isolation and event-driven patterns
+- **Error Handling Documentation** - Complete guide for RFC 7807 Problem Details and standardized error handling
+- **Monitoring & Logging Documentation** - Complete guide for centralized logging, health checks, and performance monitoring
+
+### Changed
+- **Container Configuration** - Added interface bindings file for proper DI/IoC
+- **Service Layer** - All services now use constructor injection instead of direct instantiation
+- **Middleware Layer** - All middleware auto-wired with proper dependency injection
+- **AuthorizationService** - Updated to use array-based user data and injected logger
+- **Module Structure** - Added Domain and Application layers for clean architecture
+- **LoginSubmitAction** - Refactored to HTTP adapter pattern delegating to domain services
+- **Business Logic** - Extracted pure business logic to domain services
+- **Module Communication** - Replaced direct dependencies with contract-based interfaces
+- **Service Implementations** - Updated UserService, AuthenticationService, LocaleService to implement module contracts
+- **Event Publishing** - Added event publishing capabilities to domain services
+- **Exception Handling** - Replaced InvalidArgumentException with standardized ProblemDetailsException
+- **Error Responses** - All API errors now return RFC 7807 Problem Details format
+- **Validation Logic** - Updated services to use ErrorHelper for consistent validation
+- **Logging Infrastructure** - Implemented centralized logging with specialized loggers for different purposes
+- **Health Check Endpoints** - Added /_status, /health, /healthz, /ping endpoints for monitoring
+- **Performance Metrics** - Added comprehensive performance monitoring with automatic alerting
+- **Documentation Web Interface** - Created /docs endpoint for viewing project documentation in browser
+
+### Improved
+- **SOLID Principles Compliance** - Full implementation of dependency inversion principle
+- **Testability** - Easy mocking and unit testing through interface injection
+- **Code Quality** - Eliminated direct instantiation (`new` operators) in services
+- **Architecture** - Proper abstraction layers with interface-based design
+- **Separation of Concerns** - Clear boundaries between business logic and framework code
+- **Reusability** - Domain services can be used across HTTP, CLI, and API contexts
+- **Maintainability** - Changes in outer layers don't affect inner business logic
+- **Module Independence** - Modules communicate only through well-defined contracts
+- **Event-Driven Communication** - Loose coupling through asynchronous event handling
+- **Contract Validation** - Automatic validation of module interface compliance
+- **Consistent Error Responses** - All API errors follow RFC 7807 Problem Details standard
+- **Machine-Readable Errors** - Structured error format for better client integration
+- **Centralized Error Handling** - Single middleware handles all exception types consistently
+- **Production-Ready Monitoring** - Comprehensive logging, health checks, and performance monitoring
+- **Observability** - Complete visibility into application behavior, performance, and health status
+- **Documentation Accessibility** - Project documentation available through web interface for easy access
+
+### Added
 - 🍪 **Enterprise Session Management System**
   - SessionStartMiddleware for automatic session initialization
   - Environment-driven session configuration with security settings
@@ -205,7 +272,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slim Framework 4.x for HTTP handling
 - PHP-DI 7.x for dependency injection
 - responsive-sk/slim4-paths for secure path management
-- selective/basepath for base path handling
 - Monolog for logging
 - Ramsey UUID for unique identifiers
 - Odan Session for session management

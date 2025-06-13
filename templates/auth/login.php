@@ -45,7 +45,7 @@
             color: #333;
             font-weight: 500;
         }
-        input[type="email"], input[type="password"] {
+        input[type="email"], input[type="password"], input[type="text"] {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e1e5e9;
@@ -53,9 +53,33 @@
             font-size: 16px;
             transition: border-color 0.3s;
         }
-        input[type="email"]:focus, input[type="password"]:focus {
+        input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
             outline: none;
             border-color: #667eea;
+        }
+        .password-container {
+            position: relative;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .password-toggle:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .password-input {
+            padding-right: 80px !important;
         }
         .btn {
             width: 100%;
@@ -197,14 +221,20 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    required 
-                    autocomplete="current-password"
-                    placeholder="Enter your password"
-                >
+                <div class="password-container">
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="password-input"
+                        required
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                    >
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        👁️ Show
+                    </button>
+                </div>
             </div>
 
             <button type="submit" class="btn">
@@ -225,8 +255,36 @@
                 <li>✅ Secure Password Hashing</li>
                 <li>✅ Proper Paths System</li>
             </ul>
-            <p><strong>Test Account:</strong> admin@example.com / Password123</p>
+            <p><strong>Test Account:</strong> test@example.com / password123</p>
         </div>
     </div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.password-toggle');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.innerHTML = '🙈 Hide';
+                toggleButton.setAttribute('aria-label', 'Hide password');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.innerHTML = '👁️ Show';
+                toggleButton.setAttribute('aria-label', 'Show password');
+            }
+        }
+
+        // Add keyboard support for accessibility
+        document.querySelector('.password-toggle').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                togglePassword();
+            }
+        });
+
+        // Set initial aria-label
+        document.querySelector('.password-toggle').setAttribute('aria-label', 'Show password');
+    </script>
 </body>
 </html>

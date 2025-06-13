@@ -5,7 +5,6 @@ declare(strict_types=1);
 /**
  * Simplified Paths Configuration.
  */
-
 $basePath = dirname(__DIR__);
 
 return [
@@ -29,6 +28,9 @@ return [
         'sessions' => $basePath . '/var/sessions',
         'database' => $basePath . '/database',
 
+        // Template directories
+        'templates' => $basePath . '/templates',
+
         // Development directories
         'tests'    => $basePath . '/tests',
         'fixtures' => $basePath . '/tests/fixtures',
@@ -39,14 +41,14 @@ return [
     // Security and runtime settings
     'security' => [
         'allowed_directories' => ['var', 'logs', 'cache', 'uploads', 'storage', 'sessions', 'fixtures'],
-        'forbidden_paths' => ['.env', 'config', 'src', 'bootstrap', 'modules', 'vendor', 'bin'],
+        'forbidden_paths'     => ['.env', 'config', 'src', 'bootstrap', 'modules', 'vendor', 'bin'],
         'upload_restrictions' => [
-            'max_size' => 5 * 1024 * 1024, // 5MB
-            'allowed_extensions' => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'txt', 'md', 'zip', 'csv', 'json'],
+            'max_size'             => 5 * 1024 * 1024, // 5MB
+            'allowed_extensions'   => ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'txt', 'md', 'zip', 'csv', 'json'],
             'forbidden_extensions' => ['php', 'exe', 'bat', 'js', 'html', 'asp'],
         ],
     ],
 
-    'auto_create' => ['var', 'logs', 'cache', 'uploads', 'storage', 'sessions'],
+    'auto_create' => ['var', 'logs', 'cache', 'uploads', 'storage', 'sessions', 'templates'],
     'permissions' => ['directories' => 0o755, 'files' => 0o644],
 ];

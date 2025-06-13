@@ -25,6 +25,54 @@ All API requests and responses use JSON:
 Content-Type: application/json
 ```
 
+## 📊 Monitoring API
+
+### Application Status
+Get current application status and system information.
+
+```http
+GET /api/status
+```
+
+#### Response
+```json
+{
+    "status": "OK",
+    "timestamp": 1686557452,
+    "version": "1.0.0",
+    "app": {
+        "name": "MVA Bootstrap",
+        "environment": "production",
+        "debug": false,
+        "timezone": "UTC"
+    },
+    "php": {
+        "version": "8.3.0",
+        "memory_limit": "128M",
+        "timezone": "UTC"
+    }
+}
+```
+
+### Health Check Endpoints
+
+Multiple health check endpoints are available for different monitoring systems:
+
+```http
+GET /_status    # Primary health check
+GET /health     # Alternative health check
+GET /healthz    # Kubernetes-style health check
+GET /ping       # Simple ping endpoint
+```
+
+#### Response
+```json
+{
+    "status": "healthy",
+    "timestamp": 1686557452
+}
+```
+
 ## 🔐 Authentication
 
 ### Current Status

@@ -102,7 +102,7 @@ final class RepositoryFactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Doctrine User Repository not implemented yet');
         
-        $factory->createUserRepository(null, $this->createMock(\MvaBootstrap\Shared\Contracts\DatabaseManagerInterface::class));
+        $factory->createUserRepository(null, $this->createMock(\MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface::class));
     }
 
     #[Test]

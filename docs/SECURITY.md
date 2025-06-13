@@ -30,17 +30,16 @@ The MVA Bootstrap Application implements a **security-first** approach with mult
 #### Implementation
 
 ```php
-// SecurePathHelper usage
-$pathHelper = $container->get(SecurePathHelper::class);
+// Example of secure path handling
+use ResponsiveSk\Slim4Paths\Paths;
 
-// Safe file access
-$safePath = $pathHelper->securePath('user-file.txt', 'uploads');
-$content = $pathHelper->readFile('log.txt', 'logs');
+$paths = new Paths('/base/path', [
+    'allowed' => ['var/logs', 'var/cache', 'uploads'],
+    'forbidden' => ['config', '.env', '*.php']
+]);
 
-// Automatic protection against:
-// - ../../../etc/passwd
-// - ..%2F..%2F..%2Fetc%2Fpasswd
-// - config/container.php (forbidden path)
+// Automatically validates and secures paths
+$securePath = $paths->getSecurePath('uploads/image.jpg');
 ```
 
 #### Configuration
@@ -57,248 +56,266 @@ $content = $pathHelper->readFile('log.txt', 'logs');
 ]
 ```
 
-### 2. File Upload Security
+### 2. Authentication System
 
-#### Restrictions
-- **File Size Limit** - Maximum 5MB per file
-- **Extension Whitelist** - Only safe file types allowed
-- **Extension Blacklist** - Dangerous file types blocked
-- **Filename Sanitization** - Safe filename generation
-
-#### Allowed Extensions
-```
-Images: jpg, jpeg, png, gif, webp
-Documents: pdf, doc, docx, txt, md
-Data: zip, csv, json, xml
-```
-
-#### Forbidden Extensions
-```
-Executables: php, phtml, exe, bat, cmd, com, scr
-Scripts: js, html, htm, asp, aspx
-```
-
-### 3. Environment Security
-
-#### Environment Isolation
-- **Sensitive Data** - Stored in `.env` file
-- **Production Safety** - Debug features disabled in production
-- **Secret Management** - JWT secrets and API keys protected
-
-#### Environment Variables
-```bash
-# Security-related environment variables
-APP_ENV=prod                    # Environment (dev/prod)
-APP_DEBUG=false                 # Debug mode (never true in prod)
-JWT_SECRET=your-secret-key      # JWT signing secret
-DATABASE_URL=sqlite:var/storage/app.db  # Database connection
-```
-
-### 4. Database Security
-
-#### Connection Security
-- **Prepared Statements** - SQL injection prevention
-- **Parameter Binding** - Safe data insertion
-- **Connection Options** - Secure PDO configuration
+#### JWT Authentication
+- Secure token generation and validation
+- Configurable expiration times
+- Protection against token tampering
+- Refresh token rotation
 
 ```php
-// Secure PDO configuration
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES => false,  // Real prepared statements
+// JWT Configuration
+'security' => [
+    'jwt_secret' => $_ENV['JWT_SECRET'],
+    'jwt_expiry' => 3600,  // 1 hour
+    'refresh_token_expiry' => 604800,  // 1 week
+    'token_algorithms' => ['HS256']
+],
+```
+
+#### Session Security
+- Secure session handling
+- CSRF protection
+- Session fixation prevention
+- Automatic cleanup of expired sessions
+
+```php
+// Session Configuration
+'session' => [
+    'name' => 'MVA_SESSION',
+    'lifetime' => 7200,
+    'path' => '/',
+    'domain' => null,
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'Lax'
+],
+```
+
+### 3. Password Security
+
+#### Password Hashing
+- Argon2id hashing algorithm
+- Automatic password rehashing
+- Configurable memory and time cost
+
+```php
+// Password Configuration
+'password' => [
+    'algorithm' => PASSWORD_ARGON2ID,
+    'options' => [
+        'memory_cost' => 65536,
+        'time_cost' => 4,
+        'threads' => 3
+    ],
+    'min_length' => 12
+],
+```
+
+### 4. Rate Limiting
+
+Protection against brute force attacks and DoS attempts:
+
+```php
+// Rate Limit Configuration
+'rate_limit' => [
+    'enabled' => true,
+    'storage' => 'redis',
+    'window' => 300,  // 5 minutes
+    'max_requests' => [
+        'api' => 100,
+        'login' => 5,
+        'register' => 3
+    ]
+],
+```
+
+### 5. Security Headers
+
+Automatically configured security headers:
+
+```php
+return function (ResponseInterface $response): ResponseInterface {
+    return $response
+        ->withHeader('X-Frame-Options', 'DENY')
+        ->withHeader('X-XSS-Protection', '1; mode=block')
+        ->withHeader('X-Content-Type-Options', 'nosniff')
+        ->withHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
+        ->withHeader('Content-Security-Policy', $cspPolicy)
+        ->withHeader('Permissions-Policy', $permissionsPolicy);
+};
+```
+
+## 🔍 Security Best Practices
+
+### 1. Input Validation
+
+All user input is validated:
+```php
+// Validation rules
+$rules = [
+    'email' => ['required', 'email'],
+    'password' => ['required', 'min:12', 'complexity'],
+    'name' => ['required', 'string', 'max:255'],
 ];
+
+// Custom validation
+$validator = new Validator($data, $rules);
+if (!$validator->validate()) {
+    throw new ValidationException($validator->getErrors());
+}
 ```
 
-#### File Location
-- **Protected Directory** - Database files in `var/storage/`
-- **Access Control** - Not accessible via web
-- **Backup Security** - Secure backup procedures
+### 2. SQL Injection Prevention
 
-## 🔐 Planned Security Features
-
-### 1. Authentication System
-
-#### JWT Implementation
-- **Stateless Tokens** - No server-side session storage
-- **Secure Signing** - HMAC-SHA256 or RS256 algorithms
-- **Token Expiration** - Configurable expiry times
-- **Refresh Tokens** - Secure token renewal
-
+Using prepared statements and query builders:
 ```php
-// Planned JWT usage
-$token = $jwtService->generateToken($user);
-$payload = $jwtService->validateToken($token);
+// Safe database queries
+$query = $this->queryFactory
+    ->newSelect('users')
+    ->where(['email' => $email])
+    ->andWhere(['status' => 'active']);
+
+$user = $query->execute()->fetch('assoc');
 ```
 
-### 2. Authorization System
+### 3. XSS Prevention
 
-#### Role-Based Access Control (RBAC)
-- **User Roles** - Admin, User, Guest
-- **Permissions** - Granular permission system
-- **Resource Protection** - Route and method-level protection
-
+Automatic output encoding:
 ```php
-// Planned authorization
-$authService->requireRole('admin');
-$authService->requirePermission('article.create');
+// In templates
+<?= $this->e($userInput) ?>
+
+// In JSON responses
+$data = $this->sanitizer->sanitizeArray($rawData);
 ```
-
-### 3. Input Validation
-
-#### Validation Rules
-- **Data Types** - Strong type validation
-- **Length Limits** - String and array length limits
-- **Format Validation** - Email, URL, date formats
-- **Sanitization** - HTML and SQL injection prevention
 
 ### 4. CSRF Protection
 
-#### Token-Based Protection
-- **CSRF Tokens** - Unique tokens per form
-- **Token Validation** - Server-side token verification
-- **SameSite Cookies** - Additional CSRF protection
-
-### 5. Session Security
-
-#### Secure Session Configuration
-- **Secure Cookies** - HTTPS-only cookies
-- **HttpOnly Flags** - JavaScript access prevention
-- **Session Regeneration** - ID regeneration on login
-- **Session Timeout** - Automatic session expiry
-
-## 🧪 Security Testing
-
-### Automated Tests
-
-#### Path Security Tests
-```bash
-# Test path traversal protection
-curl http://localhost:8001/test/paths
-
-# Expected results:
-# ✅ Valid path access
-# ✅ Path traversal blocked
-# ✅ Forbidden path blocked
-```
-
-#### Security Test Suite
+Form and API protection:
 ```php
-// tests/Security/PathTraversalTest.php
-public function testPathTraversalPrevention()
-{
-    $this->expectException(InvalidArgumentException::class);
-    $this->pathHelper->securePath('../../../etc/passwd', 'var');
-}
+// Generate CSRF token
+<input type="hidden" name="csrf" value="<?= $csrf->generate() ?>">
 
-public function testForbiddenPathAccess()
-{
-    $this->expectException(InvalidArgumentException::class);
-    $this->pathHelper->securePath('config/container.php', 'public');
-}
+// Verify token
+$csrf->verify($_POST['csrf']);
 ```
 
-### Manual Security Testing
+## 🚨 Security Monitoring
 
-#### Path Traversal Testing
-```bash
-# Test various traversal patterns
-curl "http://localhost:8001/api/file?path=../../../etc/passwd"
-curl "http://localhost:8001/api/file?path=..%2F..%2F..%2Fetc%2Fpasswd"
-curl "http://localhost:8001/api/file?path=....//....//....//etc/passwd"
+### 1. Security Logging
+
+```php
+// Log security events
+$securityLogger->warning('Failed login attempt', [
+    'email' => $email,
+    'ip' => $request->getClientIp(),
+    'user_agent' => $request->getHeaderLine('User-Agent')
+]);
 ```
 
-#### File Upload Testing
-```bash
-# Test malicious file uploads
-curl -X POST -F "file=@malicious.php" http://localhost:8001/api/upload
-curl -X POST -F "file=@script.js" http://localhost:8001/api/upload
+### 2. Audit Trail
+
+```php
+// Log sensitive operations
+$auditLogger->info('User permission changed', [
+    'user_id' => $userId,
+    'changed_by' => $adminId,
+    'old_permissions' => $oldPerms,
+    'new_permissions' => $newPerms
+]);
 ```
 
-## 🚨 Security Incident Response
+## 🔒 Security Configuration Guide
 
-### Monitoring
+### 1. Production Settings
 
-#### Log Analysis
-- **Security Events** - Failed authentication attempts
-- **Path Violations** - Blocked path traversal attempts
-- **Upload Violations** - Rejected file uploads
-- **Error Patterns** - Suspicious error patterns
+```env
+# .env.production
+APP_ENV=production
+APP_DEBUG=false
+JWT_SECRET=your-secure-secret
+SESSION_SECURE=true
+COOKIE_SECURE=true
+```
 
-#### Alert Triggers
-- **Multiple Failed Logins** - Potential brute force
-- **Path Traversal Attempts** - Security scanning
-- **Unusual File Access** - Potential breach
-- **Error Rate Spikes** - Potential attack
+### 2. Security Checklist
 
-### Response Procedures
-
-1. **Detection** - Automated monitoring and alerts
-2. **Assessment** - Evaluate threat severity
-3. **Containment** - Block malicious requests
-4. **Investigation** - Analyze attack vectors
-5. **Recovery** - Restore normal operations
-6. **Lessons Learned** - Improve security measures
-
-## 🔧 Security Configuration
-
-### Production Security Checklist
-
-#### Environment
-- [ ] `APP_ENV=prod`
-- [ ] `APP_DEBUG=false`
-- [ ] Strong JWT secret (32+ characters)
-- [ ] Secure database credentials
-- [ ] HTTPS enabled
+- [ ] Strong JWT secret configured
+- [ ] HTTPS enforced
+- [ ] Secure session settings
+- [ ] Rate limiting enabled
 - [ ] Security headers configured
+- [ ] Logging enabled
+- [ ] Audit trail configured
+- [ ] Input validation implemented
+- [ ] XSS protection active
+- [ ] CSRF protection enabled
+- [ ] SQL injection protection
+- [ ] Password policy enforced
 
-#### File System
-- [ ] Proper file permissions (755 for directories, 644 for files)
-- [ ] Web server configuration blocks access to sensitive files
-- [ ] Upload directory outside web root
-- [ ] Log files protected
+## 🛠 Security Testing
 
-#### Database
-- [ ] Database files in protected directory
-- [ ] Regular backups with encryption
-- [ ] Connection encryption (if remote database)
-- [ ] Minimal database user privileges
+### 1. Built-in Security Tests
 
-### Security Headers
+```bash
+# Run security tests
+composer test:security
 
-```apache
-# .htaccess (Apache)
-Header always set X-Content-Type-Options nosniff
-Header always set X-Frame-Options DENY
-Header always set X-XSS-Protection "1; mode=block"
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-Header always set Content-Security-Policy "default-src 'self'"
+# Test specific features
+composer test:security:jwt
+composer test:security:xss
+composer test:security:csrf
 ```
 
-```nginx
-# nginx.conf
-add_header X-Content-Type-Options nosniff;
-add_header X-Frame-Options DENY;
-add_header X-XSS-Protection "1; mode=block";
-add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
-add_header Content-Security-Policy "default-src 'self'";
-```
+### 2. Penetration Testing
 
-## 📚 Security Resources
+Regular security testing procedures:
+1. Automated vulnerability scanning
+2. Manual penetration testing
+3. Code security reviews
+4. Dependency vulnerability checks
 
-### Documentation
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [PHP Security Guide](https://phpsecurity.readthedocs.io/)
-- [Slim Framework Security](https://www.slimframework.com/docs/v4/concepts/security.html)
+## 📋 Security Response Plan
 
-### Tools
-- **Static Analysis** - PHPStan for code analysis
-- **Dependency Scanning** - Composer audit for vulnerabilities
-- **Security Testing** - Custom security test suite
+### 1. Vulnerability Reporting
 
-### Best Practices
-1. **Regular Updates** - Keep dependencies updated
-2. **Security Reviews** - Regular code security reviews
-3. **Penetration Testing** - Professional security testing
-4. **Security Training** - Team security awareness
-5. **Incident Planning** - Prepared response procedures
+Report security issues to:
+- Email: security@example.com
+- Bug Bounty Program: https://example.com/security
+
+### 2. Security Updates
+
+- Regular security patches
+- Automatic dependency updates
+- Security advisory notifications
+- Hot-fix deployment procedures
+
+## 🔄 Regular Security Tasks
+
+### Daily
+- Monitor security logs
+- Check failed login attempts
+- Review system alerts
+
+### Weekly
+- Update dependencies
+- Review access logs
+- Check security headers
+
+### Monthly
+- Full security audit
+- Password policy review
+- Access control review
+
+## 📚 Additional Resources
+
+1. [OWASP Security Guidelines](https://owasp.org/www-project-web-security-testing-guide/)
+2. [PHP Security Best Practices](https://www.php.net/manual/en/security.php)
+3. [JWT Security](https://auth0.com/blog/a-look-at-the-latest-draft-for-jwt-bcp/)
+4. [Argon2 Password Hashing](https://wiki.php.net/rfc/argon2_password_hash)
+
+## Conclusion
+
+The MVA Bootstrap Application implements comprehensive security measures following industry best practices. Regular updates and security reviews ensure the application remains secure against evolving threats.

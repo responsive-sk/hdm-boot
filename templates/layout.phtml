@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title><?= $title ?? 'MVA Bootstrap' ?></title>
+
+    <!-- Theme support -->
+    <link rel="stylesheet" href="/css/theme.css">
+    <script src="/js/theme.js" defer></script>
+
+    <!-- Detect system theme preference -->
+    <script>
+        // Apply saved theme or system preference immediately to prevent flash
+        const theme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+    </script>
+</head>
+<body>
+    <!-- Content -->
+    <div class="content">
+        <?= $content ?>
+    </div>
+</body>
+</html>

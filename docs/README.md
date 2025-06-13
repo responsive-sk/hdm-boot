@@ -1,190 +1,66 @@
-# MVA Bootstrap Application Documentation
+# MVA Bootstrap Documentation
 
-Welcome to the comprehensive documentation for the MVA Bootstrap Application. This documentation covers all aspects of the application from architecture to deployment.
+## 📚 Core Documentation
 
-## 📚 Documentation Index
+### 1. Getting Started [P0]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [Quick Start](../README.md) | Rýchly štart s projektom | ✅ |
+| [Installation](../README.md#installation) | Inštalácia projektu | ✅ |
+| [Requirements](../README.md#requirements) | Systémové požiadavky | ✅ |
 
-### Getting Started
-- [Main README](../README.md) - Project overview and quick start guide
-- [Installation Guide](../README.md#installation) - Step-by-step setup instructions
-- [Configuration Guide](../README.md#configuration) - Environment and application configuration
+### 2. Core Architecture [P0]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [Clean Architecture](architecture/clean-architecture.md) | Architektúra projektu | ✅ |
+| [Security Architecture](architecture/security-architecture.md) | Bezpečnostná architektúra | ✅ |
+| [Module System](MODULES.md) | Modulárny systém | ✅ |
 
-### Architecture & Design
-- [Architecture Overview](ARCHITECTURE.md) - System design and architectural patterns
-- [Module System](MODULES.md) - Modular architecture and module development
-- [Security Design](SECURITY.md) - Security architecture and implementation
+### 3. Core Features [P0]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [Security](SECURITY.md) | Bezpečnostné funkcie | ✅ |
+| [Database](DATABASE_MANAGER.md) | Databázový systém | ✅ |
+| [Session](SESSION.md) | Správa sessions | ✅ |
 
-### Development
-- [Module Development Guide](MODULES.md) - Creating and integrating modules
-- [User Module Guide](USER_MODULE.md) - Complete user management system ✅
-- [User API Guide](USER_API.md) - User API endpoints and examples ✅
-- [Database Manager Guide](DATABASE_MANAGER.md) - Database management and operations ✅
-- [API Documentation](API.md) - REST API endpoints and usage
-- [Contributing Guide](../CONTRIBUTING.md) - How to contribute to the project
+### 4. API Documentation [P1]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [API Overview](API.md) | Prehľad API | ✅ |
+| [Auth API](api/auth-api.md) | Autentifikačné API | 🚧 |
+| [User API](USER_API.md) | User Management API | ✅ |
 
-### Operations
-- [Deployment Guide](DEPLOYMENT.md) - Production deployment strategies
-- [Security Guide](SECURITY.md) - Security best practices and configuration
-- [Changelog](../CHANGELOG.md) - Version history and changes
+### 5. Development Guides [P1]
+| Kategória | Popis | Status |
+|-----------|--------|--------|
+| [Coding Guides](guides/README.md#1-vývojárske-príručky) | Vývojárske príručky | 3/4 ✅ |
+| [Security Guides](guides/README.md#2-bezpečnostné-príručky) | Bezpečnostné príručky | 2/3 ✅ |
+| [Deployment Guides](guides/README.md#3-deployment-príručky) | Deployment príručky | 1/3 ⏳ |
 
-## 🏗 Architecture Overview
+### 6. Advanced Features [P2]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [Events](architecture/event-driven-architecture.md) | Event systém | ✅ |
+| [DI Container](architecture/dependency-injection.md) | Dependency Injection | ✅ |
+| [Monitoring](architecture/monitoring-logging.md) | Monitoring a logging | ✅ |
 
-The MVA Bootstrap Application is built with a modular architecture that emphasizes:
+## 📈 Documentation Status
 
-- **Security First** - Built-in protection against common vulnerabilities
-- **Modular Design** - Loosely coupled, highly cohesive modules
-- **Clean Architecture** - Separation of concerns and dependency inversion
-- **Modern PHP** - PHP 8.1+ with strict types and best practices
+| Kategória | Hotové | Status |
+|-----------|--------|--------|
+| Getting Started | 3/3 | ✅ Completed |
+| Core Architecture | 3/3 | ✅ Completed |
+| Core Features | 3/3 | ✅ Completed |
+| API Documentation | 2/3 | ⏳ In Progress |
+| Development Guides | 6/10 | ⏳ In Progress |
+| Advanced Features | 3/3 | ✅ Completed |
 
-### Core Components
+## 🎯 Priority Levels
 
-```
-┌─────────────────────────────────────────┐
-│              Bootstrap Core             │
-│         (App, ModuleManager)            │
-├─────────────────────────────────────────┤
-│              Core Modules               │
-│           (User, Security)              │
-├─────────────────────────────────────────┤
-│            Optional Modules             │
-│              (Article)                  │
-├─────────────────────────────────────────┤
-│            Shared Services              │
-│        (Paths, Logging, DI)             │
-└─────────────────────────────────────────┘
-```
+- **P0** - Kritické, potrebné pre základné použitie projektu
+- **P1** - Dôležité, potrebné pre plné využitie funkcií
+- **P2** - Rozširujúce, pre pokročilé použitie
 
-## 🔒 Security Features
+## 📝 Contributing
 
-### Implemented Security
-- ✅ **Path Traversal Protection** - Prevents directory traversal attacks
-- ✅ **Secure File Operations** - Controlled file system access
-- ✅ **Input Validation** - Comprehensive input sanitization
-- ✅ **Environment Security** - Secure configuration management
-- ✅ **Error Handling** - Secure error responses
-
-### Planned Security
-- 🔄 **JWT Authentication** - Stateless token-based authentication
-- 🔄 **Role-Based Access Control** - Granular permission system
-- 🔄 **CSRF Protection** - Cross-site request forgery prevention
-- 🔄 **Session Security** - Secure session management
-
-## 📦 Module System
-
-### Core Modules (Required)
-- **User** - User management and authentication (planned)
-- **Security** - Authorization and security services (planned)
-
-### Optional Modules
-- **Article** - Content management system (planned)
-
-### Module Structure
-```
-modules/
-├── Core/
-│   └── ModuleName/
-│       ├── config.php      # Module configuration
-│       ├── routes.php      # HTTP routes
-│       ├── Actions/        # Request handlers
-│       ├── Services/       # Business logic
-│       ├── Repository/     # Data access
-│       └── Domain/         # Domain objects
-└── Optional/
-    └── ModuleName/
-        └── [same structure]
-```
-
-## 🌐 API Overview
-
-### Current Endpoints
-- `GET /` - Application dashboard
-- `GET /api/status` - API status check
-- `GET /api/info` - Application information
-- `GET /test/paths` - Path security testing (dev only)
-- `GET /test/env` - Environment information (dev only)
-
-### Planned Endpoints
-- `POST /api/auth/login` - User authentication
-- `GET /api/users` - User management
-- `GET /api/articles` - Article management (optional)
-
-## 🚀 Quick Start
-
-### 1. Installation
-```bash
-git clone <repository>
-cd mva-bootstrap
-composer install
-cp .env.example .env
-```
-
-### 2. Configuration
-```bash
-# Edit .env file
-APP_ENV=dev
-APP_DEBUG=true
-DATABASE_URL=sqlite:var/storage/app.db
-```
-
-### 3. Run Application
-```bash
-php -S localhost:8001 -t public
-```
-
-### 4. Test Security
-```bash
-curl http://localhost:8001/test/paths
-```
-
-## 🧪 Development Workflow
-
-### Code Quality
-```bash
-composer phpstan      # Static analysis
-composer cs-check     # Code style check
-composer cs-fix       # Fix code style
-composer test         # Run tests (when implemented)
-composer quality      # Run all quality checks
-```
-
-### Creating a Module
-1. Create module directory structure
-2. Define module configuration
-3. Implement domain objects
-4. Create repository layer
-5. Implement service layer
-6. Add HTTP actions
-7. Define routes
-8. Write tests
-
-## 📋 Development Status
-
-### ✅ Completed
-- Bootstrap application core
-- Modular architecture foundation
-- Secure path management system
-- Basic API endpoints
-- Development tools and scripts
-- Comprehensive documentation
-
-### 🔄 In Progress
-- User module development
-- Security module implementation
-- Test suite creation
-
-### ⏳ Planned
-- Article module (optional)
-- Database migrations
-- Advanced security features
-- Performance optimizations
-- Internationalization
-
-## 📞 Support & Resources
-
-### Documentation
-- [Architecture Guide](ARCHITECTURE.md) - Detailed system architecture
-- [Security Guide](SECURITY.md) - Security implementation and best practices
-- [Module Guide](MODULES.md) - Module development and integration
-- [API Guide](API.md) - REST API documentation
-- [Deployment Guide](DEPLOYMENT.md) - Production deployment
-
+Pre prispievanie do dokumentácie pozrite [CONTRIBUTING.md](../CONTRIBUTING.md)

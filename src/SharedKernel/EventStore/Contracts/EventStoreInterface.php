@@ -1,0 +1,83 @@
+<?php
+
+declare(strict_types=1);
+
+namespace MvaBootstrap\SharedKernel\EventStore\Contracts;
+
+use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
+
+/**
+ * Event Store Interface.
+ * 
+ * Provides a contract for storing and retrieving domain events.
+ * Supports event sourcing patterns and audit trails.
+ */
+interface EventStoreInterface
+{
+    /**
+     * Store a domain event.
+     */
+    public function store(DomainEventInterface $event): void;
+
+    /**
+     * Store multiple domain events in a single transaction.
+     *
+     * @param DomainEventInterface[] $events
+     */
+    public function storeMany(array $events): void;
+
+    /**
+     * Retrieve events for a specific aggregate.
+     *
+     * @return DomainEventInterface[]
+     */
+    public function getEventsForAggregate(string $aggregateId, ?string $aggregateType = null): array;
+
+    /**
+     * Retrieve events from a specific version onwards.
+     *
+     * @return DomainEventInterface[]
+     */
+    public function getEventsFromVersion(string $aggregateId, int $fromVersion, ?string $aggregateType = null): array;
+
+    /**
+     * Retrieve all events of a specific type.
+     *
+     * @return DomainEventInterface[]
+     */
+    public function getEventsByType(string $eventType): array;
+
+    /**
+     * Retrieve events within a date range.
+     *
+     * @return DomainEventInterface[]
+     */
+    public function getEventsByDateRange(\DateTimeInterface $from, \DateTimeInterface $to): array;
+
+    /**
+     * Get the current version of an aggregate.
+     */
+    public function getAggregateVersion(string $aggregateId, ?string $aggregateType = null): int;
+
+    /**
+     * Check if an aggregate exists.
+     */
+    public function aggregateExists(string $aggregateId, ?string $aggregateType = null): bool;
+
+    /**
+     * Get total number of events in the store.
+     */
+    public function getEventCount(): int;
+
+    /**
+     * Get events with pagination.
+     *
+     * @return DomainEventInterface[]
+     */
+    public function getEventsPaginated(int $offset = 0, int $limit = 100): array;
+
+    /**
+     * Clear all events (use with caution).
+     */
+    public function clear(): void;
+}

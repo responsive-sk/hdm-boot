@@ -6,18 +6,21 @@ use DI\Container;
 use MvaBootstrap\Modules\Core\Security\Actions\Web\LoginPageAction;
 use MvaBootstrap\Modules\Core\Security\Actions\Web\LoginSubmitAction;
 use MvaBootstrap\Modules\Core\Security\Actions\Web\LogoutAction;
+use MvaBootstrap\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware;
 use MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction;
-use MvaBootstrap\Shared\Middleware\UserAuthenticationMiddleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
 
-/**
+/*
  * Consolidated Application Routes.
  *
  * All routes in one file for simplified configuration.
  */
 return function (App $app): void {
+    // Load API routes
+    (require __DIR__ . '/routes/api.php')($app);
+
     // ===== HOME ROUTES =====
     $app->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
         $html = '<!DOCTYPE html>
@@ -69,6 +72,7 @@ return function (App $app): void {
 </html>';
 
         $response->getBody()->write($html);
+
         return $response->withHeader('Content-Type', 'text/html');
     })->setName('home');
 
@@ -83,28 +87,9 @@ return function (App $app): void {
         ->setName('profile')
         ->add(UserAuthenticationMiddleware::class);
 
-    // ===== API ROUTES =====
-    $app->group('/api', function ($group) {
-        // Status endpoint
-        $group->get('/status', function (ServerRequestInterface $request, ResponseInterface $response) {
-            /** @var Container $container */
-            $container = $this->get(\DI\Container::class);
-            $settings = $container->get('settings');
+    // ===== MONITORING ROUTES =====
+    (require __DIR__ . '/routes/monitoring.php')($app);
 
-            $data = [
-                'status'      => 'ok',
-                'app'         => $settings['app']['name'],
-                'version'     => $settings['app']['version'],
-                'timestamp'   => date('c'),
-                'environment' => $_ENV['APP_ENV'] ?? 'dev',
-            ];
-
-            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: "{}");
-            return $response->withHeader('Content-Type', 'application/json');
-        })->setName('api.status');
-
-        // Language API
-        $group->map(['GET', 'POST'], '/translate', \MvaBootstrap\Modules\Core\Language\Actions\Api\TranslateAction::class);
-        $group->map(['GET', 'POST'], '/language', \MvaBootstrap\Modules\Core\Language\Actions\Api\LanguageSettingsAction::class);
-    });
+    // ===== DOCUMENTATION ROUTES =====
+    (require __DIR__ . '/routes/docs.php')($app);
 };

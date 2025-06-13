@@ -4,10 +4,13 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
-        "cakephp/database": "^5.2",
-        "cakephp/log": "^5.2",
-        "cakephp/validation": "^5.2",
+        "php": "^8.3",
+        "mva-bootstrap/database": "@dev",
+        "mva-bootstrap/security": "@dev",
+        "mva-bootstrap/session": "@dev",
+        "mva-bootstrap/user": "@dev",
+        "mva-bootstrap/template": "@dev",
+        "mva-bootstrap/language": "@dev",
         "firebase/php-jwt": "^6.8",
         "monolog/monolog": "^3.9",
         "odan/session": "^6.1",
@@ -17,7 +20,8 @@
         "slim/php-view": "^3.4",
         "slim/psr7": "^1.6",
         "slim/slim": "^4.12",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "mva-bootstrap/monitoring": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.3",
@@ -28,8 +32,8 @@
     "autoload": {
         "psr-4": {
             "MvaBootstrap\\": "src/",
-            "MvaBootstrap\\Bootstrap\\": "bootstrap/",
-            "MvaBootstrap\\Modules\\": "modules/"
+            "MvaBootstrap\\Modules\\Core\\": "src/Modules/Core/",
+            "MvaBootstrap\\Monitoring\\": "packages/monitoring/src/"
         }
     },
     "autoload-dev": {
@@ -40,9 +44,9 @@
     "scripts": {
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-html var/coverage",
-        "phpstan": "phpstan analyse src bootstrap modules --level=9",
-        "cs-check": "phpcs --standard=PSR12 src bootstrap modules",
-        "cs-fix": "phpcbf --standard=PSR12 src bootstrap modules",
+        "stan": "phpstan analyse src --level=9",
+        "cs-check": "phpcs --standard=PSR12 src",
+        "cs-fix": "phpcbf --standard=PSR12 src",
         "quality": [
             "@phpstan",
             "@cs-check",
@@ -51,8 +55,18 @@
     },
     "config": {
         "optimize-autoloader": true,
+        "classmap-authoritative": true,
         "sort-packages": true
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
 }

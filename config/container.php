@@ -19,31 +19,41 @@ if (($_ENV['APP_ENV'] ?? 'dev') === 'prod') {
     $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
 }
 
-// Load service definitions from separate files
+// Load core service definitions (non-module services)
 $services = array_merge(
-    // Core services
-    require __DIR__ . '/services/database.php',
-    require __DIR__ . '/services/session.php',
-    require __DIR__ . '/services/security.php',
+    // Interface-based bindings (DI/IoC)
+    require __DIR__ . '/services/interfaces.php',
+
+    // Core infrastructure services (non-module)
+    // Note: Session services moved to Session module
     require __DIR__ . '/services/logging.php',
-    require __DIR__ . '/services/template.php',
-    require __DIR__ . '/services/user.php',
-    require __DIR__ . '/services/language.php',
-    require __DIR__ . '/services/middleware.php',
-    require __DIR__ . '/services/actions.php',
-    
+    require __DIR__ . '/services/events.php',
+    require __DIR__ . '/services/monitoring.php',
+
+    // Note: Module-specific services are now loaded via ModuleServiceLoader
+    // This eliminates: database.php, template.php, user.php, language.php, security.php, middleware.php, actions.php, modules.php
+
     // Application-specific services
     [
         // Paths (Path Security)
         Paths::class => function (): Paths {
             $pathsConfig = require __DIR__ . '/paths.php';
+
             return new Paths($pathsConfig['base_path'], $pathsConfig['paths']);
         },
 
         // Secure Path Helper
-        \MvaBootstrap\Shared\Helpers\SecurePathHelper::class => function (\DI\Container $container): \MvaBootstrap\Shared\Helpers\SecurePathHelper {
-            return new \MvaBootstrap\Shared\Helpers\SecurePathHelper(
+        \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper::class => function (\DI\Container $container): \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper {
+            return new \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper(
                 $container->get(Paths::class)
+            );
+        },
+
+        // Module Service Loader
+        \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader::class => function (\DI\Container $container): \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader {
+            return new \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader(
+                $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class),
+                $container->get(\Psr\Log\LoggerInterface::class)
             );
         },
 

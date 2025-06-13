@@ -99,6 +99,29 @@ $user->recordLogin();
 
 ## 🗄 Repository Layer
 
+The User Repository layer handles data persistence with following guarantees:
+
+### Data Format
+All repository methods that return user data (`findById`, `findByEmail`, etc.) always include these fields:
+- `id`: Unique user identifier (UUID)
+- `email`: User's email address
+- `name`: User's full name
+- `role`: User's role (e.g. 'admin', 'user')
+- `status`: User's status (e.g. 'active')
+
+Example response:
+```php
+[
+    'id' => '550e8400-e29b-41d4-a716-446655440000',
+    'email' => 'user@example.com',
+    'name' => 'John Doe',
+    'role' => 'admin',
+    'status' => 'active'
+]
+```
+
+This consistent data format ensures reliability across the application.
+
 ### UserRepositoryInterface
 
 Defines the contract for user data persistence operations.
