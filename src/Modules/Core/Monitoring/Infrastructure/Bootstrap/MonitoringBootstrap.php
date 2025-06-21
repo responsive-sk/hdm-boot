@@ -10,6 +10,7 @@ use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheck
 use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Monitoring Bootstrap.
@@ -20,7 +21,8 @@ final class MonitoringBootstrap
 {
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
+        private readonly Paths $paths
     ) {
     }
 
@@ -45,7 +47,14 @@ final class MonitoringBootstrap
      */
     private function setupHealthChecks(): void
     {
-        $healthCheckManager = $this->container->get(HealthCheckManager::class);
+        $healthCheckManagerRaw = $this->container->get(HealthCheckManager::class);
+
+        if (!$healthCheckManagerRaw instanceof HealthCheckManager) {
+            $this->logger->error('Failed to get HealthCheckManager from container');
+            return;
+        }
+
+        $healthCheckManager = $healthCheckManagerRaw;
 
         // Register database health check
         $this->registerDatabaseHealthCheck($healthCheckManager);
@@ -67,7 +76,14 @@ final class MonitoringBootstrap
     private function registerDatabaseHealthCheck(HealthCheckManager $manager): void
     {
         try {
-            $pdo = $this->container->get(PDO::class);
+            $pdoRaw = $this->container->get(PDO::class);
+
+            if (!$pdoRaw instanceof \PDO) {
+                $this->logger->warning('Failed to get PDO instance from container');
+                return;
+            }
+
+            $pdo = $pdoRaw;
             $databaseHealthCheck = new DatabaseHealthCheck($pdo, $this->logger);
             $manager->registerHealthCheck($databaseHealthCheck);
 
@@ -85,10 +101,12 @@ final class MonitoringBootstrap
     private function registerFilesystemHealthCheck(HealthCheckManager $manager): void
     {
         try {
-            $filesystemHealthCheck = new FilesystemHealthCheck($this->logger);
+            $filesystemHealthCheck = new FilesystemHealthCheck($this->logger, $this->paths);
             $manager->registerHealthCheck($filesystemHealthCheck);
 
-            $this->logger->debug('Filesystem health check registered');
+            $this->logger->debug('Filesystem health check registered', [
+                'base_path' => $this->paths->base(),
+            ]);
         } catch (\Exception $e) {
             $this->logger->warning('Could not register filesystem health check', [
                 'error' => $e->getMessage(),
@@ -119,10 +137,15 @@ final class MonitoringBootstrap
     private function setupPerformanceMonitoring(): void
     {
         try {
-            $performanceMonitor = $this->container->get(\MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class);
+            $performanceMonitorRaw = $this->container->get(\MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class);
+
+            if (!is_object($performanceMonitorRaw) || !method_exists($performanceMonitorRaw, 'recordMemoryUsage')) {
+                $this->logger->warning('Failed to get valid PerformanceMonitor from container');
+                return;
+            }
 
             // Record initial memory usage
-            $performanceMonitor->recordMemoryUsage('bootstrap');
+            $performanceMonitorRaw->recordMemoryUsage('bootstrap');
 
             $this->logger->debug('Performance monitoring initialized');
         } catch (\Exception $e) {
@@ -153,6 +176,8 @@ class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\
         $startTime = microtime(true);
 
         try {
+            $this->logger->debug('Running application health check');
+
             // Check basic PHP functionality
             $phpVersion = PHP_VERSION;
             $memoryLimit = ini_get('memory_limit');

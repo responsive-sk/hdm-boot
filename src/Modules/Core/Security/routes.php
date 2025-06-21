@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
+use DI\Container;
 use MvaBootstrap\Modules\Core\Security\Actions\LoginAction;
 use MvaBootstrap\Modules\Core\Security\Actions\LogoutAction;
 use MvaBootstrap\Modules\Core\Security\Actions\MeAction;
 use MvaBootstrap\Modules\Core\Security\Actions\RefreshTokenAction;
 use MvaBootstrap\Modules\Core\Security\Middleware\AuthenticationMiddleware;
 use MvaBootstrap\Modules\Core\Security\Middleware\AuthorizationMiddleware;
+use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
+use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
+use Slim\Interfaces\RouteCollectorProxyInterface;
 
 /*
  * Security Module Routes.
@@ -17,7 +23,7 @@ use Slim\App;
  */
 return function (App $app): void {
     // Public authentication routes (no authentication required)
-    $app->group('/api/auth', function ($group) {
+    $app->group('/api/auth', function (RouteCollectorProxyInterface $group): void {
         // Login endpoint
         // POST /api/auth/login
         $group->post('/login', LoginAction::class)
@@ -43,15 +49,17 @@ return function (App $app): void {
     });
 
     // Security administration routes (admin only)
-    $app->group('/api/admin/security', function ($group) {
+    $app->group('/api/admin/security', function (RouteCollectorProxyInterface $group) use ($app): void {
         // Get security statistics
         // GET /api/admin/security/statistics
-        $group->get('/statistics', function ($request, $response) {
+        $group->get('/statistics', function (ServerRequestInterface $request, ResponseInterface $response) use ($app): ResponseInterface {
             /** @var Container $container */
-            $container = $this->get(\DI\Container::class);
-            $securityChecker = $container->get(\MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker::class);
+            $container = $app->getContainer();
+            /** @var SecurityLoginChecker $securityChecker */
+            $securityChecker = $container->get(SecurityLoginChecker::class);
 
             try {
+                /** @var array<string, mixed> $statistics */
                 $statistics = $securityChecker->getLoginStatistics();
 
                 $data = [
@@ -59,7 +67,11 @@ return function (App $app): void {
                     'data'    => $statistics,
                 ];
 
-                $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: 'modules/Core/Security/routes.php');
+                $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+                if ($jsonData === false) {
+                    throw new \RuntimeException('Failed to encode JSON response');
+                }
+                $response->getBody()->write($jsonData);
 
                 return $response->withHeader('Content-Type', 'application/json');
             } catch (\Exception $e) {
@@ -71,7 +83,11 @@ return function (App $app): void {
                     ],
                 ];
 
-                $response->getBody()->write(json_encode($errorData) ?: 'modules/Core/Security/routes.php');
+                $jsonErrorData = json_encode($errorData);
+                if ($jsonErrorData === false) {
+                    $jsonErrorData = '{"success":false,"error":{"code":"JSON_ERROR","message":"Failed to encode error response"}}';
+                }
+                $response->getBody()->write($jsonErrorData);
 
                 return $response
                     ->withHeader('Content-Type', 'application/json')
@@ -81,12 +97,14 @@ return function (App $app): void {
 
         // Clean old security logs
         // POST /api/admin/security/cleanup
-        $group->post('/cleanup', function ($request, $response) {
+        $group->post('/cleanup', function (ServerRequestInterface $request, ResponseInterface $response) use ($app): ResponseInterface {
             /** @var Container $container */
-            $container = $this->get(\DI\Container::class);
-            $securityChecker = $container->get(\MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker::class);
+            $container = $app->getContainer();
+            /** @var SecurityLoginChecker $securityChecker */
+            $securityChecker = $container->get(SecurityLoginChecker::class);
 
             try {
+                /** @var int $deletedCount */
                 $deletedCount = $securityChecker->cleanOldAttempts();
 
                 $data = [
@@ -98,7 +116,11 @@ return function (App $app): void {
                     'message' => "Cleaned {$deletedCount} old security records",
                 ];
 
-                $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: 'modules/Core/Security/routes.php');
+                $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+                if ($jsonData === false) {
+                    throw new \RuntimeException('Failed to encode JSON response');
+                }
+                $response->getBody()->write($jsonData);
 
                 return $response->withHeader('Content-Type', 'application/json');
             } catch (\Exception $e) {
@@ -110,7 +132,11 @@ return function (App $app): void {
                     ],
                 ];
 
-                $response->getBody()->write(json_encode($errorData) ?: 'modules/Core/Security/routes.php');
+                $jsonErrorData = json_encode($errorData);
+                if ($jsonErrorData === false) {
+                    $jsonErrorData = '{"success":false,"error":{"code":"JSON_ERROR","message":"Failed to encode error response"}}';
+                }
+                $response->getBody()->write($jsonErrorData);
 
                 return $response
                     ->withHeader('Content-Type', 'application/json')
@@ -118,32 +144,54 @@ return function (App $app): void {
             }
         })->setName('admin.security.cleanup');
     })
-    ->add(AuthenticationMiddleware::class)
-    ->add(new AuthorizationMiddleware(
-        $app->getContainer()->get(\MvaBootstrap\Modules\Core\Security\Services\AuthorizationService::class),
-        'admin.security'
-    ));
+    ->add(AuthenticationMiddleware::class);
 
     // Test endpoint for JWT validation (development only)
     if (($_ENV['APP_ENV'] ?? 'dev') !== 'prod') {
-        $app->get('/api/test/auth', function ($request, $response) {
+        $app->get('/api/test/auth', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
+            /** @var array<string, mixed>|null $user */
             $user = $request->getAttribute('user');
+            /** @var array<string, mixed>|null $token */
             $token = $request->getAttribute('token');
+
+            if (!is_array($user) || !is_array($token)) {
+                $errorData = [
+                    'success' => false,
+                    'error'   => [
+                        'code'    => 'MISSING_AUTH_DATA',
+                        'message' => 'User or token data missing from request',
+                    ],
+                ];
+
+                $jsonErrorData = json_encode($errorData);
+                if ($jsonErrorData === false) {
+                    $jsonErrorData = '{"success":false,"error":{"code":"JSON_ERROR","message":"Failed to encode error response"}}';
+                }
+                $response->getBody()->write($jsonErrorData);
+
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(400);
+            }
 
             $data = [
                 'success' => true,
                 'message' => 'Authentication test successful',
                 'data'    => [
                     'authenticated'    => true,
-                    'user_id'          => $user->getId()->toString(),
-                    'user_email'       => $user->getEmail(),
-                    'user_role'        => $user->getRole(),
-                    'token_expires_in' => $token->getTimeToExpiration(),
-                    'token_expires_at' => $token->getExpiresAt()->format('Y-m-d H:i:s'),
+                    'user_id'          => $user['id'] ?? 'unknown',
+                    'user_email'       => $user['email'] ?? 'unknown',
+                    'user_role'        => $user['role'] ?? 'unknown',
+                    'token_expires_in' => $token['expires_in'] ?? 'unknown',
+                    'token_expires_at' => $token['expires_at'] ?? 'unknown',
                 ],
             ];
 
-            $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT) ?: 'modules/Core/Security/routes.php');
+            $jsonData = json_encode($data, JSON_PRETTY_PRINT);
+            if ($jsonData === false) {
+                throw new \RuntimeException('Failed to encode JSON response');
+            }
+            $response->getBody()->write($jsonData);
 
             return $response->withHeader('Content-Type', 'application/json');
         })

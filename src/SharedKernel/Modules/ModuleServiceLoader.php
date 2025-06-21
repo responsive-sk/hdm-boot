@@ -33,9 +33,11 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
+
             if (isset($config['services']) && is_array($config['services'])) {
-                $this->loadModuleServices($container, $module->getName(), $config['services']);
+                /** @var array<string, mixed> $typedServices */
+                $typedServices = $config['services'];
+                $this->loadModuleServices($container, $module->getName(), $typedServices);
                 $loadedServices += count($config['services']);
             }
         }
@@ -60,7 +62,7 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
+
             if (isset($config['routes']) && is_array($config['routes'])) {
                 $moduleRoutes = $this->loadModuleRoutes($module->getName(), $config['routes']);
                 $allRoutes = array_merge($allRoutes, $moduleRoutes);
@@ -89,9 +91,11 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
+
             if (isset($config['middleware']) && is_array($config['middleware'])) {
-                $moduleMiddleware = $this->loadModuleMiddleware($module->getName(), $config['middleware']);
+                /** @var array<string, string> $typedMiddleware */
+                $typedMiddleware = $config['middleware'];
+                $moduleMiddleware = $this->loadModuleMiddleware($module->getName(), $typedMiddleware);
                 $allMiddleware = array_merge($allMiddleware, $moduleMiddleware);
             }
         }
@@ -116,7 +120,7 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
+
             if (isset($config['api_endpoints']) && is_array($config['api_endpoints'])) {
                 $allEndpoints[$module->getName()] = [
                     'module' => $module->getName(),
@@ -141,9 +145,11 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
+
             if (isset($config['permissions']) && is_array($config['permissions'])) {
-                $allPermissions[$module->getName()] = $config['permissions'];
+                /** @var array<string, string> $typedPermissions */
+                $typedPermissions = $config['permissions'];
+                $allPermissions[$module->getName()] = $typedPermissions;
             }
         }
 
@@ -152,13 +158,15 @@ final class ModuleServiceLoader
 
     /**
      * Load services for a specific module.
+     *
+     * @param array<string, mixed> $services
      */
     private function loadModuleServices(Container $container, string $moduleName, array $services): void
     {
         foreach ($services as $serviceId => $definition) {
             try {
                 $container->set($serviceId, $definition);
-                
+
                 $this->logger->debug('Service loaded', [
                     'module' => $moduleName,
                     'service' => $serviceId,
@@ -176,6 +184,7 @@ final class ModuleServiceLoader
     /**
      * Load routes for a specific module.
      *
+     * @param array<mixed> $routes
      * @return array<array<string, mixed>>
      */
     private function loadModuleRoutes(string $moduleName, array $routes): array
@@ -191,9 +200,11 @@ final class ModuleServiceLoader
                 continue;
             }
 
-            // Add module context to route
-            $route['module'] = $moduleName;
-            $processedRoutes[] = $route;
+            // Add module context to route with proper typing
+            /** @var array<string, mixed> $typedRoute */
+            $typedRoute = $route;
+            $typedRoute['module'] = $moduleName;
+            $processedRoutes[] = $typedRoute;
 
             $this->logger->debug('Route loaded', [
                 'module' => $moduleName,
@@ -209,6 +220,7 @@ final class ModuleServiceLoader
     /**
      * Load middleware for a specific module.
      *
+     * @param array<string, string> $middleware
      * @return array<string, string>
      */
     private function loadModuleMiddleware(string $moduleName, array $middleware): array
@@ -243,11 +255,16 @@ final class ModuleServiceLoader
 
         foreach ($modules as $module) {
             $config = $this->moduleManager->getModuleConfig($module->getName());
-            
-            $totalServices += count($config['services'] ?? []);
-            $totalRoutes += count($config['routes'] ?? []);
-            $totalMiddleware += count($config['middleware'] ?? []);
-            $totalPermissions += count($config['permissions'] ?? []);
+
+            $services = $config['services'] ?? [];
+            $routes = $config['routes'] ?? [];
+            $middleware = $config['middleware'] ?? [];
+            $permissions = $config['permissions'] ?? [];
+
+            $totalServices += is_array($services) ? count($services) : 0;
+            $totalRoutes += is_array($routes) ? count($routes) : 0;
+            $totalMiddleware += is_array($middleware) ? count($middleware) : 0;
+            $totalPermissions += is_array($permissions) ? count($permissions) : 0;
         }
 
         return [

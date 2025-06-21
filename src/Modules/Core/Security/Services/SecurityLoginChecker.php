@@ -40,7 +40,6 @@ final class SecurityLoginChecker
     {
         // Note: Login security throttling disabled for development
         // Enable in production with proper configuration
-        return;
 
         // Skip throttling in testing environment or for localhost
         if (
@@ -64,7 +63,10 @@ final class SecurityLoginChecker
     public function recordFailedAttempt(string $email, string $clientIp): void
     {
         // Note: Failed attempt recording disabled for development
-        return;
+        // Enable in production with proper configuration
+        if (($_ENV['SECURITY_LOGGING_DISABLED'] ?? 'false') === 'true') {
+            return;
+        }
 
         $this->pdo->prepare('
             INSERT INTO security_login_attempts (email, ip_address, success, attempted_at)
@@ -78,7 +80,10 @@ final class SecurityLoginChecker
     public function recordSuccessfulAttempt(string $email, string $clientIp): void
     {
         // Note: Successful attempt recording disabled for development
-        return;
+        // Enable in production with proper configuration
+        if (($_ENV['SECURITY_LOGGING_DISABLED'] ?? 'false') === 'true') {
+            return;
+        }
 
         $this->pdo->prepare('
             INSERT INTO security_login_attempts (email, ip_address, success, attempted_at)
@@ -100,7 +105,10 @@ final class SecurityLoginChecker
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (is_array($result) && isset($result['attempts']) && (int) $result['attempts'] >= self::GLOBAL_LOGIN_ATTEMPTS_LIMIT) {
+        $attempts = is_array($result) && isset($result['attempts']) ? $result['attempts'] : 0;
+        $attemptsCount = is_numeric($attempts) ? (int) $attempts : 0;
+
+        if ($attemptsCount >= self::GLOBAL_LOGIN_ATTEMPTS_LIMIT) {
             throw new SecurityException(
                 'captcha',
                 SecurityType::GLOBAL_LOGIN,
@@ -126,20 +134,27 @@ final class SecurityLoginChecker
         $stmt->execute([$email, $clientIp]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (is_array($result) && isset($result['attempts'], $result['last_attempt']) && (int) $result['attempts'] >= self::USER_LOGIN_ATTEMPTS_LIMIT) {
-            // Calculate remaining delay
-            $lastAttempt = new \DateTimeImmutable((string) $result['last_attempt']);
-            $windowEnd = $lastAttempt->modify('+' . self::USER_LOGIN_WINDOW_MINUTES . ' minutes');
-            $now = new \DateTimeImmutable();
+        if (is_array($result) && isset($result['attempts'], $result['last_attempt'])) {
+            $attemptsValue = $result['attempts'];
+            $attemptsCount = is_numeric($attemptsValue) ? (int) $attemptsValue : 0;
 
-            if ($windowEnd > $now) {
-                $remainingSeconds = $windowEnd->getTimestamp() - $now->getTimestamp();
+            if ($attemptsCount >= self::USER_LOGIN_ATTEMPTS_LIMIT) {
+                // Calculate remaining delay
+                $lastAttemptValue = $result['last_attempt'];
+                $lastAttemptString = is_string($lastAttemptValue) ? $lastAttemptValue : '';
+                $lastAttempt = new \DateTimeImmutable($lastAttemptString);
+                $windowEnd = $lastAttempt->modify('+' . self::USER_LOGIN_WINDOW_MINUTES . ' minutes');
+                $now = new \DateTimeImmutable();
 
-                throw new SecurityException(
-                    $remainingSeconds,
-                    SecurityType::USER_LOGIN,
-                    'User login throttling activated'
-                );
+                if ($windowEnd > $now) {
+                    $remainingSeconds = $windowEnd->getTimestamp() - $now->getTimestamp();
+
+                    throw new SecurityException(
+                        $remainingSeconds,
+                        SecurityType::USER_LOGIN,
+                        'User login throttling activated'
+                    );
+                }
             }
         }
     }

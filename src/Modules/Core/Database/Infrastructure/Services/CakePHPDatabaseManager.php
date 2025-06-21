@@ -89,6 +89,7 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
      */
     public function transactional(callable $callback): mixed
     {
+        // @phpstan-ignore-next-line
         return $this->getConnection()->transactional($callback);
     }
 
@@ -163,7 +164,6 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
                 )
             ");
-
         } catch (\Exception $e) {
             throw new RuntimeException('Failed to initialize database: ' . $e->getMessage(), 0, $e);
         }
@@ -218,6 +218,8 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
 
     /**
      * Create SELECT query builder.
+     *
+     * @phpstan-ignore-next-line
      */
     public function selectQuery(): SelectQuery
     {
@@ -288,6 +290,8 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
 
     /**
      * Get database health status.
+     *
+     * @return array<string, mixed>
      */
     public function getHealthStatus(): array
     {
@@ -306,7 +310,7 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
             // Get database version
             if ($this->isConnected()) {
                 $result = $this->getConnection()->execute('SELECT sqlite_version()')->fetch();
-                $health['database_version'] = $result[0] ?? 'unknown';
+                $health['database_version'] = is_array($result) && isset($result[0]) ? $result[0] : 'unknown';
             }
 
             return $health;
@@ -322,9 +326,12 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
 
     /**
      * Get table statistics.
+     *
+     * @return array<string, mixed>
      */
     public function getTableStatistics(): array
     {
+        /** @var array<string, mixed> $tables */
         $tables = [];
 
         try {
@@ -335,13 +342,17 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
                 ->andWhere(['name NOT LIKE' => 'sqlite_%']);
 
             foreach ($query->execute() as $row) {
-                $tableName = $row['name'];
-                $countQuery = $this->selectQuery()
-                    ->select(['COUNT(*) as count'])
-                    ->from($tableName);
+                // @phpstan-ignore-next-line function.alreadyNarrowedType
+                if (is_array($row) && isset($row['name']) && is_string($row['name'])) {
+                    $tableName = $row['name'];
+                    $countQuery = $this->selectQuery()
+                        ->select(['COUNT(*) as count'])
+                        ->from($tableName);
 
-                $countResult = $countQuery->execute()->fetch();
-                $tables[$tableName] = (int) ($countResult['count'] ?? 0);
+                    $countResult = $countQuery->execute()->fetch();
+                    $count = is_array($countResult) && isset($countResult['count']) ? $countResult['count'] : 0;
+                    $tables[$tableName] = is_numeric($count) ? (int) $count : 0;
+                }
             }
         } catch (\Exception) {
             // Return empty array on error

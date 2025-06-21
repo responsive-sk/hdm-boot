@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Health Check Registry.
- * 
+ *
  * Central registry for managing and executing health checks.
  * Supports registration, categorization, and batch execution.
  */
@@ -38,7 +38,7 @@ final class HealthCheckRegistry
     public function register(HealthCheckInterface $healthCheck): void
     {
         $name = $healthCheck->getName();
-        
+
         if (isset($this->healthChecks[$name])) {
             $this->logger->warning('Health check already registered, overwriting', [
                 'name' => $name,
@@ -46,7 +46,7 @@ final class HealthCheckRegistry
         }
 
         $this->healthChecks[$name] = $healthCheck;
-        
+
         // Add to category
         $category = $healthCheck->getCategory();
         if (!isset($this->categories[$category])) {
@@ -82,7 +82,7 @@ final class HealthCheckRegistry
                 $this->categories[$category],
                 fn($checkName) => $checkName !== $name
             );
-            
+
             if (empty($this->categories[$category])) {
                 unset($this->categories[$category]);
             }
@@ -123,6 +123,7 @@ final class HealthCheckRegistry
     /**
      * Get health checks by tags.
      *
+     * @param array<string> $tags
      * @return HealthCheckInterface[]
      */
     public function getByTags(array $tags): array
@@ -174,7 +175,7 @@ final class HealthCheckRegistry
     public function executeAll(): array
     {
         $results = [];
-        
+
         foreach ($this->healthChecks as $name => $healthCheck) {
             $results[$name] = $this->executeHealthCheck($healthCheck);
         }
@@ -223,7 +224,7 @@ final class HealthCheckRegistry
     {
         $results = $this->executeAll();
         $statuses = array_map(fn(HealthCheckResult $result) => $result->status, $results);
-        
+
         return HealthStatus::getWorst($statuses);
     }
 
@@ -266,9 +267,9 @@ final class HealthCheckRegistry
 
             // Execute with timeout (simplified - real implementation would use process timeout)
             $result = $healthCheck->check();
-            
+
             $duration = microtime(true) - $startTime;
-            
+
             $this->logger->debug('Health check completed', [
                 'name' => $name,
                 'status' => $result->status->value,
@@ -285,10 +286,9 @@ final class HealthCheckRegistry
                 category: $healthCheck->getCategory(),
                 tags: $healthCheck->getTags()
             );
-
         } catch (\Throwable $e) {
             $duration = microtime(true) - $startTime;
-            
+
             $this->logger->error('Health check failed with exception', [
                 'name' => $name,
                 'error' => $e->getMessage(),

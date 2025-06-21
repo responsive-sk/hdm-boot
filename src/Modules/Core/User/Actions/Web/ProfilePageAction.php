@@ -6,9 +6,10 @@ namespace MvaBootstrap\Modules\Core\User\Actions\Web;
 
 use MvaBootstrap\Modules\Core\User\Services\UserService;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Profile Page Action.
@@ -19,8 +20,9 @@ final class ProfilePageAction
 {
     public function __construct(
         private readonly TemplateRenderer $templateRenderer,
-        private readonly OdanSession $session,
-        private readonly UserService $userService
+        private readonly SessionInterface $session,
+        private readonly UserService $userService,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -60,6 +62,14 @@ final class ProfilePageAction
                 'session_started' => $this->session->isStarted(),
             ];
 
+            // Log successful profile access
+            $this->logger->info('Profile page accessed successfully', [
+                'user_id' => $userIdString,
+                'email' => $user['email'] ?? 'unknown',
+                'session_id' => session_id(),
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            ]);
+
             // Render user profile template
             $result = $this->templateRenderer->render(
                 $response,
@@ -73,6 +83,14 @@ final class ProfilePageAction
 
             return $result;
         } catch (\Exception $e) {
+            // Log profile access error
+            $this->logger->error('Profile page access failed', [
+                'user_id' => $userIdString ?? 'unknown',
+                'error' => $e->getMessage(),
+                'session_id' => session_id(),
+                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+            ]);
+
             // User not found or other error
             $this->session->getFlash()->add('error', 'Unable to load profile. Please try logging in again.');
             $this->session->destroy();

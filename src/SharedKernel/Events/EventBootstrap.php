@@ -31,6 +31,14 @@ final class EventBootstrap
         $eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         $moduleEventBus = $this->container->get(ModuleEventBus::class);
 
+        if (!$eventDispatcher instanceof EventDispatcherInterface) {
+            throw new \RuntimeException('EventDispatcher service not properly configured');
+        }
+
+        if (!$moduleEventBus instanceof ModuleEventBus) {
+            throw new \RuntimeException('ModuleEventBus service not properly configured');
+        }
+
         // Register core event listeners
         $this->registerCoreEventListeners($eventDispatcher, $moduleEventBus);
 
@@ -84,17 +92,24 @@ final class EventBootstrap
                 \MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class
             );
 
-            $eventDispatcher->addListener(
-                'language.locale_changed',
-                [$localeChangedListener, 'handle']
-            );
+            if (
+                $localeChangedListener !== null &&
+                is_object($localeChangedListener) &&
+                method_exists($localeChangedListener, 'handle')
+            ) {
+                $listener = [$localeChangedListener, 'handle'];
+                // @phpstan-ignore-next-line function.alreadyNarrowedType
+                if (is_callable($listener)) {
+                    $eventDispatcher->addListener('language.locale_changed', $listener);
 
-            // Subscribe Language module to its own events
-            $moduleEventBus->subscribe(
-                'Language',
-                ['language.locale_changed', 'language.translation_added'],
-                [$localeChangedListener, 'handle']
-            );
+                    // Subscribe Language module to its own events
+                    $moduleEventBus->subscribe(
+                        'Language',
+                        ['language.locale_changed', 'language.translation_added'],
+                        $listener
+                    );
+                }
+            }
 
             $this->logger->debug('Language module events registered', [
                 'listeners' => ['LocaleChangedListener'],

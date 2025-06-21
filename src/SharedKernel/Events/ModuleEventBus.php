@@ -36,7 +36,7 @@ final class ModuleEventBus
         ]);
 
         // Dispatch through central event dispatcher
-        $this->eventDispatcher->dispatch($event);
+        $this->eventDispatcher->dispatchDomainEvent($event);
 
         // Track module-to-module communication
         $this->trackModuleCommunication($sourceModule, $event);

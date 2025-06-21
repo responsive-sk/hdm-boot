@@ -147,7 +147,7 @@ interface OrmInterface
     /**
      * Find entity by ID.
      *
-     * @template T
+     * @template T of object
      *
      * @param class-string<T> $entityClass
      *

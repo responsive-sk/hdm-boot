@@ -6,6 +6,9 @@ namespace MvaBootstrap\Modules\Core\Security\Services;
 
 use InvalidArgumentException;
 use MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
+use MvaBootstrap\Modules\Core\Security\Services\JwtService;
+use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
+use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
 use MvaBootstrap\Modules\Core\User\Services\UserService;
 use Psr\Log\LoggerInterface;
 
@@ -119,14 +122,17 @@ final class AuthenticationService implements AuthenticationServiceInterface
     public function generateToken(array $user): string
     {
         try {
-            return $this->jwtService->generateToken([
-                'user_id' => $user['id'],
-                'email'   => $user['email'],
-                'role'    => $user['role'],
-            ]);
+            // Convert array to User entity
+            $userEntity = User::fromArray($user);
+
+            // Generate JWT token
+            $jwtToken = $this->jwtService->generateToken($userEntity);
+
+            // Return token string
+            return $jwtToken->getToken();
         } catch (\Exception $e) {
             $this->logger->error('JWT token generation failed', [
-                'user_id' => $user['id'],
+                'user_id' => $user['id'] ?? 'unknown',
                 'error'   => $e->getMessage(),
             ]);
 
@@ -140,14 +146,15 @@ final class AuthenticationService implements AuthenticationServiceInterface
     public function validateToken(string $tokenString): ?array
     {
         try {
-            $payload = $this->jwtService->validateToken($tokenString);
+            $jwtToken = $this->jwtService->validateToken($tokenString);
 
-            if (!$payload || !isset($payload['user_id'])) {
+            // Get user ID from JWT token
+            $userId = $jwtToken->getUserId();
+            if (!$userId) {
                 return null;
             }
 
-            // Get fresh user data
-            $user = $this->userService->getUserById($payload['user_id']);
+            $user = $this->userService->getUserById($userId);
 
             if (!$user || $user['status'] !== 'active') {
                 return null;
@@ -200,9 +207,41 @@ final class AuthenticationService implements AuthenticationServiceInterface
 
     /**
      * Check if user has permission.
+     *
+     * @param array<string, mixed> $user
      */
     public function hasPermission(array $user, string $permission): bool
     {
         return $this->userService->hasPermission($user, $permission);
+    }
+
+    /**
+     * Authenticate user for API access.
+     *
+     * @return array<string, mixed>
+     */
+    public function authenticateForApi(string $email, string $password, string $clientIp): array
+    {
+        // Use the same logic as web authentication but ensure non-null return
+        $user = $this->authenticateForWeb($email, $password, $clientIp);
+
+        if ($user === null) {
+            throw new \MvaBootstrap\Modules\Core\Security\Exceptions\AuthenticationException('Authentication failed');
+        }
+
+        return $user;
+    }
+
+    /**
+     * Invalidate JWT token (for logout).
+     */
+    public function invalidateToken(mixed $token): void
+    {
+        // For now, we don't maintain a blacklist
+        // In production, you would add the token to a blacklist/cache
+        $this->logger->info('Token invalidated', [
+            'token_type' => gettype($token),
+            'action' => 'logout',
+        ]);
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * EventStore Configuration
- * 
+ *
  * Provides DI container bindings for EventStore infrastructure.
  */
+
+declare(strict_types=1);
 
 use DI\Container;
 use MvaBootstrap\SharedKernel\EventStore\Contracts\EventStoreInterface;
@@ -15,7 +15,7 @@ use MvaBootstrap\SharedKernel\EventStore\Infrastructure\InMemoryEventStore;
 
 return [
     // === SETTINGS ===
-    
+
     'settings' => [
         'event_store' => [
             'driver' => 'database', // 'database' or 'memory'
@@ -30,13 +30,26 @@ return [
         // EventStore Interface - chooses implementation based on settings
         EventStoreInterface::class => function (Container $container): EventStoreInterface {
             $settings = $container->get('settings');
-            $driver = $settings['event_store']['driver'] ?? 'database';
+            if (!is_array($settings) || !is_array($settings['event_store'] ?? null)) {
+                throw new \RuntimeException('EventStore settings not properly configured');
+            }
 
-            return match ($driver) {
+            $driver = $settings['event_store']['driver'] ?? 'database';
+            if (!is_string($driver)) {
+                throw new \RuntimeException('EventStore driver must be a string');
+            }
+
+            $eventStore = match ($driver) {
                 'memory' => $container->get(InMemoryEventStore::class),
                 'database' => $container->get(DatabaseEventStore::class),
                 default => throw new \InvalidArgumentException("Unsupported EventStore driver: $driver"),
             };
+
+            if (!$eventStore instanceof EventStoreInterface) {
+                throw new \RuntimeException('EventStore implementation not properly configured');
+            }
+
+            return $eventStore;
         },
 
         // In-Memory EventStore
@@ -47,6 +60,9 @@ return [
         // Database EventStore
         DatabaseEventStore::class => function (Container $container): DatabaseEventStore {
             $pdo = $container->get(\PDO::class);
+            if (!$pdo instanceof \PDO) {
+                throw new \RuntimeException('PDO service not properly configured');
+            }
             return new DatabaseEventStore($pdo);
         },
     ],

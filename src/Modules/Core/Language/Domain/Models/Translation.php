@@ -18,11 +18,9 @@ final class Translation
         private TranslationKey $key,
         private Locale $locale,
         private string $value,
-        private ?\DateTimeImmutable $createdAt = null,
-        private ?\DateTimeImmutable $updatedAt = null
+        private \DateTimeImmutable $createdAt = new \DateTimeImmutable(),
+        private \DateTimeImmutable $updatedAt = new \DateTimeImmutable()
     ) {
-        $this->createdAt = $createdAt ?? new \DateTimeImmutable();
-        $this->updatedAt = $updatedAt ?? new \DateTimeImmutable();
     }
 
     /**

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Bootstrap;
 
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
+
 /**
  * Simplified Module Manager.
  *
@@ -22,10 +24,10 @@ final class ModuleManager
      */
     public function loadCoreModules(): void
     {
-        $basePath = dirname(__DIR__);
+        $paths = PathsFactory::create();
 
         foreach ($this->coreModules as $moduleName) {
-            $modulePath = $basePath . "/modules/Core/{$moduleName}";
+            $modulePath = $paths->getPath($paths->src('Modules'), "Core/{$moduleName}");
 
             if (is_dir($modulePath)) {
                 $this->loadedModules[] = $moduleName;

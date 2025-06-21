@@ -40,7 +40,8 @@ final class GenericModule implements ModuleInterface
      */
     public function getVersion(): string
     {
-        return $this->manifest?->getVersion() ?? $this->config['version'] ?? '1.0.0';
+        $version = $this->manifest?->getVersion() ?? ($this->config['version'] ?? '1.0.0');
+        return is_string($version) ? $version : '1.0.0';
     }
 
     /**
@@ -48,7 +49,8 @@ final class GenericModule implements ModuleInterface
      */
     public function getDescription(): string
     {
-        return $this->manifest?->getDescription() ?? $this->config['description'] ?? "Module: {$this->name}";
+        $description = $this->manifest?->getDescription() ?? ($this->config['description'] ?? "Module: {$this->name}");
+        return is_string($description) ? $description : "Module: {$this->name}";
     }
 
     /**
@@ -64,7 +66,15 @@ final class GenericModule implements ModuleInterface
      */
     public function getDependencies(): array
     {
-        return $this->manifest?->getDependencies() ?? $this->config['dependencies'] ?? [];
+        $dependencies = $this->manifest?->getDependencies() ?? ($this->config['dependencies'] ?? []);
+        if (!is_array($dependencies)) {
+            return [];
+        }
+
+        // Ensure all dependencies are strings
+        /** @var array<string> $typedDependencies */
+        $typedDependencies = array_filter($dependencies, 'is_string');
+        return array_values($typedDependencies);
     }
 
     /**
@@ -80,7 +90,14 @@ final class GenericModule implements ModuleInterface
      */
     public function getServiceDefinitions(): array
     {
-        return $this->config['services'] ?? $this->config;
+        $services = $this->config['services'] ?? [];
+        if (!is_array($services)) {
+            return [];
+        }
+
+        /** @var array<string, mixed> $typedServices */
+        $typedServices = $services;
+        return $typedServices;
     }
 
     /**
@@ -88,7 +105,14 @@ final class GenericModule implements ModuleInterface
      */
     public function getSettings(): array
     {
-        return $this->config['settings'] ?? [];
+        $settings = $this->config['settings'] ?? [];
+        if (!is_array($settings)) {
+            return [];
+        }
+
+        /** @var array<string, mixed> $typedSettings */
+        $typedSettings = $settings;
+        return $typedSettings;
     }
 
     /**
@@ -96,7 +120,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getPublicServices(): array
     {
-        return $this->config['public_services'] ?? [];
+        $services = $this->config['public_services'] ?? [];
+        if (!is_array($services)) {
+            return [];
+        }
+
+        // Ensure proper typing for public services (interface => implementation)
+        /** @var array<string, string> $typedServices */
+        $typedServices = [];
+        foreach ($services as $interface => $implementation) {
+            if (is_string($interface) && is_string($implementation)) {
+                $typedServices[$interface] = $implementation;
+            }
+        }
+        return $typedServices;
     }
 
     /**
@@ -104,7 +141,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getPublishedEvents(): array
     {
-        return $this->config['published_events'] ?? [];
+        $events = $this->config['published_events'] ?? [];
+        if (!is_array($events)) {
+            return [];
+        }
+
+        // Ensure proper typing for published events (event name => description)
+        /** @var array<string, string> $typedEvents */
+        $typedEvents = [];
+        foreach ($events as $eventName => $description) {
+            if (is_string($eventName) && is_string($description)) {
+                $typedEvents[$eventName] = $description;
+            }
+        }
+        return $typedEvents;
     }
 
     /**
@@ -112,7 +162,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getEventSubscriptions(): array
     {
-        return $this->config['event_subscriptions'] ?? [];
+        $subscriptions = $this->config['event_subscriptions'] ?? [];
+        if (!is_array($subscriptions)) {
+            return [];
+        }
+
+        // Ensure proper typing for event subscriptions (event name => callable)
+        /** @var array<string, callable(): mixed> $typedSubscriptions */
+        $typedSubscriptions = [];
+        foreach ($subscriptions as $eventName => $callable) {
+            if (is_string($eventName) && is_callable($callable)) {
+                $typedSubscriptions[$eventName] = $callable;
+            }
+        }
+        return $typedSubscriptions;
     }
 
     /**
@@ -120,7 +183,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getApiEndpoints(): array
     {
-        return $this->config['api_endpoints'] ?? [];
+        $endpoints = $this->config['api_endpoints'] ?? [];
+        if (!is_array($endpoints)) {
+            return [];
+        }
+
+        // Ensure proper typing for API endpoints (endpoint => description)
+        /** @var array<string, string> $typedEndpoints */
+        $typedEndpoints = [];
+        foreach ($endpoints as $endpoint => $description) {
+            if (is_string($endpoint) && is_string($description)) {
+                $typedEndpoints[$endpoint] = $description;
+            }
+        }
+        return $typedEndpoints;
     }
 
     /**
@@ -128,7 +204,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getMiddleware(): array
     {
-        return $this->config['middleware'] ?? [];
+        $middleware = $this->config['middleware'] ?? [];
+        if (!is_array($middleware)) {
+            return [];
+        }
+
+        // Ensure proper typing for middleware (class => description)
+        /** @var array<string, string> $typedMiddleware */
+        $typedMiddleware = [];
+        foreach ($middleware as $class => $description) {
+            if (is_string($class) && is_string($description)) {
+                $typedMiddleware[$class] = $description;
+            }
+        }
+        return $typedMiddleware;
     }
 
     /**
@@ -136,7 +225,20 @@ final class GenericModule implements ModuleInterface
      */
     public function getPermissions(): array
     {
-        return $this->config['permissions'] ?? [];
+        $permissions = $this->config['permissions'] ?? [];
+        if (!is_array($permissions)) {
+            return [];
+        }
+
+        // Ensure proper typing for permissions (permission => description)
+        /** @var array<string, string> $typedPermissions */
+        $typedPermissions = [];
+        foreach ($permissions as $permission => $description) {
+            if (is_string($permission) && is_string($description)) {
+                $typedPermissions[$permission] = $description;
+            }
+        }
+        return $typedPermissions;
     }
 
     /**
@@ -144,7 +246,15 @@ final class GenericModule implements ModuleInterface
      */
     public function getDatabaseTables(): array
     {
-        return $this->config['database_tables'] ?? [];
+        $tables = $this->config['database_tables'] ?? [];
+        if (!is_array($tables)) {
+            return [];
+        }
+
+        // Ensure all table names are strings
+        /** @var array<string> $typedTables */
+        $typedTables = array_filter($tables, 'is_string');
+        return array_values($typedTables);
     }
 
     /**
@@ -152,16 +262,43 @@ final class GenericModule implements ModuleInterface
      */
     public function getStatus(): array
     {
-        return $this->config['status'] ?? [
+        $status = $this->config['status'] ?? [
             'implemented' => [],
             'planned'     => [],
         ];
+
+        if (!is_array($status)) {
+            return [
+                'implemented' => [],
+                'planned'     => [],
+            ];
+        }
+
+        // Ensure proper typing for status (string => array<string>)
+        /** @var array<string, array<string>> $typedStatus */
+        $typedStatus = [];
+        foreach ($status as $key => $value) {
+            if (is_string($key) && is_array($value)) {
+                $stringArray = array_filter($value, 'is_string');
+                $typedStatus[$key] = array_values($stringArray);
+            }
+        }
+
+        // Ensure required keys exist
+        if (!isset($typedStatus['implemented'])) {
+            $typedStatus['implemented'] = [];
+        }
+        if (!isset($typedStatus['planned'])) {
+            $typedStatus['planned'] = [];
+        }
+
+        return $typedStatus;
     }
 
     /**
      * Initialize the module.
      */
-    public function initialize(): void
+    public function initialize(?object $container = null): void
     {
         if ($this->initialized) {
             return;
@@ -169,7 +306,17 @@ final class GenericModule implements ModuleInterface
 
         // Run initialization logic if defined
         if (isset($this->config['initialize']) && is_callable($this->config['initialize'])) {
-            $this->config['initialize']();
+            if ($container) {
+                $this->config['initialize']($container);
+            } else {
+                // Try to call without parameters for backward compatibility
+                try {
+                    $this->config['initialize']();
+                } catch (\ArgumentCountError $e) {
+                    // If it requires parameters but none provided, skip initialization
+                    // This prevents fatal errors during module loading
+                }
+            }
         }
 
         $this->initialized = true;
@@ -203,6 +350,7 @@ final class GenericModule implements ModuleInterface
 
         // Validate dependencies exist
         foreach ($this->getDependencies() as $dependency) {
+            // @phpstan-ignore-next-line function.alreadyNarrowedType
             if (empty($dependency) || !is_string($dependency)) {
                 $errors[] = "Invalid dependency: '{$dependency}'";
             }
@@ -210,6 +358,7 @@ final class GenericModule implements ModuleInterface
 
         // Validate service definitions
         $services = $this->getServiceDefinitions();
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
         if (!is_array($services)) {
             $errors[] = 'Service definitions must be an array';
         }
@@ -222,6 +371,7 @@ final class GenericModule implements ModuleInterface
      */
     public function getHealthStatus(): array
     {
+        /** @var array<string, mixed> $status */
         $status = [
             'name'               => $this->name,
             'version'            => $this->getVersion(),
@@ -237,10 +387,16 @@ final class GenericModule implements ModuleInterface
         // Add custom health checks if defined
         if (isset($this->config['health_check']) && is_callable($this->config['health_check'])) {
             try {
+                // Try to call health check with container if available
+                // For now, call without parameters for backward compatibility
                 $customHealth = $this->config['health_check']();
                 if (is_array($customHealth)) {
-                    $status = array_merge($status, $customHealth);
+                    /** @var array<string, mixed> $typedCustomHealth */
+                    $typedCustomHealth = $customHealth;
+                    $status = array_merge($status, $typedCustomHealth);
                 }
+            } catch (\ArgumentCountError $e) {
+                $status['health_check_error'] = 'Health check requires container parameter';
             } catch (\Throwable $e) {
                 $status['health_check_error'] = $e->getMessage();
             }

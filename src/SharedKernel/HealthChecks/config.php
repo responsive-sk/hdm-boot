@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * HealthChecks Configuration
- * 
+ *
  * Provides DI container bindings for HealthChecks infrastructure.
  */
+
+declare(strict_types=1);
 
 use DI\Container;
 use MvaBootstrap\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 
 return [
     // === SETTINGS ===
-    
+
     'settings' => [
         'health_checks' => [
             'enabled' => true,
@@ -37,6 +37,9 @@ return [
         // Health Check Registry
         HealthCheckRegistry::class => function (Container $container): HealthCheckRegistry {
             $logger = $container->get(LoggerInterface::class);
+            if (!$logger instanceof LoggerInterface) {
+                throw new \RuntimeException('Logger service not properly configured');
+            }
             return new HealthCheckRegistry($logger);
         },
     ],
@@ -52,11 +55,16 @@ return [
     'initialize' => function (Container $container): void {
         // Auto-register health checks if enabled
         $settings = $container->get('settings');
-        if ($settings['health_checks']['auto_register'] ?? true) {
+        if (
+            is_array($settings) &&
+            is_array($settings['health_checks'] ?? null) &&
+            ($settings['health_checks']['auto_register'] ?? true)
+        ) {
             $registry = $container->get(HealthCheckRegistry::class);
-            
-            // Register built-in health checks
-            // Note: Specific health checks will be registered by their respective modules
+            if ($registry instanceof HealthCheckRegistry) {
+                // Register built-in health checks
+                // Note: Specific health checks will be registered by their respective modules
+            }
         }
     },
 
@@ -64,7 +72,13 @@ return [
 
     'health_check' => function (Container $container): array {
         $registry = $container->get(HealthCheckRegistry::class);
-        
+        if (!$registry instanceof HealthCheckRegistry) {
+            return [
+                'registry_available' => false,
+                'error' => 'HealthCheckRegistry not available',
+            ];
+        }
+
         return [
             'registry_available' => true,
             'registered_checks' => $registry->getCount(),

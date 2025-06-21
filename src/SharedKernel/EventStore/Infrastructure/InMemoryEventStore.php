@@ -10,7 +10,7 @@ use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * In-Memory Event Store Implementation.
- * 
+ *
  * Stores events in memory for testing and development purposes.
  * Events are lost when the process ends.
  */
@@ -34,18 +34,21 @@ final class InMemoryEventStore implements EventStoreInterface
     public function storeMany(array $events): void
     {
         foreach ($events as $event) {
+            // @phpstan-ignore-next-line instanceof.alwaysTrue
             if (!$event instanceof DomainEventInterface) {
                 throw new \InvalidArgumentException('All events must implement DomainEventInterface');
             }
 
-            // Extract aggregate info from event (assuming event has these methods)
-            $aggregateId = method_exists($event, 'getAggregateId') 
-                ? $event->getAggregateId() 
+            // Extract aggregate info from event with safe type casting
+            $aggregateIdRaw = method_exists($event, 'getAggregateId')
+                ? $event->getAggregateId()
                 : 'unknown';
-            
-            $aggregateType = method_exists($event, 'getAggregateType') 
-                ? $event->getAggregateType() 
+            $aggregateId = is_string($aggregateIdRaw) ? $aggregateIdRaw : 'unknown';
+
+            $aggregateTypeRaw = method_exists($event, 'getAggregateType')
+                ? $event->getAggregateType()
                 : get_class($event);
+            $aggregateType = is_string($aggregateTypeRaw) ? $aggregateTypeRaw : get_class($event);
 
             // Get next version
             $aggregateKey = $this->getAggregateKey($aggregateId, $aggregateType);
@@ -69,7 +72,7 @@ final class InMemoryEventStore implements EventStoreInterface
         return array_filter($this->events, function (StoredEvent $event) use ($aggregateId, $aggregateType) {
             $matchesId = $event->getAggregateId() === $aggregateId;
             $matchesType = $aggregateType === null || $event->getAggregateType() === $aggregateType;
-            
+
             return $matchesId && $matchesType;
         });
     }
@@ -80,7 +83,7 @@ final class InMemoryEventStore implements EventStoreInterface
             $matchesId = $event->getAggregateId() === $aggregateId;
             $matchesType = $aggregateType === null || $event->getAggregateType() === $aggregateType;
             $matchesVersion = $event->getVersion() >= $fromVersion;
-            
+
             return $matchesId && $matchesType && $matchesVersion;
         });
     }

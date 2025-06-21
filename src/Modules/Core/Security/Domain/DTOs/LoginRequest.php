@@ -29,17 +29,19 @@ final readonly class LoginRequest
     public static function fromArray(array $data): self
     {
         return new self(
-            email: (string) ($data['email'] ?? ''),
-            password: (string) ($data['password'] ?? ''),
-            clientIp: (string) ($data['client_ip'] ?? '127.0.0.1'),
-            userAgent: isset($data['user_agent']) ? (string) $data['user_agent'] : null,
-            csrfToken: isset($data['csrf_token']) ? (string) $data['csrf_token'] : null,
-            rememberMe: (bool) ($data['remember_me'] ?? false)
+            email: is_string($data['email'] ?? null) ? $data['email'] : '',
+            password: is_string($data['password'] ?? null) ? $data['password'] : '',
+            clientIp: is_string($data['client_ip'] ?? null) ? $data['client_ip'] : '127.0.0.1',
+            userAgent: is_string($data['user_agent'] ?? null) ? $data['user_agent'] : null,
+            csrfToken: is_string($data['csrf_token'] ?? null) ? $data['csrf_token'] : null,
+            rememberMe: is_bool($data['remember_me'] ?? null) ? $data['remember_me'] : false
         );
     }
 
     /**
      * Validate the login request data.
+     *
+     * @return array<string, string>
      */
     public function validate(): array
     {

@@ -83,6 +83,33 @@ final class ValidationException extends ProblemDetailsException
      */
     public function getValidationErrors(): array
     {
-        return $this->problemDetails->extensions['validation_errors'] ?? [];
+        $validationErrors = $this->problemDetails->extensions['validation_errors'] ?? [];
+
+        if (!is_array($validationErrors)) {
+            return [];
+        }
+
+        // Ensure all values are strings or arrays of strings
+        $result = [];
+        foreach ($validationErrors as $key => $value) {
+            if (!is_string($key)) {
+                continue;
+            }
+
+            if (is_string($value)) {
+                $result[$key] = $value;
+            } elseif (is_array($value)) {
+                // Ensure all array elements are strings
+                $stringArray = [];
+                foreach ($value as $item) {
+                    if (is_string($item)) {
+                        $stringArray[] = $item;
+                    }
+                }
+                $result[$key] = $stringArray;
+            }
+        }
+
+        return $result;
     }
 }

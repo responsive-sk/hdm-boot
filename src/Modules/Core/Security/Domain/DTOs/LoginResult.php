@@ -11,6 +11,10 @@ namespace MvaBootstrap\Modules\Core\Security\Domain\DTOs;
  */
 final readonly class LoginResult
 {
+    /**
+     * @param array<string, mixed>|null $user
+     * @param array<string, mixed> $metadata
+     */
     public function __construct(
         public bool $success,
         public ?array $user = null,

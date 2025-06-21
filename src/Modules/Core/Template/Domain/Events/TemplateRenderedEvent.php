@@ -40,6 +40,14 @@ final readonly class TemplateRenderedEvent implements DomainEvent
     }
 
     /**
+     * Get event identifier for tracking.
+     */
+    public function getEventId(): string
+    {
+        return 'template_rendered_' . $this->templateName->toString() . '_' . $this->occurredAt->getTimestamp();
+    }
+
+    /**
      * Get event name.
      */
     public function getEventName(): string
@@ -48,11 +56,24 @@ final readonly class TemplateRenderedEvent implements DomainEvent
     }
 
     /**
-     * Get event data.
+     * Get event version for evolution.
      */
-    public function getEventData(): array
+    public function getVersion(): int
+    {
+        return 1;
+    }
+
+    /**
+     * Get event payload for storage.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
     {
         return [
+            'event_id'           => $this->getEventId(),
+            'event_name'         => $this->getEventName(),
+            'version'            => $this->getVersion(),
             'template_name'      => $this->templateName->toString(),
             'template_directory' => $this->templateName->getDirectory(),
             'template_extension' => $this->templateName->getExtension(),
@@ -61,6 +82,31 @@ final readonly class TemplateRenderedEvent implements DomainEvent
             'render_time_ms'     => round($this->renderTime * 1000, 2),
             'occurred_at'        => $this->occurredAt->format('Y-m-d H:i:s'),
         ];
+    }
+
+    /**
+     * Get event data for logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function toLogArray(): array
+    {
+        return [
+            'event' => $this->getEventName(),
+            'template' => $this->templateName->toString(),
+            'render_time_ms' => round($this->renderTime * 1000, 2),
+            'data_count' => $this->templateData->count(),
+        ];
+    }
+
+    /**
+     * Get event data (alias for backward compatibility).
+     *
+     * @return array<string, mixed>
+     */
+    public function getEventData(): array
+    {
+        return $this->toArray();
     }
 
     /**

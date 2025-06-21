@@ -34,7 +34,24 @@ final class DatabaseHealthCheck implements HealthCheckInterface
         try {
             // Test basic connectivity
             $stmt = $this->pdo->query('SELECT 1 as test');
+            if ($stmt === false) {
+                return HealthCheckResult::unhealthy(
+                    $this->getName(),
+                    'Database query failed to execute',
+                    ['error' => 'PDO query returned false'],
+                    microtime(true) - $startTime
+                );
+            }
+
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result === false || !is_array($result) || !isset($result['test'])) {
+                return HealthCheckResult::unhealthy(
+                    $this->getName(),
+                    'Database query returned invalid result',
+                    ['result' => $result],
+                    microtime(true) - $startTime
+                );
+            }
 
             if ($result['test'] !== 1) {
                 return HealthCheckResult::unhealthy(
@@ -195,22 +212,36 @@ final class DatabaseHealthCheck implements HealthCheckInterface
 
             // Get SQLite version
             $stmt = $this->pdo->query('SELECT sqlite_version() as version');
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                $info['sqlite_version'] = $result['version'];
+            if ($stmt !== false) {
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (is_array($result) && isset($result['version'])) {
+                    $info['sqlite_version'] = $result['version'];
+                }
             }
 
             // Get database list
             $stmt = $this->pdo->query('PRAGMA database_list');
-            $databases = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $info['databases'] = $databases;
+            if ($stmt !== false) {
+                $databases = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                // @phpstan-ignore-next-line function.alreadyNarrowedType
+                if (is_array($databases)) {
+                    $info['databases'] = $databases;
 
-            // Get database file size if main database
-            foreach ($databases as $db) {
-                if ($db['name'] === 'main' && !empty($db['file'])) {
-                    if (file_exists($db['file'])) {
-                        $info['database_size'] = filesize($db['file']);
-                        $info['database_size_mb'] = round(filesize($db['file']) / 1024 / 1024, 2);
+                    // Get database file size if main database
+                    foreach ($databases as $db) {
+                        if (
+                            is_array($db) &&
+                            isset($db['name']) && $db['name'] === 'main' &&
+                            isset($db['file']) && is_string($db['file']) && !empty($db['file'])
+                        ) {
+                            if (file_exists($db['file'])) {
+                                $fileSize = filesize($db['file']);
+                                if ($fileSize !== false) {
+                                    $info['database_size'] = $fileSize;
+                                    $info['database_size_mb'] = round($fileSize / 1024 / 1024, 2);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -233,8 +264,13 @@ final class DatabaseHealthCheck implements HealthCheckInterface
 
             // Get MySQL variables
             $stmt = $this->pdo->query("SHOW VARIABLES LIKE 'version%'");
-            $variables = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-            $info['mysql_variables'] = $variables;
+            if ($stmt !== false) {
+                $variables = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+                // @phpstan-ignore-next-line function.alreadyNarrowedType
+                if (is_array($variables)) {
+                    $info['mysql_variables'] = $variables;
+                }
+            }
 
             return $info;
         } catch (\Exception $e) {
@@ -254,9 +290,11 @@ final class DatabaseHealthCheck implements HealthCheckInterface
 
             // Get PostgreSQL version
             $stmt = $this->pdo->query('SELECT version()');
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($result) {
-                $info['postgres_version'] = $result['version'];
+            if ($stmt !== false) {
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (is_array($result) && isset($result['version'])) {
+                    $info['postgres_version'] = $result['version'];
+                }
             }
 
             return $info;

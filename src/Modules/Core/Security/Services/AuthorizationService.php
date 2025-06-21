@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Modules\Core\Security\Services;
 
+use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -90,7 +91,7 @@ final class AuthorizationService
     public function hasAnyPermission(User $user, array $permissions): bool
     {
         foreach ($permissions as $permission) {
-            if ($this->hasPermission($user, $permission)) {
+            if ($this->hasPermission($user->toArray(), $permission)) {
                 return true;
             }
         }
@@ -106,7 +107,7 @@ final class AuthorizationService
     public function hasAllPermissions(User $user, array $permissions): bool
     {
         foreach ($permissions as $permission) {
-            if (!$this->hasPermission($user, $permission)) {
+            if (!$this->hasPermission($user->toArray(), $permission)) {
                 return false;
             }
         }
@@ -166,7 +167,7 @@ final class AuthorizationService
      */
     public function canAccessAdmin(User $user): bool
     {
-        return $this->hasPermission($user, 'admin.access');
+        return $this->hasPermission($user->toArray(), 'admin.access');
     }
 
     /**
@@ -174,7 +175,7 @@ final class AuthorizationService
      */
     public function canManageUsers(User $user): bool
     {
-        return $this->hasPermission($user, 'user.manage');
+        return $this->hasPermission($user->toArray(), 'user.manage');
     }
 
     /**
@@ -182,7 +183,7 @@ final class AuthorizationService
      */
     public function canViewUserStatistics(User $user): bool
     {
-        return $this->hasPermission($user, 'user.statistics');
+        return $this->hasPermission($user->toArray(), 'user.statistics');
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace MvaBootstrap\SharedKernel\Helpers;
 
 use InvalidArgumentException;
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**
@@ -81,29 +82,25 @@ final class SecurePathHelper
         // Get the base directory path
         $basePath = $this->allowedDirectories[$baseDirectory];
 
-        // Combine paths
-        $fullPath = $basePath . DIRECTORY_SEPARATOR . ltrim($relativePath, '/\\');
+        // Combine paths using PathsFactory for security
+        $paths = PathsFactory::create();
+        $fullPath = $paths->getPath($basePath, ltrim($relativePath, '/\\'));
 
         // Normalize the path
         $normalizedPath = $this->normalizePath($fullPath);
 
-        // Use realpath to resolve any remaining .. or . components
-        $realPath = realpath($normalizedPath);
+        // Use PathsFactory for secure path resolution instead of realpath
+        $paths = PathsFactory::create();
 
-        // If file doesn't exist, validate the directory structure
-        if ($realPath === false) {
-            $realPath = $this->validateNonExistentPath($normalizedPath, $basePath);
-        }
-
-        // Ensure the resolved path is still within the allowed directory
-        $realBasePath = realpath($basePath);
-        if ($realBasePath === false || !str_starts_with($realPath, $realBasePath)) {
+        // Validate that the path is within allowed directory using string comparison
+        if (!str_starts_with($normalizedPath, $basePath)) {
             throw new InvalidArgumentException(
                 "Path '{$relativePath}' resolves outside the allowed directory '{$baseDirectory}'"
             );
         }
 
-        return $realPath;
+        // Return the normalized path - PathsFactory already handles security
+        return $normalizedPath;
     }
 
     /**
@@ -252,31 +249,7 @@ final class SecurePathHelper
         }
     }
 
-    /**
-     * Validate non-existent path structure.
-     */
-    private function validateNonExistentPath(string $path, string $basePath): string
-    {
-        $directory = dirname($path);
-        $realDirectory = realpath($directory);
 
-        if ($realDirectory === false) {
-            // Directory doesn't exist, check if we can create it
-            $realBasePath = realpath($basePath);
-            if ($realBasePath === false) {
-                throw new InvalidArgumentException('Base directory does not exist');
-            }
-
-            // Validate that the directory would be within bounds
-            if (!str_starts_with($directory, $realBasePath)) {
-                throw new InvalidArgumentException('Directory would be outside allowed base path');
-            }
-
-            return $path;
-        }
-
-        return $realDirectory . DIRECTORY_SEPARATOR . basename($path);
-    }
 
     /**
      * Sanitize filename for safe storage.

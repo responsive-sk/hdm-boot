@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace MvaBootstrap\SharedKernel\EventStore\Contracts;
 
 use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
+use MvaBootstrap\SharedKernel\EventStore\ValueObjects\StoredEvent;
 
 /**
  * Event Store Interface.
- * 
+ *
  * Provides a contract for storing and retrieving domain events.
  * Supports event sourcing patterns and audit trails.
  */
@@ -29,28 +30,28 @@ interface EventStoreInterface
     /**
      * Retrieve events for a specific aggregate.
      *
-     * @return DomainEventInterface[]
+     * @return StoredEvent[]
      */
     public function getEventsForAggregate(string $aggregateId, ?string $aggregateType = null): array;
 
     /**
      * Retrieve events from a specific version onwards.
      *
-     * @return DomainEventInterface[]
+     * @return StoredEvent[]
      */
     public function getEventsFromVersion(string $aggregateId, int $fromVersion, ?string $aggregateType = null): array;
 
     /**
      * Retrieve all events of a specific type.
      *
-     * @return DomainEventInterface[]
+     * @return StoredEvent[]
      */
     public function getEventsByType(string $eventType): array;
 
     /**
      * Retrieve events within a date range.
      *
-     * @return DomainEventInterface[]
+     * @return StoredEvent[]
      */
     public function getEventsByDateRange(\DateTimeInterface $from, \DateTimeInterface $to): array;
 
@@ -72,7 +73,7 @@ interface EventStoreInterface
     /**
      * Get events with pagination.
      *
-     * @return DomainEventInterface[]
+     * @return StoredEvent[]
      */
     public function getEventsPaginated(int $offset = 0, int $limit = 100): array;
 

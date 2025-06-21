@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MvaBootstrap\Modules\Core\Security\Actions\Web;
 
 use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 final class LogoutAction
 {
     public function __construct(
-        private readonly OdanSession $session,
+        private readonly SessionInterface $session,
         private readonly CsrfService $csrfService,
         private readonly LoggerInterface $logger
     ) {
@@ -27,7 +27,9 @@ final class LogoutAction
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $method = $request->getMethod();
-        $data = (array) $request->getParsedBody();
+        $parsedBody = $request->getParsedBody();
+        /** @var array<string, mixed> $data */
+        $data = is_array($parsedBody) ? $parsedBody : [];
 
         try {
             // Only validate CSRF token for POST requests (like samuelgfeller GET logout)
@@ -39,7 +41,7 @@ final class LogoutAction
             $userData = $this->session->get('user_data');
 
             // Log logout
-            if ($userData) {
+            if (is_array($userData)) {
                 $this->logger->info('User logged out', [
                     'email' => $userData['email'] ?? 'unknown',
                     'ip'    => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
@@ -51,7 +53,7 @@ final class LogoutAction
 
             // Start new session for flash message
             $this->session->start();
-            $this->session->getFlash()->add('success', 'You have been logged out successfully.');
+            $this->session->flash('success', 'You have been logged out successfully.');
 
             // Redirect to home
             return $response
@@ -69,7 +71,7 @@ final class LogoutAction
 
             // Start new session for flash message
             $this->session->start();
-            $this->session->getFlash()->add('error', 'Logout failed due to security error.');
+            $this->session->flash('error', 'Logout failed due to security error.');
 
             return $response
                 ->withHeader('Location', '/')

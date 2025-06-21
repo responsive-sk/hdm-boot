@@ -53,6 +53,8 @@ final class ErrorResponseHandler
 
     /**
      * Create validation error response.
+     *
+     * @param array<string, string|array<string>> $validationErrors
      */
     public function createValidationErrorResponse(
         string $detail,
@@ -156,6 +158,8 @@ final class ErrorResponseHandler
 
     /**
      * Create custom error response.
+     *
+     * @param array<string, mixed> $extensions
      */
     public function createCustomErrorResponse(
         string $type,

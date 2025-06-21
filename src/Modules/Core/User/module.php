@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * User Module Manifest
- * 
+ *
  * This file defines the User module metadata, dependencies,
  * and configuration paths for automatic module discovery.
  */
+
+declare(strict_types=1);
 
 return [
     'name' => 'User',

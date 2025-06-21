@@ -223,6 +223,8 @@ final class TemplateService implements TemplateRendererInterface
 
     /**
      * Get template engine information.
+     *
+     * @return array<string, mixed>
      */
     public function getEngineInfo(): array
     {

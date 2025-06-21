@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction;
 use MvaBootstrap\Modules\Core\Language\Application\Actions\Api\TranslateAction;
 use MvaBootstrap\Modules\Core\Language\Domain\Services\TranslationService;
 use MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener;
 use MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware;
+use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -53,28 +53,31 @@ return [
         // Translation Service
         TranslationService::class => \DI\autowire(),
 
-        // Language Settings Action
-        LanguageSettingsAction::class => function (Container $container): LanguageSettingsAction {
-            return new LanguageSettingsAction(
-                $container->get(LocaleService::class),
-                $container->get(LoggerInterface::class)
-            );
-        },
+        // TODO: Implement LanguageSettingsAction
+        // LanguageSettingsAction::class => function (Container $container): LanguageSettingsAction {
+        //     /** @var LocaleService $localeService */
+        //     $localeService = $container->get(LocaleService::class);
+        //     /** @var LoggerInterface $logger */
+        //     $logger = $container->get(LoggerInterface::class);
+        //     return new LanguageSettingsAction($localeService, $logger);
+        // },
 
         // Translate Action
         TranslateAction::class => function (Container $container): TranslateAction {
-            return new TranslateAction(
-                $container->get(TranslationService::class),
-                $container->get(ResponseFactoryInterface::class),
-                $container->get(LoggerInterface::class)
-            );
+            /** @var TranslationService $translationService */
+            $translationService = $container->get(TranslationService::class);
+            /** @var ResponseFactoryInterface $responseFactory */
+            $responseFactory = $container->get(ResponseFactoryInterface::class);
+            /** @var LoggerInterface $logger */
+            $logger = $container->get(LoggerInterface::class);
+            return new TranslateAction($translationService, $responseFactory, $logger);
         },
 
         // Locale Changed Listener
         LocaleChangedListener::class => function (Container $container): LocaleChangedListener {
-            return new LocaleChangedListener(
-                $container->get(LoggerInterface::class)
-            );
+            /** @var LoggerInterface $logger */
+            $logger = $container->get(LoggerInterface::class);
+            return new LocaleChangedListener($logger);
         },
 
         // Locale Middleware
@@ -173,18 +176,19 @@ return [
             'handler'    => TranslateAction::class,
             'middleware' => [LocaleMiddleware::class],
         ],
-        [
-            'method'     => 'GET',
-            'pattern'    => '/api/language',
-            'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
-            'middleware' => [LocaleMiddleware::class],
-        ],
-        [
-            'method'     => 'POST',
-            'pattern'    => '/api/language',
-            'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
-            'middleware' => [LocaleMiddleware::class],
-        ],
+        // TODO: Implement LanguageSettingsAction routes
+        // [
+        //     'method'     => 'GET',
+        //     'pattern'    => '/api/language',
+        //     'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
+        //     'middleware' => [LocaleMiddleware::class],
+        // ],
+        // [
+        //     'method'     => 'POST',
+        //     'pattern'    => '/api/language',
+        //     'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
+        //     'middleware' => [LocaleMiddleware::class],
+        // ],
     ],
 
     // === TRANSLATIONS ===

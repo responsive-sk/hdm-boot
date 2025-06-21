@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Modules\Core\Template\Domain\ValueObjects;
 
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
+
 /**
  * Template Name Value Object.
  *
@@ -87,7 +89,7 @@ final readonly class TemplateName
         $nameWithoutExt = $this->getNameWithoutExtension();
         $directory = $this->getDirectory();
 
-        $newName = $directory ? $directory . '/' . $nameWithoutExt : $nameWithoutExt;
+        $newName = $directory ? $this->buildSecurePath($directory, $nameWithoutExt) : $nameWithoutExt;
         $newName .= '.' . ltrim($extension, '.');
 
         return new self($newName);
@@ -137,5 +139,22 @@ final readonly class TemplateName
     public function equals(self $other): bool
     {
         return $this->name === $other->name;
+    }
+
+    /**
+     * Build secure path for template names.
+     *
+     * Prevents path traversal attacks by validating components.
+     */
+    private function buildSecurePath(string $directory, string $filename): string
+    {
+        // Validate directory for security (already validated in constructor, but double-check)
+        if (str_contains($directory, '..') || str_contains($filename, '..')) {
+            throw new \InvalidArgumentException("Path traversal detected in template path");
+        }
+
+        // Use PathsFactory for secure cross-platform path joining
+        $paths = PathsFactory::create();
+        return $paths->getPath($directory, $filename);
     }
 }

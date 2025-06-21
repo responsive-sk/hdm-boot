@@ -43,6 +43,8 @@ final class DatabaseConnectionManager implements DatabaseManagerInterface, Query
 
     /**
      * Create SELECT query builder.
+     *
+     * @phpstan-ignore-next-line
      */
     public function selectQuery(): SelectQuery
     {
@@ -164,6 +166,7 @@ final class DatabaseConnectionManager implements DatabaseManagerInterface, Query
      */
     public function transactional(callable $callback): mixed
     {
+        // @phpstan-ignore-next-line
         return $this->connection->transactional($callback);
     }
 

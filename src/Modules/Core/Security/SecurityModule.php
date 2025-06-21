@@ -37,6 +37,21 @@ final class SecurityModule implements ModuleInterface
         return '1.0.0';
     }
 
+    public function getDescription(): string
+    {
+        return 'Security module providing authentication, authorization, and security services';
+    }
+
+    public function isEnabled(): bool
+    {
+        return true;
+    }
+
+    public function getPriority(): int
+    {
+        return 10; // High priority for security
+    }
+
     public function getDependencies(): array
     {
         return [
@@ -57,12 +72,15 @@ final class SecurityModule implements ModuleInterface
         return SecurityModuleEvents::getAllEvents();
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getEventSubscriptions(): array
     {
         return [
             // Security module can subscribe to User module events
-            'user.registered'     => [$this, 'handleUserRegistered'],
-            'user.status_changed' => [$this, 'handleUserStatusChanged'],
+            'user.registered'     => 'handleUserRegistered',
+            'user.status_changed' => 'handleUserStatusChanged',
         ];
     }
 
@@ -85,6 +103,19 @@ final class SecurityModule implements ModuleInterface
         $this->initialized = true;
 
         $this->logger->info('Security module initialized successfully');
+    }
+
+    public function boot(): void
+    {
+        // Boot security module after all modules are initialized
+        $this->logger->info('Booting Security module');
+    }
+
+    public function shutdown(): void
+    {
+        // Cleanup security resources
+        $this->logger->info('Shutting down Security module');
+        $this->initialized = false;
     }
 
     public function isInitialized(): bool

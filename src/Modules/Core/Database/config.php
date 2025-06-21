@@ -50,28 +50,48 @@ return [
     'services' => [
         // Database Manager Interface (using PDO)
         DatabaseManagerInterface::class => function (Container $container): DatabaseManagerInterface {
-            return $container->get(DatabaseManager::class);
+            $manager = $container->get(DatabaseManager::class);
+            if (!$manager instanceof DatabaseManagerInterface) {
+                throw new \RuntimeException('DatabaseManager service not properly configured');
+            }
+            return $manager;
         },
 
         // CakePHP Database Manager (primary implementation)
         CakePHPDatabaseManager::class => function (Container $container): CakePHPDatabaseManager {
-            return new CakePHPDatabaseManager(
-                $container->get(Paths::class)
-            );
+            $paths = $container->get(Paths::class);
+            if (!$paths instanceof Paths) {
+                throw new \RuntimeException('Paths service not properly configured');
+            }
+            return new CakePHPDatabaseManager($paths);
         },
 
         // Legacy PDO Database Manager (for backward compatibility)
         DatabaseManager::class => function (Container $container): DatabaseManager {
-            return new DatabaseManager(
-                $container->get(Paths::class)
-            );
+            $paths = $container->get(Paths::class);
+            if (!$paths instanceof Paths) {
+                throw new \RuntimeException('Paths service not properly configured');
+            }
+            return new DatabaseManager($paths);
         },
 
         // PDO Connection
         \PDO::class => function (Container $container): \PDO {
             $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+                throw new \RuntimeException('ModuleManager service not properly configured');
+            }
+
             $config = $moduleManager->getModuleConfig('Database');
-            $databaseUrl = $config['settings']['database_url'];
+            // @phpstan-ignore-next-line function.alreadyNarrowedType
+            if (!is_array($config) || !is_array($config['settings'] ?? null)) {
+                throw new \RuntimeException('Database configuration not properly configured');
+            }
+
+            $databaseUrl = $config['settings']['database_url'] ?? '';
+            if (!is_string($databaseUrl)) {
+                throw new \RuntimeException('Database URL must be a string');
+            }
 
             // Parse database URL
             if (str_starts_with($databaseUrl, 'sqlite:')) {
@@ -80,6 +100,9 @@ return [
                 // Convert to absolute path if relative
                 if (!str_starts_with($dbPath, '/')) {
                     $paths = $container->get(Paths::class);
+                    if (!$paths instanceof Paths) {
+                        throw new \RuntimeException('Paths service not properly configured');
+                    }
                     $dbPath = $paths->base() . '/' . $dbPath;
                 }
 
@@ -213,7 +236,9 @@ return [
         try {
             $pdo = new \PDO('sqlite:var/storage/app.db');
             $health['database_connection'] = true;
-            $health['database_version'] = $pdo->query('SELECT sqlite_version()')->fetchColumn();
+            $stmt = $pdo->query('SELECT sqlite_version()');
+            $version = $stmt !== false ? $stmt->fetchColumn() : 'unknown';
+            $health['database_version'] = is_string($version) ? $version : 'unknown';
         } catch (\Exception $e) {
             $health['database_connection'] = false;
             $health['database_error'] = $e->getMessage();

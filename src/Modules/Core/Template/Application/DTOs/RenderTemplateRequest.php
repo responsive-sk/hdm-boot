@@ -29,11 +29,18 @@ final readonly class RenderTemplateRequest
      */
     public static function fromArray(array $requestData): self
     {
-        return new self(
-            $requestData['template'] ?? '',
-            $requestData['data'] ?? [],
-            $requestData['content_type'] ?? null
-        );
+        $template = $requestData['template'] ?? '';
+        $data = $requestData['data'] ?? [];
+        $contentType = $requestData['content_type'] ?? null;
+
+        // Type casting for safety
+        $template = is_string($template) ? $template : '';
+        $dataArray = is_array($data) ? $data : [];
+        /** @var array<string, mixed> $typedData */
+        $typedData = $dataArray;
+        $contentType = is_string($contentType) ? $contentType : null;
+
+        return new self($template, $typedData, $contentType);
     }
 
     /**
@@ -45,6 +52,7 @@ final readonly class RenderTemplateRequest
             throw new \InvalidArgumentException('Template name is required');
         }
 
+        // @phpstan-ignore-next-line function.alreadyNarrowedType
         if (!is_array($this->data)) {
             throw new \InvalidArgumentException('Template data must be an array');
         }

@@ -8,7 +8,7 @@ use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * Stored Event Value Object.
- * 
+ *
  * Represents a domain event as stored in the event store with metadata.
  */
 final class StoredEvent
@@ -18,7 +18,9 @@ final class StoredEvent
         private readonly string $aggregateId,
         private readonly string $aggregateType,
         private readonly string $eventType,
+        /** @var array<string, mixed> */
         private readonly array $eventData,
+        /** @var array<string, mixed> */
         private readonly array $metadata,
         private readonly int $version,
         private readonly \DateTimeImmutable $occurredAt,
@@ -46,11 +48,17 @@ final class StoredEvent
         return $this->eventType;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getEventData(): array
     {
         return $this->eventData;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getMetadata(): array
     {
         return $this->metadata;
@@ -73,6 +81,8 @@ final class StoredEvent
 
     /**
      * Create StoredEvent from DomainEvent.
+     *
+     * @param array<string, mixed> $metadata
      */
     public static function fromDomainEvent(
         DomainEventInterface $event,
@@ -100,6 +110,8 @@ final class StoredEvent
 
     /**
      * Convert to array for storage.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -118,17 +130,65 @@ final class StoredEvent
 
     /**
      * Create from array (from storage).
+     *
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data): self
     {
+        // Validate required fields
+        if (!isset($data['id']) || !is_string($data['id'])) {
+            throw new \InvalidArgumentException('Invalid or missing id');
+        }
+        if (!isset($data['aggregate_id']) || !is_string($data['aggregate_id'])) {
+            throw new \InvalidArgumentException('Invalid or missing aggregate_id');
+        }
+        if (!isset($data['aggregate_type']) || !is_string($data['aggregate_type'])) {
+            throw new \InvalidArgumentException('Invalid or missing aggregate_type');
+        }
+        if (!isset($data['event_type']) || !is_string($data['event_type'])) {
+            throw new \InvalidArgumentException('Invalid or missing event_type');
+        }
+        if (!isset($data['event_data']) || !is_string($data['event_data'])) {
+            throw new \InvalidArgumentException('Invalid or missing event_data');
+        }
+        if (!isset($data['metadata']) || !is_string($data['metadata'])) {
+            throw new \InvalidArgumentException('Invalid or missing metadata');
+        }
+        if (!isset($data['version'])) {
+            throw new \InvalidArgumentException('Missing version');
+        }
+        if (!isset($data['occurred_at']) || !is_string($data['occurred_at'])) {
+            throw new \InvalidArgumentException('Invalid or missing occurred_at');
+        }
+        if (!isset($data['stored_at']) || !is_string($data['stored_at'])) {
+            throw new \InvalidArgumentException('Invalid or missing stored_at');
+        }
+
+        $eventData = json_decode($data['event_data'], true);
+        $metadata = json_decode($data['metadata'], true);
+
+        if (!is_array($eventData)) {
+            throw new \InvalidArgumentException('Invalid event data format');
+        }
+
+        if (!is_array($metadata)) {
+            throw new \InvalidArgumentException('Invalid metadata format');
+        }
+
+        // Ensure proper typing for arrays
+        /** @var array<string, mixed> $typedEventData */
+        $typedEventData = $eventData;
+        /** @var array<string, mixed> $typedMetadata */
+        $typedMetadata = $metadata;
+
         return new self(
             id: $data['id'],
             aggregateId: $data['aggregate_id'],
             aggregateType: $data['aggregate_type'],
             eventType: $data['event_type'],
-            eventData: json_decode($data['event_data'], true),
-            metadata: json_decode($data['metadata'], true),
-            version: (int) $data['version'],
+            eventData: $typedEventData,
+            metadata: $typedMetadata,
+            version: is_numeric($data['version']) ? (int) $data['version'] : 1,
             occurredAt: new \DateTimeImmutable($data['occurred_at']),
             storedAt: new \DateTimeImmutable($data['stored_at'])
         );

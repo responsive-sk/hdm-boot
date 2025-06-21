@@ -22,7 +22,7 @@ use MvaBootstrap\Modules\Core\Security\Services\JwtService;
 use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use MvaBootstrap\Modules\Core\User\Services\UserService;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -47,99 +47,192 @@ return [
 
         // JWT Service
         JwtService::class => function (Container $c): JwtService {
+            /** @var array<string, mixed> $settings */
             $settings = $c->get('settings');
 
+            // Safe access to settings with defaults
+            /** @var array<string, mixed> $securitySettings */
+            $securitySettings = is_array($settings['security'] ?? null) ? $settings['security'] : [];
+
+            // Extract JWT secret with proper type checking
+            $jwtSecretFromSettings = $securitySettings['jwt_secret'] ?? null;
+            $jwtSecretFromEnv = $_ENV['JWT_SECRET'] ?? 'default-secret-change-in-production';
+            $jwtSecret = is_string($jwtSecretFromSettings)
+                ? $jwtSecretFromSettings
+                : (is_string($jwtSecretFromEnv) ? $jwtSecretFromEnv : 'default-secret-change-in-production');
+
+            // Extract JWT expiry with proper type checking
+            $jwtExpiryFromSettings = $securitySettings['jwt_expiry'] ?? null;
+            $jwtExpiryFromEnv = $_ENV['JWT_EXPIRY'] ?? '3600';
+            $jwtExpiry = is_int($jwtExpiryFromSettings)
+                ? $jwtExpiryFromSettings
+                : (is_numeric($jwtExpiryFromEnv) ? (int) $jwtExpiryFromEnv : 3600);
+
             return new JwtService(
-                secret: $settings['security']['jwt_secret'],
-                expirySeconds: $settings['security']['jwt_expiry']
+                secret: $jwtSecret,
+                expirySeconds: $jwtExpiry
             );
         },
 
         // Security Login Checker
         SecurityLoginChecker::class => function (Container $c): SecurityLoginChecker {
-            return new SecurityLoginChecker($c->get(PDO::class));
+            /** @var PDO $pdo */
+            $pdo = $c->get(PDO::class);
+
+            return new SecurityLoginChecker($pdo);
         },
 
         // Authorization Service
         AuthorizationService::class => function (Container $c): AuthorizationService {
-            return new AuthorizationService($c->get(LoggerInterface::class));
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
+            return new AuthorizationService($logger);
         },
 
         // Authentication Service
         AuthenticationService::class => function (Container $c): AuthenticationService {
+            /** @var UserService $userService */
+            $userService = $c->get(UserService::class);
+            /** @var JwtService $jwtService */
+            $jwtService = $c->get(JwtService::class);
+            /** @var SecurityLoginChecker $securityChecker */
+            $securityChecker = $c->get(SecurityLoginChecker::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
             return new AuthenticationService(
-                userService: $c->get(UserService::class),
-                jwtService: $c->get(JwtService::class),
-                securityChecker: $c->get(SecurityLoginChecker::class),
-                logger: $c->get(LoggerInterface::class)
+                userService: $userService,
+                jwtService: $jwtService,
+                securityChecker: $securityChecker,
+                logger: $logger
             );
         },
 
-        // Middleware
-        AuthenticationMiddleware::class => function (Container $c): AuthenticationMiddleware {
-            return new AuthenticationMiddleware($c->get(AuthenticationService::class));
-        },
+        // Note: AuthenticationMiddleware moved to bottom to avoid duplicate key
 
         // Actions
         LoginAction::class => function (Container $c): LoginAction {
-            return new LoginAction($c->get(AuthenticationService::class));
+            /** @var AuthenticationService $authService */
+            $authService = $c->get(AuthenticationService::class);
+            /** @var AuthenticationValidator $validator */
+            $validator = $c->get(AuthenticationValidator::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+            /** @var LoggerInterface $securityLogger */
+            $securityLogger = $c->get('logger.security');
+
+            return new LoginAction($authService, $validator, $logger, $securityLogger);
         },
 
         LogoutAction::class => function (Container $c): LogoutAction {
-            return new LogoutAction($c->get(AuthenticationService::class));
+            /** @var AuthenticationService $authService */
+            $authService = $c->get(AuthenticationService::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+            /** @var LoggerInterface $securityLogger */
+            $securityLogger = $c->get('logger.security');
+
+            return new LogoutAction($authService, $logger, $securityLogger);
         },
 
         RefreshTokenAction::class => function (Container $c): RefreshTokenAction {
-            return new RefreshTokenAction($c->get(AuthenticationService::class));
+            /** @var AuthenticationService $authService */
+            $authService = $c->get(AuthenticationService::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+            /** @var LoggerInterface $securityLogger */
+            $securityLogger = $c->get('logger.security');
+
+            return new RefreshTokenAction($authService, $logger, $securityLogger);
         },
 
         MeAction::class => function (Container $c): MeAction {
-            return new MeAction($c->get(AuthorizationService::class));
+            /** @var UserService $userService */
+            $userService = $c->get(UserService::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
+            return new MeAction($userService, $logger);
         },
 
         // === WEB ACTIONS ===
 
         // Login Page Action
         LoginPageAction::class => function (Container $c): LoginPageAction {
-            return new LoginPageAction(
-                $c->get(TemplateRenderer::class),
-                $c->get(SessionService::class),
-                $c->get(CsrfService::class)
-            );
+            /** @var TemplateRenderer $templateRenderer */
+            $templateRenderer = $c->get(TemplateRenderer::class);
+            /** @var SessionService $sessionService */
+            $sessionService = $c->get(SessionService::class);
+
+            return new LoginPageAction($templateRenderer, $sessionService);
         },
 
         // Login Submit Action
         LoginSubmitAction::class => function (Container $c): LoginSubmitAction {
+            /** @var TemplateRenderer $templateRenderer */
+            $templateRenderer = $c->get(TemplateRenderer::class);
+            /** @var SessionInterface $session */
+            $session = $c->get(SessionInterface::class);
+            /** @var CsrfService $csrfService */
+            $csrfService = $c->get(CsrfService::class);
+            /** @var AuthenticationService $authService */
+            $authService = $c->get(AuthenticationService::class);
+            /** @var AuthenticationValidator $validator */
+            $validator = $c->get(AuthenticationValidator::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+            /** @var LoggerInterface $securityLogger */
+            $securityLogger = $c->get('logger.security');
+
             return new LoginSubmitAction(
-                $c->get(TemplateRenderer::class),
-                $c->get(SessionInterface::class),
-                $c->get(CsrfService::class),
-                $c->get(AuthenticationService::class),
-                $c->get(AuthenticationValidator::class),
-                $c->get(LoggerInterface::class),
-                $c->get(LoggerInterface::class)
+                $templateRenderer,
+                $session,
+                $authService,
+                $validator,
+                $logger,
+                $securityLogger
             );
         },
 
         // Web Logout Action
         WebLogoutAction::class => function (Container $c): WebLogoutAction {
-            return new WebLogoutAction(
-                $c->get(SessionInterface::class),
-                $c->get(CsrfService::class),
-                $c->get(LoggerInterface::class)
-            );
+            /** @var SessionInterface $session */
+            $session = $c->get(SessionInterface::class);
+            /** @var CsrfService $csrfService */
+            $csrfService = $c->get(CsrfService::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
+            return new WebLogoutAction($session, $csrfService, $logger);
         },
 
         // === MIDDLEWARE ===
 
         // User Authentication Middleware
         UserAuthenticationMiddleware::class => function (Container $c): UserAuthenticationMiddleware {
-            return new UserAuthenticationMiddleware(
-                $c->get(SessionInterface::class),
-                $c->get(ResponseFactoryInterface::class),
-                $c->get(UserService::class),
-                $c->get(LoggerInterface::class)
-            );
+            /** @var SessionInterface $session */
+            $session = $c->get(SessionInterface::class);
+            /** @var ResponseFactoryInterface $responseFactory */
+            $responseFactory = $c->get(ResponseFactoryInterface::class);
+            /** @var UserService $userService */
+            $userService = $c->get(UserService::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
+            return new UserAuthenticationMiddleware($session, $responseFactory, $userService, $logger);
+        },
+
+        // Authentication Middleware - JWT token-based authentication
+        AuthenticationMiddleware::class => function (Container $c): AuthenticationMiddleware {
+            /** @var AuthenticationService $authService */
+            $authService = $c->get(AuthenticationService::class);
+            /** @var ResponseFactoryInterface $responseFactory */
+            $responseFactory = $c->get(ResponseFactoryInterface::class);
+            /** @var LoggerInterface $logger */
+            $logger = $c->get(LoggerInterface::class);
+
+            return new AuthenticationMiddleware($authService, $responseFactory, $logger);
         },
     ],
 

@@ -12,7 +12,7 @@ use PDOException;
 
 /**
  * Database Event Store Implementation.
- * 
+ *
  * Stores events in a database table for persistence.
  * Supports transactions and concurrent access.
  */
@@ -41,6 +41,7 @@ final class DatabaseEventStore implements EventStoreInterface
 
         try {
             foreach ($events as $event) {
+                // @phpstan-ignore-next-line instanceof.alwaysTrue
                 if (!$event instanceof DomainEventInterface) {
                     throw new \InvalidArgumentException('All events must implement DomainEventInterface');
                 }
@@ -117,7 +118,11 @@ final class DatabaseEventStore implements EventStoreInterface
         $stmt->execute($params);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return (int) ($result['max_version'] ?? 0);
+        if (!is_array($result) || !isset($result['max_version'])) {
+            return 0;
+        }
+
+        return is_numeric($result['max_version']) ? (int) $result['max_version'] : 0;
     }
 
     public function aggregateExists(string $aggregateId, ?string $aggregateType = null): bool
@@ -128,7 +133,12 @@ final class DatabaseEventStore implements EventStoreInterface
     public function getEventCount(): int
     {
         $stmt = $this->pdo->query('SELECT COUNT(*) FROM ' . self::TABLE_NAME);
-        return (int) $stmt->fetchColumn();
+        if ($stmt === false) {
+            throw new \RuntimeException('Failed to execute count query');
+        }
+
+        $result = $stmt->fetchColumn();
+        return is_numeric($result) ? (int) $result : 0;
     }
 
     public function getEventsPaginated(int $offset = 0, int $limit = 100): array
@@ -141,7 +151,11 @@ final class DatabaseEventStore implements EventStoreInterface
 
         $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $events[] = StoredEvent::fromArray($row);
+            if (is_array($row)) {
+                /** @var array<string, mixed> $typedRow */
+                $typedRow = $row;
+                $events[] = StoredEvent::fromArray($typedRow);
+            }
         }
 
         return $events;
@@ -157,14 +171,16 @@ final class DatabaseEventStore implements EventStoreInterface
      */
     private function storeEvent(DomainEventInterface $event): void
     {
-        // Extract aggregate info from event
-        $aggregateId = method_exists($event, 'getAggregateId') 
-            ? $event->getAggregateId() 
+        // Extract aggregate info from event with safe type casting
+        $aggregateIdRaw = method_exists($event, 'getAggregateId')
+            ? $event->getAggregateId()
             : 'unknown';
-        
-        $aggregateType = method_exists($event, 'getAggregateType') 
-            ? $event->getAggregateType() 
+        $aggregateId = is_string($aggregateIdRaw) ? $aggregateIdRaw : 'unknown';
+
+        $aggregateTypeRaw = method_exists($event, 'getAggregateType')
+            ? $event->getAggregateType()
             : get_class($event);
+        $aggregateType = is_string($aggregateTypeRaw) ? $aggregateTypeRaw : get_class($event);
 
         // Get next version
         $version = $this->getAggregateVersion($aggregateId, $aggregateType) + 1;
@@ -179,7 +195,7 @@ final class DatabaseEventStore implements EventStoreInterface
 
         // Insert into database
         $data = $storedEvent->toArray();
-        $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (' . implode(', ', array_keys($data)) . ') VALUES (' . 
+        $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (' . implode(', ', array_keys($data)) . ') VALUES (' .
                implode(', ', array_map(fn($key) => ":$key", array_keys($data))) . ')';
 
         $stmt = $this->pdo->prepare($sql);
@@ -189,6 +205,7 @@ final class DatabaseEventStore implements EventStoreInterface
     /**
      * Execute query and return StoredEvent objects.
      *
+     * @param array<string, mixed> $params
      * @return StoredEvent[]
      */
     private function executeQuery(string $sql, array $params = []): array
@@ -198,7 +215,11 @@ final class DatabaseEventStore implements EventStoreInterface
 
         $events = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $events[] = StoredEvent::fromArray($row);
+            if (is_array($row)) {
+                /** @var array<string, mixed> $typedRow */
+                $typedRow = $row;
+                $events[] = StoredEvent::fromArray($typedRow);
+            }
         }
 
         return $events;

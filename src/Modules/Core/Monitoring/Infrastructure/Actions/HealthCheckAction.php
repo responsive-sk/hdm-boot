@@ -33,7 +33,7 @@ final class HealthCheckAction
         $checkName = $queryParams['check'] ?? null;
 
         try {
-            if ($checkName !== null) {
+            if ($checkName !== null && is_string($checkName)) {
                 // Run specific health check
                 return $this->handleSpecificCheck($checkName);
             }

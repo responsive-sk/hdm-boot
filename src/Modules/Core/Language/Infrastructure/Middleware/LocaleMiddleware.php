@@ -6,7 +6,7 @@ namespace MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware;
 
 use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
 use MvaBootstrap\Modules\Core\User\Services\UserService;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -30,7 +30,8 @@ final class LocaleMiddleware implements MiddlewareInterface
     public function __construct(
         private readonly LocaleService $localeService,
         private readonly SessionInterface $session,
-        private readonly UserService $userService,
+        // TODO: Re-enable when User entity has language preference field
+        // private readonly UserService $userService,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -81,29 +82,34 @@ final class LocaleMiddleware implements MiddlewareInterface
     /**
      * Detect appropriate locale based on priority order.
      */
-    private function detectLocale(ServerRequestInterface $request): ?string
+    private function detectLocale(ServerRequestInterface $request): string
     {
         $config = $this->localeService->getConfig();
-        $detection = $config['detection'] ?? [];
+        $detection = is_array($config['detection'] ?? null) ? $config['detection'] : [];
 
         // 1. User preference from database (if authenticated)
-        if ($detection['use_user_preference'] ?? true) {
-            $userLocale = $this->getUserLocale();
-            if ($userLocale && $this->localeService->isLocaleSupported($userLocale)) {
-                return $userLocale;
-            }
-        }
+        // TODO: Implement when User entity has language preference field
+        // $useUserPreference = $detection['use_user_preference'] ?? true;
+        // if (is_bool($useUserPreference) ? $useUserPreference : true) {
+        //     $userLocale = $this->getUserLocale();
+        //     if ($userLocale && $this->localeService->isLocaleSupported($userLocale)) {
+        //         return $userLocale;
+        //     }
+        // }
 
         // 2. Session language preference
-        if ($detection['use_session'] ?? true) {
+        $useSession = $detection['use_session'] ?? true;
+        if (is_bool($useSession) ? $useSession : true) {
             $sessionLocale = $this->session->get('app_language');
-            if ($sessionLocale && $this->localeService->isLocaleSupported($sessionLocale)) {
-                return $sessionLocale;
+            $sessionLocaleString = is_string($sessionLocale) ? $sessionLocale : null;
+            if ($sessionLocaleString && $this->localeService->isLocaleSupported($sessionLocaleString)) {
+                return $sessionLocaleString;
             }
         }
 
         // 3. Cookie language preference
-        if ($detection['use_cookie'] ?? true) {
+        $useCookie = $detection['use_cookie'] ?? true;
+        if (is_bool($useCookie) ? $useCookie : true) {
             $cookieLocale = $this->getCookieLocale($request);
             if ($cookieLocale && $this->localeService->isLocaleSupported($cookieLocale)) {
                 return $cookieLocale;
@@ -111,7 +117,8 @@ final class LocaleMiddleware implements MiddlewareInterface
         }
 
         // 4. Browser Accept-Language header
-        if ($detection['use_browser_language'] ?? true) {
+        $useBrowserLanguage = $detection['use_browser_language'] ?? true;
+        if (is_bool($useBrowserLanguage) ? $useBrowserLanguage : true) {
             $browserLocale = $this->getBrowserLocale($request);
             if ($browserLocale && $this->localeService->isLocaleSupported($browserLocale)) {
                 return $browserLocale;
@@ -119,38 +126,36 @@ final class LocaleMiddleware implements MiddlewareInterface
         }
 
         // 5. Default locale from config
-        return $config['default_locale'] ?? 'en_US';
+        $defaultLocale = $config['default_locale'] ?? 'en_US';
+        return is_string($defaultLocale) ? $defaultLocale : 'en_US';
     }
 
-    /**
-     * Get user's preferred locale from database.
-     */
-    private function getUserLocale(): ?string
-    {
-        try {
-            $userId = $this->session->get('user_id');
-
-            if (!$userId) {
-                return null;
-            }
-
-            $user = $this->userService->getUserById($userId);
-
-            if (!$user) {
-                return null;
-            }
-
-            // TODO: Add language field to User entity
-            // For now, return null - this would be implemented when User has language preference
-            return null;
-        } catch (\Exception $e) {
-            $this->logger->warning('Failed to get user locale', [
-                'error' => $e->getMessage(),
-            ]);
-
-            return null;
-        }
-    }
+    // TODO: Implement getUserLocale() when User entity has language preference field
+    // private function getUserLocale(): ?string
+    // {
+    //     try {
+    //         $userId = $this->session->get('user_id');
+    //         $userIdString = is_string($userId) ? $userId : null;
+    //
+    //         if (!$userIdString) {
+    //             return null;
+    //         }
+    //
+    //         $user = $this->userService->getUserById($userIdString);
+    //
+    //         if (!$user || !isset($user['language'])) {
+    //             return null;
+    //         }
+    //
+    //         return is_string($user['language']) ? $user['language'] : null;
+    //     } catch (\Exception $e) {
+    //         $this->logger->warning('Failed to get user locale', [
+    //             'error' => $e->getMessage(),
+    //         ]);
+    //
+    //         return null;
+    //     }
+    // }
 
     /**
      * Get locale from cookie.
@@ -158,11 +163,14 @@ final class LocaleMiddleware implements MiddlewareInterface
     private function getCookieLocale(ServerRequestInterface $request): ?string
     {
         $config = $this->localeService->getConfig();
-        $cookieName = $config['detection']['cookie_name'] ?? 'app_language';
+        $detection = is_array($config['detection'] ?? null) ? $config['detection'] : [];
+        $cookieNameValue = $detection['cookie_name'] ?? 'app_language';
+        $cookieName = is_string($cookieNameValue) ? $cookieNameValue : 'app_language';
 
         $cookies = $request->getCookieParams();
+        $cookieValue = $cookies[$cookieName] ?? null;
 
-        return $cookies[$cookieName] ?? null;
+        return is_string($cookieValue) ? $cookieValue : null;
     }
 
     /**
@@ -210,14 +218,18 @@ final class LocaleMiddleware implements MiddlewareInterface
     private function setLanguageCookie(ResponseInterface $response, string $locale): ResponseInterface
     {
         $config = $this->localeService->getConfig();
-        $detection = $config['detection'] ?? [];
+        $detection = is_array($config['detection'] ?? null) ? $config['detection'] : [];
 
-        if (!($detection['use_cookie'] ?? true)) {
+        $useCookie = $detection['use_cookie'] ?? true;
+        if (!(is_bool($useCookie) ? $useCookie : true)) {
             return $response;
         }
 
-        $cookieName = $detection['cookie_name'] ?? 'app_language';
-        $cookieLifetime = $detection['cookie_lifetime'] ?? 2592000; // 30 days
+        $cookieNameValue = $detection['cookie_name'] ?? 'app_language';
+        $cookieName = is_string($cookieNameValue) ? $cookieNameValue : 'app_language';
+
+        $cookieLifetimeValue = $detection['cookie_lifetime'] ?? 2592000; // 30 days
+        $cookieLifetime = is_int($cookieLifetimeValue) ? $cookieLifetimeValue : 2592000;
 
         $cookieValue = sprintf(
             '%s=%s; Max-Age=%d; Path=/; HttpOnly; SameSite=Lax',
@@ -239,9 +251,10 @@ final class LocaleMiddleware implements MiddlewareInterface
         $cookieLocale = $this->getCookieLocale($request);
         $browserLocale = $this->getBrowserLocale($request);
 
-        if ($userId && $this->getUserLocale() === $locale) {
-            return 'user_preference';
-        }
+        // TODO: Implement when User entity has language preference field
+        // if ($userId && $this->getUserLocale() === $locale) {
+        //     return 'user_preference';
+        // }
 
         if ($sessionLocale === $locale) {
             return 'session';

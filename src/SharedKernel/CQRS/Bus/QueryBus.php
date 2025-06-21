@@ -64,6 +64,7 @@ final class QueryBus
             /** @var QueryHandlerInterface $handler */
             $handler = $this->container->get($handlerClass);
 
+            // @phpstan-ignore-next-line instanceof.alwaysTrue
             if (!$handler instanceof QueryHandlerInterface) {
                 throw new InvalidArgumentException(
                     "Handler {$handlerClass} must implement QueryHandlerInterface"

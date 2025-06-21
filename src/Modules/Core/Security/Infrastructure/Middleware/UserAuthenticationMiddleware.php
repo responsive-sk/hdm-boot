@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace MvaBootstrap\Modules\Core\Security\Infrastructure\Middleware;
 
 use MvaBootstrap\Modules\Core\User\Services\UserService;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
 final class UserAuthenticationMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private readonly OdanSession $session,
+        private readonly SessionInterface $session,
         private readonly ResponseFactoryInterface $responseFactory,
         private readonly UserService $userService,
         private readonly LoggerInterface $logger
@@ -39,18 +39,17 @@ final class UserAuthenticationMiddleware implements MiddlewareInterface
             $this->session->start();
         }
 
-        // Debug: Log session state in middleware
-        error_log('UserAuthenticationMiddleware: session_id=' . $this->session->getId());
-
         // Check if user is logged in
         $userIdString = $this->session->get('user_id');
         $lastActivity = $this->session->get('last_activity');
 
-        error_log(sprintf(
-            'UserAuthenticationMiddleware: user_id=%s, last_activity=%s',
-            $userIdString ?? 'NULL',
-            $lastActivity ?? 'NULL'
-        ));
+        // Debug logging
+        $this->logger->debug('UserAuthenticationMiddleware: Session check', [
+            'session_id' => $this->session->getId(),
+            'user_id' => $userIdString,
+            'last_activity' => $lastActivity,
+            'session_started' => $this->session->isStarted(),
+        ]);
 
         if (is_string($userIdString) && !empty($userIdString)) {
             try {
@@ -88,7 +87,7 @@ final class UserAuthenticationMiddleware implements MiddlewareInterface
         $response = $this->responseFactory->createResponse();
 
         // Add flash message
-        $this->session->getFlash()->add('info', 'Please login to access this page.');
+        $this->session->flash('info', 'Please login to access this page.');
 
         // Check if it's JSON request
         $contentType = $request->getHeaderLine('Content-Type');

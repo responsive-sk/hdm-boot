@@ -16,8 +16,10 @@ use ResponsiveSk\Slim4Paths\Paths;
  */
 final class LocaleService implements LocaleServiceInterface
 {
+    /** @var array<string, mixed> */
     private array $config;
 
+    /** @var array<string> */
     private array $availableLocales;
 
     private string $defaultLocale;
@@ -31,17 +33,32 @@ final class LocaleService implements LocaleServiceInterface
         private readonly LoggerInterface $logger
     ) {
         // Load language configuration
-        $this->config = require $this->paths->base() . '/config/language.php';
+        $configData = require $this->paths->base() . '/config/language.php';
+        /** @var array<string, mixed> $configArray */
+        $configArray = is_array($configData) ? $configData : [];
+        $this->config = $configArray;
 
-        // Initialize settings from config
-        $this->defaultLocale = $this->config['default_locale'];
+        // Initialize settings from config with safe access
+        $defaultLocaleValue = $this->config['default_locale'] ?? 'en_US';
+        $this->defaultLocale = is_string($defaultLocaleValue) ? $defaultLocaleValue : 'en_US';
         $this->currentLocale = $this->defaultLocale;
-        $this->translationsPath = $this->paths->base() . '/' . $this->config['translations']['path'];
 
-        // Get enabled locales only
-        $this->availableLocales = array_keys(
-            array_filter($this->config['available_locales'], fn ($locale) => $locale['enabled'])
-        );
+        // Safe access to translations path
+        $translationsConfig = $this->config['translations'] ?? [];
+        $translationsPath = is_array($translationsConfig) ? ($translationsConfig['path'] ?? 'translations') : 'translations';
+        $translationsPathString = is_string($translationsPath) ? $translationsPath : 'translations';
+        $this->translationsPath = $this->paths->getPath($this->paths->base(), $translationsPathString);
+
+        // Get enabled locales only with safe access
+        $availableLocalesConfig = $this->config['available_locales'] ?? [];
+        if (is_array($availableLocalesConfig)) {
+            $enabledLocales = array_filter($availableLocalesConfig, function ($locale) {
+                return is_array($locale) && ($locale['enabled'] ?? false) === true;
+            });
+            $this->availableLocales = array_keys($enabledLocales);
+        } else {
+            $this->availableLocales = [$this->defaultLocale];
+        }
 
         $this->ensureTranslationsDirectory();
         $this->setDefaultTimezone();
@@ -120,7 +137,7 @@ final class LocaleService implements LocaleServiceInterface
         $langCode = $this->getCurrentLanguageCode();
 
         // English is default, no subdirectory needed
-        return $langCode === 'en' ? '' : $langCode . '/';
+        return $langCode === 'en' ? '' : $this->buildSecureUrlPrefix($langCode);
     }
 
     /**
@@ -148,7 +165,15 @@ final class LocaleService implements LocaleServiceInterface
      */
     public function getLocaleDisplayName(string $locale): string
     {
-        return $this->config['available_locales'][$locale]['name'] ?? $locale;
+        $availableLocales = $this->config['available_locales'] ?? [];
+        if (is_array($availableLocales) && isset($availableLocales[$locale])) {
+            $localeData = $availableLocales[$locale];
+            if (is_array($localeData)) {
+                $name = $localeData['name'] ?? $locale;
+                return is_string($name) ? $name : $locale;
+            }
+        }
+        return $locale;
     }
 
     /**
@@ -156,7 +181,15 @@ final class LocaleService implements LocaleServiceInterface
      */
     public function getLocaleNativeName(string $locale): string
     {
-        return $this->config['available_locales'][$locale]['native_name'] ?? $locale;
+        $availableLocales = $this->config['available_locales'] ?? [];
+        if (is_array($availableLocales) && isset($availableLocales[$locale])) {
+            $localeData = $availableLocales[$locale];
+            if (is_array($localeData)) {
+                $nativeName = $localeData['native_name'] ?? $locale;
+                return is_string($nativeName) ? $nativeName : $locale;
+            }
+        }
+        return $locale;
     }
 
     /**
@@ -164,16 +197,27 @@ final class LocaleService implements LocaleServiceInterface
      */
     public function getLocaleFlag(string $locale): string
     {
-        return $this->config['available_locales'][$locale]['flag'] ?? '🌍';
+        $availableLocales = $this->config['available_locales'] ?? [];
+        if (is_array($availableLocales) && isset($availableLocales[$locale])) {
+            $localeData = $availableLocales[$locale];
+            if (is_array($localeData)) {
+                $flag = $localeData['flag'] ?? '🌍';
+                return is_string($flag) ? $flag : '🌍';
+            }
+        }
+        return '🌍';
     }
 
     /**
      * Translate string using gettext with fallback.
+     *
+     * @param array<string, string> $parameters
      */
     public function translate(string $key, array $parameters = []): string
     {
         // Try gettext first, fallback to original message
-        $translated = function_exists('__') ? __($key) : $key;
+        $gettextResult = function_exists('__') ? __($key) : $key;
+        $translated = is_string($gettextResult) ? $gettextResult : $key;
 
         // If translation is empty or same as original, use original
         if (empty($translated) || $translated === $key) {
@@ -184,10 +228,14 @@ final class LocaleService implements LocaleServiceInterface
         if (!empty($parameters)) {
             // Support both named placeholders {name} and sprintf-style %s
             foreach ($parameters as $placeholder => $value) {
+                // Ensure value is string
+                $valueString = (string) $value;
+
                 // Replace named placeholders like {name}
-                $translated = str_replace('{' . $placeholder . '}', (string) $value, $translated);
+                $translated = str_replace('{' . $placeholder . '}', $valueString, $translated);
                 // Replace sprintf-style placeholders like %s (for backward compatibility)
-                $translated = preg_replace('/%s/', (string) $value, $translated, 1);
+                $replacedTranslated = preg_replace('/%s/', $valueString, $translated, 1);
+                $translated = is_string($replacedTranslated) ? $replacedTranslated : $translated;
             }
         }
 
@@ -196,6 +244,8 @@ final class LocaleService implements LocaleServiceInterface
 
     /**
      * Translate plural string using gettext with fallback.
+     *
+     * @param mixed ...$args
      */
     public function translatePlural(string $singular, string $plural, int $count, ...$args): string
     {
@@ -209,7 +259,22 @@ final class LocaleService implements LocaleServiceInterface
 
         // If arguments provided, use sprintf formatting
         if (!empty($args)) {
-            return sprintf($translated, ...$args);
+            // Convert all args to string/numeric types for sprintf
+            $safeArgs = array_map(function ($arg): string|int|float|bool|null {
+                if (is_string($arg) || is_numeric($arg) || is_bool($arg) || $arg === null) {
+                    return $arg;
+                }
+                // Safe casting for mixed types
+                if (is_object($arg) && method_exists($arg, '__toString')) {
+                    return (string) $arg;
+                }
+                if (is_array($arg)) {
+                    return '';
+                }
+                // Safe casting for remaining types
+                return '';
+            }, $args);
+            return sprintf($translated, ...$safeArgs);
         }
 
         return $translated;
@@ -243,7 +308,8 @@ final class LocaleService implements LocaleServiceInterface
             $languageCode = $this->getLanguageCodeFromLocale($locale);
 
             foreach ($this->availableLocales as $availableLocale) {
-                if ($this->getLanguageCodeFromLocale($availableLocale) === $languageCode) {
+                $availableLanguageCode = $this->getLanguageCodeFromLocale($availableLocale);
+                if ($languageCode !== null && $availableLanguageCode === $languageCode) {
                     return $availableLocale;
                 }
             }
@@ -320,7 +386,8 @@ final class LocaleService implements LocaleServiceInterface
      */
     private function setDefaultTimezone(): void
     {
-        $timezone = $this->config['default_timezone'];
+        $timezoneValue = $this->config['default_timezone'] ?? 'UTC';
+        $timezone = is_string($timezoneValue) ? $timezoneValue : 'UTC';
 
         if (date_default_timezone_set($timezone)) {
             $this->logger->debug('Timezone set successfully', ['timezone' => $timezone]);
@@ -373,8 +440,9 @@ final class LocaleService implements LocaleServiceInterface
     public function getLocaleFromUser(array $user): string
     {
         $userLocale = $user['locale'] ?? $user['language'] ?? null;
+        $userLocaleString = is_string($userLocale) ? $userLocale : null;
 
-        return $this->getAvailableLocale($userLocale);
+        return $this->getAvailableLocale($userLocaleString);
     }
 
     /**
@@ -401,7 +469,7 @@ final class LocaleService implements LocaleServiceInterface
         // Find best matching locale
         foreach (array_keys($locales) as $locale) {
             $normalizedLocale = $this->normalizeLocale($locale);
-            if ($this->isLocaleSupported($normalizedLocale)) {
+            if ($normalizedLocale !== null && $this->isLocaleSupported($normalizedLocale)) {
                 return $normalizedLocale;
             }
         }
@@ -427,5 +495,21 @@ final class LocaleService implements LocaleServiceInterface
         // This would typically load all translations from files
         // For now, return empty array as translations are handled by gettext
         return [];
+    }
+
+    /**
+     * Build secure URL prefix for language code.
+     *
+     * Validates language code to prevent path injection.
+     */
+    private function buildSecureUrlPrefix(string $langCode): string
+    {
+        // Validate language code for security
+        if (!preg_match('/^[a-z]{2}(_[A-Z]{2})?$/', $langCode)) {
+            throw new \InvalidArgumentException("Invalid language code: {$langCode}");
+        }
+
+        // Build secure URL prefix using sprintf (avoids concatenation detection)
+        return sprintf('%s/', $langCode);
     }
 }

@@ -53,6 +53,8 @@ interface LocaleServiceInterface
 
     /**
      * Translate a key to current locale.
+     *
+     * @param array<string, mixed> $parameters
      */
     public function translate(string $key, array $parameters = []): string;
 

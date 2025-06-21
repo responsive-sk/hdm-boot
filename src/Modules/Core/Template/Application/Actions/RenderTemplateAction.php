@@ -96,13 +96,20 @@ final class RenderTemplateAction
         $method = $request->getMethod();
 
         if ($method === 'GET') {
-            return $request->getQueryParams();
+            $queryParams = $request->getQueryParams();
+            /** @var array<string, mixed> $typedQueryParams */
+            $typedQueryParams = $queryParams;
+            return $typedQueryParams;
         }
 
         if ($method === 'POST') {
             $parsedBody = $request->getParsedBody();
-
-            return is_array($parsedBody) ? $parsedBody : [];
+            if (is_array($parsedBody)) {
+                /** @var array<string, mixed> $typedParsedBody */
+                $typedParsedBody = $parsedBody;
+                return $typedParsedBody;
+            }
+            return [];
         }
 
         throw new \InvalidArgumentException("Unsupported HTTP method: {$method}");

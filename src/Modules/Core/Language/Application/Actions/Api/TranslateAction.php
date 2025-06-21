@@ -105,11 +105,16 @@ final class TranslateAction
         $method = $request->getMethod();
 
         if ($method === 'POST') {
-            return (array) $request->getParsedBody();
+            $parsedBody = $request->getParsedBody();
+            /** @var array<string, mixed> $postData */
+            $postData = is_array($parsedBody) ? $parsedBody : [];
+            return $postData;
         }
 
         if ($method === 'GET') {
-            return $request->getQueryParams();
+            /** @var array<string, mixed> $queryParams */
+            $queryParams = $request->getQueryParams();
+            return $queryParams;
         }
 
         return [];
@@ -121,23 +126,27 @@ final class TranslateAction
     private function getCurrentLocale(ServerRequestInterface $request): Locale
     {
         // Try to get locale from session, headers, or default
-        $localeCode = $_SESSION['locale'] ??
-                     $request->getHeaderLine('Accept-Language') ??
-                     'en_US';
+        $sessionLocale = $_SESSION['locale'] ?? null;
+        $acceptLanguage = $request->getHeaderLine('Accept-Language');
+        $localeCode = $sessionLocale ?: ($acceptLanguage ?: 'en_US');
+
+        // Ensure locale code is string
+        $localeCodeString = is_string($localeCode) ? $localeCode : 'en_US';
 
         // Parse Accept-Language header if needed
-        if (str_contains($localeCode, ',')) {
-            $localeCode = explode(',', $localeCode)[0];
+        if (str_contains($localeCodeString, ',')) {
+            $parts = explode(',', $localeCodeString);
+            $localeCodeString = $parts[0];
         }
 
         // Convert to our format if needed
-        if (str_contains($localeCode, '-')) {
-            $localeCode = str_replace('-', '_', $localeCode);
+        if (str_contains($localeCodeString, '-')) {
+            $localeCodeString = str_replace('-', '_', $localeCodeString);
         }
 
         // Validate and fallback to default
         try {
-            return Locale::fromString($localeCode);
+            return Locale::fromString($localeCodeString);
         } catch (\Exception $e) {
             return Locale::default();
         }

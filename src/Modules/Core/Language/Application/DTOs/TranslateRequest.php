@@ -28,10 +28,23 @@ final readonly class TranslateRequest
      */
     public static function fromArray(array $data): self
     {
+        // Safe extraction of key
+        $keyValue = $data['key'] ?? $data['text'] ?? '';
+        $key = is_string($keyValue) ? $keyValue : '';
+
+        // Safe extraction of locale
+        $localeValue = $data['locale'] ?? null;
+        $locale = $localeValue !== null && is_string($localeValue) ? $localeValue : null;
+
+        // Safe extraction of parameters
+        $parametersValue = $data['parameters'] ?? $data['params'] ?? [];
+        /** @var array<string, string> $parameters */
+        $parameters = is_array($parametersValue) ? $parametersValue : [];
+
         return new self(
-            key: (string) ($data['key'] ?? $data['text'] ?? ''),
-            locale: isset($data['locale']) ? (string) $data['locale'] : null,
-            parameters: (array) ($data['parameters'] ?? $data['params'] ?? [])
+            key: $key,
+            locale: $locale,
+            parameters: $parameters
         );
     }
 
@@ -52,9 +65,7 @@ final readonly class TranslateRequest
             $errors[] = 'Invalid locale format. Expected format: xx_XX (e.g., en_US)';
         }
 
-        if (!is_array($this->parameters)) {
-            $errors[] = 'Parameters must be an array';
-        }
+        // Parameters are always array due to constructor type hint
 
         return $errors;
     }

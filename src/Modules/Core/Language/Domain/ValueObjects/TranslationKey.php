@@ -44,7 +44,7 @@ final readonly class TranslationKey
     {
         preg_match_all('/\{([^}]+)\}/', $this->key, $matches);
 
-        return $matches[1] ?? [];
+        return $matches[1];
     }
 
     /**

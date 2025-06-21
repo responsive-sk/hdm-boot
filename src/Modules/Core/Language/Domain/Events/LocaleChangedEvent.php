@@ -68,4 +68,53 @@ final readonly class LocaleChangedEvent implements DomainEvent
     {
         return $this->occurredAt;
     }
+
+    /**
+     * Get event identifier for tracking.
+     */
+    public function getEventId(): string
+    {
+        return 'locale_changed_' . ($this->userId ?? 'anonymous') . '_' . $this->occurredAt->getTimestamp();
+    }
+
+    /**
+     * Get event version for evolution.
+     */
+    public function getVersion(): int
+    {
+        return 1;
+    }
+
+    /**
+     * Get event payload for storage.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'event_id' => $this->getEventId(),
+            'event_name' => $this->getEventName(),
+            'version' => $this->getVersion(),
+            'user_id' => $this->userId,
+            'previous_locale' => $this->previousLocale->toString(),
+            'new_locale' => $this->newLocale->toString(),
+            'occurred_at' => $this->occurredAt->format('Y-m-d H:i:s'),
+        ];
+    }
+
+    /**
+     * Get event data for logging.
+     *
+     * @return array<string, mixed>
+     */
+    public function toLogArray(): array
+    {
+        return [
+            'event' => $this->getEventName(),
+            'user_id' => $this->userId,
+            'previous_locale' => $this->previousLocale->toString(),
+            'new_locale' => $this->newLocale->toString(),
+        ];
+    }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Helpers;
 
-use MvaBootstrap\Modules\Core\Security\Exceptions\SecurityException;
 use MvaBootstrap\Modules\Core\User\Exceptions\UserAlreadyExistsException;
 use MvaBootstrap\Modules\Core\User\Exceptions\UserNotFoundException;
 use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthenticationException;
 use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthorizationException;
+use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\SecurityException;
 use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
 
 /**

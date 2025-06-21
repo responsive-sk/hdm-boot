@@ -243,8 +243,12 @@ final class EventDispatcher implements EventDispatcherInterface, PsrEventDispatc
     {
         if (is_array($listener)) {
             $class = is_object($listener[0]) ? get_class($listener[0]) : $listener[0];
+            $method = $listener[1] ?? 'unknown';
 
-            return $class . '::' . $listener[1];
+            $className = is_string($class) ? $class : 'unknown';
+            $methodName = is_string($method) ? $method : 'unknown';
+
+            return $className . '::' . $methodName;
         }
 
         if (is_object($listener)) {

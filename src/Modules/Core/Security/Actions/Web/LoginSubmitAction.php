@@ -11,7 +11,7 @@ use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
 use MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator;
 use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -25,8 +25,7 @@ final class LoginSubmitAction
 {
     public function __construct(
         private readonly TemplateRenderer $templateRenderer,
-        private readonly OdanSession $session,
-        private readonly CsrfService $csrfService,
+        private readonly SessionInterface $session,
         private readonly AuthenticationService $authenticationService,
         private readonly AuthenticationValidator $validator,
         private readonly LoggerInterface $logger,
@@ -36,29 +35,29 @@ final class LoginSubmitAction
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $data = (array) $request->getParsedBody();
+        $parsedBody = $request->getParsedBody();
+        /** @var array<string, mixed> $data */
+        $data = is_array($parsedBody) ? $parsedBody : [];
 
         try {
             // Session is automatically started by SessionStartMiddleware
 
             // Note: CSRF validation disabled for login
             // Consider implementing reCaptcha or other anti-bot protection instead
-            // $this->csrfService->validateFromRequest($data, 'login');
 
             // Validate input data
             $this->validator->validateUserLogin($data);
 
-            // Authenticate user
-            $clientIp = $request->getServerParams()['REMOTE_ADDR'] ?? '127.0.0.1';
-            $user = $this->authenticationService->authenticateForWeb($data['email'], $data['password'], $clientIp);
+            // Authenticate user with safe type casting
+            $serverParams = $request->getServerParams();
+            $clientIp = is_string($serverParams['REMOTE_ADDR'] ?? null) ? $serverParams['REMOTE_ADDR'] : '127.0.0.1';
+            $email = is_string($data['email'] ?? null) ? $data['email'] : '';
+            $password = is_string($data['password'] ?? null) ? $data['password'] : '';
+            $user = $this->authenticationService->authenticateForWeb($email, $password, $clientIp);
 
             // Check if authentication failed
             if (!$user) {
-                $this->logger->notice('Login failed - invalid credentials', [
-                    'email' => $data['email'],
-                    'ip'    => $clientIp,
-                ]);
-
+                // Log handled in AuthenticationException catch block
                 return $this->templateRenderer->render(
                     $response->withStatus(401),
                     'auth/login.php',
@@ -75,7 +74,16 @@ final class LoginSubmitAction
             if (!$this->session->isStarted()) {
                 $this->session->start();
             }
+
+            $oldSessionId = $this->session->getId();
             $this->session->regenerateId();
+            $newSessionId = $this->session->getId();
+
+            $this->logger->debug('LoginSubmitAction: Session regeneration', [
+                'old_session_id' => $oldSessionId,
+                'new_session_id' => $newSessionId,
+                'session_started' => $this->session->isStarted(),
+            ]);
 
             // Add user to session
             $currentTime = time();
@@ -89,12 +97,18 @@ final class LoginSubmitAction
                 'status' => $user['status'],
             ]);
 
+            $this->logger->debug('LoginSubmitAction: Session data set', [
+                'session_id' => $this->session->getId(),
+                'user_id' => $this->session->get('user_id'),
+                'session_started' => $this->session->isStarted(),
+            ]);
+
             // Session data set successfully
 
             // Add success message to flash
-            $this->session->getFlash()->add('success', 'Login successful! Welcome back.');
+            $this->session->flash('success', 'Login successful! Welcome back.');
 
-            // Log successful login
+            // Log successful login (security event only)
             $this->securityLogger->info('🔐 User login successful', [
                 'event'      => 'user_login_success',
                 'user_id'    => $user['id'],
@@ -104,27 +118,17 @@ final class LoginSubmitAction
                 'session_id' => session_id(),
             ]);
 
-            $this->logger->info('User logged in successfully', [
-                'user_id' => $user['id'],
-                'email'   => $user['email'],
-            ]);
-
             // Redirect to profile
             return $response
                 ->withHeader('Location', '/profile')
                 ->withStatus(302);
         } catch (ValidationException $e) {
-            // Validation errors
+            // Validation errors (security event only)
             $this->securityLogger->warning('🚨 Login validation failed', [
                 'event'  => 'login_validation_failed',
                 'errors' => $e->getErrors(),
                 'email'  => $data['email'] ?? 'unknown',
                 'ip'     => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
-            ]);
-
-            $this->logger->notice('Login validation failed', [
-                'errors' => $e->getErrors(),
-                'email'  => $data['email'] ?? 'unknown',
             ]);
 
             return $this->templateRenderer->render(
@@ -138,12 +142,8 @@ final class LoginSubmitAction
                 ]
             );
         } catch (SecurityException $e) {
-            // Security throttling
-            $this->logger->warning('Login security exception', [
-                'message' => $e->getMessage(),
-                'email'   => $data['email'] ?? 'unknown',
-                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
-            ]);
+            // Security throttling (logged in AuthenticationService)
+            // No additional logging needed here to avoid duplicates
 
             return $this->templateRenderer->render(
                 $response->withStatus(429),
@@ -156,8 +156,9 @@ final class LoginSubmitAction
                 ]
             );
         } catch (AuthenticationException $e) {
-            // Invalid credentials
-            $this->logger->notice('Login failed - invalid credentials', [
+            // Invalid credentials (security event)
+            $this->securityLogger->warning('🚨 Login failed - invalid credentials', [
+                'event' => 'login_failed_invalid_credentials',
                 'email' => $data['email'] ?? 'unknown',
                 'ip'    => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
@@ -173,10 +174,12 @@ final class LoginSubmitAction
                 ]
             );
         } catch (\Exception $e) {
-            // General errors
-            $this->logger->error('Login error', [
+            // General errors (security event)
+            $this->securityLogger->error('🚨 Login system error', [
+                'event'   => 'login_system_error',
                 'message' => $e->getMessage(),
                 'email'   => $data['email'] ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             return $this->templateRenderer->render(

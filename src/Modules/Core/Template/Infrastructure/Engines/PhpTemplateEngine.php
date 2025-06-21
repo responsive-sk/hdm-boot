@@ -6,7 +6,7 @@ namespace MvaBootstrap\Modules\Core\Template\Infrastructure\Engines;
 
 use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
 use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * PHP Template Engine.
@@ -24,7 +24,7 @@ final class PhpTemplateEngine implements TemplateEngineInterface
 
     public function __construct(
         private readonly CsrfService $csrfService,
-        private readonly OdanSession $session
+        private readonly SessionInterface $session
     ) {
     }
 
@@ -111,7 +111,7 @@ final class PhpTemplateEngine implements TemplateEngineInterface
     {
         $this->config = array_merge($this->config, $config);
 
-        if (isset($config['template_path'])) {
+        if (isset($config['template_path']) && is_string($config['template_path'])) {
             $this->templatePath = $config['template_path'];
         }
     }

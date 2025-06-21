@@ -9,23 +9,32 @@ use Psr\Http\Message\ServerRequestInterface;
 
 final class StatusAction
 {
+    /**
+     * @param array<string, mixed> $settings
+     */
     public function __construct(
         private array $settings
-    ) {}
+    ) {
+    }
 
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
+        // Safe access to settings with proper type checking
+        $appSettings = isset($this->settings['app']) && is_array($this->settings['app'])
+            ? $this->settings['app']
+            : [];
+
         $status = [
             'status' => 'OK',
             'timestamp' => time(),
-            'version' => $this->settings['app']['version'] ?? '1.0.0',
+            'version' => $appSettings['version'] ?? '1.0.0',
             'app' => [
-                'name' => $this->settings['app']['name'] ?? 'MVA Bootstrap',
+                'name' => $appSettings['name'] ?? 'MVA Bootstrap',
                 'environment' => $_ENV['APP_ENV'] ?? 'production',
-                'debug' => $this->settings['app']['debug'] ?? false,
-                'timezone' => $this->settings['app']['timezone'] ?? 'UTC'
+                'debug' => $appSettings['debug'] ?? false,
+                'timezone' => $appSettings['timezone'] ?? 'UTC'
             ],
             'php' => [
                 'version' => PHP_VERSION,
@@ -34,7 +43,12 @@ final class StatusAction
             ]
         ];
 
-        $response->getBody()->write(json_encode($status, JSON_PRETTY_PRINT));
+        $jsonContent = json_encode($status, JSON_PRETTY_PRINT);
+        if ($jsonContent === false) {
+            $jsonContent = '{"status":"error","message":"Failed to encode status"}';
+        }
+
+        $response->getBody()->write($jsonContent);
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

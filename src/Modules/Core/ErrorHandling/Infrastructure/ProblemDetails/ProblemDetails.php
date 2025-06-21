@@ -15,6 +15,9 @@ use JsonSerializable;
  */
 final readonly class ProblemDetails implements JsonSerializable
 {
+    /**
+     * @param array<string, mixed> $extensions
+     */
     public function __construct(
         public string $type,
         public string $title,
@@ -27,6 +30,8 @@ final readonly class ProblemDetails implements JsonSerializable
 
     /**
      * Create a validation error problem.
+     *
+     * @param array<string, string|array<string>> $validationErrors
      */
     public static function validationError(
         string $detail,
@@ -149,6 +154,8 @@ final readonly class ProblemDetails implements JsonSerializable
 
     /**
      * Create a custom problem.
+     *
+     * @param array<string, mixed> $extensions
      */
     public static function custom(
         string $type,

@@ -7,7 +7,7 @@ namespace MvaBootstrap\Modules\Core\Security\Middleware;
 use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
 use MvaBootstrap\Modules\Core\User\Services\UserService;
 use MvaBootstrap\SharedKernel\Contracts\MiddlewareInterface;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,6 +21,9 @@ use Psr\Log\LoggerInterface;
  */
 final class AuthorizationMiddleware implements MiddlewareInterface
 {
+    /**
+     * @param array<string> $requiredPermissions
+     */
     public function __construct(
         private readonly AuthorizationService $authorizationService,
         private readonly UserService $userService,
@@ -34,8 +37,9 @@ final class AuthorizationMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         try {
-            // Get user from session
-            $userId = $this->session->get('user_id');
+            // Get user from session with safe type checking
+            $userIdValue = $this->session->get('user_id');
+            $userId = is_string($userIdValue) ? $userIdValue : null;
 
             if (!$userId) {
                 $this->logger->warning('Authorization failed: No user in session');
@@ -89,6 +93,8 @@ final class AuthorizationMiddleware implements MiddlewareInterface
 
     /**
      * Create middleware instance with specific permissions.
+     *
+     * @param array<string> $permissions
      */
     public static function withPermissions(array $permissions): string
     {
@@ -99,10 +105,14 @@ final class AuthorizationMiddleware implements MiddlewareInterface
     private function createUnauthorizedResponse(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(401);
-        $response->getBody()->write(json_encode([
+        $jsonResponse = json_encode([
             'error'   => 'Unauthorized',
             'message' => 'Authentication required',
-        ]));
+        ]);
+
+        if ($jsonResponse !== false) {
+            $response->getBody()->write($jsonResponse);
+        }
 
         return $response->withHeader('Content-Type', 'application/json');
     }
@@ -110,10 +120,14 @@ final class AuthorizationMiddleware implements MiddlewareInterface
     private function createForbiddenResponse(): ResponseInterface
     {
         $response = $this->responseFactory->createResponse(403);
-        $response->getBody()->write(json_encode([
+        $jsonResponse = json_encode([
             'error'   => 'Forbidden',
             'message' => 'Insufficient permissions',
-        ]));
+        ]);
+
+        if ($jsonResponse !== false) {
+            $response->getBody()->write($jsonResponse);
+        }
 
         return $response->withHeader('Content-Type', 'application/json');
     }

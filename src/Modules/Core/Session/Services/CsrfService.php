@@ -6,7 +6,7 @@ namespace MvaBootstrap\Modules\Core\Session\Services;
 
 use MvaBootstrap\Modules\Core\Session\Enum\SecurityType;
 use MvaBootstrap\Modules\Core\Session\Exceptions\SecurityException;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * CSRF Protection Service.
@@ -37,7 +37,9 @@ final class CsrfService
         }
 
         // Store token in session
-        $tokens = $this->session->get(self::SESSION_KEY, []);
+        $tokensFromSession = $this->session->get(self::SESSION_KEY, []);
+        /** @var array<string, string> $tokens */
+        $tokens = is_array($tokensFromSession) ? $tokensFromSession : [];
         $tokens[$action] = $token;
 
         // Limit number of stored tokens
@@ -59,7 +61,9 @@ final class CsrfService
             return false;
         }
 
-        $tokens = $this->session->get(self::SESSION_KEY, []);
+        $tokensFromSession = $this->session->get(self::SESSION_KEY, []);
+        /** @var array<string, string> $tokens */
+        $tokens = is_array($tokensFromSession) ? $tokensFromSession : [];
 
         if (!isset($tokens[$action])) {
             return false;
@@ -86,12 +90,16 @@ final class CsrfService
             return null;
         }
 
-        $tokens = $this->session->get(self::SESSION_KEY, []);
-        if (!is_array($tokens)) {
+        $tokensFromSession = $this->session->get(self::SESSION_KEY, []);
+        if (!is_array($tokensFromSession)) {
             return null;
         }
 
-        return $tokens[$action] ?? null;
+        /** @var array<string, string> $tokens */
+        $tokens = $tokensFromSession;
+        $token = $tokens[$action] ?? null;
+
+        return is_string($token) ? $token : null;
     }
 
     /**
@@ -127,7 +135,7 @@ final class CsrfService
     public function clearTokens(): void
     {
         if ($this->session->isStarted()) {
-            $this->session->delete(self::SESSION_KEY);
+            $this->session->remove(self::SESSION_KEY);
         }
     }
 }

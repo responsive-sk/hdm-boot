@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace MvaBootstrap\Modules\Core\Template\Infrastructure\Services;
 
 use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use Odan\Session\SessionInterface as OdanSession;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Simple Template Renderer.
@@ -21,7 +22,8 @@ final class TemplateRenderer
     public function __construct(
         private readonly string $templatePath,
         private readonly CsrfService $csrfService,
-        private readonly OdanSession $session
+        private readonly SessionInterface $session,
+        private readonly Paths $paths
     ) {
     }
 
@@ -35,7 +37,13 @@ final class TemplateRenderer
         string $template,
         array $data = []
     ): ResponseInterface {
-        $templateFile = $this->templatePath . '/' . $template;
+        // Use Paths for secure file access (fallback to templatePath if needed)
+        $templateFile = $this->paths->templates($template);
+
+        // Fallback to templatePath if Paths doesn't work
+        if (!file_exists($templateFile) && !empty($this->templatePath)) {
+            $templateFile = $this->paths->getPath($this->templatePath, $template);
+        }
 
         if (!file_exists($templateFile)) {
             throw new \RuntimeException("Template not found: {$template}");
@@ -119,5 +127,57 @@ final class TemplateRenderer
         }
 
         return $url;
+    }
+
+    /**
+     * Render module template.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function renderModule(
+        ResponseInterface $response,
+        string $module,
+        string $template,
+        array $data = []
+    ): ResponseInterface {
+        // Use Paths for secure module template access
+        $templateFile = $this->paths->moduleTemplates($module, $template);
+
+        if (!file_exists($templateFile)) {
+            throw new \RuntimeException("Module template not found: {$module}/{$template}");
+        }
+
+        // Merge global data with template data
+        $templateData = array_merge($this->globalData, $data);
+
+        // Add security helpers
+        $templateData['csrf'] = $this->csrfService;
+        $templateData['session'] = $this->session;
+        $templateData['user'] = $this->session->get('user_data');
+        $templateData['flash'] = [
+            'success' => $this->session->getFlash()->get('success'),
+            'error'   => $this->session->getFlash()->get('error'),
+            'info'    => $this->session->getFlash()->get('info'),
+        ];
+
+        // Start output buffering
+        ob_start();
+
+        // Extract variables for template
+        extract($templateData, EXTR_SKIP);
+
+        // Include template
+        include $templateFile;
+
+        // Get content
+        $content = ob_get_clean();
+
+        if ($content === false) {
+            throw new \RuntimeException('Failed to render module template');
+        }
+
+        $response->getBody()->write($content);
+
+        return $response->withHeader('Content-Type', 'text/html; charset=utf-8');
     }
 }

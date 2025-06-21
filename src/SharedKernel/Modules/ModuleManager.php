@@ -6,6 +6,8 @@ namespace MvaBootstrap\SharedKernel\Modules;
 
 use MvaBootstrap\SharedKernel\Contracts\ModuleInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Container\ContainerInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Module Manager.
@@ -34,10 +36,20 @@ final class ModuleManager
      */
     private array $initializedModules = [];
 
+    private ?ContainerInterface $container = null;
+
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly string $modulesPath = 'modules'
     ) {
+    }
+
+    /**
+     * Set container for module initialization.
+     */
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
     }
 
     /**
@@ -216,7 +228,13 @@ final class ModuleManager
             $this->initializeModule($dependency);
         }
 
-        // Initialize the module
+        // Initialize the module (no parameters required by interface)
+        // Log container availability for debugging
+        if ($this->container !== null) {
+            $this->logger->debug('Container available for module initialization', [
+                'module_name' => $moduleName,
+            ]);
+        }
         $module->initialize();
         $this->initializedModules[] = $moduleName;
 
@@ -305,6 +323,10 @@ final class ModuleManager
         );
 
         foreach ($iterator as $file) {
+            if (!$file instanceof \SplFileInfo) {
+                continue;
+            }
+
             if ($file->isDir() && $file->getFilename() !== '.' && $file->getFilename() !== '..') {
                 $manifestFile = $file->getPathname() . '/module.php';
                 $configFile = $file->getPathname() . '/config.php';
@@ -359,8 +381,10 @@ final class ModuleManager
                 return;
             }
 
-            // Create manifest object
-            $manifest = ModuleManifest::fromArray($manifestData, $moduleDir);
+            // Create manifest object with proper type casting
+            /** @var array<string, mixed> $typedManifestData */
+            $typedManifestData = $manifestData;
+            $manifest = ModuleManifest::fromArray($typedManifestData, $moduleDir);
 
             // Validate manifest
             $errors = $manifest->validate();
@@ -386,13 +410,17 @@ final class ModuleManager
             // Load config if specified
             $config = [];
             if ($manifest->getConfigFile() && file_exists($manifest->getConfigFile())) {
-                $config = require $manifest->getConfigFile();
+                $configRaw = require $manifest->getConfigFile();
+                if (is_array($configRaw)) {
+                    /** @var array<string, mixed> $typedConfig */
+                    $typedConfig = $configRaw;
+                    $config = $typedConfig;
+                }
             }
 
             // Create module instance
             $module = $this->createModuleFromManifest($manifest, $config);
             $this->registerModule($module);
-
         } catch (\Throwable $e) {
             $this->logger->error('Failed to load module from manifest', [
                 'module_dir'    => $moduleDir,
@@ -421,8 +449,10 @@ final class ModuleManager
                 return;
             }
 
-            // Create module instance from config
-            $module = $this->createModuleFromConfig($moduleDir, $config);
+            // Create module instance from config with proper type casting
+            /** @var array<string, mixed> $typedConfig */
+            $typedConfig = $config;
+            $module = $this->createModuleFromConfig($moduleDir, $typedConfig);
             $this->registerModule($module);
         } catch (\Throwable $e) {
             $this->logger->error('Failed to load module', [
@@ -436,6 +466,8 @@ final class ModuleManager
 
     /**
      * Create module instance from manifest.
+     *
+     * @param array<string, mixed> $config
      */
     private function createModuleFromManifest(ModuleManifest $manifest, array $config): ModuleInterface
     {
@@ -450,6 +482,8 @@ final class ModuleManager
 
     /**
      * Create module instance from configuration (legacy support).
+     *
+     * @param array<string, mixed> $config
      */
     private function createModuleFromConfig(string $moduleDir, array $config): ModuleInterface
     {

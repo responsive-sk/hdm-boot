@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\SharedKernel\Modules;
 
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use ResponsiveSk\Slim4Paths\Paths;
+
 /**
  * Module manifest containing metadata about a module.
  */
 class ModuleManifest
 {
+    /**
+     * @param array<string> $dependencies
+     * @param array<string> $authors
+     * @param array<string> $tags
+     * @param array<string> $provides
+     * @param array<string, mixed> $requires
+     */
     public function __construct(
         private readonly string $name,
         private readonly string $version,
@@ -34,6 +44,9 @@ class ModuleManifest
         return $this->version;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getDependencies(): array
     {
         return $this->dependencies;
@@ -54,21 +67,33 @@ class ModuleManifest
         return $this->description;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAuthors(): array
     {
         return $this->authors;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getTags(): array
     {
         return $this->tags;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getProvides(): array
     {
         return $this->provides;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getRequires(): array
     {
         return $this->requires;
@@ -81,26 +106,83 @@ class ModuleManifest
 
     /**
      * Create manifest from array data.
+     *
+     * @param array<string, mixed> $data
      */
     public static function fromArray(array $data, string $moduleDir): self
     {
+        // Ensure arrays are properly typed with safe filtering
+        $dependenciesRaw = $data['dependencies'] ?? [];
+        $authorsRaw = $data['authors'] ?? [];
+        $tagsRaw = $data['tags'] ?? [];
+        $providesRaw = $data['provides'] ?? [];
+        $requiresRaw = $data['requires'] ?? [];
+
+        // Filter and type-cast arrays properly
+        /** @var array<string> $dependencies */
+        $dependencies = is_array($dependenciesRaw)
+            ? array_values(array_filter($dependenciesRaw, 'is_string'))
+            : [];
+
+        /** @var array<string> $authors */
+        $authors = is_array($authorsRaw)
+            ? array_values(array_filter($authorsRaw, 'is_string'))
+            : [];
+
+        /** @var array<string> $tags */
+        $tags = is_array($tagsRaw)
+            ? array_values(array_filter($tagsRaw, 'is_string'))
+            : [];
+
+        /** @var array<string> $provides */
+        $provides = is_array($providesRaw)
+            ? array_values(array_filter($providesRaw, 'is_string'))
+            : [];
+
+        /** @var array<string, mixed> $requires */
+        $requires = is_array($requiresRaw) ? $requiresRaw : [];
+
+        // Resolve file paths securely using Paths-compatible approach
+        $routesFile = null;
+        $configFile = null;
+
+        if (isset($data['routes'])) {
+            $routesPath = $data['routes'];
+            if (is_string($routesPath)) {
+                $routesFile = str_starts_with($routesPath, '/')
+                    ? $routesPath  // Absolute path
+                    : self::securePath($moduleDir, $routesPath);  // Secure relative path
+            }
+        }
+
+        if (isset($data['config'])) {
+            $configPath = $data['config'];
+            if (is_string($configPath)) {
+                $configFile = str_starts_with($configPath, '/')
+                    ? $configPath  // Absolute path
+                    : self::securePath($moduleDir, $configPath);  // Secure relative path
+            }
+        }
+
         return new self(
-            name: $data['name'] ?? basename($moduleDir),
-            version: $data['version'] ?? '1.0.0',
-            dependencies: $data['dependencies'] ?? [],
-            routesFile: isset($data['routes']) ? $moduleDir . '/' . $data['routes'] : null,
-            configFile: isset($data['config']) ? $moduleDir . '/' . $data['config'] : null,
-            description: $data['description'] ?? null,
-            authors: $data['authors'] ?? [],
-            tags: $data['tags'] ?? [],
-            provides: $data['provides'] ?? [],
-            requires: $data['requires'] ?? [],
-            enabled: $data['enabled'] ?? true
+            name: is_string($data['name'] ?? null) ? $data['name'] : basename($moduleDir),
+            version: is_string($data['version'] ?? null) ? $data['version'] : '1.0.0',
+            dependencies: $dependencies,
+            routesFile: $routesFile,
+            configFile: $configFile,
+            description: is_string($data['description'] ?? null) ? $data['description'] : null,
+            authors: $authors,
+            tags: $tags,
+            provides: $provides,
+            requires: $requires,
+            enabled: is_bool($data['enabled'] ?? null) ? $data['enabled'] : true
         );
     }
 
     /**
      * Convert manifest to array.
+     *
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -121,6 +203,8 @@ class ModuleManifest
 
     /**
      * Validate manifest data.
+     *
+     * @return array<string>
      */
     public function validate(): array
     {
@@ -143,5 +227,32 @@ class ModuleManifest
         }
 
         return $errors;
+    }
+
+    /**
+     * Secure path resolution helper.
+     *
+     * Prevents path traversal attacks by validating relative paths.
+     * This is a temporary solution until full Paths integration.
+     */
+    private static function securePath(string $basePath, string $relativePath): string
+    {
+        // Validate relative path for security
+        if (str_contains($relativePath, '..')) {
+            throw new \InvalidArgumentException("Path traversal detected in: {$relativePath}");
+        }
+
+        if (str_contains($relativePath, '~')) {
+            throw new \InvalidArgumentException("Home directory access not allowed: {$relativePath}");
+        }
+
+        // Clean and normalize the path
+        $relativePath = ltrim($relativePath, '/\\');
+
+        // Use PathsFactory for secure cross-platform path joining
+        $paths = PathsFactory::create();
+        $fullPath = $paths->getPath($basePath, $relativePath);
+
+        return $fullPath;
     }
 }

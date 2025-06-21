@@ -8,7 +8,7 @@ use MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginRequest;
 use MvaBootstrap\Modules\Core\Security\Domain\Services\AuthenticationDomainService;
 use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -34,7 +34,9 @@ final class LoginSubmitAction
     {
         try {
             // Extract and validate CSRF token
-            $data = (array) $request->getParsedBody();
+            $parsedBody = $request->getParsedBody();
+            /** @var array<string, mixed> $data */
+            $data = is_array($parsedBody) ? $parsedBody : [];
             $this->csrfService->validateFromRequest($data, 'login');
 
             // Create domain DTO from HTTP request
@@ -100,31 +102,39 @@ final class LoginSubmitAction
         $user = $loginResult->getUser();
         $metadata = $loginResult->metadata;
 
+        // Ensure user data is available
+        if (!is_array($user)) {
+            throw new \RuntimeException('User data not available in successful login result');
+        }
+
         // Start session if not started, then regenerate ID for security
         if (!$this->session->isStarted()) {
             $this->session->start();
         }
         $this->session->regenerateId();
 
-        // Add user to session
-        $this->session->set('user_id', $user['id']);
+        // Add user to session with safe array access
+        $this->session->set('user_id', $user['id'] ?? '');
         $this->session->set('login_time', $metadata['login_time'] ?? time());
         $this->session->set('last_activity', time());
         $this->session->set('user_data', [
-            'email'  => $user['email'],
-            'name'   => $user['name'],
-            'role'   => $user['role'],
-            'status' => $user['status'],
+            'email'  => $user['email'] ?? '',
+            'name'   => $user['name'] ?? '',
+            'role'   => $user['role'] ?? '',
+            'status' => $user['status'] ?? '',
         ]);
 
         // Determine redirect URL
         $queryParams = $request->getQueryParams();
         $redirectUrl = $queryParams['redirect'] ?? '/';
 
+        // Ensure redirect URL is a string
+        $redirectLocation = is_string($redirectUrl) ? $redirectUrl : '/';
+
         // Create redirect response
         return $response
             ->withStatus(302)
-            ->withHeader('Location', $redirectUrl);
+            ->withHeader('Location', $redirectLocation);
     }
 
     /**

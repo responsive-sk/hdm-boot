@@ -24,9 +24,17 @@ final readonly class LanguageSettingsRequest
      */
     public static function fromArray(array $data): self
     {
+        // Safe extraction of locale
+        $localeValue = $data['locale'] ?? null;
+        $locale = $localeValue !== null && is_string($localeValue) ? $localeValue : null;
+
+        // Safe extraction of action
+        $actionValue = $data['action'] ?? null;
+        $action = $actionValue !== null && is_string($actionValue) ? $actionValue : null;
+
         return new self(
-            locale: isset($data['locale']) ? (string) $data['locale'] : null,
-            action: isset($data['action']) ? (string) $data['action'] : null
+            locale: $locale,
+            action: $action
         );
     }
 

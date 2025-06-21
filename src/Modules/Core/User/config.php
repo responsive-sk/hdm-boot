@@ -60,7 +60,8 @@ return [
             return new ProfilePageAction(
                 $container->get(\MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer::class),
                 $container->get(\Odan\Session\SessionInterface::class),
-                $container->get(UserService::class)
+                $container->get(UserService::class),
+                $container->get('logger.profile')
             );
         },
     ],

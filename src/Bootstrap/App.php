@@ -6,6 +6,7 @@ namespace MvaBootstrap\Bootstrap;
 
 use DI\Container;
 use Dotenv\Dotenv;
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 use Slim\App as SlimApp;
 use Slim\Factory\AppFactory;
@@ -28,9 +29,24 @@ final class App
 
     public function __construct(?string $rootPath = null)
     {
-        $rootPath ??= dirname(__DIR__, 2); // Go to project root
-        $this->paths = new Paths($rootPath);
-        $this->loadEnvironment($rootPath);
+        // Use PathsFactory for secure path handling
+        if ($rootPath !== null) {
+            // For testing or custom root path
+            /** @var array{base_path: string, paths: array<string, string>} $pathsConfig */
+            $pathsConfig = require $rootPath . '/config/paths.php';
+            $this->paths = new Paths($pathsConfig['base_path'], $pathsConfig['paths']);
+        } else {
+            // Use PathsFactory for production
+            $this->paths = PathsFactory::create();
+        }
+
+        // Load paths configuration for legacy compatibility
+        /** @var array{base_path: string, paths: array<string, string>} $pathsConfig */
+        $pathsConfig = require $this->paths->config('paths.php');
+
+        $this->paths = new Paths($pathsConfig['base_path'], $pathsConfig['paths']);
+
+        $this->loadEnvironment();
         $this->container = $this->createContainer();
         $this->slimApp = $this->createSlimApp();
     }
@@ -50,7 +66,7 @@ final class App
         // Load routes
         $this->loadRoutes();
 
-        // Setup middleware stack (now module services are available)
+        // Setup middleware stack AFTER module services are loaded
         $this->setupMiddleware();
 
         // Setup error handling
@@ -99,9 +115,9 @@ final class App
     /**
      * Load environment and create core components.
      */
-    private function loadEnvironment(string $rootPath): void
+    private function loadEnvironment(): void
     {
-        $dotenv = Dotenv::createImmutable($rootPath);
+        $dotenv = Dotenv::createImmutable($this->paths->base());
         $dotenv->safeLoad();
 
         // Set error reporting for development
@@ -113,9 +129,17 @@ final class App
 
     private function createContainer(): Container
     {
-        $configPath = $this->paths->base() . '/config/container.php';
+        $configPath = $this->paths->config('container.php');
 
-        return require $configPath;
+        /** @var Container $container */
+        $container = require $configPath;
+
+        // @phpstan-ignore-next-line instanceof.alwaysTrue
+        if (!$container instanceof Container) {
+            throw new \RuntimeException('Container configuration must return DI\Container instance');
+        }
+
+        return $container;
     }
 
     /** @return SlimApp<Container> */
@@ -123,27 +147,129 @@ final class App
     {
         AppFactory::setContainer($this->container);
         $app = AppFactory::create();
-        assert($app instanceof SlimApp);
 
+        // Ensure we have the correct container type
+        if (!$app->getContainer() instanceof Container) {
+            throw new \RuntimeException('Expected DI\Container but got different container type');
+        }
+
+        /** @var SlimApp<Container> $app */
         return $app;
     }
 
     private function loadRoutes(): void
     {
-        $routesFile = $this->paths->base() . '/config/routes.php';
+        // Load main application routes
+        $routesFile = $this->paths->config('routes.php');
         if (file_exists($routesFile)) {
             $routes = require $routesFile;
             if (is_callable($routes)) {
                 $routes($this->slimApp);
             }
         }
+
+        // Load module routes
+        $this->loadModuleRoutes();
+    }
+
+    /**
+     * Load routes from all registered modules.
+     */
+    private function loadModuleRoutes(): void
+    {
+        try {
+            $moduleManager = $this->container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+                return;
+            }
+
+            $modules = $moduleManager->getAllModules();
+            $logger = $this->container->get(\Psr\Log\LoggerInterface::class);
+
+            if (!$logger instanceof \Psr\Log\LoggerInterface) {
+                throw new \RuntimeException('Logger service not properly configured');
+            }
+
+            foreach ($modules as $module) {
+                $this->loadModuleRouteFile($module, $logger);
+            }
+
+            $logger->info('Module routes loaded', [
+                'modules_count' => count($modules),
+            ]);
+        } catch (\Exception $e) {
+            error_log('Failed to load module routes: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Load routes from a specific module.
+     */
+    private function loadModuleRouteFile(\MvaBootstrap\SharedKernel\Contracts\ModuleInterface $module, \Psr\Log\LoggerInterface $logger): void
+    {
+        try {
+            // Get module manifest to find routes file
+            $moduleManager = $this->container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+
+            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+                return;
+            }
+
+            $manifest = $moduleManager->getModuleManifest($module->getName());
+
+            if ($manifest) {
+                // Use manifest to get routes file
+                $routesFile = $manifest->getRoutesFile();
+            } else {
+                // Fallback: check module config for routes
+                $config = $moduleManager->getModuleConfig($module->getName());
+                if (isset($config['routes']) && is_string($config['routes'])) {
+                    // Use secure path construction with Paths service - build path step by step
+                    $moduleRelativePath = 'Modules/' . str_replace('\\', '/', $module->getName());
+                    $moduleDir = $this->paths->getPath($this->paths->src(), $moduleRelativePath);
+                    $routesFile = $this->paths->getPath($moduleDir, $config['routes']);
+                } else {
+                    return; // No routes defined
+                }
+            }
+
+            if (!$routesFile || !file_exists($routesFile)) {
+                return; // No routes file, skip
+            }
+
+            $routes = require $routesFile;
+            if (is_callable($routes)) {
+                $routes($this->slimApp);
+
+                $logger->debug('Module routes loaded', [
+                    'module' => $module->getName(),
+                    'routes_file' => $routesFile,
+                ]);
+            }
+        } catch (\Exception $e) {
+            $logger->warning('Failed to load module routes', [
+                'module' => $module->getName(),
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function setupMiddleware(): void
     {
         // Application middleware stack (order matters!)
-        $this->slimApp->add($this->container->get(\MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class));
-        $this->slimApp->add(\Odan\Session\Middleware\SessionStartMiddleware::class);
+        try {
+            $localeMiddleware = $this->container->get(\MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class);
+            if ($localeMiddleware instanceof \Psr\Http\Server\MiddlewareInterface) {
+                $this->slimApp->add($localeMiddleware);
+            }
+        } catch (\Exception $e) {
+            // Log error but don't fail - LocaleMiddleware is optional
+            error_log('Failed to load LocaleMiddleware: ' . $e->getMessage());
+        }
+
+        // Note: SessionStartMiddleware moved to route-specific middleware
+        // Only routes that need session (login, profile, admin) will load session
+
         $this->slimApp->addRoutingMiddleware();
         $this->slimApp->addBodyParsingMiddleware();
     }
@@ -160,12 +286,10 @@ final class App
     private function setupMonitoring(): void
     {
         try {
-            $monitoringBootstrap = new \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap(
-                $this->container,
-                $this->container->get(\Psr\Log\LoggerInterface::class)
-            );
-
-            $monitoringBootstrap->bootstrap();
+            $monitoringBootstrap = $this->container->get(\MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap::class);
+            if ($monitoringBootstrap instanceof \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap) {
+                $monitoringBootstrap->bootstrap();
+            }
         } catch (\Exception $e) {
             // Log error but don't fail application startup
             error_log('Failed to setup monitoring: ' . $e->getMessage());
@@ -178,9 +302,14 @@ final class App
     private function setupEventSystem(): void
     {
         try {
+            $logger = $this->container->get(\Psr\Log\LoggerInterface::class);
+            if (!$logger instanceof \Psr\Log\LoggerInterface) {
+                throw new \RuntimeException('Logger service not properly configured');
+            }
+
             $eventBootstrap = new \MvaBootstrap\SharedKernel\Events\EventBootstrap(
                 $this->container,
-                $this->container->get(\Psr\Log\LoggerInterface::class)
+                $logger
             );
 
             $eventBootstrap->bootstrap();
@@ -196,10 +325,18 @@ final class App
     private function setupModuleSystem(): void
     {
         try {
+            $logger = $this->container->get(\Psr\Log\LoggerInterface::class);
+            if (!$logger instanceof \Psr\Log\LoggerInterface) {
+                throw new \RuntimeException('Logger service not properly configured');
+            }
+
             $moduleManager = new \MvaBootstrap\SharedKernel\Modules\ModuleManager(
-                $this->container->get(\Psr\Log\LoggerInterface::class),
-                $this->paths->base() . '/src/Modules'
+                $logger,
+                $this->paths->src('Modules')
             );
+
+            // Set container for module initialization
+            $moduleManager->setContainer($this->container);
 
             // Discover and load modules
             $moduleManager->discoverModules();
@@ -210,10 +347,17 @@ final class App
             // Store module manager in container for later use
             $this->container->set(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class, $moduleManager);
 
-            // Load module services into container
-            $serviceLoader = $this->container->get(\MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader::class);
-            $serviceLoader->loadServices($this->container);
+            // Create service loader manually (since ModuleManager is now available)
+            $logger = $this->container->get(\Psr\Log\LoggerInterface::class);
+            assert($logger instanceof \Psr\Log\LoggerInterface);
+            $serviceLoader = new \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader($moduleManager, $logger);
 
+            // Debug: List loaded modules
+            $modules = $moduleManager->getAllModules();
+            error_log("Loaded modules: " . implode(', ', array_keys($modules)));
+
+            // Load module services into container
+            $serviceLoader->loadServices($this->container);
         } catch (\Exception $e) {
             // Log error but don't fail application startup
             error_log('Failed to setup module system: ' . $e->getMessage());

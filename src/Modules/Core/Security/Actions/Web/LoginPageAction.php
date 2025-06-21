@@ -26,7 +26,9 @@ final class LoginPageAction
     {
         // Debug: Check session state
         error_log('LoginPageAction: Checking if user is logged in...');
-        error_log('LoginPageAction: SESSION_NAME from env = ' . ($_ENV['SESSION_NAME'] ?? 'NOT_SET'));
+        $sessionNameFromEnv = $_ENV['SESSION_NAME'] ?? 'NOT_SET';
+        $sessionNameFromEnvString = is_string($sessionNameFromEnv) ? $sessionNameFromEnv : 'NOT_SET';
+        error_log('LoginPageAction: SESSION_NAME from env = ' . $sessionNameFromEnvString);
         error_log('LoginPageAction: Current session name = ' . session_name());
 
         // Check if user is already logged in

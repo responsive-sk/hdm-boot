@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace MvaBootstrap\Modules\Core\Session\Infrastructure\Middleware;
 
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -32,7 +32,7 @@ final class SessionStartMiddleware implements MiddlewareInterface
         // Start session if not already started
         if (!$this->session->isStarted()) {
             $this->session->start();
-            
+
             $this->logger->debug('Session started by SessionStartMiddleware', [
                 'session_id' => $this->session->getId(),
                 'request_uri' => $request->getUri()->getPath(),

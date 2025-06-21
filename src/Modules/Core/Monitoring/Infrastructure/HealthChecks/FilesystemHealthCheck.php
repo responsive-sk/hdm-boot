@@ -6,7 +6,9 @@ namespace MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks;
 
 use MvaBootstrap\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
 use MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Filesystem Health Check.
@@ -20,7 +22,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
 
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly string $rootPath = '.'
+        private readonly Paths $paths
     ) {
     }
 
@@ -59,7 +61,8 @@ final class FilesystemHealthCheck implements HealthCheckInterface
             }
 
             // Check for warnings (disk space)
-            $diskUsage = $checks['disk_space']['usage_percentage'];
+            $diskUsageValue = $checks['disk_space']['usage_percentage'] ?? 0;
+            $diskUsage = is_numeric($diskUsageValue) ? (float) $diskUsageValue : 0.0;
             if ($diskUsage >= self::WARNING_DISK_USAGE_THRESHOLD) {
                 return HealthCheckResult::degraded(
                     $this->getName(),
@@ -117,7 +120,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
      */
     private function checkLogDirectory(): array
     {
-        $logDir = $this->rootPath . '/var/logs';
+        $logDir = $this->paths->logs();
 
         if (!is_dir($logDir)) {
             return ['success' => false, 'message' => 'Log directory does not exist'];
@@ -130,7 +133,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
         return [
             'success'     => true,
             'message'     => 'Log directory is accessible',
-            'path'        => realpath($logDir),
+            'path'        => $this->getCanonicalPath($logDir),
             'permissions' => substr(sprintf('%o', fileperms($logDir)), -4),
         ];
     }
@@ -166,7 +169,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
      */
     private function checkCacheDirectory(): array
     {
-        $cacheDir = $this->rootPath . '/var/cache';
+        $cacheDir = $this->paths->cache();
 
         // Create cache directory if it doesn't exist
         if (!is_dir($cacheDir)) {
@@ -182,7 +185,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
         return [
             'success'     => true,
             'message'     => 'Cache directory is accessible',
-            'path'        => realpath($cacheDir),
+            'path'        => $this->getCanonicalPath($cacheDir),
             'permissions' => substr(sprintf('%o', fileperms($cacheDir)), -4),
         ];
     }
@@ -194,8 +197,9 @@ final class FilesystemHealthCheck implements HealthCheckInterface
      */
     private function checkDiskSpace(): array
     {
-        $freeBytes = disk_free_space($this->rootPath);
-        $totalBytes = disk_total_space($this->rootPath);
+        $basePath = $this->paths->base();
+        $freeBytes = disk_free_space($basePath);
+        $totalBytes = disk_total_space($basePath);
 
         if ($freeBytes === false || $totalBytes === false) {
             return ['success' => false, 'message' => 'Cannot determine disk space'];
@@ -225,7 +229,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
      */
     private function checkWritePermissions(): array
     {
-        $testFile = $this->rootPath . '/var/logs/health_check_test.tmp';
+        $testFile = $this->paths->logs() . '/health_check_test.tmp';
 
         try {
             $handle = fopen($testFile, 'w');
@@ -251,5 +255,23 @@ final class FilesystemHealthCheck implements HealthCheckInterface
                 'message' => 'Write permission test failed: ' . $e->getMessage(),
             ];
         }
+    }
+
+    /**
+     * Get canonical path safely using PathsFactory.
+     */
+    private function getCanonicalPath(string $path): string
+    {
+        // Use PathsFactory for secure path handling
+        try {
+            $paths = PathsFactory::create();
+            // If path exists, return it normalized
+            if (file_exists($path)) {
+                return $paths->getPath(dirname($path), basename($path));
+            }
+        } catch (\Exception $e) {
+            // Fallback to original path if PathsFactory fails
+        }
+        return $path;
     }
 }

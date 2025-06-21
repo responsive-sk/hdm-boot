@@ -58,7 +58,7 @@ final class JwtService
         try {
             $token = JWT::encode($payload, $this->secret, self::ALGORITHM);
 
-            return JwtToken::fromString($token, $expiresAt, $payload);
+            return new JwtToken($token, $payload, $expiresAt);
         } catch (\Exception $e) {
             throw new RuntimeException('Failed to generate JWT token: ' . $e->getMessage(), 0, $e);
         }
@@ -75,14 +75,16 @@ final class JwtService
 
         try {
             $decoded = JWT::decode($token, new Key($this->secret, self::ALGORITHM));
+            /** @var array<string, mixed> $payload */
             $payload = (array) $decoded;
 
             // Validate required fields
             $this->validatePayload($payload);
 
-            $expiresAt = new DateTimeImmutable('@' . $payload['exp']);
+            $expTimestamp = is_int($payload['exp'] ?? null) ? $payload['exp'] : time();
+            $expiresAt = new DateTimeImmutable('@' . $expTimestamp);
 
-            return JwtToken::fromString($token, $expiresAt, $payload);
+            return new JwtToken($token, $payload, $expiresAt);
         } catch (\Firebase\JWT\ExpiredException $e) {
             throw new InvalidArgumentException('Token has expired', 0, $e);
         } catch (\Firebase\JWT\SignatureInvalidException $e) {
@@ -136,7 +138,7 @@ final class JwtService
         try {
             $newToken = JWT::encode($payload, $this->secret, self::ALGORITHM);
 
-            return JwtToken::fromString($newToken, $expiresAt, $payload);
+            return new JwtToken($newToken, $payload, $expiresAt);
         } catch (\Exception $e) {
             throw new RuntimeException('Failed to refresh JWT token: ' . $e->getMessage(), 0, $e);
         }

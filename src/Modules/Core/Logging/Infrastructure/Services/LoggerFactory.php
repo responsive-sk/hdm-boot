@@ -22,6 +22,11 @@ use Psr\Log\LoggerInterface;
  */
 final class LoggerFactory
 {
+    // Log rotation configuration constants
+    private const DEFAULT_RETENTION_DAYS = 30;
+    private const PERFORMANCE_RETENTION_DAYS = 14;
+    private const AUDIT_RETENTION_DAYS = 365; // 1 year for compliance
+
     private readonly string $logPath;
 
     private readonly string $environment;
@@ -76,21 +81,18 @@ final class LoggerFactory
         // Security logs need special handling
         $logger->pushProcessor(new UidProcessor());
         $logger->pushProcessor(new WebProcessor());
-        $logger->pushProcessor(function (array $record): array {
-            // Add security context
-            if (!isset($record['extra']) || !is_array($record['extra'])) {
-                $record['extra'] = [];
-            }
-            $record['extra']['security_event'] = true;
-            $record['extra']['timestamp_iso'] = date('c');
-
-            return $record;
+        $logger->pushProcessor(function (\Monolog\LogRecord $record): \Monolog\LogRecord {
+            // Monolog 3.x uses LogRecord objects
+            $extra = $record->extra;
+            $extra['security_event'] = true;
+            $extra['timestamp_iso'] = date('c');
+            return $record->with(extra: $extra);
         });
 
         // Always log security events to separate file
         $securityHandler = new RotatingFileHandler(
             $this->logPath . '/security.log',
-            30, // Keep 30 days
+            self::DEFAULT_RETENTION_DAYS, // Keep 30 days
             Logger::INFO
         );
 
@@ -114,25 +116,16 @@ final class LoggerFactory
         $logger = new Logger('performance');
 
         $logger->pushProcessor(new MemoryUsageProcessor());
-        $logger->pushProcessor(function ($record) {
-            if (is_array($record)) {
-                // Legacy Monolog format
-                if (!isset($record['extra']) || !is_array($record['extra'])) {
-                    $record['extra'] = [];
-                }
-                $record['extra']['performance_metric'] = true;
-                return $record;
-            } else {
-                // Modern Monolog LogRecord format
-                $extra = $record->extra;
-                $extra['performance_metric'] = true;
-                return $record->with(extra: $extra);
-            }
+        $logger->pushProcessor(function (\Monolog\LogRecord $record): \Monolog\LogRecord {
+            // Monolog 3.x uses LogRecord objects
+            $extra = $record->extra;
+            $extra['performance_metric'] = true;
+            return $record->with(extra: $extra);
         });
 
         $perfHandler = new RotatingFileHandler(
             $this->logPath . '/performance.log',
-            7, // Keep 7 days
+            self::PERFORMANCE_RETENTION_DAYS, // Keep 14 days
             Logger::INFO
         );
 
@@ -151,28 +144,18 @@ final class LoggerFactory
 
         $logger->pushProcessor(new UidProcessor());
         $logger->pushProcessor(new WebProcessor());
-        $logger->pushProcessor(function ($record) {
-            if (is_array($record)) {
-                // Legacy Monolog format
-                if (!isset($record['extra']) || !is_array($record['extra'])) {
-                    $record['extra'] = [];
-                }
-                $record['extra']['audit_event'] = true;
-                $record['extra']['timestamp_iso'] = date('c');
-                return $record;
-            } else {
-                // Modern Monolog LogRecord format
-                $extra = $record->extra;
-                $extra['audit_event'] = true;
-                $extra['timestamp_iso'] = date('c');
-                return $record->with(extra: $extra);
-            }
+        $logger->pushProcessor(function (\Monolog\LogRecord $record): \Monolog\LogRecord {
+            // Monolog 3.x uses LogRecord objects
+            $extra = $record->extra;
+            $extra['audit_event'] = true;
+            $extra['timestamp_iso'] = date('c');
+            return $record->with(extra: $extra);
         });
 
         // Audit logs are critical and should be preserved
         $auditHandler = new RotatingFileHandler(
             $this->logPath . '/audit.log',
-            365, // Keep 1 year
+            self::AUDIT_RETENTION_DAYS, // Keep 1 year
             Logger::INFO
         );
 
@@ -190,7 +173,7 @@ final class LoggerFactory
         // Rotating file handler for general logs
         $fileHandler = new RotatingFileHandler(
             $this->logPath . "/{$channel}.log",
-            14, // Keep 14 days
+            self::DEFAULT_RETENTION_DAYS, // Keep 30 days
             Logger::INFO
         );
         $fileHandler->setFormatter($this->createProductionFormatter());
@@ -199,7 +182,7 @@ final class LoggerFactory
         // Error handler for critical issues
         $errorHandler = new RotatingFileHandler(
             $this->logPath . '/errors.log',
-            30, // Keep 30 days
+            self::DEFAULT_RETENTION_DAYS, // Keep 30 days
             Logger::ERROR
         );
         $errorHandler->setFormatter($this->createErrorFormatter());
@@ -254,12 +237,12 @@ final class LoggerFactory
     }
 
     /**
-     * Create debug formatter.
+     * Create unified debug formatter for consistency.
      */
     private function createDebugFormatter(): LineFormatter
     {
         return new LineFormatter(
-            "[%datetime%] %channel%.%level_name%: %message%\nContext: %context%\nExtra: %extra%\n---\n",
+            "🔍 [%datetime%] %channel%.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
             'Y-m-d H:i:s',
             true,
             true
@@ -267,12 +250,12 @@ final class LoggerFactory
     }
 
     /**
-     * Create security formatter.
+     * Create unified security formatter.
      */
     private function createSecurityFormatter(): LineFormatter
     {
         return new LineFormatter(
-            "🔒 [%datetime%] SECURITY.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
+            "🔒 [%datetime%] security.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
             'Y-m-d H:i:s',
             true,
             true
@@ -293,12 +276,12 @@ final class LoggerFactory
     }
 
     /**
-     * Create performance formatter.
+     * Create unified performance formatter.
      */
     private function createPerformanceFormatter(): LineFormatter
     {
         return new LineFormatter(
-            "⚡ [%datetime%] PERF: %message% | Memory: %extra.memory_usage% | Context: %context%\n",
+            "⚡ [%datetime%] performance.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
             'Y-m-d H:i:s',
             true,
             true
@@ -306,12 +289,12 @@ final class LoggerFactory
     }
 
     /**
-     * Create audit formatter.
+     * Create unified audit formatter.
      */
     private function createAuditFormatter(): LineFormatter
     {
         return new LineFormatter(
-            "📋 [%datetime%] AUDIT.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
+            "📋 [%datetime%] audit.%level_name%: %message% | Context: %context% | Extra: %extra%\n",
             'Y-m-d H:i:s',
             true,
             true

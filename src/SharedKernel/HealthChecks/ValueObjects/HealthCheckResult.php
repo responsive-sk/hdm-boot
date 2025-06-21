@@ -17,16 +17,21 @@ final readonly class HealthCheckResult implements JsonSerializable
         public string $name,
         public HealthStatus $status,
         public ?string $message = null,
+        /** @var array<string, mixed> */
         public array $data = [],
         public ?float $duration = null,
         public ?\DateTimeImmutable $timestamp = null,
         public ?string $category = null,
+        /** @var array<string> */
         public array $tags = []
     ) {
     }
 
     /**
      * Create a healthy result.
+     *
+     * @param array<string, mixed> $data
+     * @param array<string> $tags
      */
     public static function healthy(
         string $name,
@@ -50,6 +55,9 @@ final readonly class HealthCheckResult implements JsonSerializable
 
     /**
      * Create an unhealthy result.
+     *
+     * @param array<string, mixed> $data
+     * @param array<string> $tags
      */
     public static function unhealthy(
         string $name,
@@ -73,6 +81,9 @@ final readonly class HealthCheckResult implements JsonSerializable
 
     /**
      * Create a degraded result.
+     *
+     * @param array<string, mixed> $data
+     * @param array<string> $tags
      */
     public static function degraded(
         string $name,

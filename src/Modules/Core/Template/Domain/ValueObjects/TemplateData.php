@@ -158,6 +158,7 @@ final readonly class TemplateData
     private function validate(array $data): void
     {
         foreach (array_keys($data) as $key) {
+            // @phpstan-ignore-next-line function.alreadyNarrowedType
             if (!is_string($key)) {
                 throw new \InvalidArgumentException('Template data keys must be strings');
             }
@@ -193,6 +194,8 @@ final readonly class TemplateData
             throw new \InvalidArgumentException('JSON must decode to an array');
         }
 
-        return new self($data);
+        /** @var array<string, mixed> $typedData */
+        $typedData = $data;
+        return new self($typedData);
     }
 }

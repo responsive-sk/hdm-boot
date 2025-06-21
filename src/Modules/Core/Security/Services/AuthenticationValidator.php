@@ -43,8 +43,11 @@ final class AuthenticationValidator
 
         // Validate and throw exception if there are errors
         $errors = $validator->validate($userLoginValues);
-        if ($errors) {
-            throw new ValidationException($errors);
+        if (!empty($errors)) {
+            // CakePHP validator returns array<string, array<string>> format
+            /** @var array<string, array<string>> $validationErrors */
+            $validationErrors = $errors;
+            throw new ValidationException($validationErrors);
         }
     }
 
@@ -85,8 +88,11 @@ final class AuthenticationValidator
 
         // Validate and throw exception if there are errors
         $errors = $validator->validate($passwordValues);
-        if ($errors) {
-            throw new ValidationException($errors);
+        if (!empty($errors)) {
+            // CakePHP validator returns array<string, array<string>> format
+            /** @var array<string, array<string>> $validationErrors */
+            $validationErrors = $errors;
+            throw new ValidationException($validationErrors);
         }
     }
 
@@ -109,6 +115,9 @@ final class AuthenticationValidator
             ->notEmptyString('password2', 'Password confirmation cannot be empty')
             ->add('password2', 'passwordsMatch', [
                 'rule' => function ($value, $context) {
+                    if (!is_array($context) || !isset($context['data']) || !is_array($context['data'])) {
+                        return false;
+                    }
                     return isset($context['data']['password']) && $value === $context['data']['password'];
                 },
                 'message' => 'Passwords do not match',
@@ -116,8 +125,11 @@ final class AuthenticationValidator
 
         // Validate and throw exception if there are errors
         $errors = $validator->validate($passwordValues);
-        if ($errors) {
-            throw new ValidationException($errors);
+        if (!empty($errors)) {
+            // CakePHP validator returns array<string, array<string>> format
+            /** @var array<string, array<string>> $validationErrors */
+            $validationErrors = $errors;
+            throw new ValidationException($validationErrors);
         }
     }
 
@@ -140,8 +152,11 @@ final class AuthenticationValidator
 
         // Validate and throw exception if there are errors
         $errors = $validator->validate($userValues);
-        if ($errors) {
-            throw new ValidationException($errors);
+        if (!empty($errors)) {
+            // CakePHP validator returns array<string, array<string>> format
+            /** @var array<string, array<string>> $validationErrors */
+            $validationErrors = $errors;
+            throw new ValidationException($validationErrors);
         }
     }
 }

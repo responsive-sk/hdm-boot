@@ -14,8 +14,12 @@ abstract class AbstractSystemEvent extends AbstractDomainEvent implements System
 {
     private readonly int $priority;
     private readonly bool $async;
+    /** @var array<string, mixed> */
     private readonly array $context;
 
+    /**
+     * @param array<string, mixed> $context
+     */
     public function __construct(
         int $priority = 0,
         bool $async = false,
@@ -25,7 +29,7 @@ abstract class AbstractSystemEvent extends AbstractDomainEvent implements System
         ?string $eventId = null
     ) {
         parent::__construct($version, $occurredAt, $eventId);
-        
+
         $this->priority = $priority;
         $this->async = $async;
         $this->context = $context;
@@ -41,6 +45,9 @@ abstract class AbstractSystemEvent extends AbstractDomainEvent implements System
         return $this->async;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getContext(): array
     {
         return $this->context;
@@ -52,7 +59,7 @@ abstract class AbstractSystemEvent extends AbstractDomainEvent implements System
         $data['priority'] = $this->getPriority();
         $data['async'] = $this->isAsync();
         $data['context'] = $this->getContext();
-        
+
         return $data;
     }
 
@@ -62,7 +69,7 @@ abstract class AbstractSystemEvent extends AbstractDomainEvent implements System
         $data['priority'] = $this->getPriority();
         $data['async'] = $this->isAsync();
         $data['context'] = $this->getContext();
-        
+
         return $data;
     }
 }

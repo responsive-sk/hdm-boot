@@ -12,7 +12,8 @@ use MvaBootstrap\Modules\Core\Template\Infrastructure\Engines\PhpTemplateEngine;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Engines\TwigTemplateEngine;
 use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use MvaBootstrap\SharedKernel\Events\ModuleEventBus;
-use Odan\Session\SessionInterface as OdanSession;
+use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
@@ -58,18 +59,23 @@ return [
         // Template Engine Interface (configurable)
         TemplateEngineInterface::class => function (Container $container): TemplateEngineInterface {
             // Use PHP engine as default (Twig requires additional package)
-            $engine = new PhpTemplateEngine(
-                $container->get(CsrfService::class),
-                $container->get(OdanSession::class)
-            );
+            $csrfService = $container->get(CsrfService::class);
+            $session = $container->get(SessionInterface::class);
+            assert($csrfService instanceof CsrfService);
+            assert($session instanceof SessionInterface);
+
+            $engine = new PhpTemplateEngine($csrfService, $session);
 
             // Configure engine with template settings
             $paths = $container->get(Paths::class);
-            $engine->configure([
+            assert($paths instanceof Paths);
+            /** @var array<string, mixed> $engineConfig */
+            $engineConfig = [
                 'template_path' => $paths->base() . '/templates',
                 'cache_enabled' => true,
                 'debug'         => false,
-            ]);
+            ];
+            $engine->configure($engineConfig);
 
             return $engine;
         },
@@ -77,14 +83,21 @@ return [
         // PHP Template Engine
         PhpTemplateEngine::class => function (Container $container): PhpTemplateEngine {
             $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+            assert($moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager);
             $config = $moduleManager->getModuleConfig('Template');
 
-            $engine = new PhpTemplateEngine(
-                $container->get(CsrfService::class),
-                $container->get(OdanSession::class)
-            );
+            $csrfService = $container->get(CsrfService::class);
+            $session = $container->get(SessionInterface::class);
+            assert($csrfService instanceof CsrfService);
+            assert($session instanceof SessionInterface);
 
-            $engine->configure($config['settings']);
+            $engine = new PhpTemplateEngine($csrfService, $session);
+
+            $settings = $config['settings'] ?? [];
+            $settingsArray = is_array($settings) ? $settings : [];
+            /** @var array<string, mixed> $typedSettings */
+            $typedSettings = $settingsArray;
+            $engine->configure($typedSettings);
 
             return $engine;
         },
@@ -92,46 +105,68 @@ return [
         // Twig Template Engine
         TwigTemplateEngine::class => function (Container $container): TwigTemplateEngine {
             $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+            assert($moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager);
             $config = $moduleManager->getModuleConfig('Template');
 
             $engine = new TwigTemplateEngine();
-            $engine->configure($config['settings']);
+            $settings = $config['settings'] ?? [];
+            $settingsArray = is_array($settings) ? $settings : [];
+            /** @var array<string, mixed> $typedSettings */
+            $typedSettings = $settingsArray;
+            $engine->configure($typedSettings);
 
             return $engine;
         },
 
         // Template Service (Domain Service)
         TemplateService::class => function (Container $container): TemplateService {
-            return new TemplateService(
-                $container->get(TemplateEngineInterface::class),
-                $container->get(ModuleEventBus::class),
-                $container->get(LoggerInterface::class)
-            );
+            $templateEngine = $container->get(TemplateEngineInterface::class);
+            $eventBus = $container->get(ModuleEventBus::class);
+            $logger = $container->get(LoggerInterface::class);
+
+            assert($templateEngine instanceof TemplateEngineInterface);
+            assert($eventBus instanceof ModuleEventBus);
+            assert($logger instanceof LoggerInterface);
+
+            return new TemplateService($templateEngine, $eventBus, $logger);
         },
 
         // Template Renderer Interface
         TemplateRendererInterface::class => function (Container $container): TemplateRendererInterface {
-            return $container->get(TemplateService::class);
+            $templateService = $container->get(TemplateService::class);
+            assert($templateService instanceof TemplateService);
+            return $templateService;
         },
 
         // Legacy Template Renderer (for backward compatibility)
         TemplateRenderer::class => function (Container $container): TemplateRenderer {
             $paths = $container->get(Paths::class);
+            $csrfService = $container->get(CsrfService::class);
+            $session = $container->get(SessionInterface::class);
+
+            assert($paths instanceof Paths);
+            assert($csrfService instanceof CsrfService);
+            assert($session instanceof SessionInterface);
 
             return new TemplateRenderer(
                 $paths->templates(),
-                $container->get(CsrfService::class),
-                $container->get(OdanSession::class)
+                $csrfService,
+                $session,
+                $paths
             );
         },
 
         // Render Template Action
         RenderTemplateAction::class => function (Container $container): RenderTemplateAction {
-            return new RenderTemplateAction(
-                $container->get(TemplateService::class),
-                $container->get(ResponseFactoryInterface::class),
-                $container->get(LoggerInterface::class)
-            );
+            $templateService = $container->get(TemplateService::class);
+            $responseFactory = $container->get(ResponseFactoryInterface::class);
+            $logger = $container->get(LoggerInterface::class);
+
+            assert($templateService instanceof TemplateService);
+            assert($responseFactory instanceof ResponseFactoryInterface);
+            assert($logger instanceof LoggerInterface);
+
+            return new RenderTemplateAction($templateService, $responseFactory, $logger);
         },
     ],
 
@@ -228,8 +263,8 @@ return [
     // === INITIALIZATION ===
 
     'initialize' => function (): void {
-        // Create template directories using Paths service
-        $paths = new Paths(dirname(__DIR__, 4));
+        // Create template directories using PathsFactory
+        $paths = PathsFactory::create();
 
         $directories = [
             $paths->templates(),
@@ -247,7 +282,7 @@ return [
     // === HEALTH CHECK ===
 
     'health_check' => function (): array {
-        $paths = new Paths(dirname(__DIR__, 4));
+        $paths = PathsFactory::create();
         $templatesDir = $paths->templates();
         $cacheDir = $paths->cache();
 
@@ -267,7 +302,7 @@ return [
                 new \RecursiveDirectoryIterator($templatesDir)
             );
             foreach ($iterator as $file) {
-                if ($file->isFile() && in_array($file->getExtension(), ['php', 'phtml', 'twig'])) {
+                if ($file instanceof \SplFileInfo && $file->isFile() && in_array($file->getExtension(), ['php', 'phtml', 'twig'])) {
                     ++$templateCount;
                 }
             }

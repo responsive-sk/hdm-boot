@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Security Module Manifest
- * 
+ *
  * This file defines the Security module metadata, dependencies,
  * and configuration paths for automatic module discovery.
  */
+
+declare(strict_types=1);
 
 return [
     'name' => 'Security',

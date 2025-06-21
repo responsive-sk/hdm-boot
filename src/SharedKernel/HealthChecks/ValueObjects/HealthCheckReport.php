@@ -8,7 +8,7 @@ use JsonSerializable;
 
 /**
  * Health Check Report.
- * 
+ *
  * Aggregated report of multiple health check results.
  */
 final readonly class HealthCheckReport implements JsonSerializable
@@ -37,9 +37,9 @@ final readonly class HealthCheckReport implements JsonSerializable
     {
         $statuses = array_map(fn(HealthCheckResult $result) => $result->status, $results);
         $overallStatus = HealthStatus::getWorst($statuses);
-        
+
         $totalDuration = array_sum(array_map(fn(HealthCheckResult $result) => $result->duration ?? 0, $results));
-        
+
         $healthyCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isHealthy()));
         $unhealthyCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isUnhealthy()));
         $degradedCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isDegraded()));

@@ -29,8 +29,8 @@ final class DatabaseManager implements DatabaseManagerInterface
         private readonly Paths $paths,
         private readonly string $filename = 'app.db'
     ) {
-        $this->databasePath = $this->paths->base() . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'storage';
-        $this->databaseFile = $this->databasePath . DIRECTORY_SEPARATOR . $this->filename;
+        $this->databasePath = $this->paths->getPath($this->paths->base(), 'var/storage');
+        $this->databaseFile = $this->paths->getPath($this->databasePath, $this->filename);
         $this->ensureDatabaseDirectory();
     }
 
@@ -104,7 +104,8 @@ final class DatabaseManager implements DatabaseManagerInterface
             }
             $countRow = $countStmt->fetch(PDO::FETCH_ASSOC);
             if (is_array($countRow) && isset($countRow['count'])) {
-                $tables[$tableName] = (int) $countRow['count'];
+                $count = $countRow['count'];
+                $tables[$tableName] = is_numeric($count) ? (int) $count : 0;
             }
         }
 

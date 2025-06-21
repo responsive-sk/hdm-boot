@@ -6,7 +6,7 @@ namespace MvaBootstrap\Modules\Core\Session\Services;
 
 use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
 use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Session Management Service.
@@ -57,9 +57,9 @@ final class SessionService
 
         error_log(sprintf(
             'SessionService.loginUser() END: user_id=%s, last_activity=%s, current_time=%s',
-            $verifyUserId,
-            $verifyLastActivity,
-            $currentTime
+            is_string($verifyUserId) ? $verifyUserId : 'NULL',
+            is_int($verifyLastActivity) ? (string) $verifyLastActivity : 'NULL',
+            (string) $currentTime
         ));
     }
 
@@ -90,7 +90,7 @@ final class SessionService
         error_log(sprintf(
             'SessionService.isLoggedIn() check: has_user_key=%s, user_id_value=%s',
             $hasUserKey ? 'YES' : 'NO',
-            $userIdValue ?? 'NULL'
+            is_string($userIdValue) ? $userIdValue : 'NULL'
         ));
 
         if (!$hasUserKey) {
@@ -142,7 +142,13 @@ final class SessionService
 
         $userData = $this->session->get('user_data');
 
-        return is_array($userData) ? $userData : null;
+        if (!is_array($userData)) {
+            return null;
+        }
+
+        /** @var array<string, mixed> $typedUserData */
+        $typedUserData = $userData;
+        return $typedUserData;
     }
 
     /**
@@ -152,15 +158,16 @@ final class SessionService
     {
         $lastActivity = $this->session->get(self::LAST_ACTIVITY_KEY, 0);
         $currentTime = time();
-        $timeDiff = $currentTime - (int) $lastActivity;
+        $lastActivityInt = is_int($lastActivity) ? $lastActivity : (is_numeric($lastActivity) ? (int) $lastActivity : 0);
+        $timeDiff = $currentTime - $lastActivityInt;
         $isExpired = $timeDiff > self::SESSION_TIMEOUT;
 
         error_log(sprintf(
             'SessionService.isSessionExpired(): last_activity=%s, current_time=%s, time_diff=%s, timeout=%s, expired=%s',
-            $lastActivity,
-            $currentTime,
-            $timeDiff,
-            self::SESSION_TIMEOUT,
+            (string) $lastActivityInt,
+            (string) $currentTime,
+            (string) $timeDiff,
+            (string) self::SESSION_TIMEOUT,
             $isExpired ? 'YES' : 'NO'
         ));
 
@@ -172,7 +179,7 @@ final class SessionService
      */
     public function setFlash(string $type, string $message): void
     {
-        $this->session->getFlash()->add($type, $message);
+        $this->session->flash($type, $message);
     }
 
     /**
@@ -180,9 +187,8 @@ final class SessionService
      */
     public function getFlash(string $type): ?string
     {
-        $messages = $this->session->getFlash()->get($type);
-
-        return is_array($messages) && !empty($messages) ? $messages[0] : null;
+        $message = $this->session->getFlashMessage($type);
+        return is_string($message) ? $message : null;
     }
 
     /**
@@ -211,6 +217,7 @@ final class SessionService
     public function getSessionInfo(): array
     {
         $lastActivity = $this->session->get(self::LAST_ACTIVITY_KEY, 0);
+        $lastActivityInt = is_int($lastActivity) ? $lastActivity : (is_numeric($lastActivity) ? (int) $lastActivity : 0);
 
         return [
             'session_id'     => $this->session->getId(),
@@ -219,7 +226,7 @@ final class SessionService
             'login_time'     => $this->session->get(self::LOGIN_TIME_KEY),
             'last_activity'  => $lastActivity,
             'time_remaining' => $this->isLoggedIn()
-                ? self::SESSION_TIMEOUT - (time() - (int) $lastActivity)
+                ? self::SESSION_TIMEOUT - (time() - $lastActivityInt)
                 : 0,
         ];
     }
