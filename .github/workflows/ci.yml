@@ -1,0 +1,121 @@
+name: HDM Boot CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: [8.3, 8.4]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, ctype, json, tokenizer, openssl, sqlite3
+        coverage: xdebug
+    
+    - name: Validate composer.json
+      run: composer validate --strict
+    
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php-version }}-
+    
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+    
+    - name: Create required directories
+      run: |
+        mkdir -p var/logs var/cache var/storage
+        chmod -R 755 var/
+    
+    - name: Run PHPStan (Static Analysis)
+      run: composer stan
+    
+    - name: Run Code Style Check
+      run: PHP_CS_FIXER_IGNORE_ENV=1 composer cs-check
+    
+    - name: Run Unit Tests
+      run: composer test
+    
+    - name: Run Blog Module Tests
+      run: composer test:blog
+    
+    - name: Test Production Dependencies
+      run: |
+        composer install --no-dev --optimize-autoloader --classmap-authoritative
+        php -r "require 'vendor/autoload.php'; echo 'Production autoload works!' . PHP_EOL;"
+        composer install --prefer-dist --no-progress  # Restore dev dependencies
+
+  security:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3
+        extensions: mbstring, xml, ctype, json, tokenizer, openssl
+    
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+    
+    - name: Run Security Audit
+      run: composer audit
+    
+    - name: Check for known vulnerabilities
+      run: |
+        if command -v local-php-security-checker &> /dev/null; then
+          local-php-security-checker
+        else
+          echo "Security checker not available, skipping..."
+        fi
+
+  deployment-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.3
+        extensions: mbstring, xml, ctype, json, tokenizer, openssl, sqlite3
+    
+    - name: Test Production Deployment
+      run: |
+        # Test production composer commands
+        composer deploy:prod
+        
+        # Verify no dev packages
+        if composer show --installed | grep -E "(phpunit|phpstan|php-cs-fixer)"; then
+          echo "ERROR: Dev packages found in production build!"
+          exit 1
+        fi
+        
+        # Test key generation
+        php bin/generate-keys.php --format=json > /tmp/keys.json
+        if [ ! -s /tmp/keys.json ]; then
+          echo "ERROR: Key generation failed!"
+          exit 1
+        fi
+        
+        echo "✅ Production deployment test passed!"

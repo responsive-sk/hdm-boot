@@ -1,5 +1,11 @@
 # 🚀 HDM Boot Framework
 
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.3-blue)](https://php.net)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Tests](https://github.com/responsive-sk/hdm-boot/workflows/HDM%20Boot%20CI/badge.svg)](https://github.com/responsive-sk/hdm-boot/actions)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%20max-brightgreen)](https://phpstan.org/)
+[![Packagist](https://img.shields.io/packagist/v/responsive-sk/hdm-boot)](https://packagist.org/packages/responsive-sk/hdm-boot)
+
 **H**exagonal + **D**DD + **M**MA (Modular Monolith Architecture) - Modern PHP framework with triple architecture design, secure path handling, and optional modules. Built as a clean foundation for rapid development with enterprise-grade security features.
 
 ## 🎯 HDM Architecture
@@ -70,9 +76,26 @@
 
 ## 🛠 Installation
 
-1. **Clone and setup**
+### Via Composer (Recommended)
 ```bash
-git clone <repository>
+# Create new project
+composer create-project responsive-sk/hdm-boot my-project
+cd my-project
+
+# Generate secure keys
+php bin/generate-keys.php
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your settings
+
+# Set permissions
+chmod -R 755 var/
+```
+
+### Manual Installation
+```bash
+git clone https://github.com/responsive-sk/hdm-boot.git
 cd hdm-boot
 composer install
 ```
