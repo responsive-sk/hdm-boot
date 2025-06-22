@@ -51,7 +51,7 @@
 - **User** - User management and profiles ✅ **IMPLEMENTED**
 - **Language** - Multilingual support system ✅ **IMPLEMENTED**
 - **Storage** - Hybrid file + multi-database storage ✅ **IMPLEMENTED**
-- **Security** - Authentication and authorization (planned)
+- **Security** - Authentication and authorization ✅ **IMPLEMENTED**
 
 ### Optional Modules
 - **Article** - Content management system ✅ **IMPLEMENTED**
@@ -72,7 +72,7 @@
 - ✅ **Documentation System** - File-based docs with navigation
 - ✅ **Mark Admin System** - Admin interface with audit logging
 - ✅ **PHPStan Level MAX** - 100% type safety achieved
-- 🔄 **Security Module** - In development
+- ✅ **Security Module** - JWT authentication, authorization, CSRF protection
 
 ## 🛠 Installation
 
@@ -144,16 +144,15 @@ ENABLED_MODULES="Article"
 
 ```
 hdm-boot/
-├── src/Boot/           # Core application bootstrap (renamed from bootstrap)
+├── src/Boot/           # Core application boot (Linux FS style)
 │   ├── App.php         # Main application class
-│   ├── ModuleManager.php # Module loading system
-│   └── Security/       # Core security components
+│   └── ModuleManager.php # Module loading system
 ├── src/Modules/        # HDM Modular system
 │   ├── Core/          # Required modules (Hexagonal Core)
 │   │   ├── User/      # User domain module ✅ **IMPLEMENTED**
 │   │   ├── Storage/   # Storage domain module ✅ **IMPLEMENTED**
 │   │   ├── Language/  # Language domain module ✅ **IMPLEMENTED**
-│   │   └── Security/  # Security domain module (planned)
+│   │   └── Security/  # Security domain module ✅ **IMPLEMENTED**
 │   └── Optional/      # Optional modules (DDD Bounded Contexts)
 │       └── Blog/      # Blog domain module ✅ **IMPLEMENTED**
 ├── src/SharedKernel/   # Shared Kernel (DDD)
