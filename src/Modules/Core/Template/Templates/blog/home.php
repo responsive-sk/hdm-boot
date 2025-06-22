@@ -11,6 +11,8 @@ $categories = $categoriesArray;
 $tags = $tagsArray;
 ?>
 
+<a href="/" class="back-link" aria-label="Back to HDM Boot Homepage">← Back to Main</a>
+
 <div class="stats">
     <div class="stat">
         <div class="stat-number"><?= $totalArticles ?></div>
@@ -34,7 +36,7 @@ $tags = $tagsArray;
 
 <?php if (empty($articles)) : ?>
     <div class="article">
-        <h2>Welcome to MVA Bootstrap Blog!</h2>
+        <h2>Welcome to HDM Boot Blog!</h2>
         <p>No articles found. Create your first article by adding a Markdown file to the <code>content/articles/</code> directory.</p>
         <h3>Example Article:</h3>
         <pre>---
