@@ -30,7 +30,56 @@ return function (App $app): void {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HDM Boot Framework</title>
+    <meta name="description" content="HDM Boot - Modern PHP framework with Hexagonal Architecture, Domain-Driven Design, and Modular Monolith. Enterprise-ready with JWT authentication, internationalization, and production deployment guides.">
+    <meta name="keywords" content="PHP framework, Hexagonal Architecture, DDD, Domain-Driven Design, Modular Monolith, enterprise PHP, JWT authentication, internationalization, responsive.sk">
+    <meta name="author" content="HDM Boot Team">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="en">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://boot.responsive.sk/">
+    <meta property="og:title" content="HDM Boot Framework - Triple Architecture PHP Framework">
+    <meta property="og:description" content="Modern PHP framework combining Hexagonal Architecture, Domain-Driven Design, and Modular Monolith for enterprise applications.">
+    <meta property="og:site_name" content="HDM Boot Framework">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://boot.responsive.sk/">
+    <meta property="twitter:title" content="HDM Boot Framework - Triple Architecture PHP Framework">
+    <meta property="twitter:description" content="Modern PHP framework combining Hexagonal Architecture, Domain-Driven Design, and Modular Monolith for enterprise applications.">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://boot.responsive.sk/">
+
+    <title>HDM Boot Framework - Triple Architecture PHP Framework</title>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "HDM Boot Framework",
+        "description": "Modern PHP framework with Hexagonal Architecture, Domain-Driven Design, and Modular Monolith for enterprise applications",
+        "url": "https://boot.responsive.sk/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Cross-platform",
+        "programmingLanguage": "PHP",
+        "author": {
+            "@type": "Organization",
+            "name": "HDM Boot Team",
+            "url": "https://responsive.sk"
+        },
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "softwareVersion": "0.9.0",
+        "releaseNotes": "Release Candidate with Triple Architecture implementation"
+    }
+    </script>
+
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
