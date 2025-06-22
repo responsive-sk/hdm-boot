@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the Clean Architecture implementation in the MVA Bootstrap project. The architecture follows Uncle Bob's Clean Architecture principles with clear layer separation and dependency inversion.
+This document describes the Clean Architecture implementation in the HDM Boot project. The architecture follows Uncle Bob's Clean Architecture principles with clear layer separation and dependency inversion.
 
 ## Architecture Layers
 

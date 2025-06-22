@@ -10,8 +10,8 @@
 
 1. **Hardcoded __DIR__ Usage** (6 files)
    - `src/SharedKernel/Services/PathsFactory.php`
-   - `src/Bootstrap/ModuleManager.php`
-   - `src/Bootstrap/App.php`
+   - `src/Boot/ModuleManager.php`
+   - `src/Boot/App.php`
    - `src/Modules/Core/Storage/module.php`
    - `src/Modules/Core/Storage/Services/FileStorageService.php`
    - `src/Modules/Core/Template/config.php`
@@ -54,8 +54,8 @@
 
 #### **1.2 Bootstrap Layer Refactor**
 **Files fixed:**
-- ✅ `src/Bootstrap/App.php` - Removed `dirname(__DIR__, 4)` and critical path concatenation
-- ✅ `src/Bootstrap/ModuleManager.php` - Replaced __DIR__ usage
+- ✅ `src/Boot/App.php` - Removed `dirname(__DIR__, 4)` and critical path concatenation
+- ✅ `src/Boot/ModuleManager.php` - Replaced __DIR__ usage
 
 ### **Phase 2: Module System Refactor** ✅ COMPLETED
 **Duration:** 2-3 hours
@@ -249,7 +249,7 @@ class FileStorageService
 
 ## 🏆 **ACHIEVEMENT UNLOCKED: Path Security Perfectionist**
 
-**🔒 Perfect enterprise-grade path handling system established in MVA Bootstrap!**
+**🔒 Perfect enterprise-grade path handling system established in HDM Boot!**
 
 **This refactor achieved exceptional results:**
 - ✅ **Eliminated all critical security vulnerabilities** (1 → 0)

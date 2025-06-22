@@ -23,7 +23,7 @@ composer require responsive-sk/slim4-paths
 ### Configuration
 
 ```php
-// bootstrap/container.php
+// boot/container.php
 $container->set(Paths::class, function () {
     return new Paths(__DIR__ . '/..');
 });
@@ -392,7 +392,7 @@ class FilesystemHealthCheck implements HealthCheckInterface
 
 ### Path Security Improvements (2024)
 
-The MVA Bootstrap application has been updated to eliminate all relative path usage (`../..`) in favor of the proper `Paths` service:
+The HDM Boot application has been updated to eliminate all relative path usage (`../..`) in favor of the proper `Paths` service:
 
 #### Before (Insecure)
 ```php
@@ -545,7 +545,7 @@ $this->uploadRestrictions = [
 
 ## ✅ PATHS PATTERN CHECKLIST
 
-**Use this checklist for ALL file operations in MVA Bootstrap:**
+**Use this checklist for ALL file operations in HDM Boot:**
 
 ### ❌ NEVER DO:
 ```php
@@ -747,17 +747,17 @@ private function checkWritePermissions(): array
     "data": {
       "log_directory": {
         "success": true,
-        "path": "/home/ian/Desktop/06/bootstrap/var/logs",
+        "path": "/home/ian/Desktop/06/boot/var/logs",
         "permissions": "0775"
       },
       "cache_directory": {
         "success": true,
-        "path": "/home/ian/Desktop/06/bootstrap/var/cache",
+        "path": "/home/ian/Desktop/06/boot/var/cache",
         "permissions": "0775"
       },
       "write_permissions": {
         "success": true,
-        "test_file": "/home/ian/Desktop/06/bootstrap/var/logs/health_check_test.tmp"
+        "test_file": "/home/ian/Desktop/06/boot/var/logs/health_check_test.tmp"
       }
     }
   }

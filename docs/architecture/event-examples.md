@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides practical examples of implementing Event-Driven Architecture in the MVA Bootstrap project. Each example demonstrates real-world scenarios with complete code implementations.
+This document provides practical examples of implementing Event-Driven Architecture in the HDM Boot project. Each example demonstrates real-world scenarios with complete code implementations.
 
 ## Language Module Events
 
@@ -14,10 +14,10 @@ This document provides practical examples of implementing Event-Driven Architect
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Domain\Events;
+namespace HdmBoot\Modules\Core\Language\Domain\Events;
 
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Shared\Events\DomainEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Shared\Events\DomainEvent;
 
 final readonly class LocaleChangedEvent implements DomainEvent
 {
@@ -70,11 +70,11 @@ final readonly class LocaleChangedEvent implements DomainEvent
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners;
+namespace HdmBoot\Modules\Core\Language\Infrastructure\Listeners;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\Shared\Events\DomainEvent;
-use MvaBootstrap\Shared\Events\EventListener;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\Shared\Events\DomainEvent;
+use HdmBoot\Shared\Events\EventListener;
 use Psr\Log\LoggerInterface;
 
 final class LocaleChangedListener implements EventListener
@@ -156,11 +156,11 @@ final class LocaleChangedListener implements EventListener
 ```php
 <?php
 
-namespace MvaBootstrap\Modules\Core\Language\Domain\Services;
+namespace HdmBoot\Modules\Core\Language\Domain\Services;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Shared\Events\ModuleEventBus;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Shared\Events\ModuleEventBus;
 
 class LocaleService
 {
@@ -206,9 +206,9 @@ class LocaleService
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\Events;
+namespace HdmBoot\Modules\Core\User\Domain\Events;
 
-use MvaBootstrap\Shared\Events\DomainEvent;
+use HdmBoot\Shared\Events\DomainEvent;
 
 final readonly class UserCreatedEvent implements DomainEvent
 {
@@ -265,11 +265,11 @@ final readonly class UserCreatedEvent implements DomainEvent
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Infrastructure\Listeners;
+namespace HdmBoot\Modules\Core\Security\Infrastructure\Listeners;
 
-use MvaBootstrap\Modules\Core\User\Domain\Events\UserCreatedEvent;
-use MvaBootstrap\Shared\Events\DomainEvent;
-use MvaBootstrap\Shared\Events\EventListener;
+use HdmBoot\Modules\Core\User\Domain\Events\UserCreatedEvent;
+use HdmBoot\Shared\Events\DomainEvent;
+use HdmBoot\Shared\Events\EventListener;
 use Psr\Log\LoggerInterface;
 
 final class UserCreatedSecurityListener implements EventListener
@@ -348,9 +348,9 @@ final class UserCreatedSecurityListener implements EventListener
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Domain\Events;
+namespace HdmBoot\Modules\Core\Security\Domain\Events;
 
-use MvaBootstrap\Shared\Events\DomainEvent;
+use HdmBoot\Shared\Events\DomainEvent;
 
 final readonly class LoginAttemptEvent implements DomainEvent
 {
@@ -432,7 +432,7 @@ final readonly class LoginAttemptEvent implements DomainEvent
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Shared\Events;
+namespace HdmBoot\Shared\Events;
 
 final class EventBootstrap
 {
@@ -442,7 +442,7 @@ final class EventBootstrap
     ): void {
         // Register LocaleChangedListener
         $localeChangedListener = $this->container->get(
-            \MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class
+            \HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class
         );
 
         $eventDispatcher->addListener(
@@ -464,7 +464,7 @@ final class EventBootstrap
     ): void {
         // Register cross-module listeners
         $securityListener = $this->container->get(
-            \MvaBootstrap\Modules\Core\Security\Infrastructure\Listeners\UserCreatedSecurityListener::class
+            \HdmBoot\Modules\Core\Security\Infrastructure\Listeners\UserCreatedSecurityListener::class
         );
 
         // Security module listens to User events
@@ -487,8 +487,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Language\Events;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
 use PHPUnit\Framework\TestCase;
 
 class LocaleChangedEventTest extends TestCase
@@ -537,9 +537,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Language\Listeners;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -593,11 +593,11 @@ declare(strict_types=1);
 
 namespace Tests\Integration\Events;
 
-use MvaBootstrap\Bootstrap\App;
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Shared\Events\EventDispatcherInterface;
-use MvaBootstrap\Shared\Events\ModuleEventBus;
+use HdmBoot\Bootstrap\App;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Shared\Events\EventDispatcherInterface;
+use HdmBoot\Shared\Events\ModuleEventBus;
 use PHPUnit\Framework\TestCase;
 
 class EventFlowIntegrationTest extends TestCase
@@ -637,4 +637,4 @@ class EventFlowIntegrationTest extends TestCase
 }
 ```
 
-This comprehensive documentation provides practical examples for implementing Event-Driven Architecture in the MVA Bootstrap project, covering event creation, listener implementation, registration, and testing strategies.
+This comprehensive documentation provides practical examples for implementing Event-Driven Architecture in the HDM Boot project, covering event creation, listener implementation, registration, and testing strategies.

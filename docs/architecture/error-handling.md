@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the standardized error handling implementation in the MVA Bootstrap project. The system follows RFC 7807 Problem Details for HTTP APIs to provide consistent, machine-readable error responses across all endpoints.
+This document describes the standardized error handling implementation in the HDM Boot project. The system follows RFC 7807 Problem Details for HTTP APIs to provide consistent, machine-readable error responses across all endpoints.
 
 ## RFC 7807 Problem Details
 

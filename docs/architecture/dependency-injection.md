@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the comprehensive Dependency Injection and Inversion of Control implementation in the MVA Bootstrap project. The system follows SOLID principles and provides proper abstraction layers through interface-based bindings.
+This document describes the comprehensive Dependency Injection and Inversion of Control implementation in the HDM Boot project. The system follows SOLID principles and provides proper abstraction layers through interface-based bindings.
 
 ## Architecture Principles
 

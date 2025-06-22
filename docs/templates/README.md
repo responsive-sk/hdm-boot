@@ -1,4 +1,4 @@
-# MVA Bootstrap Templates
+# HDM Boot Templates
 
 ## 📑 Prehľad Šablón
 
@@ -40,7 +40,7 @@ vim config/modules/new-module.php
 ### 2. Vytvorenie Novej Entity
 ```php
 // Použitie entity template
-namespace MvaBootstrap\Modules\NewModule\Domain;
+namespace HdmBoot\Modules\NewModule\Domain;
 
 class NewEntity
 {

@@ -1,10 +1,10 @@
 # API Documentation
 
-This document describes the REST API endpoints available in the MVA Bootstrap Application.
+This document describes the REST API endpoints available in the HDM Boot Application.
 
 ## 🌐 API Overview
 
-The MVA Bootstrap Application provides a RESTful API with JSON responses. The API is designed to be:
+The HDM Boot Application provides a RESTful API with JSON responses. The API is designed to be:
 - **RESTful** - Following REST principles and conventions
 - **Consistent** - Standardized request/response formats
 - **Secure** - Authentication and authorization protected
@@ -41,7 +41,7 @@ GET /api/status
     "timestamp": 1686557452,
     "version": "1.0.0",
     "app": {
-        "name": "MVA Bootstrap",
+        "name": "HDM Boot",
         "environment": "production",
         "debug": false,
         "timezone": "UTC"
@@ -123,7 +123,7 @@ GET /api/status
 ```json
 {
     "status": "ok",
-    "app": "MVA Bootstrap",
+    "app": "HDM Boot",
     "version": "1.0.0",
     "timestamp": "2025-06-08T14:02:57+00:00",
     "environment": "dev"
@@ -139,7 +139,7 @@ GET /api/info
 ```json
 {
     "app": {
-        "name": "MVA Bootstrap Application",
+        "name": "HDM Boot Application",
         "version": "1.0.0",
         "description": "Modular PHP application with secure paths"
     },
@@ -450,8 +450,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Content-Type: application/json
 
 {
-    "title": "Getting Started with MVA Bootstrap",
-    "content": "This article explains how to use the MVA Bootstrap Application...",
+    "title": "Getting Started with HDM Boot",
+    "content": "This article explains how to use the HDM Boot Application...",
     "status": "published"
 }
 ```
@@ -465,8 +465,8 @@ Content-Type: application/json
     "success": true,
     "data": {
         "id": "123e4567-e89b-12d3-a456-426614174000",
-        "title": "Getting Started with MVA Bootstrap",
-        "content": "This article explains how to use the MVA Bootstrap Application...",
+        "title": "Getting Started with HDM Boot",
+        "content": "This article explains how to use the HDM Boot Application...",
         "status": "published",
         "author_id": "456e7890-e89b-12d3-a456-426614174000",
         "created_at": "2025-06-08T14:30:00+00:00",

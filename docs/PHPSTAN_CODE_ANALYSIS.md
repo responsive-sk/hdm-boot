@@ -2,7 +2,7 @@
 
 ## 📊 Executive Summary
 
-**Project:** MVA Bootstrap Framework
+**Project:** HDM Boot Framework
 **Analysis Date:** 2025-06-19
 **PHPStan Level:** MAX (Level 9)
 **Duration:** 15 phases of systematic fixes

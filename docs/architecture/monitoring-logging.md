@@ -2,7 +2,7 @@
 
 ## 🎯 **Overview**
 
-This document describes the comprehensive monitoring and logging infrastructure implemented in the MVA Bootstrap project. The system provides centralized logging, health checks, performance monitoring, and observability features essential for production applications.
+This document describes the comprehensive monitoring and logging infrastructure implemented in the HDM Boot project. The system provides centralized logging, health checks, performance monitoring, and observability features essential for production applications.
 
 ### ✅ **Recent Updates (2025-06-20)**
 - **LoggerFactory refactored** - Unified formatting and specialized loggers
@@ -922,13 +922,13 @@ location /_status {
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mva-bootstrap
+  name: hdm-boot
 spec:
   template:
     spec:
       containers:
       - name: app
-        image: mva-bootstrap:latest
+        image: hdm-boot:latest
         livenessProbe:
           httpGet:
             path: /healthz
@@ -1222,7 +1222,7 @@ This infrastructure enables proactive monitoring, quick issue detection, and com
 
 ## Overview
 
-This document describes the comprehensive monitoring and logging infrastructure implemented in the MVA Bootstrap project. The system provides centralized logging, health checks, performance monitoring, and observability features essential for production applications.
+This document describes the comprehensive monitoring and logging infrastructure implemented in the HDM Boot project. The system provides centralized logging, health checks, performance monitoring, and observability features essential for production applications.
 
 ## Architecture Components
 
@@ -1381,7 +1381,7 @@ The `/api/status` endpoint provides detailed system information:
     "timestamp": 1686557452,
     "version": "1.0.0",
     "app": {
-        "name": "MVA Bootstrap",
+        "name": "HDM Boot",
         "environment": "production",
         "debug": false,
         "timezone": "UTC"
@@ -1848,9 +1848,9 @@ php bin/log-cleanup stats
 #### **Automated Cron Jobs**
 ```bash
 # Recommended cron schedule
-0 2 * * * /path/to/bootstrap/bin/log-rotation cleanup    # Daily cleanup
-0 3 * * 0 /path/to/bootstrap/bin/log-rotation compress   # Weekly compression
-0 4 1 * * /path/to/bootstrap/bin/log-rotation health     # Monthly health check
+0 2 * * * /path/to/boot/bin/log-rotation cleanup    # Daily cleanup
+0 3 * * 0 /path/to/boot/bin/log-rotation compress   # Weekly compression
+0 4 1 * * /path/to/boot/bin/log-rotation health     # Monthly health check
 ```
 
 ### **Log Directory Structure**
@@ -1912,7 +1912,7 @@ For detailed log rotation documentation, see: **[Log Rotation Guide](../LOG_ROTA
 
 ## 🎯 **Summary**
 
-**MVA Bootstrap provides enterprise-grade logging infrastructure:**
+**HDM Boot provides enterprise-grade logging infrastructure:**
 
 - ✅ **Unified formatting** - Consistent, readable log output
 - ✅ **Specialized loggers** - Security, audit, performance, and general

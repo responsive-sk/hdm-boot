@@ -2,7 +2,7 @@
 
 ## 🧪 Prehľad Testovania
 
-MVA Bootstrap používa viacúrovňovú stratégiu testovania:
+HDM Boot používa viacúrovňovú stratégiu testovania:
 
 ### 1. Unit Tests [P0]
 - Testovanie jednotlivých komponentov

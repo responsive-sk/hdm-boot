@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the Domain-Driven Design implementation in the MVA Bootstrap project. The architecture separates pure business logic from framework concerns, following Clean Architecture principles with clear layer boundaries.
+This document describes the Domain-Driven Design implementation in the HDM Boot project. The architecture separates pure business logic from framework concerns, following Clean Architecture principles with clear layer boundaries.
 
 ## Architecture Layers
 

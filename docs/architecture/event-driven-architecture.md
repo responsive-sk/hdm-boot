@@ -2,7 +2,7 @@
 
 ## Overview
 
-The MVA Bootstrap project implements a comprehensive Event-Driven Architecture (EDA) that enables loose coupling between modules through domain events. This architecture facilitates asynchronous communication, improves scalability, and maintains clean separation of concerns.
+The HDM Boot project implements a comprehensive Event-Driven Architecture (EDA) that enables loose coupling between modules through domain events. This architecture facilitates asynchronous communication, improves scalability, and maintains clean separation of concerns.
 
 ## Core Components
 
@@ -319,7 +319,7 @@ $stats = $moduleEventBus->getStatistics();
 The event system is automatically bootstrapped during application initialization:
 
 ```php
-// In bootstrap/App.php
+// In boot/App.php
 private function setupEventSystem(): void
 {
     $eventBootstrap = new EventBootstrap($this->container, $logger);

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the Module Isolation implementation in the MVA Bootstrap project. The architecture ensures proper separation of concerns between modules through contract-based communication and event-driven architecture, preventing tight coupling and enabling independent module development.
+This document describes the Module Isolation implementation in the HDM Boot project. The architecture ensures proper separation of concerns between modules through contract-based communication and event-driven architecture, preventing tight coupling and enabling independent module development.
 
 ## Architecture Principles
 

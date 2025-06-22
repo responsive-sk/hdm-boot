@@ -1,4 +1,4 @@
-# MVA Bootstrap Architecture Summary
+# HDM Boot Architecture Summary
 
 **Last Updated**: 2025-06-18
 **Status**: Production Ready with **Laravel Orbit-inspired CMS** 🚀
@@ -6,7 +6,7 @@
 
 ## 🎯 **Orbit CMS Implementation**
 
-MVA Bootstrap now includes a **complete Laravel Orbit-inspired content management system** with:
+HDM Boot now includes a **complete Laravel Orbit-inspired content management system** with:
 
 - **📝 File-based Content** - Markdown files with YAML front-matter
 - **🗄️ Hybrid Storage** - Files + Multi-Database architecture
@@ -258,4 +258,4 @@ var/orbit/             -- Runtime databases (gitignored)
 
 ---
 
-**MVA Bootstrap is now a production-ready, enterprise-grade PHP framework with world-class architecture and 100% type safety.**
+**HDM Boot is now a production-ready, enterprise-grade PHP framework with world-class architecture and 100% type safety.**

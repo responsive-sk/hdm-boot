@@ -2,7 +2,7 @@
 
 ## Overview
 
-MVA Bootstrap dodržiava PSR-12 štandard kódovania s niekoľkými dodatočnými pravidlami.
+HDM Boot dodržiava PSR-12 štandard kódovania s niekoľkými dodatočnými pravidlami.
 
 ## 📝 Základné Pravidlá
 
@@ -12,8 +12,8 @@ MVA Bootstrap dodržiava PSR-12 štandard kódovania s niekoľkými dodatočným
 
 ### 2. Namespace Konvencie
 ```php
-namespace MvaBootstrap\Modules\Core\User;
-namespace MvaBootstrap\Modules\Core\Security;
+namespace HdmBoot\Modules\Core\User;
+namespace HdmBoot\Modules\Core\Security;
 ```
 
 ### 3. Class Konvencie

@@ -1,10 +1,10 @@
 # Orbit Quick Start
 
-**Get started with MVA Bootstrap's Laravel Orbit-inspired CMS in 5 minutes!**
+**Get started with HDM Boot's Laravel Orbit-inspired CMS in 5 minutes!**
 
 ## 🚀 What is Orbit?
 
-**Laravel Orbit** by Ryan Chandler is a flat-file driver for Eloquent models. **MVA Bootstrap Orbit** enhances this concept with:
+**Laravel Orbit** by Ryan Chandler is a flat-file driver for Eloquent models. **HDM Boot Orbit** enhances this concept with:
 
 - **Hybrid Storage** - Files + Database
 - **Multi-Database Architecture** - Separate SQLite databases
@@ -17,9 +17,9 @@
 ### 1. Initialize Storage System
 
 ```php
-use MvaBootstrap\Modules\Core\Storage\Services\DatabaseManager;
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\Modules\Core\Storage\Models\Article;
+use HdmBoot\Modules\Core\Storage\Services\DatabaseManager;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\Modules\Core\Storage\Models\Article;
 
 // Initialize multi-database system
 DatabaseManager::initialize('./content');
@@ -127,7 +127,7 @@ Create articles by adding Markdown files to `content/articles/`.
 
 ```php
 // config/routes.php
-use MvaBootstrap\Modules\Optional\Blog\Controllers\BlogController;
+use HdmBoot\Modules\Optional\Blog\Controllers\BlogController;
 
 $app->get('/blog', function ($request, $response) {
     $controller = new BlogController();
@@ -181,8 +181,8 @@ $featured = array_filter(Article::published(), function($article) {
 ### Admin Operations
 
 ```php
-use MvaBootstrap\Modules\Core\Storage\Models\MarkUser;
-use MvaBootstrap\Modules\Core\Storage\Models\MarkAuditLog;
+use HdmBoot\Modules\Core\Storage\Models\MarkUser;
+use HdmBoot\Modules\Core\Storage\Models\MarkAuditLog;
 
 // Admin authentication
 $admin = MarkUser::authenticate($credentials);
@@ -233,7 +233,7 @@ CacheEntry::setDatabase('cache');   // cache.db (performance)
 
 ## 📊 Comparison with Laravel Orbit
 
-| Feature | Laravel Orbit | MVA Bootstrap |
+| Feature | Laravel Orbit | HDM Boot |
 |---------|---------------|---------------|
 | **API Style** | `Post::where('published', true)->get()` | `Article::published()` |
 | **Storage** | Files only | Files + Database |
@@ -252,7 +252,7 @@ CacheEntry::setDatabase('cache');   // cache.db (performance)
 
 ## 🚀 Production Ready
 
-MVA Bootstrap Orbit is **production-ready** with:
+HDM Boot Orbit is **production-ready** with:
 
 - ✅ **Type Safety** - PHPStan Level MAX compliance
 - ✅ **Security** - Path traversal protection

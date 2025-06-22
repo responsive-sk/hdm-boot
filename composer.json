@@ -12,6 +12,7 @@
         "firebase/php-jwt": "^6.8",
         "monolog/monolog": "^3.9",
         "php-di/php-di": "^7.0",
+        "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^4.7",
         "responsive-sk/slim4-paths": "^2.0",
         "responsive-sk/slim4-session": "^2.2.2",

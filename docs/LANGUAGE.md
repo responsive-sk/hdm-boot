@@ -1,6 +1,6 @@
 # 🌍 Language & Localization System
 
-**Enterprise-grade multilingual support for MVA Bootstrap Application**
+**Enterprise-grade multilingual support for HDM Boot Application**
 
 Based on [samuelgfeller's localization pattern](https://samuel-gfeller.ch/docs/Translations) with enterprise enhancements.
 
@@ -196,7 +196,7 @@ The language system works automatically via middleware. No manual setup required
 ### Manual Language Setting
 
 ```php
-use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
+use HdmBoot\Modules\Core\Language\Services\LocaleService;
 
 // Get current language
 $currentLocale = $localeService->getCurrentLocale(); // 'sk_SK'
@@ -331,7 +331,7 @@ Content-Type: application/json
 Automatically detects and sets language on every request:
 
 ```php
-// Registered in bootstrap/App.php
+// Registered in boot/App.php
 $this->slimApp->add($this->container->get(LocaleMiddleware::class));
 ```
 
@@ -486,7 +486,7 @@ msgfmt file.po -o file.mo
 
 **Solution:**
 ```php
-// Ensure LocaleMiddleware is registered early in bootstrap/App.php
+// Ensure LocaleMiddleware is registered early in boot/App.php
 $this->slimApp->add($this->container->get(LocaleMiddleware::class));
 ```
 

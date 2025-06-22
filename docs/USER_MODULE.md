@@ -34,7 +34,7 @@ User Module
 Type-safe UUID identifier for User entities with built-in validation.
 
 ```php
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
+use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 
 // Generate new ID
 $userId = UserId::generate();
@@ -57,7 +57,7 @@ $id = $userId->toString();
 Rich domain object with comprehensive business logic.
 
 ```php
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
 
 // Create new user
 $user = User::create(
@@ -179,7 +179,7 @@ CREATE TABLE users (
 Handles user business logic and orchestrates operations between repository and domain objects.
 
 ```php
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\User\Services\UserService;
 
 $userService = new UserService($userRepository);
 
@@ -338,7 +338,7 @@ GET /api/admin/users/statistics
 ### Manual Testing Script
 
 ```bash
-cd mva-bootstrap
+cd hdm-boot
 php test-user.php
 ```
 

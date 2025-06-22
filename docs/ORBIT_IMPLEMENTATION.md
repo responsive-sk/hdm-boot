@@ -1,16 +1,16 @@
-# MVA Bootstrap Orbit Implementation
+# HDM Boot Orbit Implementation
 
 **Complete documentation of our Laravel Orbit-inspired content management system**
 
 ## 🎯 Overview
 
-MVA Bootstrap implements a **Laravel Orbit-inspired** file-based content management system that combines the elegance of Eloquent-like APIs with the performance and flexibility of hybrid storage.
+HDM Boot implements a **Laravel Orbit-inspired** file-based content management system that combines the elegance of Eloquent-like APIs with the performance and flexibility of hybrid storage.
 
 ### What is Laravel Orbit?
 
 [Laravel Orbit](https://github.com/ryangjchandler/orbit) by Ryan Chandler is a flat-file driver for Eloquent models, allowing you to use Eloquent models with Markdown files instead of a database.
 
-### MVA Bootstrap Enhancement
+### HDM Boot Enhancement
 
 Our implementation **enhances** the Orbit concept with:
 
@@ -95,8 +95,8 @@ class Article
 ### Basic Operations
 
 ```php
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\Modules\Core\Storage\Models\Article;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\Modules\Core\Storage\Models\Article;
 
 // Setup
 $storage = new FileStorageService('./content');
@@ -139,7 +139,7 @@ Articles are stored as Markdown files with YAML front-matter:
 
 ```markdown
 ---
-title: "Getting Started with MVA Bootstrap"
+title: "Getting Started with HDM Boot"
 slug: "getting-started"
 author: "John Doe"
 published: true
@@ -151,7 +151,7 @@ excerpt: "Learn how to build amazing applications"
 reading_time: 5
 ---
 
-# Getting Started with MVA Bootstrap
+# Getting Started with HDM Boot
 
 Your article content here using **Markdown** syntax.
 
@@ -162,9 +162,9 @@ Your article content here using **Markdown** syntax.
 - Type-safe operations
 ```
 
-## 🔄 Orbit vs MVA Bootstrap Comparison
+## 🔄 Orbit vs HDM Boot Comparison
 
-| Feature | Laravel Orbit | MVA Bootstrap |
+| Feature | Laravel Orbit | HDM Boot |
 |---------|---------------|---------------|
 | **Framework** | Laravel only | Framework agnostic |
 | **Storage** | Files only | Hybrid (Files + Database) |
@@ -183,7 +183,7 @@ $posts = Post::all();
 $post = Post::find('my-post');
 $published = Post::where('published', true)->get();
 
-// MVA Bootstrap (similar API)
+// HDM Boot (similar API)
 $articles = Article::all();
 $article = Article::find('my-post');
 $published = Article::published();
@@ -389,7 +389,7 @@ class BlogControllerTest extends TestCase
     {
         $response = $this->get('/blog');
         $response->assertStatus(200);
-        $response->assertSee('MVA Bootstrap Blog');
+        $response->assertSee('HDM Boot Blog');
     }
 }
 ```
@@ -404,10 +404,10 @@ class BlogControllerTest extends TestCase
 
 ## 🎯 Migration from Laravel Orbit
 
-### Step 1: Install MVA Bootstrap
+### Step 1: Install HDM Boot
 
 ```bash
-composer create-project mva-bootstrap/bootstrap my-app
+composer create-project hdm-boot/bootstrap my-app
 ```
 
 ### Step 2: Migrate Content
@@ -426,7 +426,7 @@ class Post extends Model
     use Orbit;
 }
 
-// MVA Bootstrap
+// HDM Boot
 class Article extends BaseModel
 {
     // Automatic Orbit-like functionality
@@ -439,7 +439,7 @@ class Article extends BaseModel
 // Laravel Orbit
 $posts = Post::where('published', true)->get();
 
-// MVA Bootstrap
+// HDM Boot
 $articles = Article::published();
 ```
 
@@ -465,4 +465,4 @@ $articles = Article::published();
 
 ---
 
-**MVA Bootstrap Orbit implementation brings the elegance of Laravel Orbit to any PHP project with enhanced performance, security, and scalability!** 🚀
+**HDM Boot Orbit implementation brings the elegance of Laravel Orbit to any PHP project with enhanced performance, security, and scalability!** 🚀

@@ -114,4 +114,4 @@ return $paths->getPath($basePath, $relativePath);
 
 **🎉 The emergency fallback elimination was a resounding success, proving that sometimes the best solution is the simplest one - do it right the first time, every time!**
 
-*"Perfect is the enemy of good, but in security, good enough is the enemy of perfect."* - MVA Bootstrap Team
+*"Perfect is the enemy of good, but in security, good enough is the enemy of perfect."* - HDM Boot Team

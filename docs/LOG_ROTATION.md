@@ -1,8 +1,8 @@
-# 🔄 MVA Bootstrap Core - Log Rotation & Cleanup
+# 🔄 HDM Boot Core - Log Rotation & Cleanup
 
 ## 📊 **Log Management Overview**
 
-MVA Bootstrap Core provides comprehensive log rotation and cleanup mechanisms to prevent disk space issues and maintain optimal performance in production environments.
+HDM Boot Core provides comprehensive log rotation and cleanup mechanisms to prevent disk space issues and maintain optimal performance in production environments.
 
 ## 🔧 **Automatic Rotation Configuration**
 
@@ -79,15 +79,15 @@ Newest File: debug-app.log (2025-06-20 10:11:03)
 Add to your crontab (`crontab -e`):
 
 ```bash
-# MVA Bootstrap Core Log Rotation
+# HDM Boot Core Log Rotation
 # Daily cleanup at 2 AM (remove files older than 30 days)
-0 2 * * * /path/to/bootstrap/bin/log-rotation cleanup
+0 2 * * * /path/to/boot/bin/log-rotation cleanup
 
 # Weekly compression on Sunday at 3 AM (compress files older than 7 days)
-0 3 * * 0 /path/to/bootstrap/bin/log-rotation compress
+0 3 * * 0 /path/to/boot/bin/log-rotation compress
 
 # Monthly health check on 1st day at 4 AM
-0 4 1 * * /path/to/bootstrap/bin/log-rotation health
+0 4 1 * * /path/to/boot/bin/log-rotation health
 ```
 
 ### **Production Cron Setup**
@@ -211,7 +211,7 @@ sudo systemctl status cron
 sudo tail -f /var/log/cron.log
 
 # Test cron job manually
-sudo -u www-data /path/to/bootstrap/bin/log-rotation stats
+sudo -u www-data /path/to/boot/bin/log-rotation stats
 ```
 
 ---
@@ -324,7 +324,7 @@ grep -c "slow\|timeout" var/logs/performance-*.log
 
 ## 🎯 **Summary**
 
-**MVA Bootstrap Core provides enterprise-grade log rotation:**
+**HDM Boot Core provides enterprise-grade log rotation:**
 
 - ✅ **Automatic rotation** - Monolog RotatingFileHandler
 - ✅ **Manual management** - CLI tools for stats and cleanup

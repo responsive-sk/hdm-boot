@@ -1,4 +1,4 @@
-# MVA Bootstrap Development Plan
+# HDM Boot Development Plan
 
 **Current Status**: Hybrid Storage System implemented ✅  
 **Next Phase**: Multi-Database Architecture + Mark Admin System

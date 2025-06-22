@@ -1,6 +1,6 @@
-# MVA Bootstrap Guides
+# HDM Boot Guides
 
-Komplexné príručky pre vývoj, nasadenie a údržbu MVA Bootstrap aplikácie.
+Komplexné príručky pre vývoj, nasadenie a údržbu HDM Boot aplikácie.
 
 ## 📚 Zoznam príručiek
 

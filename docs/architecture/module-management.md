@@ -2,7 +2,7 @@
 
 ## Overview
 
-The MVA Bootstrap project implements a comprehensive Module Management System that provides standardized module configuration, automatic discovery, dependency resolution, and centralized lifecycle management. This system ensures consistent module structure and enables loose coupling between modules.
+The HDM Boot project implements a comprehensive Module Management System that provides standardized module configuration, automatic discovery, dependency resolution, and centralized lifecycle management. This system ensures consistent module structure and enables loose coupling between modules.
 
 ## Core Components
 

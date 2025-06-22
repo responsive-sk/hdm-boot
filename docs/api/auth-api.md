@@ -2,7 +2,7 @@
 
 ## 🔐 Overview
 
-MVA Bootstrap používa JWT (JSON Web Tokens) pre autentifikáciu API.
+HDM Boot používa JWT (JSON Web Tokens) pre autentifikáciu API.
 
 ## 📑 Endpoints
 

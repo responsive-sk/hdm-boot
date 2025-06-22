@@ -1,10 +1,10 @@
 # Security Guide
 
-This document outlines the security features and best practices implemented in the MVA Bootstrap Application.
+This document outlines the security features and best practices implemented in the HDM Boot Application.
 
 ## 🔒 Security Overview
 
-The MVA Bootstrap Application implements a **security-first** approach with multiple layers of protection against common web vulnerabilities.
+The HDM Boot Application implements a **security-first** approach with multiple layers of protection against common web vulnerabilities.
 
 ### Security Principles
 
@@ -318,4 +318,4 @@ Report security issues to:
 
 ## Conclusion
 
-The MVA Bootstrap Application implements comprehensive security measures following industry best practices. Regular updates and security reviews ensure the application remains secure against evolving threats.
+The HDM Boot Application implements comprehensive security measures following industry best practices. Regular updates and security reviews ensure the application remains secure against evolving threats.

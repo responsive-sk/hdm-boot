@@ -1,6 +1,6 @@
 # 🍪 Session Management System
 
-**Enterprise-grade session handling for MVA Bootstrap Application**
+**Enterprise-grade session handling for HDM Boot Application**
 
 Based on [samuelgfeller's session pattern](https://samuel-gfeller.ch/docs/Session-and-Flash-messages) with enterprise enhancements.
 
@@ -79,7 +79,7 @@ Add to your `.env` file:
 
 ```bash
 # Session Configuration
-SESSION_NAME="mva_bootstrap_session"
+SESSION_NAME="hdm_boot_session"
 SESSION_LIFETIME=7200
 SESSION_COOKIE_SECURE=false
 SESSION_COOKIE_HTTPONLY=true
@@ -105,7 +105,7 @@ The system uses these session configuration options:
 
 ```php
 $sessionOptions = [
-    'name' => $_ENV['SESSION_NAME'] ?? 'mva_bootstrap_session',
+    'name' => $_ENV['SESSION_NAME'] ?? 'hdm_boot_session',
     'lifetime' => (int) ($_ENV['SESSION_LIFETIME'] ?? 7200), // 2 hours
     'cookie_secure' => ($_ENV['SESSION_COOKIE_SECURE'] ?? 'false') === 'true',
     'cookie_httponly' => ($_ENV['SESSION_COOKIE_HTTPONLY'] ?? 'true') === 'true',
@@ -118,7 +118,7 @@ $sessionOptions = [
 SessionStartMiddleware is registered in the middleware stack:
 
 ```php
-// bootstrap/App.php
+// boot/App.php
 $this->slimApp->add(\Odan\Session\Middleware\SessionStartMiddleware::class);
 $this->slimApp->addRoutingMiddleware();
 ```
@@ -246,7 +246,7 @@ foreach ($flash->all() as $category => $messages) {
 ### CSRF Protection
 
 ```php
-use MvaBootstrap\Modules\Core\Security\Services\CsrfService;
+use HdmBoot\Modules\Core\Security\Services\CsrfService;
 
 class FormAction
 {
@@ -422,7 +422,7 @@ if ($flash->has('success')) {
 **Check:**
 ```bash
 # Verify session configuration
-SESSION_NAME="mva_bootstrap_session"
+SESSION_NAME="hdm_boot_session"
 SESSION_LIFETIME=7200
 SESSION_COOKIE_HTTPONLY=true
 ```

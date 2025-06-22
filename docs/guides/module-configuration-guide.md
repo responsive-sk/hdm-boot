@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides comprehensive instructions for configuring modules in the MVA Bootstrap project. It covers the standardized configuration format, best practices, and real-world examples.
+This guide provides comprehensive instructions for configuring modules in the HDM Boot project. It covers the standardized configuration format, best practices, and real-world examples.
 
 ## Configuration File Structure
 
@@ -43,7 +43,7 @@ return [
 
 #### Optional Fields
 ```php
-'author' => 'MVA Bootstrap Team',    // Module author
+'author' => 'HDM Boot Team',    // Module author
 'license' => 'MIT',                 // License type
 'homepage' => 'https://example.com', // Module homepage
 'repository' => 'https://github.com/example/module',
@@ -409,8 +409,8 @@ Custom health monitoring:
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
-use MvaBootstrap\Modules\Core\User\Repositories\UserRepository;
+use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\User\Repositories\UserRepository;
 
 return [
     'name' => 'User',
@@ -571,4 +571,4 @@ if ($_ENV['APP_ENV'] === 'production') {
 return $config;
 ```
 
-This guide provides comprehensive coverage of module configuration in the MVA Bootstrap project, enabling developers to create well-structured, maintainable modules that integrate seamlessly with the system.
+This guide provides comprehensive coverage of module configuration in the HDM Boot project, enabling developers to create well-structured, maintainable modules that integrate seamlessly with the system.

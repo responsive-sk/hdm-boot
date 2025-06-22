@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a complete API reference for the Module Management System in the MVA Bootstrap project, including interfaces, classes, and methods.
+This document provides a complete API reference for the Module Management System in the HDM Boot project, including interfaces, classes, and methods.
 
 ## Core Interfaces
 
@@ -669,4 +669,4 @@ if (!empty($errors)) {
 }
 ```
 
-This API reference provides comprehensive documentation for all module management functionality in the MVA Bootstrap project.
+This API reference provides comprehensive documentation for all module management functionality in the HDM Boot project.

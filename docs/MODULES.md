@@ -1,10 +1,10 @@
 # Module Development Guide
 
-This guide explains how to create and integrate modules in the MVA Bootstrap Application.
+This guide explains how to create and integrate modules in the HDM Boot Application.
 
 ## 📦 Module System Overview
 
-The MVA Bootstrap Application uses a modular architecture that allows for:
+The HDM Boot Application uses a modular architecture that allows for:
 - **Core Modules** - Essential functionality (User, Security)
 - **Optional Modules** - Feature extensions (Article, Blog, Shop)
 - **Dynamic Loading** - Modules loaded based on configuration
@@ -143,9 +143,9 @@ Create domain entities and value objects:
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Domain\Entities;
+namespace HdmBoot\Modules\Optional\YourModule\Domain\Entities;
 
-use MvaBootstrap\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
+use HdmBoot\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
 
 final class YourEntity
 {
@@ -185,7 +185,7 @@ final class YourEntity
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Domain\ValueObjects;
+namespace HdmBoot\Modules\Optional\YourModule\Domain\ValueObjects;
 
 use InvalidArgumentException;
 
@@ -218,10 +218,10 @@ final class YourEntityId
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Repository;
+namespace HdmBoot\Modules\Optional\YourModule\Repository;
 
-use MvaBootstrap\Modules\Optional\YourModule\Domain\Entities\YourEntity;
-use MvaBootstrap\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
+use HdmBoot\Modules\Optional\YourModule\Domain\Entities\YourEntity;
+use HdmBoot\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
 
 interface YourModuleRepositoryInterface
 {
@@ -238,10 +238,10 @@ interface YourModuleRepositoryInterface
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Repository;
+namespace HdmBoot\Modules\Optional\YourModule\Repository;
 
-use MvaBootstrap\Modules\Optional\YourModule\Domain\Entities\YourEntity;
-use MvaBootstrap\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
+use HdmBoot\Modules\Optional\YourModule\Domain\Entities\YourEntity;
+use HdmBoot\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
 use PDO;
 
 final class SqliteYourModuleRepository implements YourModuleRepositoryInterface
@@ -316,11 +316,11 @@ final class SqliteYourModuleRepository implements YourModuleRepositoryInterface
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Services;
+namespace HdmBoot\Modules\Optional\YourModule\Services;
 
-use MvaBootstrap\Modules\Optional\YourModule\Domain\Entities\YourEntity;
-use MvaBootstrap\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
-use MvaBootstrap\Modules\Optional\YourModule\Repository\YourModuleRepositoryInterface;
+use HdmBoot\Modules\Optional\YourModule\Domain\Entities\YourEntity;
+use HdmBoot\Modules\Optional\YourModule\Domain\ValueObjects\YourEntityId;
+use HdmBoot\Modules\Optional\YourModule\Repository\YourModuleRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 
 final class YourModuleService
@@ -369,9 +369,9 @@ final class YourModuleService
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\YourModule\Actions;
+namespace HdmBoot\Modules\Optional\YourModule\Actions;
 
-use MvaBootstrap\Modules\Optional\YourModule\Services\YourModuleService;
+use HdmBoot\Modules\Optional\YourModule\Services\YourModuleService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -455,10 +455,10 @@ tests/
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Modules\Optional\YourModule\Services;
+namespace HdmBoot\Tests\Unit\Modules\Optional\YourModule\Services;
 
-use MvaBootstrap\Modules\Optional\YourModule\Services\YourModuleService;
-use MvaBootstrap\Modules\Optional\YourModule\Repository\YourModuleRepositoryInterface;
+use HdmBoot\Modules\Optional\YourModule\Services\YourModuleService;
+use HdmBoot\Modules\Optional\YourModule\Repository\YourModuleRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 final class YourModuleServiceTest extends TestCase
@@ -488,7 +488,7 @@ final class YourModuleServiceTest extends TestCase
 
 ### Code Organization
 
-1. **Namespace Convention** - `MvaBootstrap\Modules\{Type}\{ModuleName}`
+1. **Namespace Convention** - `HdmBoot\Modules\{Type}\{ModuleName}`
 2. **File Naming** - Clear, descriptive file names
 3. **Directory Structure** - Consistent across all modules
 4. **Documentation** - Comprehensive inline documentation
@@ -532,4 +532,4 @@ final class YourModuleServiceTest extends TestCase
 ],
 ```
 
-This guide provides a comprehensive foundation for developing modules in the MVA Bootstrap Application. Follow these patterns and best practices to create maintainable, secure, and performant modules.
+This guide provides a comprehensive foundation for developing modules in the HDM Boot Application. Follow these patterns and best practices to create maintainable, secure, and performant modules.

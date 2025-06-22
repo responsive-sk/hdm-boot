@@ -23,7 +23,7 @@ git log --oneline -1
 ## 🎯 Step 1: Create GitHub Repository
 
 ### Option A: GitHub Web Interface
-1. Go to https://github.com/responsive-sk
+1. Go to _https://github.com/responsive-sk_
 2. Click "New repository"
 3. Repository name: `hdm-boot`
 4. Description: `HDM Boot - Hexagonal + DDD + Modular Monolith Architecture Framework`

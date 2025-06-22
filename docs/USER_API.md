@@ -227,7 +227,7 @@ curl http://localhost:8001/api/admin/users/statistics
 ### Using PHP Test Script
 
 ```bash
-cd mva-bootstrap
+cd hdm-boot
 php test-user.php
 ```
 

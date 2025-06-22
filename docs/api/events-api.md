@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides a complete API reference for the Event-Driven Architecture components in the MVA Bootstrap project.
+This document provides a complete API reference for the Event-Driven Architecture components in the HDM Boot project.
 
 ## Core Interfaces
 
@@ -459,7 +459,7 @@ return [
 
 ### Bootstrap Configuration
 ```php
-// bootstrap/App.php
+// boot/App.php
 private function setupEventSystem(): void
 {
     $eventBootstrap = new EventBootstrap($this->container, $logger);
@@ -477,4 +477,4 @@ EVENT_RETRY_ATTEMPTS=3            # Number of retry attempts
 EVENT_TIMEOUT=30                  # Event processing timeout (seconds)
 ```
 
-This API reference provides complete documentation for implementing and using the Event-Driven Architecture in the MVA Bootstrap project.
+This API reference provides complete documentation for implementing and using the Event-Driven Architecture in the HDM Boot project.

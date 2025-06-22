@@ -1,4 +1,4 @@
-# MVA Bootstrap Architecture
+# HDM Boot Architecture
 
 ## 🏗 Architektúrna Dokumentácia
 

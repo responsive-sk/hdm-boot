@@ -1,10 +1,10 @@
-# 📝 MVA Bootstrap Orbit CMS - Package Plan
+# 📝 HDM Boot Orbit CMS - Package Plan
 
 ## 📋 **Overview**
 
-**Package Name:** `mva-bootstrap/orbit-cms`  
-**Purpose:** Laravel Orbit-inspired content management for MVA Bootstrap Core  
-**Type:** Separate package that extends MVA Bootstrap Core  
+**Package Name:** `hdm-boot/orbit-cms`  
+**Purpose:** Laravel Orbit-inspired content management for HDM Boot Core  
+**Type:** Separate package that extends HDM Boot Core  
 **License:** MIT  
 
 ## 🎯 **Why Separate Package?**
@@ -19,8 +19,8 @@
 ### **🔗 Integration with Core:**
 ```php
 // Orbit CMS builds on Core
-composer require mva-bootstrap/core
-composer require mva-bootstrap/orbit-cms
+composer require hdm-boot/core
+composer require hdm-boot/orbit-cms
 
 $app = new Application();
 $orbit = new OrbitCMS($app);
@@ -30,7 +30,7 @@ $orbit->initialize();
 ## 📦 **Orbit CMS Package Structure**
 
 ```
-mva-bootstrap-orbit-cms/
+hdm-boot-orbit-cms/
 ├── src/
 │   ├── Models/
 │   │   ├── Article.php           # Article model with metadata
@@ -78,7 +78,7 @@ mva-bootstrap-orbit-cms/
 
 ### **1. Article Management**
 ```php
-use MvaBootstrap\OrbitCMS\Models\Article;
+use HdmBoot\OrbitCMS\Models\Article;
 
 // Create article
 $article = Article::create([
@@ -96,7 +96,7 @@ $published = Article::where('status', 'published')->get();
 
 ### **2. Hybrid Storage**
 ```php
-use MvaBootstrap\OrbitCMS\Services\OrbitManager;
+use HdmBoot\OrbitCMS\Services\OrbitManager;
 
 $orbit = new OrbitManager([
     'storage' => 'hybrid',  // file + sqlite
@@ -121,7 +121,7 @@ $app->group('/admin', function () {
 
 ### **4. Search & Filtering**
 ```php
-use MvaBootstrap\OrbitCMS\Services\SearchService;
+use HdmBoot\OrbitCMS\Services\SearchService;
 
 $search = new SearchService();
 $results = $search->query('php framework')
@@ -141,8 +141,8 @@ $results = $search->query('php framework')
 
 ### **Example Integration:**
 ```php
-use MvaBootstrap\Core\Bootstrap\Application;
-use MvaBootstrap\OrbitCMS\OrbitCMS;
+use HdmBoot\Core\Bootstrap\Application;
+use HdmBoot\OrbitCMS\OrbitCMS;
 
 // Create core application
 $app = new Application();
@@ -165,11 +165,11 @@ $app->run();
 ### **composer.json:**
 ```json
 {
-    "name": "mva-bootstrap/orbit-cms",
-    "description": "Laravel Orbit-inspired CMS for MVA Bootstrap Core",
+    "name": "hdm-boot/orbit-cms",
+    "description": "Laravel Orbit-inspired CMS for HDM Boot Core",
     "require": {
         "php": ">=8.3",
-        "mva-bootstrap/core": "^1.0",
+        "hdm-boot/core": "^1.0",
         "ext-sqlite3": "*",
         "ext-pdo": "*"
     },
@@ -259,7 +259,7 @@ class ConfigManager
 **I recommend:**
 
 1. **Keep Core minimal** - Current features are perfect
-2. **Create Orbit CMS as separate package** - `mva-bootstrap/orbit-cms`
+2. **Create Orbit CMS as separate package** - `hdm-boot/orbit-cms`
 3. **Maybe add lightweight Event System** to Core
 4. **Build ecosystem of focused packages**
 

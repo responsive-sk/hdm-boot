@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document demonstrates the improved table styling in the web documentation viewer and showcases the language features available in the MVA Bootstrap project.
+This document demonstrates the improved table styling in the web documentation viewer and showcases the language features available in the HDM Boot project.
 
 ## 🌐 Supported Languages
 

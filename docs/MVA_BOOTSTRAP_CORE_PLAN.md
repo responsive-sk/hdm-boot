@@ -1,8 +1,8 @@
-# 🚀 MVA Bootstrap Core - Open Source Plan
+# 🚀 HDM Boot Core - Open Source Plan
 
 ## 📊 Executive Summary
 
-**Project:** MVA Bootstrap Core  
+**Project:** HDM Boot Core  
 **Type:** Open Source PHP Framework Core  
 **Target:** Minimal, secure, modern PHP 8.3+ framework  
 **License:** MIT  
@@ -10,7 +10,7 @@
 
 ## 🎯 **Core Vision**
 
-### **What MVA Bootstrap Core Will Be:**
+### **What HDM Boot Core Will Be:**
 - **🔒 Security-First** - Perfect path handling (0 vulnerabilities)
 - **🏗️ Clean Architecture** - DDD, SOLID principles
 - **⚡ Modern PHP** - PHP 8.3+, PHPStan Level MAX
@@ -44,7 +44,7 @@ src/SharedKernel/
 
 ### **2. Bootstrap System**
 ```
-src/Bootstrap/
+src/Boot/
 ├── App.php                       # Application bootstrap
 └── ModuleManager.php             # Simplified module manager
 ```
@@ -66,7 +66,7 @@ packages/
 ## 🎨 **Open Source Package Structure**
 
 ```
-mva-bootstrap-core/
+hdm-boot-core/
 ├── src/
 │   ├── Bootstrap/
 │   │   ├── Application.php       # Main app class
@@ -232,4 +232,4 @@ mva-bootstrap-core/
 
 ---
 
-**🎉 MVA Bootstrap Core will showcase the best of modern PHP development - secure, fast, and developer-friendly!**
+**🎉 HDM Boot Core will showcase the best of modern PHP development - secure, fast, and developer-friendly!**

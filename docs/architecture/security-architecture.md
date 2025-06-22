@@ -2,7 +2,7 @@
 
 ## Overview
 
-MVA Bootstrap implementuje bezpečnostnú architektúru založenú na princípoch Clean Architecture a priemyselných štandardoch.
+HDM Boot implementuje bezpečnostnú architektúru založenú na princípoch Clean Architecture a priemyselných štandardoch.
 
 ## Core Security Komponenty
 
