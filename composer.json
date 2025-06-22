@@ -32,7 +32,11 @@
         "psr-4": {
             "HdmBoot\\": "src/",
             "HdmBoot\\Modules\\Core\\": "src/Modules/Core/"
-        }
+        },
+        "exclude-from-classmap": [
+            "**/tests/**",
+            "**/Tests/**"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
