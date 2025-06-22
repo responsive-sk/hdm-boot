@@ -136,13 +136,18 @@ composer install --no-dev --optimize-autoloader --classmap-authoritative
 composer install --no-dev --optimize-autoloader --no-scripts
 composer dump-autoload --optimize --classmap-authoritative
 
-# Generate secure keys
+# Generate secure keys (CRITICAL!)
 php bin/generate-keys.php > .env.keys
 cat .env.keys  # Copy these to .env
 
 # Configure environment
 cp .env.example .env
-nano .env  # Set production values
+
+# IMPORTANT: Set JWT_SECRET in .env
+echo "JWT_SECRET=$(php -r 'echo bin2hex(random_bytes(32));')" >> .env
+
+# Edit other production values
+nano .env  # Set APP_ENV=prod, APP_DEBUG=false, etc.
 
 # Set proper permissions
 sudo chown -R www-data:www-data /var/www/hdm-boot
@@ -615,4 +620,81 @@ if ($_ENV['APP_ENV'] === 'prod') {
 }
 ```
 
-This deployment guide provides comprehensive instructions for deploying the HDM Boot Application in various environments with proper security and performance considerations.
+## 🚨 Troubleshooting
+
+### Common Production Issues
+
+#### JWT Secret Missing/Invalid
+```bash
+# Check if JWT_SECRET is set
+grep JWT_SECRET .env
+
+# If missing, generate and add to .env
+echo "JWT_SECRET=$(php -r 'echo bin2hex(random_bytes(32));')" >> .env
+
+# Verify JWT secret length (must be 32+ characters)
+php -r "
+\$secret = getenv('JWT_SECRET') ?: file_get_contents('.env') | grep JWT_SECRET;
+echo 'JWT Secret length: ' . strlen(\$secret) . PHP_EOL;
+if (strlen(\$secret) < 32) {
+    echo 'ERROR: JWT secret too short!' . PHP_EOL;
+} else {
+    echo 'JWT secret is valid!' . PHP_EOL;
+}
+"
+
+# Test JWT service manually
+php -r "
+require 'vendor/autoload.php';
+\$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+\$dotenv->load();
+\$secret = \$_ENV['JWT_SECRET'] ?? 'not-set';
+echo 'JWT Secret: ' . \$secret . PHP_EOL;
+echo 'Length: ' . strlen(\$secret) . PHP_EOL;
+if (strlen(\$secret) < 32) {
+    echo 'ERROR: JWT secret too short for production!' . PHP_EOL;
+    exit(1);
+} else {
+    echo 'JWT secret is production-ready!' . PHP_EOL;
+}
+"
+```
+
+#### DI Container Compilation Issues
+```bash
+# Clear container cache
+rm -rf var/cache/*
+
+# Regenerate autoloader
+composer dump-autoload --optimize
+
+# Test container compilation
+php -r "
+require 'vendor/autoload.php';
+try {
+    \$container = require 'config/container.php';
+    echo 'Container compiled successfully!' . PHP_EOL;
+} catch (Exception \$e) {
+    echo 'Container error: ' . \$e->getMessage() . PHP_EOL;
+    exit(1);
+}
+"
+```
+
+#### Environment Variable Issues
+```bash
+# Check all environment variables
+php -r "
+\$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+\$dotenv->load();
+echo 'APP_ENV: ' . (\$_ENV['APP_ENV'] ?? 'not-set') . PHP_EOL;
+echo 'APP_DEBUG: ' . (\$_ENV['APP_DEBUG'] ?? 'not-set') . PHP_EOL;
+echo 'JWT_SECRET length: ' . strlen(\$_ENV['JWT_SECRET'] ?? '') . PHP_EOL;
+echo 'DATABASE_URL: ' . (\$_ENV['DATABASE_URL'] ?? 'not-set') . PHP_EOL;
+"
+
+# Validate production environment
+php bin/validate-env.php  # Create this script if needed
+```
+
+This deployment guide provides comprehensive instructions for deploying the HDM Boot Framework in various environments with proper security and performance considerations.
