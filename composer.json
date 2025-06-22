@@ -78,7 +78,7 @@
     },
     "config": {
         "optimize-autoloader": true,
-        "classmap-authoritative": true,
+        "classmap-authoritative": false,
         "sort-packages": true
     },
     "minimum-stability": "stable",
