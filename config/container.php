@@ -4,12 +4,19 @@ declare(strict_types=1);
 
 use DI\ContainerBuilder;
 use ResponsiveSk\Slim4Paths\Paths;
+use Dotenv\Dotenv;
 
 /**
  * Simplified DI Container Configuration.
  *
  * Loads service definitions from separate files for better organization.
  */
+
+// Load environment variables FIRST
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+}
 
 // Create container builder
 $containerBuilder = new ContainerBuilder();
