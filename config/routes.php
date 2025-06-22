@@ -30,47 +30,100 @@ return function (App $app): void {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MVA Bootstrap Application</title>
+    <title>HDM Boot Framework</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 800px; margin: 50px auto; padding: 20px;
+            background: #f8fafc; color: #1a202c; line-height: 1.6;
+        }
         .header { text-align: center; margin-bottom: 40px; }
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .feature { padding: 20px; border: 1px solid #ddd; border-radius: 8px; }
-        .links { text-align: center; margin-top: 40px; }
-        .links a { margin: 0 10px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px; }
+        .header h1 { color: #2d3748; margin-bottom: 8px; }
+        .header p { color: #4a5568; font-size: 1.1rem; }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .feature {
+            padding: 24px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .feature h2 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+        .feature p {
+            color: #4a5568;
+            margin: 0;
+        }
+        .links {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .links a {
+            margin: 0 8px;
+            padding: 12px 24px;
+            background: #1a365d;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: background-color 0.2s;
+            border: 2px solid #1a365d;
+        }
+        .links a:hover {
+            background: #2c5282;
+            border-color: #2c5282;
+        }
+        .links a:focus {
+            outline: 3px solid #63b3ed;
+            outline-offset: 2px;
+            background: #2c5282;
+        }
+        .links a:active {
+            background: #1a202c;
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🚀 MVA Bootstrap Application</h1>
-        <p>Modular PHP application with enterprise architecture</p>
+        <h1>🚀 HDM Boot Framework</h1>
+        <p>Hexagonal + DDD + Modular Monolith Architecture</p>
     </div>
 
     <div class="features">
         <div class="feature">
-            <h3>🏗️ Modular Architecture</h3>
-            <p>Clean separation of concerns with Core and Optional modules</p>
+            <h2>🏗️ Triple Architecture</h2>
+            <p>Hexagonal Architecture + Domain-Driven Design + Modular Monolith for enterprise applications</p>
         </div>
         <div class="feature">
-            <h3>🔐 Security First</h3>
-            <p>Authentication, CSRF protection, secure sessions</p>
+            <h2>🔐 Security First</h2>
+            <p>JWT authentication, CSRF protection, secure sessions, and path-safe operations</p>
         </div>
         <div class="feature">
-            <h3>🌍 Internationalization</h3>
-            <p>Multi-language support with locale detection</p>
+            <h2>🌍 Internationalization</h2>
+            <p>Multi-language support with Slovak/Czech localization and automatic detection</p>
         </div>
         <div class="feature">
-            <h3>📊 Enterprise Ready</h3>
-            <p>Logging, monitoring, database abstraction</p>
+            <h2>📊 Enterprise Ready</h2>
+            <p>Comprehensive logging, health monitoring, database abstraction, and production deployment</p>
         </div>
     </div>
 
-    <div class="links">
-        <a href="/blog">Blog</a>
-        <a href="/login">Login</a>
-        <a href="/profile">Profile</a>
-        <a href="/api/status">API Status</a>
-    </div>
+    <nav class="links" role="navigation" aria-label="Main navigation">
+        <a href="/blog" aria-label="Visit HDM Boot Blog">Blog</a>
+        <a href="/login" aria-label="User Login Page">Login</a>
+        <a href="/profile" aria-label="User Profile Page">Profile</a>
+        <a href="/api/status" aria-label="API Status Monitor">API Status</a>
+    </nav>
 </body>
 </html>';
 
