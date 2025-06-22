@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Middleware;
+namespace HdmBoot\Modules\Core\Security\Middleware;
 
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
-use MvaBootstrap\SharedKernel\Contracts\MiddlewareInterface;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\SharedKernel\Contracts\MiddlewareInterface;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;

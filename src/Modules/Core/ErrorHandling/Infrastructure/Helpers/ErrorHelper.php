@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Helpers;
+namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Helpers;
 
-use MvaBootstrap\Modules\Core\User\Exceptions\UserAlreadyExistsException;
-use MvaBootstrap\Modules\Core\User\Exceptions\UserNotFoundException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthenticationException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthorizationException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\SecurityException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\User\Exceptions\UserAlreadyExistsException;
+use HdmBoot\Modules\Core\User\Exceptions\UserNotFoundException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthenticationException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthorizationException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\SecurityException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
 
 /**
  * Error Helper.

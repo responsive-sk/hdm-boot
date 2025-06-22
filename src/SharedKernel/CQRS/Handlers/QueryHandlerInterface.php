@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\CQRS\Handlers;
+namespace HdmBoot\SharedKernel\CQRS\Handlers;
 
-use MvaBootstrap\SharedKernel\CQRS\Queries\QueryInterface;
+use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
 
 /**
  * Query Handler Interface.

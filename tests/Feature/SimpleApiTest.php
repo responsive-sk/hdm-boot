@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Feature;
+namespace HdmBoot\Tests\Feature;
 
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Tests\TestCase;
 
 /**
  * Simple API tests to verify basic functionality.
@@ -12,7 +12,7 @@ use MvaBootstrap\Tests\TestCase;
 class SimpleApiTest extends TestCase
 {
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginEndpoint(): void
     {
@@ -30,7 +30,7 @@ class SimpleApiTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testMeEndpoint(): void
     {
@@ -46,7 +46,7 @@ class SimpleApiTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\User\Actions\ListUsersAction
+     * @covers \HdmBoot\Modules\Core\User\Actions\ListUsersAction
      */
     public function testUsersEndpoint(): void
     {
@@ -62,7 +62,7 @@ class SimpleApiTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\User\Actions\ListUsersAction
+     * @covers \HdmBoot\Modules\Core\User\Actions\ListUsersAction
      */
     public function testUnauthorizedAccess(): void
     {
@@ -73,7 +73,7 @@ class SimpleApiTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testInvalidLogin(): void
     {

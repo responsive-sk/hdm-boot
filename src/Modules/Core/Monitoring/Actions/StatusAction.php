@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Monitoring\Actions;
+namespace HdmBoot\Modules\Core\Monitoring\Actions;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Example\Domain\Events;
+namespace HdmBoot\Modules\Example\Domain\Events;
 
-use MvaBootstrap\SharedKernel\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\Events\DomainEventInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use JsonSerializable;

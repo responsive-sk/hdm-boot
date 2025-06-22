@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Domain\Models;
+namespace HdmBoot\Modules\Core\Language\Domain\Models;
 
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\TranslationKey;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\TranslationKey;
 
 /**
  * Translation Domain Model.

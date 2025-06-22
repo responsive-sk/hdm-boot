@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Services;
+namespace HdmBoot\Modules\Core\Security\Services;
 
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Domain\DTOs;
+namespace HdmBoot\Modules\Core\Security\Domain\DTOs;
 
 /**
  * Login Request Data Transfer Object.

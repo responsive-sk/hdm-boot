@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails;
+namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails;
 
 use JsonSerializable;
 

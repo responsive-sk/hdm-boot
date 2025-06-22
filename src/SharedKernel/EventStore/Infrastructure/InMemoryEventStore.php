@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\EventStore\Infrastructure;
+namespace HdmBoot\SharedKernel\EventStore\Infrastructure;
 
-use MvaBootstrap\SharedKernel\EventStore\Contracts\EventStoreInterface;
-use MvaBootstrap\SharedKernel\EventStore\ValueObjects\StoredEvent;
-use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\EventStore\Contracts\EventStoreInterface;
+use HdmBoot\SharedKernel\EventStore\ValueObjects\StoredEvent;
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * In-Memory Event Store Implementation.

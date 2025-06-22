@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Contracts\DTOs;
+namespace HdmBoot\Modules\Core\User\Contracts\DTOs;
 
 /**
  * User Data DTO - Public User Data Structure.

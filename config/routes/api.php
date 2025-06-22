@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Core\User\Actions\Api\ListUsersAction;
+use HdmBoot\Modules\Core\User\Actions\Api\ListUsersAction;
 use Slim\App;
 use Slim\Routing\RouteCollectorProxy;
 

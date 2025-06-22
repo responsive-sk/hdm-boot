@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Logging\Infrastructure\Services;
+namespace HdmBoot\Modules\Core\Logging\Infrastructure\Services;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;

@@ -1,10 +1,10 @@
-# Deployment Guide
+# 🚀 HDM Boot Production Deployment Guide
 
-This guide covers deployment strategies and configurations for the MVA Bootstrap Application in various environments.
+This guide covers deployment strategies and configurations for the HDM Boot Framework in various environments.
 
 ## 🚀 Deployment Overview
 
-The MVA Bootstrap Application is designed for easy deployment across different environments:
+The HDM Boot Framework is designed for easy deployment across different environments:
 - **Development** - Local development with debugging enabled
 - **Staging** - Pre-production testing environment
 - **Production** - Live production environment
@@ -13,11 +13,26 @@ The MVA Bootstrap Application is designed for easy deployment across different e
 
 ### Environment Variables
 
+#### Generate Secure Keys
+```bash
+# Use the built-in key generator
+php bin/generate-keys.php
+
+# Or generate individual keys manually:
+JWT_SECRET=$(php -r 'echo bin2hex(random_bytes(32));')
+SECURITY_KEY=$(php -r 'echo bin2hex(random_bytes(32));')
+REDIS_PASSWORD=$(php -r 'echo bin2hex(random_bytes(16));')
+DB_PASSWORD=$(php -r 'echo bin2hex(random_bytes(12));')
+
+# Generate in JSON format for automation
+php bin/generate-keys.php --format=json
+```
+
 Create appropriate `.env` files for each environment:
 
 #### Development (.env.dev)
 ```bash
-APP_NAME="MVA Bootstrap Dev"
+APP_NAME="HDM Boot Dev"
 APP_ENV=dev
 APP_DEBUG=true
 APP_TIMEZONE=UTC
@@ -27,9 +42,9 @@ DATABASE_URL="sqlite:var/storage/app_dev.db"
 JWT_SECRET="dev-secret-key-change-in-production"
 JWT_EXPIRY=3600
 
-ENABLED_MODULES="Article"
+ENABLED_MODULES="Blog"
 
-SESSION_NAME="mva_bootstrap_dev_session"
+SESSION_NAME="hdm_boot_dev_session"
 SESSION_LIFETIME=7200
 
 # Development-specific
@@ -39,19 +54,19 @@ CACHE_ENABLED=false
 
 #### Staging (.env.staging)
 ```bash
-APP_NAME="MVA Bootstrap Staging"
+APP_NAME="HDM Boot Staging"
 APP_ENV=staging
 APP_DEBUG=false
 APP_TIMEZONE=UTC
 
 DATABASE_URL="sqlite:var/storage/app_staging.db"
 
-JWT_SECRET="staging-secret-key-32-characters-long"
+JWT_SECRET="$(php -r 'echo bin2hex(random_bytes(32));')"
 JWT_EXPIRY=3600
 
-ENABLED_MODULES="Article"
+ENABLED_MODULES="Blog"
 
-SESSION_NAME="mva_bootstrap_staging_session"
+SESSION_NAME="hdm_boot_staging_session"
 SESSION_LIFETIME=7200
 
 # Staging-specific
@@ -61,7 +76,7 @@ CACHE_ENABLED=true
 
 #### Production (.env.prod)
 ```bash
-APP_NAME="MVA Bootstrap"
+APP_NAME="HDM Boot"
 APP_ENV=prod
 APP_DEBUG=false
 APP_TIMEZONE=UTC
@@ -71,17 +86,99 @@ DATABASE_URL="sqlite:var/storage/app.db"
 # DATABASE_URL="mysql://user:password@localhost/database"
 # DATABASE_URL="pgsql://user:password@localhost/database"
 
-JWT_SECRET="production-secret-key-must-be-32-chars-minimum"
+JWT_SECRET="$(php -r 'echo bin2hex(random_bytes(32));')"
 JWT_EXPIRY=3600
 
-ENABLED_MODULES="Article"
+ENABLED_MODULES="Blog"
 
-SESSION_NAME="mva_bootstrap_session"
+SESSION_NAME="hdm_boot_session"
 SESSION_LIFETIME=7200
 
 # Production-specific
 LOG_LEVEL=warning
 CACHE_ENABLED=true
+```
+
+## 🚀 Production Server Deployment
+
+### Step-by-Step Production Setup
+
+#### 1. **Server Preparation**
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install PHP 8.3+ and required extensions
+sudo apt install -y php8.3 php8.3-fpm php8.3-cli php8.3-common \
+    php8.3-mysql php8.3-sqlite3 php8.3-curl php8.3-gd \
+    php8.3-mbstring php8.3-xml php8.3-zip php8.3-bcmath \
+    php8.3-intl php8.3-redis
+
+# Install Composer
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+
+# Install web server (Nginx recommended)
+sudo apt install -y nginx
+```
+
+#### 2. **Application Deployment**
+```bash
+# Clone repository
+cd /var/www
+sudo git clone https://github.com/responsive-sk/hdm-boot.git
+cd hdm-boot
+
+# Install production dependencies ONLY (no dev packages)
+composer install --no-dev --optimize-autoloader --classmap-authoritative
+
+# Alternative for updates (faster)
+composer install --no-dev --optimize-autoloader --no-scripts
+composer dump-autoload --optimize --classmap-authoritative
+
+# Generate secure keys
+php bin/generate-keys.php > .env.keys
+cat .env.keys  # Copy these to .env
+
+# Configure environment
+cp .env.example .env
+nano .env  # Set production values
+
+# Set proper permissions
+sudo chown -R www-data:www-data /var/www/hdm-boot
+sudo chmod -R 755 var/
+sudo chmod 600 .env
+```
+
+#### 3. **Production Composer Commands**
+```bash
+# Initial production install (recommended)
+composer install --no-dev --optimize-autoloader --classmap-authoritative
+
+# For updates (faster, skips scripts)
+composer install --no-dev --optimize-autoloader --no-scripts
+
+# Force clean install (if issues)
+rm -rf vendor/ composer.lock
+composer install --no-dev --optimize-autoloader
+
+# Verify no dev packages
+composer show --installed | grep -E "(phpunit|phpstan|php-cs-fixer)"
+# Should return empty (no dev packages)
+```
+
+#### 4. **Performance Optimization**
+```bash
+# Enable OPcache (add to php.ini)
+echo "opcache.enable=1
+opcache.memory_consumption=256
+opcache.max_accelerated_files=20000
+opcache.validate_timestamps=0
+opcache.save_comments=1
+opcache.fast_shutdown=1" | sudo tee -a /etc/php/8.3/fpm/conf.d/10-opcache.ini
+
+# Restart PHP-FPM
+sudo systemctl restart php8.3-fpm
 ```
 
 ## 🐳 Docker Deployment
@@ -114,8 +211,8 @@ WORKDIR /var/www
 # Copy application files
 COPY . .
 
-# Install dependencies
-RUN composer install --no-dev --optimize-autoloader
+# Install production dependencies only
+RUN composer install --no-dev --optimize-autoloader --classmap-authoritative
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www \
@@ -136,7 +233,7 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: mva-bootstrap-app
+    container_name: hdm-boot-app
     restart: unless-stopped
     working_dir: /var/www
     volumes:
@@ -147,7 +244,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: mva-bootstrap-nginx
+    container_name: hdm-boot-nginx
     restart: unless-stopped
     ports:
       - "80:80"
@@ -160,10 +257,10 @@ services:
 
   database:
     image: mysql:8.0
-    container_name: mva-bootstrap-db
+    container_name: hdm-boot-db
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: mva_bootstrap
+      MYSQL_DATABASE: hdm_boot
       MYSQL_ROOT_PASSWORD: root_password
       MYSQL_USER: mva_user
       MYSQL_PASSWORD: mva_password
@@ -275,7 +372,7 @@ Header always set X-XSS-Protection "1; mode=block"
 server {
     listen 80;
     server_name your-domain.com;
-    root /var/www/html/mva-bootstrap/public;
+    root /var/www/html/hdm-boot/public;
     index index.php;
 
     # Security headers
@@ -387,7 +484,7 @@ LoggerInterface::class => function (Container $c): LoggerInterface {
     $logger->pushHandler(new StreamHandler($logPath, Logger::WARNING));
     
     // Optional: Send critical errors to external service
-    // $logger->pushHandler(new SlackHandler($token, $channel, 'MVA Bootstrap', true, null, Logger::CRITICAL));
+    // $logger->pushHandler(new SlackHandler($token, $channel, 'HDM Boot', true, null, Logger::CRITICAL));
     
     return $logger;
 },
@@ -428,8 +525,8 @@ echo "Starting deployment..."
 # Pull latest code
 git pull origin main
 
-# Install/update dependencies
-composer install --no-dev --optimize-autoloader
+# Install/update production dependencies only
+composer install --no-dev --optimize-autoloader --classmap-authoritative
 
 # Clear cache
 rm -rf var/cache/*
@@ -456,21 +553,21 @@ echo "Deployment completed successfully!"
 
 set -e
 
-DEPLOY_DIR="/var/www/mva-bootstrap"
+DEPLOY_DIR="/var/www/hdm-boot"
 BACKUP_DIR="/var/www/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
 echo "Starting zero-downtime deployment..."
 
 # Create backup
-cp -r $DEPLOY_DIR $BACKUP_DIR/mva-bootstrap_$TIMESTAMP
+cp -r $DEPLOY_DIR $BACKUP_DIR/hdm-boot_$TIMESTAMP
 
 # Deploy to temporary directory
-git clone https://github.com/your-repo/mva-bootstrap.git /tmp/mva-bootstrap-new
-cd /tmp/mva-bootstrap-new
+git clone https://github.com/your-repo/hdm-boot.git /tmp/hdm-boot-new
+cd /tmp/hdm-boot-new
 
-# Install dependencies
-composer install --no-dev --optimize-autoloader
+# Install production dependencies only
+composer install --no-dev --optimize-autoloader --classmap-authoritative
 
 # Copy environment file
 cp $DEPLOY_DIR/.env .env
@@ -480,7 +577,7 @@ cp -r $DEPLOY_DIR/var ./
 
 # Atomic switch
 mv $DEPLOY_DIR $DEPLOY_DIR.old
-mv /tmp/mva-bootstrap-new $DEPLOY_DIR
+mv /tmp/hdm-boot-new $DEPLOY_DIR
 
 # Restart services
 sudo systemctl reload nginx
@@ -518,4 +615,4 @@ if ($_ENV['APP_ENV'] === 'prod') {
 }
 ```
 
-This deployment guide provides comprehensive instructions for deploying the MVA Bootstrap Application in various environments with proper security and performance considerations.
+This deployment guide provides comprehensive instructions for deploying the HDM Boot Application in various environments with proper security and performance considerations.

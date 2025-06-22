@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Models;
+namespace HdmBoot\Modules\Core\Storage\Models;
 
 /**
  * Article Model.
@@ -232,6 +232,19 @@ class Article extends FileModel
     }
 
     /**
+     * Get reading time in minutes.
+     */
+    public function getReadingTime(): int
+    {
+        $readingTime = $this->getAttribute('reading_time');
+        if (is_int($readingTime)) {
+            return $readingTime;
+        }
+
+        return $this->calculateReadingTime();
+    }
+
+    /**
      * Get URL-friendly slug.
      */
     public function getUrl(): string
@@ -299,6 +312,16 @@ class Article extends FileModel
     }
 
     /**
+     * Simple where clause for compatibility with Eloquent-style queries.
+     *
+     * @return ArticleQueryBuilder
+     */
+    public static function where(string $field, string $value): ArticleQueryBuilder
+    {
+        return new ArticleQueryBuilder($field, $value);
+    }
+
+    /**
      * Get articles directory path using Paths service.
      */
     public static function getArticlesPath(): string
@@ -316,5 +339,54 @@ class Article extends FileModel
         // Fallback to storage directory
         // @phpstan-ignore-next-line ternary.alwaysTrue
         return $storageService ? $storageService->getStorageDirectory('articles') : '';
+    }
+}
+
+/**
+ * Simple query builder for Article model.
+ */
+class ArticleQueryBuilder
+{
+    public function __construct(
+        private readonly string $field,
+        private readonly string $value
+    ) {
+    }
+
+    /**
+     * Get first matching article.
+     */
+    public function first(): ?Article
+    {
+        $articles = Article::all();
+
+        foreach ($articles as $article) {
+            $fieldValue = $article->getAttribute($this->field);
+            if (is_string($fieldValue) && $fieldValue === $this->value) {
+                return $article;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Get all matching articles.
+     *
+     * @return array<int, Article>
+     */
+    public function get(): array
+    {
+        $articles = Article::all();
+        $results = [];
+
+        foreach ($articles as $article) {
+            $fieldValue = $article->getAttribute($this->field);
+            if (is_string($fieldValue) && $fieldValue === $this->value) {
+                $results[] = $article;
+            }
+        }
+
+        return $results;
     }
 }

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security;
+namespace HdmBoot\Modules\Core\Security;
 
-use MvaBootstrap\Modules\Core\Security\Contracts\Events\SecurityModuleEvents;
-use MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
-use MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface;
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
-use MvaBootstrap\SharedKernel\Contracts\Modules\ModuleInterface;
+use HdmBoot\Modules\Core\Security\Contracts\Events\SecurityModuleEvents;
+use HdmBoot\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
+use HdmBoot\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\SharedKernel\Contracts\Modules\ModuleInterface;
 use Psr\Log\LoggerInterface;
 
 /**

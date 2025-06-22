@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction;
-use MvaBootstrap\Modules\Core\User\Repository\SqliteUserRepository;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\User\Actions\Web\ProfilePageAction;
+use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use Psr\Log\LoggerInterface;
 
 /*
@@ -18,7 +18,7 @@ return [
     'name'        => 'User',
     'version'     => '1.0.0',
     'description' => 'User management module with CRUD operations, authentication, and profile management',
-    'author'      => 'MVA Bootstrap Team',
+    'author'      => 'HDM Boot Team',
     'license'     => 'MIT',
 
     // === MODULE DEPENDENCIES ===
@@ -58,7 +58,7 @@ return [
         // Profile Page Action
         ProfilePageAction::class => function (Container $container): ProfilePageAction {
             return new ProfilePageAction(
-                $container->get(\MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer::class),
+                $container->get(\HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer::class),
                 $container->get(\Odan\Session\SessionInterface::class),
                 $container->get(UserService::class),
                 $container->get('logger.profile')

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Modules;
+namespace HdmBoot\Tests\Unit\Modules;
 
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
 // Note: CsrfService moved to Session module
-use MvaBootstrap\Modules\Core\Security\Services\JwtService;
-use MvaBootstrap\Tests\TestCase\ModuleTestCase;
+use HdmBoot\Modules\Core\Security\Services\JwtService;
+use HdmBoot\Tests\TestCase\ModuleTestCase;
 use Odan\Session\SessionInterface;
 use PDO;
 

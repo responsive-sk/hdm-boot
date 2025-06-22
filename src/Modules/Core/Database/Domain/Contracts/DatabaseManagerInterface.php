@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Database\Domain\Contracts;
+namespace HdmBoot\Modules\Core\Database\Domain\Contracts;
 
 /**
  * Database Manager Interface.

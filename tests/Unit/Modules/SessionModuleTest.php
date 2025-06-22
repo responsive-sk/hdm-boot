@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Modules;
+namespace HdmBoot\Tests\Unit\Modules;
 
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use MvaBootstrap\Modules\Core\Session\Services\SessionService;
-use MvaBootstrap\Tests\TestCase\ModuleTestCase;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Session\Services\SessionService;
+use HdmBoot\Tests\TestCase\ModuleTestCase;
 use Odan\Session\SessionInterface;
 
 /**

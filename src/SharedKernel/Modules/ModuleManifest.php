@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Modules;
+namespace HdmBoot\SharedKernel\Modules;
 
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**

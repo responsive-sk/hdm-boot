@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Models;
+namespace HdmBoot\Modules\Core\Storage\Models;
 
-use MvaBootstrap\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use MvaBootstrap\Modules\Core\Storage\Drivers\MarkdownDriver;
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
+use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 
 /**
  * File Model.

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\SharedKernel\Events\DomainEventInterface;
-use MvaBootstrap\SharedKernel\Events\EventListenerInterface;
-use MvaBootstrap\Modules\Example\Domain\Events\ExampleCreatedEvent;
-use MvaBootstrap\Modules\Example\Domain\Events\ExampleUpdatedEvent;
-use MvaBootstrap\Modules\Example\Infrastructure\Listeners\ExampleAuditListener;
-use MvaBootstrap\Modules\Example\Infrastructure\Listeners\ExampleNotificationListener;
+use HdmBoot\SharedKernel\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\Events\EventListenerInterface;
+use HdmBoot\Modules\Example\Domain\Events\ExampleCreatedEvent;
+use HdmBoot\Modules\Example\Domain\Events\ExampleUpdatedEvent;
+use HdmBoot\Modules\Example\Infrastructure\Listeners\ExampleAuditListener;
+use HdmBoot\Modules\Example\Infrastructure\Listeners\ExampleNotificationListener;
 
 /**
  * Example Module Event Configuration

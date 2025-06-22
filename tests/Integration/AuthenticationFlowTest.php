@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Integration;
+namespace HdmBoot\Tests\Integration;
 
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Tests\TestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\Test;
 
@@ -179,7 +179,7 @@ final class AuthenticationFlowTest extends TestCase
         $this->loginAsAdmin();
 
         // Check that log files exist and contain authentication events
-        $logDir = $this->getContainer()->get(\MvaBootstrap\Shared\Services\Paths::class)->base() . '/logs';
+        $logDir = $this->getContainer()->get(\HdmBoot\Shared\Services\Paths::class)->base() . '/logs';
         
         $this->assertDirectoryExists($logDir);
         

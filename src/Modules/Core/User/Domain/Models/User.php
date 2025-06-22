@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\Models;
+namespace HdmBoot\Modules\Core\User\Domain\Models;
 
 /**
  * User Domain Model.

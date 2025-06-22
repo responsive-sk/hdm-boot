@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Modules;
+namespace HdmBoot\SharedKernel\Modules;
 
-use MvaBootstrap\SharedKernel\Contracts\ModuleInterface;
+use HdmBoot\SharedKernel\Contracts\ModuleInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Container\ContainerInterface;
 use ResponsiveSk\Slim4Paths\Paths;

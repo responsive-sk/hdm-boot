@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Infrastructure\Engines;
+namespace HdmBoot\Modules\Core\Template\Infrastructure\Engines;
 
-use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
+use HdmBoot\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
 
 /**
  * Twig Template Engine.

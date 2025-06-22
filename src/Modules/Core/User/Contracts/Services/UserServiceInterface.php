@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Contracts\Services;
+namespace HdmBoot\Modules\Core\User\Contracts\Services;
 
 /**
  * User Service Interface - Public API for User Module.

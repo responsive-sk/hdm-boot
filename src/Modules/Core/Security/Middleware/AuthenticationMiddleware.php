@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Middleware;
+namespace HdmBoot\Modules\Core\Security\Middleware;
 
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -52,7 +52,7 @@ final class AuthenticationMiddleware implements MiddlewareInterface
             // Extract token from header for token info
             if (str_starts_with($authHeader, 'Bearer ')) {
                 $tokenString = substr($authHeader, 7);
-                $token = \MvaBootstrap\Modules\Core\Security\Domain\ValueObjects\JwtToken::fromString($tokenString);
+                $token = \HdmBoot\Modules\Core\Security\Domain\ValueObjects\JwtToken::fromString($tokenString);
                 $request = $request->withAttribute('token', $token);
             }
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Services;
+namespace HdmBoot\Modules\Core\Security\Services;
 
 use Cake\Validation\Validator;
-use MvaBootstrap\Modules\Core\Security\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\Security\Exceptions\ValidationException;
 
 /**
  * Authentication Validator.

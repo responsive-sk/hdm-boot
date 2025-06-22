@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Example\Infrastructure\Listeners;
+namespace HdmBoot\Modules\Example\Infrastructure\Listeners;
 
-use MvaBootstrap\Modules\Example\Domain\Events\ExampleCreatedEvent;
-use MvaBootstrap\SharedKernel\Events\EventListenerInterface;
+use HdmBoot\Modules\Example\Domain\Events\ExampleCreatedEvent;
+use HdmBoot\SharedKernel\Events\EventListenerInterface;
 use Psr\Log\LoggerInterface;
 use DateTimeInterface;
 

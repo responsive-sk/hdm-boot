@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions;
+namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions;
 
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
 
 /**
  * Authentication Exception.

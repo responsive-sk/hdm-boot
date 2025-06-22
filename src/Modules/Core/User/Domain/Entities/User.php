@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\Entities;
+namespace HdmBoot\Modules\Core\User\Domain\Entities;
 
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
+use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 
 /**
  * User Entity

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Session\Services;
+namespace HdmBoot\Modules\Core\Session\Services;
 
-use MvaBootstrap\Modules\Core\Session\Enum\SecurityType;
-use MvaBootstrap\Modules\Core\Session\Exceptions\SecurityException;
+use HdmBoot\Modules\Core\Session\Enum\SecurityType;
+use HdmBoot\Modules\Core\Session\Exceptions\SecurityException;
 use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**

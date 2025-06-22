@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\EventStore\Contracts;
+namespace HdmBoot\SharedKernel\EventStore\Contracts;
 
-use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
-use MvaBootstrap\SharedKernel\EventStore\ValueObjects\StoredEvent;
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\EventStore\ValueObjects\StoredEvent;
 
 /**
  * Event Store Interface.

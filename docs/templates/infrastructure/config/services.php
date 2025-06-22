@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\SharedKernel\Events\EventDispatcherInterface;
-use MvaBootstrap\SharedKernel\Database\DatabaseInterface;
-use MvaBootstrap\Modules\Example\Domain\Repository\ExampleRepositoryInterface;
-use MvaBootstrap\Modules\Example\Infrastructure\Repository\ExampleRepository;
-use MvaBootstrap\Modules\Example\Infrastructure\Services\ExampleService;
-use MvaBootstrap\Modules\Example\Actions\ExampleAction;
+use HdmBoot\SharedKernel\Events\EventDispatcherInterface;
+use HdmBoot\SharedKernel\Database\DatabaseInterface;
+use HdmBoot\Modules\Example\Domain\Repository\ExampleRepositoryInterface;
+use HdmBoot\Modules\Example\Infrastructure\Repository\ExampleRepository;
+use HdmBoot\Modules\Example\Infrastructure\Services\ExampleService;
+use HdmBoot\Modules\Example\Actions\ExampleAction;
 use Psr\Container\ContainerInterface;
 
 /**

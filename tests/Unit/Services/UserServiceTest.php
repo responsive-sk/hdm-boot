@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Services;
+namespace HdmBoot\Tests\Unit\Services;
 
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

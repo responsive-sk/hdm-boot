@@ -10,11 +10,11 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\Modules\Core\Storage\Drivers\MarkdownDriver;
-use MvaBootstrap\Modules\Core\Storage\Drivers\JsonDriver;
-use MvaBootstrap\Modules\Core\Storage\Models\Article;
-use MvaBootstrap\Modules\Core\Storage\Models\Documentation;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
+use HdmBoot\Modules\Core\Storage\Drivers\JsonDriver;
+use HdmBoot\Modules\Core\Storage\Models\Article;
+use HdmBoot\Modules\Core\Storage\Models\Documentation;
 use ResponsiveSk\Slim4Paths\Paths;
 
 return [

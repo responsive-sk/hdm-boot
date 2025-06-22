@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Example;
+namespace HdmBoot\Modules\Example;
 
-use MvaBootstrap\SharedKernel\Contracts\ModuleBootstrapInterface;
-use MvaBootstrap\SharedKernel\Events\EventDispatcherInterface;
+use HdmBoot\SharedKernel\Contracts\ModuleBootstrapInterface;
+use HdmBoot\SharedKernel\Events\EventDispatcherInterface;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use RuntimeException;

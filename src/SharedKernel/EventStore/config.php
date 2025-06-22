@@ -9,9 +9,9 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\SharedKernel\EventStore\Contracts\EventStoreInterface;
-use MvaBootstrap\SharedKernel\EventStore\Infrastructure\DatabaseEventStore;
-use MvaBootstrap\SharedKernel\EventStore\Infrastructure\InMemoryEventStore;
+use HdmBoot\SharedKernel\EventStore\Contracts\EventStoreInterface;
+use HdmBoot\SharedKernel\EventStore\Infrastructure\DatabaseEventStore;
+use HdmBoot\SharedKernel\EventStore\Infrastructure\InMemoryEventStore;
 
 return [
     // === SETTINGS ===

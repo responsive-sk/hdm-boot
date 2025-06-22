@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Bootstrap;
+namespace HdmBoot\Boot;
 
 use DI\Container;
 use Dotenv\Dotenv;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 use Slim\App as SlimApp;
 use Slim\Factory\AppFactory;
@@ -178,8 +178,8 @@ final class App
     private function loadModuleRoutes(): void
     {
         try {
-            $moduleManager = $this->container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
-            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+            $moduleManager = $this->container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class);
+            if (!$moduleManager instanceof \HdmBoot\SharedKernel\Modules\ModuleManager) {
                 return;
             }
 
@@ -205,13 +205,13 @@ final class App
     /**
      * Load routes from a specific module.
      */
-    private function loadModuleRouteFile(\MvaBootstrap\SharedKernel\Contracts\ModuleInterface $module, \Psr\Log\LoggerInterface $logger): void
+    private function loadModuleRouteFile(\HdmBoot\SharedKernel\Contracts\ModuleInterface $module, \Psr\Log\LoggerInterface $logger): void
     {
         try {
             // Get module manifest to find routes file
-            $moduleManager = $this->container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
+            $moduleManager = $this->container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class);
 
-            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+            if (!$moduleManager instanceof \HdmBoot\SharedKernel\Modules\ModuleManager) {
                 return;
             }
 
@@ -258,7 +258,7 @@ final class App
     {
         // Application middleware stack (order matters!)
         try {
-            $localeMiddleware = $this->container->get(\MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class);
+            $localeMiddleware = $this->container->get(\HdmBoot\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class);
             if ($localeMiddleware instanceof \Psr\Http\Server\MiddlewareInterface) {
                 $this->slimApp->add($localeMiddleware);
             }
@@ -286,8 +286,8 @@ final class App
     private function setupMonitoring(): void
     {
         try {
-            $monitoringBootstrap = $this->container->get(\MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap::class);
-            if ($monitoringBootstrap instanceof \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap) {
+            $monitoringBootstrap = $this->container->get(\HdmBoot\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap::class);
+            if ($monitoringBootstrap instanceof \HdmBoot\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap) {
                 $monitoringBootstrap->bootstrap();
             }
         } catch (\Exception $e) {
@@ -307,7 +307,7 @@ final class App
                 throw new \RuntimeException('Logger service not properly configured');
             }
 
-            $eventBootstrap = new \MvaBootstrap\SharedKernel\Events\EventBootstrap(
+            $eventBootstrap = new \HdmBoot\SharedKernel\Events\EventBootstrap(
                 $this->container,
                 $logger
             );
@@ -330,7 +330,7 @@ final class App
                 throw new \RuntimeException('Logger service not properly configured');
             }
 
-            $moduleManager = new \MvaBootstrap\SharedKernel\Modules\ModuleManager(
+            $moduleManager = new \HdmBoot\SharedKernel\Modules\ModuleManager(
                 $logger,
                 $this->paths->src('Modules')
             );
@@ -345,12 +345,12 @@ final class App
             $moduleManager->initializeModules();
 
             // Store module manager in container for later use
-            $this->container->set(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class, $moduleManager);
+            $this->container->set(\HdmBoot\SharedKernel\Modules\ModuleManager::class, $moduleManager);
 
             // Create service loader manually (since ModuleManager is now available)
             $logger = $this->container->get(\Psr\Log\LoggerInterface::class);
             assert($logger instanceof \Psr\Log\LoggerInterface);
-            $serviceLoader = new \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader($moduleManager, $logger);
+            $serviceLoader = new \HdmBoot\SharedKernel\Modules\ModuleServiceLoader($moduleManager, $logger);
 
             // Debug: List loaded modules
             $modules = $moduleManager->getAllModules();

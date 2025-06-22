@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Middleware;
+namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Middleware;
 
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ProblemDetailsException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ProblemDetailsException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;

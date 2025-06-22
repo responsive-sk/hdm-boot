@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Services;
+namespace HdmBoot\SharedKernel\Services;
 
 use ResponsiveSk\Slim4Paths\Paths;
 

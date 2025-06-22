@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Actions\Api;
+namespace HdmBoot\Modules\Core\User\Actions\Api;
 
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

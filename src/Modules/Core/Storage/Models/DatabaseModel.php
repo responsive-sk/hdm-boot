@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Models;
+namespace HdmBoot\Modules\Core\Storage\Models;
 
-use MvaBootstrap\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use MvaBootstrap\Modules\Core\Storage\Drivers\SqliteDriver;
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\Modules\Core\Storage\Services\DatabaseManager;
+use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
+use HdmBoot\Modules\Core\Storage\Drivers\SqliteDriver;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\Modules\Core\Storage\Services\DatabaseManager;
 use PDO;
 
 /**

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\CQRS\Events;
+namespace HdmBoot\SharedKernel\CQRS\Events;
 
-use MvaBootstrap\SharedKernel\Events\DomainEvent;
+use HdmBoot\SharedKernel\Events\DomainEvent;
 
 /**
  * Domain Event Interface for CQRS.
@@ -13,7 +13,7 @@ use MvaBootstrap\SharedKernel\Events\DomainEvent;
  * Events are immutable facts about state changes.
  * This extends the unified DomainEvent interface.
  *
- * @deprecated Use MvaBootstrap\SharedKernel\Events\DomainEvent instead
+ * @deprecated Use HdmBoot\SharedKernel\Events\DomainEvent instead
  */
 interface DomainEventInterface extends DomainEvent
 {

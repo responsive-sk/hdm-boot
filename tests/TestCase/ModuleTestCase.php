@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\TestCase;
+namespace HdmBoot\Tests\TestCase;
 
 use DI\Container;
 use DI\ContainerBuilder;
-use MvaBootstrap\SharedKernel\Events\EventDispatcher;
-use MvaBootstrap\SharedKernel\Modules\GenericModule;
-use MvaBootstrap\SharedKernel\Contracts\ModuleInterface;
-use MvaBootstrap\SharedKernel\Modules\ModuleManager;
-use MvaBootstrap\SharedKernel\Modules\ModuleManifest;
+use HdmBoot\SharedKernel\Events\EventDispatcher;
+use HdmBoot\SharedKernel\Modules\GenericModule;
+use HdmBoot\SharedKernel\Contracts\ModuleInterface;
+use HdmBoot\SharedKernel\Modules\ModuleManager;
+use HdmBoot\SharedKernel\Modules\ModuleManifest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Database\Infrastructure\Services;
+namespace HdmBoot\Modules\Core\Database\Infrastructure\Services;
 
 use Cake\Database\Connection;
 use Cake\Database\Driver\Sqlite;
@@ -10,8 +10,8 @@ use Cake\Database\Query\DeleteQuery;
 use Cake\Database\Query\InsertQuery;
 use Cake\Database\Query\SelectQuery;
 use Cake\Database\Query\UpdateQuery;
-use MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
-use MvaBootstrap\Modules\Core\Database\Domain\Contracts\QueryBuilderInterface;
+use HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
+use HdmBoot\Modules\Core\Database\Domain\Contracts\QueryBuilderInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**

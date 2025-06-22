@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Services;
+namespace HdmBoot\Modules\Core\Security\Services;
 
 use InvalidArgumentException;
-use MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
-use MvaBootstrap\Modules\Core\Security\Services\JwtService;
-use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
+use HdmBoot\Modules\Core\Security\Services\JwtService;
+use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -226,7 +226,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
         $user = $this->authenticateForWeb($email, $password, $clientIp);
 
         if ($user === null) {
-            throw new \MvaBootstrap\Modules\Core\Security\Exceptions\AuthenticationException('Authentication failed');
+            throw new \HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException('Authentication failed');
         }
 
         return $user;

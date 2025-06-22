@@ -1,38 +1,20 @@
 parameters:
     level: max
     paths:
-        - src
-        - modules
-        - public
+        - src/Boot
+        - src/SharedKernel
+        - src/Modules/Core/Database
+        - src/Modules/Core/Storage
+        - src/Modules/Core/Template
+        - src/Modules/Core/Language
+        - src/Modules/Core/Monitoring
+        - src/Modules/Core/Logging
+        - src/Modules/Core/Security
+        - src/Modules/Core/Session
+        - src/Modules/Core/ErrorHandling
+        - src/Modules/Optional/Blog
     excludePaths:
-        - modules/Optional
         - vendor
         - var
-        - tests/fixtures
-        - bootstrap  # Complex DI container setup
-        - config     # Configuration files with mixed types
-        - modules/Optional/Security  # Legacy code from parent project
-        - '*/routes.php'  # Route configuration files with complex closures
-    stubFiles:
-        - stubs/OdanSessionInterface.php
-    ignoreErrors:
-        # Ignore some common issues during development
-        - '#Cannot call method.*on mixed#'
-        # Ignore Odan\Session interface issues (external library)
-        - '#Call to an undefined method Odan\\Session\\SessionInterface::(isStarted|start|destroy|regenerateId)\(\)#'
-        # Ignore config file mixed types (complex DI setup)
-        - '#Parameter .* expects .*, mixed given#'
-        - '#Cannot access offset .* on mixed#'
-        # Ignore unused methods (may be used in future)
-        - '#Method .* is unused#'
-        # Ignore unreachable statements (defensive programming)
-        - '#Unreachable statement#'
-        # Ignore CakePHP Database generic issues (external library)
-        - '#Method .*DatabaseConnectionManager::selectQuery\(\) return type has no value type specified#'
-        - '#Method .*DatabaseConnectionManager::selectQuery\(\) return type with generic class.*does not specify its types#'
-        - '#Parameter .* of method .*Connection::transactional\(\) expects Closure#'
-        # Ignore Monolog LogRecord issues (version compatibility)
-        - '#Parameter .* of method .*Logger::pushProcessor\(\) expects callable.*LogRecord.*#'
-        # Ignore template generic issues (complex template system)
-        - '#PHPDoc tag @return with type T\|null is not subtype of native type object\|null#'
-
+        - tests/fixtures (?)
+        - src/Modules/Core/Template/Infrastructure/Engines/TwigTemplateEngine.php

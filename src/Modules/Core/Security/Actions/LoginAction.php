@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Actions;
+namespace HdmBoot\Modules\Core\Security\Actions;
 
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator;
-use MvaBootstrap\Modules\Core\Security\Exceptions\AuthenticationException;
-use MvaBootstrap\Modules\Core\Security\Exceptions\SecurityException;
-use MvaBootstrap\Modules\Core\Security\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
+use HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException;
+use HdmBoot\Modules\Core\Security\Exceptions\SecurityException;
+use HdmBoot\Modules\Core\Security\Exceptions\ValidationException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;

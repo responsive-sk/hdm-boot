@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Exceptions;
+namespace HdmBoot\Modules\Core\Security\Exceptions;
 
-use MvaBootstrap\Modules\Core\Security\Enum\SecurityType;
+use HdmBoot\Modules\Core\Security\Enum\SecurityType;
 use RuntimeException;
 
 /**

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Domain\Services;
+namespace HdmBoot\Modules\Core\Template\Domain\Services;
 
-use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
-use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateRendererInterface;
-use MvaBootstrap\Modules\Core\Template\Domain\Events\TemplateRenderedEvent;
-use MvaBootstrap\Modules\Core\Template\Domain\ValueObjects\TemplateData;
-use MvaBootstrap\Modules\Core\Template\Domain\ValueObjects\TemplateName;
-use MvaBootstrap\SharedKernel\Events\ModuleEventBus;
+use HdmBoot\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
+use HdmBoot\Modules\Core\Template\Domain\Contracts\TemplateRendererInterface;
+use HdmBoot\Modules\Core\Template\Domain\Events\TemplateRenderedEvent;
+use HdmBoot\Modules\Core\Template\Domain\ValueObjects\TemplateData;
+use HdmBoot\Modules\Core\Template\Domain\ValueObjects\TemplateName;
+use HdmBoot\SharedKernel\Events\ModuleEventBus;
 use Psr\Log\LoggerInterface;
 
 /**

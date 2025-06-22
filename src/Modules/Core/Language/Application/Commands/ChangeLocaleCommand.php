@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Application\Commands;
+namespace HdmBoot\Modules\Core\Language\Application\Commands;
 
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
 
 /**
  * Change Locale Command.

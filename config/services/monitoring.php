@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Core\Monitoring\Actions\StatusAction;
+use HdmBoot\Modules\Core\Monitoring\Actions\StatusAction;
 
 return [
     StatusAction::class => \DI\autowire()

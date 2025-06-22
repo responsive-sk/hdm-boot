@@ -15,7 +15,7 @@ return [
         'name' => 'Example',
         'version' => '1.0.0',
         'description' => 'Example module for MVA Bootstrap',
-        'namespace' => 'MvaBootstrap\\Modules\\Example',
+        'namespace' => 'HdmBoot\\Modules\\Example',
         'dependencies' => [
             'core' => '^1.0'
         ]
@@ -34,15 +34,15 @@ return [
         'prefix' => '/example',
         'middleware' => [
             // Global middleware for all module routes
-            'MvaBootstrap\\Modules\\Example\\Infrastructure\\Middleware\\ExampleMiddleware'
+            'HdmBoot\\Modules\\Example\\Infrastructure\\Middleware\\ExampleMiddleware'
         ]
     ],
 
     'events' => [
         'listeners' => [
             // Event listener mappings
-            'MvaBootstrap\\Modules\\Example\\Domain\\Events\\ExampleEvent' => [
-                'MvaBootstrap\\Modules\\Example\\Infrastructure\\Listeners\\ExampleListener'
+            'HdmBoot\\Modules\\Example\\Domain\\Events\\ExampleEvent' => [
+                'HdmBoot\\Modules\\Example\\Infrastructure\\Listeners\\ExampleListener'
             ]
         ]
     ],
@@ -50,7 +50,7 @@ return [
     'services' => [
         // Module service definitions
         'example.service' => [
-            'class' => 'MvaBootstrap\\Modules\\Example\\Infrastructure\\Services\\ExampleService',
+            'class' => 'HdmBoot\\Modules\\Example\\Infrastructure\\Services\\ExampleService',
             'arguments' => [
                 'config' => '%module.config%'
             ]

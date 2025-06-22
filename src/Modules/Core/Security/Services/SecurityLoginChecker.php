@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Services;
+namespace HdmBoot\Modules\Core\Security\Services;
 
-use MvaBootstrap\Modules\Core\Security\Enum\SecurityType;
-use MvaBootstrap\Modules\Core\Security\Exceptions\SecurityException;
+use HdmBoot\Modules\Core\Security\Enum\SecurityType;
+use HdmBoot\Modules\Core\Security\Exceptions\SecurityException;
 use PDO;
 use RuntimeException;
 

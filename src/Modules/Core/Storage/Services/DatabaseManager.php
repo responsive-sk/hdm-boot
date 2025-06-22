@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Services;
+namespace HdmBoot\Modules\Core\Storage\Services;
 
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use PDO;
 
 /**

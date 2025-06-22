@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Application\Actions;
+namespace HdmBoot\Modules\Core\Template\Application\Actions;
 
-use MvaBootstrap\Modules\Core\Template\Application\DTOs\RenderTemplateRequest;
-use MvaBootstrap\Modules\Core\Template\Domain\Services\TemplateService;
+use HdmBoot\Modules\Core\Template\Application\DTOs\RenderTemplateRequest;
+use HdmBoot\Modules\Core\Template\Domain\Services\TemplateService;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

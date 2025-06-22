@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Database;
+namespace HdmBoot\Tests\Unit\Database;
 
-use MvaBootstrap\Shared\Services\DatabaseManager;
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Shared\Services\DatabaseManager;
+use HdmBoot\Tests\TestCase;
 use PDO;
 use RuntimeException;
 

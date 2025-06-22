@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Modules;
+namespace HdmBoot\Tests\Unit\Modules;
 
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
-use MvaBootstrap\Tests\TestCase\ModuleTestCase;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\Tests\TestCase\ModuleTestCase;
 use PDO;
 
 /**

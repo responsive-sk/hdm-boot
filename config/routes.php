@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Security\Actions\Web\LoginPageAction;
-use MvaBootstrap\Modules\Core\Security\Actions\Web\LoginSubmitAction;
-use MvaBootstrap\Modules\Core\Security\Actions\Web\LogoutAction;
-use MvaBootstrap\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware;
-use MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction;
+use HdmBoot\Modules\Core\Security\Actions\Web\LoginPageAction;
+use HdmBoot\Modules\Core\Security\Actions\Web\LoginSubmitAction;
+use HdmBoot\Modules\Core\Security\Actions\Web\LogoutAction;
+use HdmBoot\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware;
+use HdmBoot\Modules\Core\Session\Infrastructure\Middleware\SessionStartMiddleware;
+use HdmBoot\Modules\Core\User\Actions\Web\ProfilePageAction;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -64,6 +66,7 @@ return function (App $app): void {
     </div>
 
     <div class="links">
+        <a href="/blog">Blog</a>
         <a href="/login">Login</a>
         <a href="/profile">Profile</a>
         <a href="/api/status">API Status</a>
@@ -77,15 +80,31 @@ return function (App $app): void {
     })->setName('home');
 
     // ===== WEB ROUTES =====
-    $app->get('/login', LoginPageAction::class)->setName('login');
-    $app->post('/login', LoginSubmitAction::class)->setName('login-submit');
-    $app->get('/logout', LogoutAction::class)->setName('logout-get');
-    $app->post('/logout', LogoutAction::class)->setName('logout');
+    // Authentication routes (with session middleware)
+    $app->get('/login', LoginPageAction::class)
+        ->setName('login')
+        ->add(SessionStartMiddleware::class);
 
-    // Protected routes
+    $app->post('/login', LoginSubmitAction::class)
+        ->setName('login-submit')
+        ->add(SessionStartMiddleware::class);
+
+    $app->get('/logout', LogoutAction::class)
+        ->setName('logout-get')
+        ->add(SessionStartMiddleware::class);
+
+    $app->post('/logout', LogoutAction::class)
+        ->setName('logout')
+        ->add(SessionStartMiddleware::class);
+
+    // Protected routes (with session + authentication middleware)
     $app->get('/profile', ProfilePageAction::class)
         ->setName('profile')
-        ->add(UserAuthenticationMiddleware::class);
+        ->add(UserAuthenticationMiddleware::class)
+        ->add(SessionStartMiddleware::class);
+
+    // ===== BLOG ROUTES =====
+    // Blog routes are now loaded from Blog module (src/Modules/Optional/Blog/routes.php)
 
     // ===== MONITORING ROUTES =====
     (require __DIR__ . '/routes/monitoring.php')($app);

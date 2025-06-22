@@ -43,16 +43,16 @@ $services = array_merge(
         },
 
         // Secure Path Helper
-        \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper::class => function (\DI\Container $container): \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper {
-            return new \MvaBootstrap\SharedKernel\Helpers\SecurePathHelper(
+        \HdmBoot\SharedKernel\Helpers\SecurePathHelper::class => function (\DI\Container $container): \HdmBoot\SharedKernel\Helpers\SecurePathHelper {
+            return new \HdmBoot\SharedKernel\Helpers\SecurePathHelper(
                 $container->get(Paths::class)
             );
         },
 
         // Module Service Loader
-        \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader::class => function (\DI\Container $container): \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader {
-            return new \MvaBootstrap\SharedKernel\Modules\ModuleServiceLoader(
-                $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class),
+        \HdmBoot\SharedKernel\Modules\ModuleServiceLoader::class => function (\DI\Container $container): \HdmBoot\SharedKernel\Modules\ModuleServiceLoader {
+            return new \HdmBoot\SharedKernel\Modules\ModuleServiceLoader(
+                $container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class),
                 $container->get(\Psr\Log\LoggerInterface::class)
             );
         },

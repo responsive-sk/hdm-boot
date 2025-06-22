@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Services;
+namespace HdmBoot\Modules\Core\Security\Services;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use InvalidArgumentException;
-use MvaBootstrap\Modules\Core\Security\Domain\ValueObjects\JwtToken;
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\Security\Domain\ValueObjects\JwtToken;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
 use RuntimeException;
 
 /**

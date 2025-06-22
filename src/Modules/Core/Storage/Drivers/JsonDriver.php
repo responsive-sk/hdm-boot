@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Drivers;
+namespace HdmBoot\Modules\Core\Storage\Drivers;
 
 use SplFileInfo;
 

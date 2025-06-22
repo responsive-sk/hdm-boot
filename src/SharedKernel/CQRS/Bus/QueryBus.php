@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\CQRS\Bus;
+namespace HdmBoot\SharedKernel\CQRS\Bus;
 
 use InvalidArgumentException;
-use MvaBootstrap\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
-use MvaBootstrap\SharedKernel\CQRS\Queries\QueryInterface;
+use HdmBoot\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
+use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 

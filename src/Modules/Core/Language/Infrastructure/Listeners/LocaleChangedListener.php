@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners;
+namespace HdmBoot\Modules\Core\Language\Infrastructure\Listeners;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
-use MvaBootstrap\SharedKernel\Events\DomainEvent;
-use MvaBootstrap\SharedKernel\Events\EventListener;
+use HdmBoot\Modules\Core\Language\Domain\Events\LocaleChangedEvent;
+use HdmBoot\SharedKernel\Events\DomainEvent;
+use HdmBoot\SharedKernel\Events\EventListener;
 use Psr\Log\LoggerInterface;
 
 /**

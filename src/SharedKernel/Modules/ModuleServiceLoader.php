@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Modules;
+namespace HdmBoot\SharedKernel\Modules;
 
 use DI\Container;
 use Psr\Log\LoggerInterface;

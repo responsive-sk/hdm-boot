@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use MvaBootstrap\Bootstrap\App;
+use HdmBoot\Bootstrap\App;
 
 try {
     echo "🛣️  MVA Bootstrap Route List\n";
@@ -54,7 +54,7 @@ try {
         
         // Shorten class names for readability
         $shortCallableName = $callableName;
-        if (str_contains($callableName, 'MvaBootstrap\\Modules\\Core\\')) {
+        if (str_contains($callableName, 'HdmBoot\\Modules\\Core\\')) {
             $parts = explode('\\', $callableName);
             $shortCallableName = end($parts);
         }

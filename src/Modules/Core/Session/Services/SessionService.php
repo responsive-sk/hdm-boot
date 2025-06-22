@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Session\Services;
+namespace HdmBoot\Modules\Core\Session\Services;
 
-use MvaBootstrap\Modules\Core\User\Domain\Entities\User;
-use MvaBootstrap\Modules\Core\User\Domain\ValueObjects\UserId;
+use HdmBoot\Modules\Core\User\Domain\Entities\User;
+use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**

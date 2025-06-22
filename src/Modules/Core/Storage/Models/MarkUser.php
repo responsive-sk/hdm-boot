@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Models;
+namespace HdmBoot\Modules\Core\Storage\Models;
 
 /**
  * Mark User Model.

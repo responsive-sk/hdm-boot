@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Events;
+namespace HdmBoot\SharedKernel\Events;
 
 /**
  * Domain Event Interface.

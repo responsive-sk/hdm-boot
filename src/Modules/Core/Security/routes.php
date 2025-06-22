@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Security\Actions\LoginAction;
-use MvaBootstrap\Modules\Core\Security\Actions\LogoutAction;
-use MvaBootstrap\Modules\Core\Security\Actions\MeAction;
-use MvaBootstrap\Modules\Core\Security\Actions\RefreshTokenAction;
-use MvaBootstrap\Modules\Core\Security\Middleware\AuthenticationMiddleware;
-use MvaBootstrap\Modules\Core\Security\Middleware\AuthorizationMiddleware;
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
-use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
+use HdmBoot\Modules\Core\Security\Actions\LoginAction;
+use HdmBoot\Modules\Core\Security\Actions\LogoutAction;
+use HdmBoot\Modules\Core\Security\Actions\MeAction;
+use HdmBoot\Modules\Core\Security\Actions\RefreshTokenAction;
+use HdmBoot\Modules\Core\Security\Middleware\AuthenticationMiddleware;
+use HdmBoot\Modules\Core\Security\Middleware\AuthorizationMiddleware;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;

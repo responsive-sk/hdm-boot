@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Exceptions;
+namespace HdmBoot\Modules\Core\Security\Exceptions;
 
 use RuntimeException;
 

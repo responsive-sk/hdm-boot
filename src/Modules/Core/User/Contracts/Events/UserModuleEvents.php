@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Contracts\Events;
+namespace HdmBoot\Modules\Core\User\Contracts\Events;
 
 /**
  * User Module Events - Public Event Names.

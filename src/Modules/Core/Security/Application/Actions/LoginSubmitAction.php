@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Application\Actions;
+namespace HdmBoot\Modules\Core\Security\Application\Actions;
 
-use MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginRequest;
-use MvaBootstrap\Modules\Core\Security\Domain\Services\AuthenticationDomainService;
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
+use HdmBoot\Modules\Core\Security\Domain\DTOs\LoginRequest;
+use HdmBoot\Modules\Core\Security\Domain\Services\AuthenticationDomainService;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -95,7 +95,7 @@ final class LoginSubmitAction
      * Handle successful login - HTTP response transformation.
      */
     private function handleSuccessfulLogin(
-        \MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginResult $loginResult,
+        \HdmBoot\Modules\Core\Security\Domain\DTOs\LoginResult $loginResult,
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
@@ -143,7 +143,7 @@ final class LoginSubmitAction
      * @param array<string, mixed> $requestData
      */
     private function handleFailedLogin(
-        \MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginResult $loginResult,
+        \HdmBoot\Modules\Core\Security\Domain\DTOs\LoginResult $loginResult,
         ServerRequestInterface $request,
         ResponseInterface $response,
         array $requestData

@@ -21,7 +21,7 @@ return [
     ],
     'autoload' => [
         'psr-4' => [
-            'MvaBootstrap\\Modules\\Core\\Testing\\' => __DIR__,
+            'HdmBoot\\Modules\\Core\\Testing\\' => __DIR__,
         ],
     ],
     'config_file' => __DIR__ . '/config.php',

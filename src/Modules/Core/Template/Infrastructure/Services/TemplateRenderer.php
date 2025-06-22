@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Infrastructure\Services;
+namespace HdmBoot\Modules\Core\Template\Infrastructure\Services;
 
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ResponsiveSk\Slim4Paths\Paths;

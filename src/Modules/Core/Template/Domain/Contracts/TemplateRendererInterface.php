@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Domain\Contracts;
+namespace HdmBoot\Modules\Core\Template\Domain\Contracts;
 
 /**
  * Template Renderer Interface.

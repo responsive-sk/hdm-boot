@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Application\Handlers;
+namespace HdmBoot\Modules\Core\User\Application\Handlers;
 
 use InvalidArgumentException;
-use MvaBootstrap\SharedKernel\CQRS\Commands\CommandInterface;
-use MvaBootstrap\SharedKernel\CQRS\Handlers\CommandHandlerInterface;
-use MvaBootstrap\Modules\Core\User\Application\Commands\RegisterUserCommand;
-use MvaBootstrap\Modules\Core\User\Domain\Events\UserWasRegistered;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\SharedKernel\CQRS\Commands\CommandInterface;
+use HdmBoot\SharedKernel\CQRS\Handlers\CommandHandlerInterface;
+use HdmBoot\Modules\Core\User\Application\Commands\RegisterUserCommand;
+use HdmBoot\Modules\Core\User\Domain\Events\UserWasRegistered;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 

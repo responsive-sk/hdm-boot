@@ -14,44 +14,44 @@ return [
     // === ERROR HANDLING MODULE ===
 
     // Error Handler Middleware (moved from Shared)
-    \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware(
-            $container->get(\MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class),
+    \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware(
+            $container->get(\HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class),
             $container->get(LoggerInterface::class),
             false // displayErrorDetails - set to true for development
         );
     },
 
     // Error Response Handler (moved from Shared)
-    \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class => \DI\autowire(),
 
     // === MONITORING MODULE ===
 
     // Health Check Manager (moved from Shared)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager::class => \DI\autowire(),
 
     // Health Check Action (moved from Shared)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction::class => \DI\autowire(),
 
     // Performance Monitor (moved from Shared)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor(
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor(
             $container->get('logger.performance')
         );
     },
 
     // Monitoring Bootstrap (moved from Shared)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\Bootstrap\MonitoringBootstrap::class => \DI\autowire(),
 
     // === DOCUMENTATION MODULE ===
 
     // Documentation Viewer Action (moved from Shared)
-    \MvaBootstrap\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction::class => \DI\autowire(),
 
     // === SHARED KERNEL (minimal) ===
 
     // Secure Path Helper (stays in Shared - truly universal)
-    \MvaBootstrap\Shared\Helpers\SecurePathHelper::class => \DI\autowire(),
+    \HdmBoot\Shared\Helpers\SecurePathHelper::class => \DI\autowire(),
 
     // === USER MODULE ===
 
@@ -75,8 +75,8 @@ return [
     },
 
     // User Repository using dedicated SQLite database
-    \MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\User\Repository\SqliteUserRepository(
+    \HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\User\Repository\SqliteUserRepository(
             $container->get('users.pdo')
         );
     },

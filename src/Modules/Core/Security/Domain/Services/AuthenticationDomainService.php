@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Domain\Services;
+namespace HdmBoot\Modules\Core\Security\Domain\Services;
 
-use MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginRequest;
-use MvaBootstrap\Modules\Core\Security\Domain\DTOs\LoginResult;
-use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\Security\Domain\DTOs\LoginRequest;
+use HdmBoot\Modules\Core\Security\Domain\DTOs\LoginResult;
+use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use Psr\Log\LoggerInterface;
 
 /**

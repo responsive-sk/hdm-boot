@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Contracts;
+namespace HdmBoot\Modules\Core\Storage\Contracts;
 
 use SplFileInfo;
 

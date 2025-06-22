@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Example\Infrastructure\Middleware\ExampleAuthMiddleware;
-use MvaBootstrap\Modules\Example\Infrastructure\Middleware\ExampleValidationMiddleware;
+use HdmBoot\Modules\Example\Infrastructure\Middleware\ExampleAuthMiddleware;
+use HdmBoot\Modules\Example\Infrastructure\Middleware\ExampleValidationMiddleware;
 use Psr\Http\Server\MiddlewareInterface;
 
 /**

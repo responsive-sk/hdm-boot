@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Core\Monitoring\Actions\StatusAction;
-use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction;
+use HdmBoot\Modules\Core\Monitoring\Actions\StatusAction;
+use HdmBoot\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction;
 use Slim\App;
 
 /*

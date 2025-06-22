@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Exceptions;
+namespace HdmBoot\Modules\Core\User\Exceptions;
 
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ProblemDetailsException;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ProblemDetailsException;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
 
 /**
  * User Not Found Exception.

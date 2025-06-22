@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Modules;
+namespace HdmBoot\SharedKernel\Modules;
 
-use MvaBootstrap\SharedKernel\Contracts\ModuleInterface;
+use HdmBoot\SharedKernel\Contracts\ModuleInterface;
 
 /**
  * Generic Module Implementation.

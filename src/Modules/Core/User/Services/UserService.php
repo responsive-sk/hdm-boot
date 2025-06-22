@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Services;
+namespace HdmBoot\Modules\Core\User\Services;
 
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Helpers\ErrorHelper;
-use MvaBootstrap\Modules\Core\User\Contracts\Services\UserServiceInterface;
-use MvaBootstrap\Modules\Core\User\Exceptions\UserAlreadyExistsException;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Helpers\ErrorHelper;
+use HdmBoot\Modules\Core\User\Contracts\Services\UserServiceInterface;
+use HdmBoot\Modules\Core\User\Exceptions\UserAlreadyExistsException;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**

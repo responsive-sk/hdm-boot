@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
-use MvaBootstrap\Modules\Core\Database\Infrastructure\Services\DatabaseManager;
-use MvaBootstrap\Modules\Core\Database\Infrastructure\Services\CakePHPDatabaseManager;
+use HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
+use HdmBoot\Modules\Core\Database\Infrastructure\Services\DatabaseManager;
+use HdmBoot\Modules\Core\Database\Infrastructure\Services\CakePHPDatabaseManager;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 
@@ -18,7 +18,7 @@ return [
     'name'        => 'Database',
     'version'     => '1.0.0',
     'description' => 'Database abstraction layer supporting multiple database managers (PDO, CakePHP, Doctrine)',
-    'author'      => 'MVA Bootstrap Team',
+    'author'      => 'HDM Boot Team',
     'license'     => 'MIT',
 
     // === MODULE DEPENDENCIES ===
@@ -77,8 +77,8 @@ return [
 
         // PDO Connection
         \PDO::class => function (Container $container): \PDO {
-            $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
-            if (!$moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager) {
+            $moduleManager = $container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class);
+            if (!$moduleManager instanceof \HdmBoot\SharedKernel\Modules\ModuleManager) {
                 throw new \RuntimeException('ModuleManager service not properly configured');
             }
 

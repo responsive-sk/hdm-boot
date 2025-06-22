@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Services;
+namespace HdmBoot\Modules\Core\Language\Services;
 
-use MvaBootstrap\Modules\Core\Language\Contracts\Services\LocaleServiceInterface;
+use HdmBoot\Modules\Core\Language\Contracts\Services\LocaleServiceInterface;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Application\Commands;
+namespace HdmBoot\Modules\Core\User\Application\Commands;
 
-use MvaBootstrap\Modules\Core\CQRS\Infrastructure\Commands\CommandInterface;
+use HdmBoot\Modules\Core\CQRS\Infrastructure\Commands\CommandInterface;
 
 /**
  * Register User Command.

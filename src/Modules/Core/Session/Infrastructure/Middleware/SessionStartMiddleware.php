@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Session\Infrastructure\Middleware;
+namespace HdmBoot\Modules\Core\Session\Infrastructure\Middleware;
 
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;

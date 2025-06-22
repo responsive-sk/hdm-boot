@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Services;
+namespace HdmBoot\Modules\Core\Storage\Services;
 
-use MvaBootstrap\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use MvaBootstrap\Modules\Core\Storage\Drivers\MarkdownDriver;
-use MvaBootstrap\Modules\Core\Storage\Drivers\JsonDriver;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
+use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
+use HdmBoot\Modules\Core\Storage\Drivers\JsonDriver;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**

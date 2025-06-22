@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\Blog\Services;
+namespace HdmBoot\Modules\Optional\Blog\Services;
 
 /**
  * Simple Template Renderer for Blog Module.
@@ -53,6 +53,7 @@ class SimpleTemplateRenderer
     public function exists(string $template): bool
     {
         $templatePath = $this->templateDir . '/' . $template . '.php';
+
         return file_exists($templatePath);
     }
 

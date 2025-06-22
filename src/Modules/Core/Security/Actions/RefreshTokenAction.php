@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Actions;
+namespace HdmBoot\Modules\Core\Security\Actions;
 
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\JwtService;
-use MvaBootstrap\Modules\Core\Security\Exceptions\AuthenticationException;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\JwtService;
+use HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -44,7 +44,7 @@ final class RefreshTokenAction
 
             // Create new token for the user
             $newTokenString = $this->authenticationService->generateToken($user);
-            $newToken = \MvaBootstrap\Modules\Core\Security\Domain\ValueObjects\JwtToken::fromString($newTokenString);
+            $newToken = \HdmBoot\Modules\Core\Security\Domain\ValueObjects\JwtToken::fromString($newTokenString);
 
             // Get user data from new token
             $userData = $newToken->getPayload();

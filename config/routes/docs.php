@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction;
+use HdmBoot\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction;
 use Slim\App;
 
 /*

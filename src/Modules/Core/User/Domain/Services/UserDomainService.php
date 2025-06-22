@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\Services;
+namespace HdmBoot\Modules\Core\User\Domain\Services;
 
 use InvalidArgumentException;
-use MvaBootstrap\Modules\Core\User\Domain\Models\User;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Domain\Models\User;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 

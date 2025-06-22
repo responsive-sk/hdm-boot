@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Feature\Security;
+namespace HdmBoot\Tests\Feature\Security;
 
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Tests\TestCase;
 
 /**
  * Feature tests for Authentication API.
@@ -12,7 +12,7 @@ use MvaBootstrap\Tests\TestCase;
 class AuthenticationTest extends TestCase
 {
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testSuccessfulLogin(): void
     {
@@ -43,7 +43,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginWithInvalidCredentials(): void
     {
@@ -57,7 +57,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginWithNonExistentUser(): void
     {
@@ -71,7 +71,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginWithMissingEmail(): void
     {
@@ -84,7 +84,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginWithMissingPassword(): void
     {
@@ -97,7 +97,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testLoginWithInvalidEmailFormat(): void
     {
@@ -111,7 +111,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testMeEndpointWithValidToken(): void
     {
@@ -133,7 +133,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testMeEndpointWithoutToken(): void
     {
@@ -144,7 +144,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testMeEndpointWithInvalidToken(): void
     {
@@ -157,7 +157,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\RefreshTokenAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\RefreshTokenAction
      */
     public function testRefreshTokenWithValidToken(): void
     {
@@ -166,7 +166,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\RefreshTokenAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\RefreshTokenAction
      */
     public function testRefreshTokenWithoutToken(): void
     {
@@ -175,7 +175,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LogoutAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LogoutAction
      */
     public function testLogoutWithValidToken(): void
     {
@@ -190,7 +190,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LogoutAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LogoutAction
      */
     public function testLogoutWithoutToken(): void
     {
@@ -201,7 +201,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testTokenExpiration(): void
     {
@@ -218,7 +218,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\LoginAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\LoginAction
      */
     public function testMultipleLoginAttempts(): void
     {
@@ -238,7 +238,7 @@ class AuthenticationTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\Security\Actions\MeAction
+     * @covers \HdmBoot\Modules\Core\Security\Actions\MeAction
      */
     public function testConcurrentTokenUsage(): void
     {

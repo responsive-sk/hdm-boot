@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Database;
+namespace HdmBoot\Tests\Unit\Database;
 
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Tests\TestCase;
 use PDO;
 
 /**

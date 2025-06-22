@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Domain\Events;
+namespace HdmBoot\Modules\Core\Language\Domain\Events;
 
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\SharedKernel\Events\DomainEvent;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\SharedKernel\Events\DomainEvent;
 
 /**
  * Locale Changed Event.

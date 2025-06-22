@@ -9,9 +9,9 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Session\Infrastructure\Middleware\SessionStartMiddleware;
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use MvaBootstrap\Modules\Core\Session\Services\SessionService;
+use HdmBoot\Modules\Core\Session\Infrastructure\Middleware\SessionStartMiddleware;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Session\Services\SessionService;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Session\SessionFactory;
 use ResponsiveSk\Slim4Session\SessionInterface;

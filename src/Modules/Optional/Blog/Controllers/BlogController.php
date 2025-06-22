@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Optional\Blog\Controllers;
+namespace HdmBoot\Modules\Optional\Blog\Controllers;
 
-use MvaBootstrap\Modules\Core\Storage\Services\FileStorageService;
-use MvaBootstrap\Modules\Core\Storage\Models\Article;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
-use ResponsiveSk\Slim4Paths\Paths;
-use Psr\Http\Message\ServerRequestInterface;
+use HdmBoot\Modules\Core\Storage\Models\Article;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Blog Controller.
@@ -39,10 +39,13 @@ class BlogController
         $articles = Article::published();
 
         // Sort by published date (newest first)
-        usort($articles, function ($a, $b) {
-            $aDate = $a->getAttribute('published_at') ?? '';
-            $bDate = $b->getAttribute('published_at') ?? '';
-            return strcmp($bDate, $aDate);
+        usort($articles, function (Article $a, Article $b): int {
+            $aDate = $a->getAttribute('published_at');
+            $bDate = $b->getAttribute('published_at');
+            $aDateString = is_string($aDate) ? $aDate : '';
+            $bDateString = is_string($bDate) ? $bDate : '';
+
+            return strcmp($bDateString, $aDateString);
         });
 
         $allArticles = Article::all();
@@ -64,6 +67,7 @@ class BlogController
     public function article(string $slug): string
     {
         $article = Article::find($slug);
+
         return $this->renderArticle($article);
     }
 
@@ -157,26 +161,36 @@ class BlogController
         } else {
             $html .= '<h2>Latest Articles</h2>';
             foreach ($articles as $article) {
-                $title = htmlspecialchars($article->getAttribute('title') ?? 'Untitled');
-                $author = htmlspecialchars($article->getAttribute('author') ?? 'Unknown');
-                $slug = $article->getAttribute('slug');
-                $excerpt = htmlspecialchars($article->getAttribute('excerpt') ?? '');
-                $publishedAt = date('F j, Y', strtotime($article->getAttribute('published_at') ?? 'now'));
-                $readingTime = $article->getAttribute('reading_time') ?? 1;
-                $category = $article->getAttribute('category');
-                $tags = $article->getAttribute('tags') ?? [];
+                $titleRaw = $article->getAttribute('title');
+                $authorRaw = $article->getAttribute('author');
+                $slugRaw = $article->getAttribute('slug');
+                $excerptRaw = $article->getAttribute('excerpt');
+                $publishedAtRaw = $article->getAttribute('published_at');
+                $readingTimeRaw = $article->getAttribute('reading_time');
+                $categoryRaw = $article->getAttribute('category');
+                $tagsRaw = $article->getAttribute('tags');
+
+                $title = htmlspecialchars(is_string($titleRaw) ? $titleRaw : 'Untitled');
+                $author = htmlspecialchars(is_string($authorRaw) ? $authorRaw : 'Unknown');
+                $slug = is_string($slugRaw) ? $slugRaw : '';
+                $excerpt = htmlspecialchars(is_string($excerptRaw) ? $excerptRaw : '');
+                $timestamp = strtotime(is_string($publishedAtRaw) ? $publishedAtRaw : 'now');
+                $publishedAt = date('F j, Y', $timestamp !== false ? $timestamp : time());
+                $readingTime = is_int($readingTimeRaw) ? $readingTimeRaw : 1;
+                $category = is_string($categoryRaw) ? $categoryRaw : null;
+                $tags = is_array($tagsRaw) ? $tagsRaw : [];
 
                 $html .= '<article class="article">
                     <h2><a href="/blog/article/' . urlencode($slug) . '">' . $title . '</a></h2>
                     <div class="meta">By ' . $author . ' • ' . $publishedAt . ' • ' . $readingTime . ' min read';
 
-                if ($category) {
+                if ($category !== null) {
                     $html .= ' • ' . ucfirst($category);
                 }
 
                 $html .= '</div>';
 
-                if ($excerpt) {
+                if (!empty($excerpt)) {
                     $html .= '<p>' . $excerpt . '</p>';
                 }
 
@@ -185,7 +199,9 @@ class BlogController
                 if (!empty($tags)) {
                     $html .= '<div style="margin-top: 1rem;">';
                     foreach ($tags as $tag) {
-                        $html .= '<span class="tag">' . htmlspecialchars($tag) . '</span>';
+                        if (is_string($tag)) {
+                            $html .= '<span class="tag">' . htmlspecialchars($tag) . '</span>';
+                        }
                     }
                     $html .= '</div>';
                 }
@@ -208,20 +224,28 @@ class BlogController
             return '<h1>Article Not Found</h1><p><a href="/blog">← Back to Blog</a></p>';
         }
 
-        $title = htmlspecialchars($article->getAttribute('title') ?? 'Untitled');
-        $author = htmlspecialchars($article->getAttribute('author') ?? 'Unknown');
-        $publishedAt = date('F j, Y', strtotime($article->getAttribute('published_at') ?? 'now'));
-        $readingTime = $article->getAttribute('reading_time') ?? 1;
-        $content = $article->getAttribute('content') ?? '';
-        $tags = $article->getAttribute('tags') ?? [];
+        $titleRaw = $article->getAttribute('title');
+        $authorRaw = $article->getAttribute('author');
+        $publishedAtRaw = $article->getAttribute('published_at');
+        $readingTimeRaw = $article->getAttribute('reading_time');
+        $contentRaw = $article->getAttribute('content');
+        $tagsRaw = $article->getAttribute('tags');
+
+        $title = htmlspecialchars(is_string($titleRaw) ? $titleRaw : 'Untitled');
+        $author = htmlspecialchars(is_string($authorRaw) ? $authorRaw : 'Unknown');
+        $timestamp = strtotime(is_string($publishedAtRaw) ? $publishedAtRaw : 'now');
+        $publishedAt = date('F j, Y', $timestamp !== false ? $timestamp : time());
+        $readingTime = is_int($readingTimeRaw) ? $readingTimeRaw : 1;
+        $content = is_string($contentRaw) ? $contentRaw : '';
+        $tags = is_array($tagsRaw) ? $tagsRaw : [];
 
         // Simple markdown to HTML conversion
-        $content = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $content);
-        $content = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $content);
-        $content = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $content);
-        $content = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $content);
-        $content = preg_replace('/\*(.+?)\*/', '<em>$1</em>', $content);
-        $content = preg_replace('/`(.+?)`/', '<code>$1</code>', $content);
+        $content = preg_replace('/^# (.+)$/m', '<h1>$1</h1>', $content) ?? $content;
+        $content = preg_replace('/^## (.+)$/m', '<h2>$1</h2>', $content) ?? $content;
+        $content = preg_replace('/^### (.+)$/m', '<h3>$1</h3>', $content) ?? $content;
+        $content = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $content) ?? $content;
+        $content = preg_replace('/\*(.+?)\*/', '<em>$1</em>', $content) ?? $content;
+        $content = preg_replace('/`(.+?)`/', '<code>$1</code>', $content) ?? $content;
         $content = nl2br($content);
 
         $html = '<!DOCTYPE html>
@@ -264,7 +288,9 @@ class BlogController
         if (!empty($tags)) {
             $html .= '<div style="margin-top: 2rem;">';
             foreach ($tags as $tag) {
-                $html .= '<span class="tag">' . htmlspecialchars($tag) . '</span>';
+                if (is_string($tag)) {
+                    $html .= '<span class="tag">' . htmlspecialchars($tag) . '</span>';
+                }
             }
             $html .= '</div>';
         }
@@ -347,40 +373,42 @@ var/orbit/        # Runtime databases
     {
         $data = $request->getParsedBody();
 
-        if (!$data || !isset($data['title']) || !isset($data['content'])) {
+        if (!is_array($data) || !isset($data['title']) || !isset($data['content'])) {
             $response->getBody()->write(json_encode([
-                'error' => 'Title and content are required'
-            ]));
+                'error' => 'Title and content are required',
+            ]) ?: '{"error": "JSON encoding failed"}');
+
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
         try {
             // Create article using enhanced Orbit-style API
             $article = Article::create([
-                'title' => $data['title'],
-                'content' => $data['content'],
-                'excerpt' => $data['excerpt'] ?? '',
+                'title'     => $data['title'],
+                'content'   => $data['content'],
+                'excerpt'   => $data['excerpt'] ?? '',
                 'published' => $data['published'] ?? false,
-                'tags' => $data['tags'] ?? [],
-                'meta' => $data['meta'] ?? []
+                'tags'      => $data['tags'] ?? [],
+                'meta'      => $data['meta'] ?? [],
             ]);
 
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'article' => [
-                    'id' => $article->getKey(),
-                    'slug' => $article->getAttribute('slug'),
-                    'title' => $article->getAttribute('title'),
-                    'published' => $article->getAttribute('published'),
-                    'created_at' => $article->getAttribute('created_at')
-                ]
-            ]));
+                    'id'         => $article->getKey(),
+                    'slug'       => $article->getAttribute('slug'),
+                    'title'      => $article->getAttribute('title'),
+                    'published'  => $article->getAttribute('published'),
+                    'created_at' => $article->getAttribute('created_at'),
+                ],
+            ]) ?: '{"error": "JSON encoding failed"}');
 
             return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode([
-                'error' => 'Failed to create article: ' . $e->getMessage()
-            ]));
+                'error' => 'Failed to create article: ' . $e->getMessage(),
+            ]) ?: '{"error": "JSON encoding failed"}');
+
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
     }
@@ -396,41 +424,45 @@ var/orbit/        # Runtime databases
 
             foreach ($articles as $article) {
                 $articlesData[] = [
-                    'id' => $article->getKey(),
-                    'slug' => $article->getAttribute('slug'),
-                    'title' => $article->getAttribute('title'),
-                    'excerpt' => $article->getAttribute('excerpt'),
-                    'published' => $article->getAttribute('published'),
+                    'id'         => $article->getKey(),
+                    'slug'       => $article->getAttribute('slug'),
+                    'title'      => $article->getAttribute('title'),
+                    'excerpt'    => $article->getAttribute('excerpt'),
+                    'published'  => $article->getAttribute('published'),
                     'created_at' => $article->getAttribute('created_at'),
                     'updated_at' => $article->getAttribute('updated_at'),
-                    'tags' => $article->getAttribute('tags') ?? []
+                    'tags'       => $article->getAttribute('tags') ?? [],
                 ];
             }
 
             $response->getBody()->write(json_encode([
-                'success' => true,
+                'success'  => true,
                 'articles' => $articlesData,
-                'count' => count($articlesData)
-            ]));
+                'count'    => count($articlesData),
+            ]) ?: '{"error": "JSON encoding failed"}');
 
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode([
-                'error' => 'Failed to fetch articles: ' . $e->getMessage()
-            ]));
+                'error' => 'Failed to fetch articles: ' . $e->getMessage(),
+            ]) ?: '{"error": "JSON encoding failed"}');
+
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
     }
 
     /**
      * API: Get single article.
+     *
+     * @param array<string, string> $args
      */
     public function apiShow(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $slug = $args['slug'] ?? '';
 
         if (empty($slug)) {
-            $response->getBody()->write(json_encode(['error' => 'Slug is required']));
+            $response->getBody()->write(json_encode(['error' => 'Slug is required']) ?: '{"error": "JSON encoding failed"}');
+
             return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
         }
 
@@ -438,36 +470,102 @@ var/orbit/        # Runtime databases
             $article = Article::where('slug', $slug)->first();
 
             if (!$article) {
-                $response->getBody()->write(json_encode(['error' => 'Article not found']));
+                $response->getBody()->write(json_encode(['error' => 'Article not found']) ?: '{"error": "JSON encoding failed"}');
+
                 return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
             }
 
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'article' => [
-                    'id' => $article->getKey(),
-                    'slug' => $article->getAttribute('slug'),
-                    'title' => $article->getAttribute('title'),
-                    'content' => $article->getAttribute('content'),
-                    'excerpt' => $article->getAttribute('excerpt'),
-                    'published' => $article->getAttribute('published'),
-                    'author' => $article->getAttribute('author'),
-                    'category' => $article->getAttribute('category'),
-                    'tags' => $article->getAttribute('tags') ?? [],
-                    'meta' => $article->getAttribute('meta') ?? [],
+                    'id'           => $article->getKey(),
+                    'slug'         => $article->getAttribute('slug'),
+                    'title'        => $article->getAttribute('title'),
+                    'content'      => $article->getAttribute('content'),
+                    'excerpt'      => $article->getAttribute('excerpt'),
+                    'published'    => $article->getAttribute('published'),
+                    'author'       => $article->getAttribute('author'),
+                    'category'     => $article->getAttribute('category'),
+                    'tags'         => is_array($article->getAttribute('tags')) ? $article->getAttribute('tags') : [],
+                    'meta'         => is_array($article->getAttribute('meta')) ? $article->getAttribute('meta') : [],
                     'reading_time' => $article->getAttribute('reading_time'),
-                    'created_at' => $article->getAttribute('created_at'),
-                    'updated_at' => $article->getAttribute('updated_at'),
-                    'published_at' => $article->getAttribute('published_at')
-                ]
-            ]));
+                    'created_at'   => $article->getAttribute('created_at'),
+                    'updated_at'   => $article->getAttribute('updated_at'),
+                    'published_at' => $article->getAttribute('published_at'),
+                ],
+            ]) ?: '{"error": "JSON encoding failed"}');
 
             return $response->withHeader('Content-Type', 'application/json');
         } catch (\Exception $e) {
             $response->getBody()->write(json_encode([
-                'error' => 'Failed to fetch article: ' . $e->getMessage()
-            ]));
+                'error' => 'Failed to fetch article: ' . $e->getMessage(),
+            ]) ?: '{"error": "JSON encoding failed"}');
+
             return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
         }
+    }
+
+    /**
+     * API: Update article.
+     *
+     * @param array<string, string> $args
+     */
+    public function apiUpdate(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Update not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * API: Delete article.
+     *
+     * @param array<string, string> $args
+     */
+    public function apiDelete(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Delete not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * API: Get statistics.
+     */
+    public function apiStats(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Stats not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * API: Search articles.
+     */
+    public function apiSearch(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Search not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * API: Get categories.
+     */
+    public function apiCategories(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Categories not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * API: Get tags.
+     */
+    public function apiTags(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        $response->getBody()->write(json_encode(['error' => 'Tags not implemented yet']) ?: '{"error": "JSON encoding failed"}');
+
+        return $response->withStatus(501)->withHeader('Content-Type', 'application/json');
     }
 }

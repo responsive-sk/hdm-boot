@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Logging\Infrastructure\Services\LoggerFactory;
-use MvaBootstrap\Modules\Core\Logging\Infrastructure\Services\LogCleanupService;
+use HdmBoot\Modules\Core\Logging\Infrastructure\Services\LoggerFactory;
+use HdmBoot\Modules\Core\Logging\Infrastructure\Services\LogCleanupService;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 

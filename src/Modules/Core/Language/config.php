@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Language\Application\Actions\Api\TranslateAction;
-use MvaBootstrap\Modules\Core\Language\Domain\Services\TranslationService;
-use MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener;
-use MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware;
-use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
+use HdmBoot\Modules\Core\Language\Application\Actions\Api\TranslateAction;
+use HdmBoot\Modules\Core\Language\Domain\Services\TranslationService;
+use HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener;
+use HdmBoot\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware;
+use HdmBoot\Modules\Core\Language\Services\LocaleService;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 
@@ -20,7 +20,7 @@ return [
     'name'        => 'Language',
     'version'     => '1.0.0',
     'description' => 'Internationalization and localization module with translation management and locale switching',
-    'author'      => 'MVA Bootstrap Team',
+    'author'      => 'HDM Boot Team',
     'license'     => 'MIT',
 
     // === MODULE DEPENDENCIES ===
@@ -87,7 +87,7 @@ return [
     // === PUBLIC SERVICES ===
 
     'public_services' => [
-        'MvaBootstrap\Modules\Core\Language\Domain\Contracts\TranslationRepositoryInterface' => TranslationService::class,
+        'HdmBoot\Modules\Core\Language\Domain\Contracts\TranslationRepositoryInterface' => TranslationService::class,
     ],
 
     // === EVENT SYSTEM ===
@@ -180,13 +180,13 @@ return [
         // [
         //     'method'     => 'GET',
         //     'pattern'    => '/api/language',
-        //     'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
+        //     'handler'    => 'HdmBoot\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
         //     'middleware' => [LocaleMiddleware::class],
         // ],
         // [
         //     'method'     => 'POST',
         //     'pattern'    => '/api/language',
-        //     'handler'    => 'MvaBootstrap\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
+        //     'handler'    => 'HdmBoot\Modules\Core\Language\Application\Actions\Api\LanguageSettingsAction',
         //     'middleware' => [LocaleMiddleware::class],
         // ],
     ],

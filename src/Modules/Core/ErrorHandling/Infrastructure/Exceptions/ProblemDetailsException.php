@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions;
+namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions;
 
 use Exception;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\ProblemDetails\ProblemDetails;
 
 /**
  * Base exception that carries RFC 7807 Problem Details.

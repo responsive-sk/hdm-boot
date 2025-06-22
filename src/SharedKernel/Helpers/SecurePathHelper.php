@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Helpers;
+namespace HdmBoot\SharedKernel\Helpers;
 
 use InvalidArgumentException;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**

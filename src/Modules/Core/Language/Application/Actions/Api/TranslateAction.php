@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Application\Actions\Api;
+namespace HdmBoot\Modules\Core\Language\Application\Actions\Api;
 
-use MvaBootstrap\Modules\Core\Language\Application\DTOs\TranslateRequest;
-use MvaBootstrap\Modules\Core\Language\Application\Queries\GetTranslationQuery;
-use MvaBootstrap\Modules\Core\Language\Domain\Services\TranslationService;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\Language\Application\DTOs\TranslateRequest;
+use HdmBoot\Modules\Core\Language\Application\Queries\GetTranslationQuery;
+use HdmBoot\Modules\Core\Language\Domain\Services\TranslationService;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

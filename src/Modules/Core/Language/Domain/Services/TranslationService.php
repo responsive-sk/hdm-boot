@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Domain\Services;
+namespace HdmBoot\Modules\Core\Language\Domain\Services;
 
-use MvaBootstrap\Modules\Core\Language\Domain\Contracts\TranslationRepositoryInterface;
-use MvaBootstrap\Modules\Core\Language\Domain\Models\Translation;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\Locale;
-use MvaBootstrap\Modules\Core\Language\Domain\ValueObjects\TranslationKey;
+use HdmBoot\Modules\Core\Language\Domain\Contracts\TranslationRepositoryInterface;
+use HdmBoot\Modules\Core\Language\Domain\Models\Translation;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
+use HdmBoot\Modules\Core\Language\Domain\ValueObjects\TranslationKey;
 
 /**
  * Translation Domain Service.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Application\DTOs;
+namespace HdmBoot\Modules\Core\Template\Application\DTOs;
 
 /**
  * Render Template Request DTO.

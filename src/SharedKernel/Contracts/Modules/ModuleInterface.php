@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Contracts\Modules;
+namespace HdmBoot\SharedKernel\Contracts\Modules;
 
 /**
  * Module Interface

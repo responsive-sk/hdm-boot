@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Domain\ValueObjects;
+namespace HdmBoot\Modules\Core\Security\Domain\ValueObjects;
 
 /**
  * JWT Token Value Object

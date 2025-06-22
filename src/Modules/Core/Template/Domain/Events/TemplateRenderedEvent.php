@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Domain\Events;
+namespace HdmBoot\Modules\Core\Template\Domain\Events;
 
-use MvaBootstrap\Modules\Core\Template\Domain\ValueObjects\TemplateData;
-use MvaBootstrap\Modules\Core\Template\Domain\ValueObjects\TemplateName;
-use MvaBootstrap\SharedKernel\Events\DomainEvent;
+use HdmBoot\Modules\Core\Template\Domain\ValueObjects\TemplateData;
+use HdmBoot\Modules\Core\Template\Domain\ValueObjects\TemplateName;
+use HdmBoot\SharedKernel\Events\DomainEvent;
 
 /**
  * Template Rendered Event.

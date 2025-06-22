@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\ValueObjects;
+namespace HdmBoot\Modules\Core\User\Domain\ValueObjects;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

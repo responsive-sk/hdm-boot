@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Database\Infrastructure\Services;
+namespace HdmBoot\Modules\Core\Database\Infrastructure\Services;
 
-use MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
+use HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
 use PDO;
 use PDOException;
 use ResponsiveSk\Slim4Paths\Paths;

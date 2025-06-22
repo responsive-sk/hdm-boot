@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Template\Domain\ValueObjects;
+namespace HdmBoot\Modules\Core\Template\Domain\ValueObjects;
 
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 
 /**
  * Template Name Value Object.

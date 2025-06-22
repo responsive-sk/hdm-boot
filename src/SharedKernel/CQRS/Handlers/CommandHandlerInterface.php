@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\CQRS\Handlers;
+namespace HdmBoot\SharedKernel\CQRS\Handlers;
 
-use MvaBootstrap\SharedKernel\CQRS\Commands\CommandInterface;
+use HdmBoot\SharedKernel\CQRS\Commands\CommandInterface;
 
 /**
  * Command Handler Interface.

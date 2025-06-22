@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\SharedKernel\Events\EventBootstrap;
-use MvaBootstrap\SharedKernel\Events\EventDispatcher;
-use MvaBootstrap\SharedKernel\Events\EventDispatcherInterface;
-use MvaBootstrap\SharedKernel\Events\ModuleEventBus;
+use HdmBoot\SharedKernel\Events\EventBootstrap;
+use HdmBoot\SharedKernel\Events\EventDispatcher;
+use HdmBoot\SharedKernel\Events\EventDispatcherInterface;
+use HdmBoot\SharedKernel\Events\ModuleEventBus;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
@@ -60,8 +60,8 @@ return [
     // === EVENT LISTENERS ===
 
     // Language Module Listeners
-    \MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener(
+    \HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener(
             $container->get(LoggerInterface::class)
         );
     },

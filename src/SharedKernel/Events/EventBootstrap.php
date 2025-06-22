@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\Events;
+namespace HdmBoot\SharedKernel\Events;
 
 use DI\Container;
 use Psr\Log\LoggerInterface;
@@ -89,7 +89,7 @@ final class EventBootstrap
         try {
             // Register LocaleChangedListener
             $localeChangedListener = $this->container->get(
-                \MvaBootstrap\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class
+                \HdmBoot\Modules\Core\Language\Infrastructure\Listeners\LocaleChangedListener::class
             );
 
             if (

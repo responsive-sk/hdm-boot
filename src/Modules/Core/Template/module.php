@@ -17,7 +17,7 @@ return [
     'config' => 'config.php',
     'routes' => null, // Template module has no routes
     'authors' => [
-        'MvaBootstrap Team'
+        'HDM Boot Team'
     ],
     'tags' => [
         'template',

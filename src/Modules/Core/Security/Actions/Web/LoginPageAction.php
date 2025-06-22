@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Actions\Web;
+namespace HdmBoot\Modules\Core\Security\Actions\Web;
 
-use MvaBootstrap\Modules\Core\Session\Services\SessionService;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
+use HdmBoot\Modules\Core\Session\Services\SessionService;
+use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

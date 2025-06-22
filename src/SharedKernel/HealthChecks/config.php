@@ -9,8 +9,8 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
-use MvaBootstrap\SharedKernel\HealthChecks\Infrastructure\HealthCheckRegistry;
+use HdmBoot\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
+use HdmBoot\SharedKernel\HealthChecks\Infrastructure\HealthCheckRegistry;
 use Psr\Log\LoggerInterface;
 
 return [

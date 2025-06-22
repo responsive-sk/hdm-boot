@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics;
+namespace HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics;
 
 use Psr\Log\LoggerInterface;
 

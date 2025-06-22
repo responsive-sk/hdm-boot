@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\HealthChecks\ValueObjects;
+namespace HdmBoot\SharedKernel\HealthChecks\ValueObjects;
 
 use JsonSerializable;
 

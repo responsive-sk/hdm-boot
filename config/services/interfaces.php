@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
-use MvaBootstrap\Modules\Core\Security\Services\JwtService;
-use MvaBootstrap\Modules\Core\Security\Services\SecurityLoginChecker;
-use MvaBootstrap\Modules\Core\Session\Services\SessionService;
-use MvaBootstrap\Modules\Core\User\Repository\SqliteUserRepository;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
-use MvaBootstrap\SharedKernel\Services\DatabaseManager;
-use MvaBootstrap\SharedKernel\Services\TemplateRenderer;
+use HdmBoot\Modules\Core\Language\Services\LocaleService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\Modules\Core\Security\Services\JwtService;
+use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
+use HdmBoot\Modules\Core\Session\Services\SessionService;
+use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\SharedKernel\Services\DatabaseManager;
+use HdmBoot\SharedKernel\Services\TemplateRenderer;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
@@ -28,17 +28,48 @@ use Slim\Views\PhpRenderer;
 return [
     // === REPOSITORY INTERFACES ===
     UserRepositoryInterface::class => function (Container $container): UserRepositoryInterface {
-        return new SqliteUserRepository(
-            $container->get(\PDO::class)
-        );
+        /** @var \PDO $pdo */
+        $pdo = $container->get(\PDO::class);
+
+        return new SqliteUserRepository($pdo);
     },
 
     // === SERVICE INTERFACES ===
+
+    // Session Interface - Map to our enhanced session implementation
+    \ResponsiveSk\Slim4Session\SessionInterface::class => function (): \ResponsiveSk\Slim4Session\SessionInterface {
+        $environment = $_ENV['APP_ENV'] ?? 'production';
+
+        $sessionConfig = [
+            'name'            => $_ENV['SESSION_NAME'] ?? 'boot_session',
+            'cookie_lifetime' => (int) ($_ENV['SESSION_LIFETIME'] ?? 7200), // 2 hours
+            'cookie_secure'   => ($_ENV['SESSION_COOKIE_SECURE'] ?? 'false') === 'true',
+            'cookie_httponly' => ($_ENV['SESSION_COOKIE_HTTPONLY'] ?? 'true') === 'true',
+            'cookie_samesite' => $_ENV['SESSION_COOKIE_SAMESITE'] ?? 'Lax',
+            'cache_expire'    => 180,
+            'use_strict_mode' => true,
+        ];
+
+        return match ($environment) {
+            'development' => \ResponsiveSk\Slim4Session\SessionFactory::createForDevelopment($sessionConfig),
+            'testing' => \ResponsiveSk\Slim4Session\SessionFactory::createForTesting(),
+            default => \ResponsiveSk\Slim4Session\SessionFactory::createForProduction($sessionConfig),
+        };
+    },
+
+    // Odan Session Interface - Map to our enhanced session implementation (backward compatibility)
+    \Odan\Session\SessionInterface::class => function (Container $container): \ResponsiveSk\Slim4Session\SessionInterface {
+        /** @var \ResponsiveSk\Slim4Session\SessionInterface $session */
+        $session = $container->get(\ResponsiveSk\Slim4Session\SessionInterface::class);
+
+        return $session;
+    },
 
     // Note: Session services moved to Session module
 
     // Logging Interface
     LoggerInterface::class => function (Container $container): LoggerInterface {
+        /** @var Paths $paths */
         $paths = $container->get(Paths::class);
         $logPath = $paths->get('logs') . '/app.log';
 
@@ -56,21 +87,21 @@ return [
     // === MODULE CONTRACTS ===
 
     // User Module Contracts
-    \MvaBootstrap\Modules\Core\User\Contracts\Services\UserServiceInterface::class => function (Container $container): \MvaBootstrap\Modules\Core\User\Contracts\Services\UserServiceInterface {
+    \HdmBoot\Modules\Core\User\Contracts\Services\UserServiceInterface::class => function (Container $container): \HdmBoot\Modules\Core\User\Contracts\Services\UserServiceInterface {
         return $container->get(UserService::class);
     },
 
     // Security Module Contracts
-    \MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface::class => function (Container $container): \MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface {
+    \HdmBoot\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface::class => function (Container $container): \HdmBoot\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface {
         return $container->get(AuthenticationService::class);
     },
 
-    \MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface::class => function (Container $container): \MvaBootstrap\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface {
+    \HdmBoot\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface::class => function (Container $container): \HdmBoot\Modules\Core\Security\Contracts\Services\AuthorizationServiceInterface {
         return $container->get(AuthorizationService::class);
     },
 
     // Language Module Contracts
-    \MvaBootstrap\Modules\Core\Language\Contracts\Services\LocaleServiceInterface::class => function (Container $container): \MvaBootstrap\Modules\Core\Language\Contracts\Services\LocaleServiceInterface {
+    \HdmBoot\Modules\Core\Language\Contracts\Services\LocaleServiceInterface::class => function (Container $container): \HdmBoot\Modules\Core\Language\Contracts\Services\LocaleServiceInterface {
         return $container->get(LocaleService::class);
     },
 
@@ -91,47 +122,47 @@ return [
     // === DOMAIN SERVICES ===
 
     // Security Domain Services
-    \MvaBootstrap\Modules\Core\Security\Domain\Services\AuthenticationDomainService::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Domain\Services\AuthenticationDomainService::class => \DI\autowire(),
 
     // User Domain Services
-    \MvaBootstrap\Modules\Core\User\Domain\Services\UserDomainService::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\User\Domain\Services\UserDomainService::class => \DI\autowire(),
 
     // === CQRS INFRASTRUCTURE ===
 
     // Event Dispatcher
     \Psr\EventDispatcher\EventDispatcherInterface::class => function (Container $container): \Psr\EventDispatcher\EventDispatcherInterface {
-        return new \MvaBootstrap\Shared\CQRS\Events\EventDispatcher(
+        return new \HdmBoot\Shared\CQRS\Events\EventDispatcher(
             $container->get(LoggerInterface::class)
         );
     },
 
     // Command Handlers
-    \MvaBootstrap\Modules\Core\User\Application\Handlers\RegisterUserHandler::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\User\Application\Handlers\RegisterUserHandler::class => \DI\autowire(),
 
     // Query Handlers
-    \MvaBootstrap\Modules\Core\User\Application\Handlers\GetUserProfileHandler::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\User\Application\Handlers\GetUserProfileHandler::class => \DI\autowire(),
 
     // === MODULE ISOLATION ===
 
     // Module Registry
-    \MvaBootstrap\Shared\Contracts\Modules\ModuleRegistry::class => \DI\autowire(),
+    \HdmBoot\Shared\Contracts\Modules\ModuleRegistry::class => \DI\autowire(),
 
     // Module Event Bus
-    \MvaBootstrap\Shared\Events\Modules\ModuleEventBus::class => \DI\autowire(),
+    \HdmBoot\Shared\Events\Modules\ModuleEventBus::class => \DI\autowire(),
 
     // Module Instances
-    \MvaBootstrap\Modules\Core\User\UserModule::class         => \DI\autowire(),
-    \MvaBootstrap\Modules\Core\Security\SecurityModule::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\User\UserModule::class         => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\SecurityModule::class => \DI\autowire(),
 
     // === ERROR HANDLING ===
 
     // Error Response Handler (moved to Core module)
-    \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class => \DI\autowire(),
 
     // Error Handler Middleware (moved to Core module)
-    \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware(
-            $container->get(\MvaBootstrap\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class),
+    \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Middleware\ErrorHandlerMiddleware(
+            $container->get(\HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Handlers\ErrorResponseHandler::class),
             $container->get(LoggerInterface::class),
             false // displayErrorDetails - set to true for development
         );
@@ -143,14 +174,14 @@ return [
     // which properly uses Paths configuration for correct log file locations
 
     // Health Check Manager (moved to Core module)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager::class => \DI\autowire(),
 
     // Health Check Action (moved to Core module)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\Actions\HealthCheckAction::class => \DI\autowire(),
 
     // Performance Monitor (moved to Core module)
-    \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class => function (Container $container) {
-        return new \MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor(
+    \HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class => function (Container $container) {
+        return new \HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor(
             $container->get('performance.logger')
         );
     },
@@ -158,31 +189,31 @@ return [
     // === DOCUMENTATION ===
 
     // Documentation Viewer Action (moved to Core module)
-    \MvaBootstrap\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Documentation\Infrastructure\Actions\DocsViewerAction::class => \DI\autowire(),
 
     // === MIDDLEWARE AUTO-WIRING ===
 
     // Language Middleware (moved to Core module)
-    \MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Language\Infrastructure\Middleware\LocaleMiddleware::class => \DI\autowire(),
 
     // Security Middleware (moved to Core module)
-    \MvaBootstrap\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware::class => \DI\autowire(),
 
     // Authorization Middleware (if it exists)
-    \MvaBootstrap\Modules\Core\Security\Middleware\AuthorizationMiddleware::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Middleware\AuthorizationMiddleware::class => \DI\autowire(),
 
     // === ACTION AUTO-WIRING ===
 
     // Security Actions (Application Layer)
-    \MvaBootstrap\Modules\Core\Security\Actions\Web\LoginPageAction::class           => \DI\autowire(),
-    \MvaBootstrap\Modules\Core\Security\Actions\Web\LoginSubmitAction::class         => \DI\autowire(),
-    \MvaBootstrap\Modules\Core\Security\Actions\Web\LogoutAction::class              => \DI\autowire(),
-    \MvaBootstrap\Modules\Core\Security\Application\Actions\LoginSubmitAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Actions\Web\LoginPageAction::class           => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Actions\Web\LoginSubmitAction::class         => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Actions\Web\LogoutAction::class              => \DI\autowire(),
+    \HdmBoot\Modules\Core\Security\Application\Actions\LoginSubmitAction::class => \DI\autowire(),
 
     // User Actions
-    \MvaBootstrap\Modules\Core\User\Actions\Web\ProfilePageAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\User\Actions\Web\ProfilePageAction::class => \DI\autowire(),
 
     // Language Actions
-    \MvaBootstrap\Modules\Core\Language\Actions\Api\LanguageSettingsAction::class => \DI\autowire(),
-    \MvaBootstrap\Modules\Core\Language\Actions\Api\TranslateAction::class        => \DI\autowire(),
+    \HdmBoot\Modules\Core\Language\Actions\Api\LanguageSettingsAction::class => \DI\autowire(),
+    \HdmBoot\Modules\Core\Language\Actions\Api\TranslateAction::class        => \DI\autowire(),
 ];

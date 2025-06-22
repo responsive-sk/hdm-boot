@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 
 $paths = PathsFactory::create();
 
@@ -21,7 +21,7 @@ return [
     'dependencies' => [],
     'config' => $paths->getPath($paths->src('Modules/Core/Storage'), 'config.php'),
     'routes' => null,
-    'authors' => ['MVA Bootstrap Team'],
+    'authors' => ['HDM Boot Team'],
     'tags' => ['storage', 'files', 'markdown', 'articles', 'documentation'],
     'provides' => [
         'file-storage',

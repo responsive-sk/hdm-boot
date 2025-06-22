@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Session\Enum;
+namespace HdmBoot\Modules\Core\Session\Enum;
 
 /**
  * Security Type Enum for Session Module.

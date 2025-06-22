@@ -15,12 +15,17 @@ composer.lock
 /var/uploads/*
 /var/sessions/*
 
+# Orbit databases (runtime data)
+/var/orbit/*.db
+/var/orbit/*.sqlite
+
 # Keep directory structure
 !/var/logs/.gitkeep
 !/var/cache/.gitkeep
 !/var/storage/.gitkeep
 !/var/uploads/.gitkeep
 !/var/sessions/.gitkeep
+!/var/orbit/.gitkeep
 
 # IDE files
 .vscode/

@@ -17,7 +17,7 @@ return [
     'config' => 'config.php',
     'routes' => null, // Security routes are defined in config.php
     'authors' => [
-        'MvaBootstrap Team'
+        'HDM Boot Team'
     ],
     'tags' => [
         'security',

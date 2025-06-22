@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Contracts\Services;
+namespace HdmBoot\Modules\Core\Language\Contracts\Services;
 
 /**
  * Locale Service Interface - Public API for Language Module.

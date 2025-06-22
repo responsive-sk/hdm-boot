@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Application\DTOs;
+namespace HdmBoot\Modules\Core\Language\Application\DTOs;
 
 /**
  * Language Settings Request DTO.

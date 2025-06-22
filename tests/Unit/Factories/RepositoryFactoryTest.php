@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Factories;
+namespace HdmBoot\Tests\Unit\Factories;
 
-use MvaBootstrap\Modules\Core\User\Repository\SqliteUserRepository;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
-use MvaBootstrap\Shared\Factories\RepositoryFactory;
+use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Shared\Factories\RepositoryFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -102,7 +102,7 @@ final class RepositoryFactoryTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Doctrine User Repository not implemented yet');
         
-        $factory->createUserRepository(null, $this->createMock(\MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface::class));
+        $factory->createUserRepository(null, $this->createMock(\HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface::class));
     }
 
     #[Test]

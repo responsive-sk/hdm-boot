@@ -3,16 +3,16 @@
 declare(strict_types=1);
 
 use DI\Container;
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use MvaBootstrap\Modules\Core\Template\Application\Actions\RenderTemplateAction;
-use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
-use MvaBootstrap\Modules\Core\Template\Domain\Contracts\TemplateRendererInterface;
-use MvaBootstrap\Modules\Core\Template\Domain\Services\TemplateService;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Engines\PhpTemplateEngine;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Engines\TwigTemplateEngine;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use MvaBootstrap\SharedKernel\Events\ModuleEventBus;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Template\Application\Actions\RenderTemplateAction;
+use HdmBoot\Modules\Core\Template\Domain\Contracts\TemplateEngineInterface;
+use HdmBoot\Modules\Core\Template\Domain\Contracts\TemplateRendererInterface;
+use HdmBoot\Modules\Core\Template\Domain\Services\TemplateService;
+use HdmBoot\Modules\Core\Template\Infrastructure\Engines\PhpTemplateEngine;
+use HdmBoot\Modules\Core\Template\Infrastructure\Engines\TwigTemplateEngine;
+use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
+use HdmBoot\SharedKernel\Events\ModuleEventBus;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
@@ -27,7 +27,7 @@ return [
     'name'        => 'Template',
     'version'     => '1.0.0',
     'description' => 'Template rendering module with support for multiple template engines and DDD architecture',
-    'author'      => 'MVA Bootstrap Team',
+    'author'      => 'HDM Boot Team',
     'license'     => 'MIT',
 
     // === MODULE DEPENDENCIES ===
@@ -82,8 +82,8 @@ return [
 
         // PHP Template Engine
         PhpTemplateEngine::class => function (Container $container): PhpTemplateEngine {
-            $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
-            assert($moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager);
+            $moduleManager = $container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class);
+            assert($moduleManager instanceof \HdmBoot\SharedKernel\Modules\ModuleManager);
             $config = $moduleManager->getModuleConfig('Template');
 
             $csrfService = $container->get(CsrfService::class);
@@ -104,8 +104,8 @@ return [
 
         // Twig Template Engine
         TwigTemplateEngine::class => function (Container $container): TwigTemplateEngine {
-            $moduleManager = $container->get(\MvaBootstrap\SharedKernel\Modules\ModuleManager::class);
-            assert($moduleManager instanceof \MvaBootstrap\SharedKernel\Modules\ModuleManager);
+            $moduleManager = $container->get(\HdmBoot\SharedKernel\Modules\ModuleManager::class);
+            assert($moduleManager instanceof \HdmBoot\SharedKernel\Modules\ModuleManager);
             $config = $moduleManager->getModuleConfig('Template');
 
             $engine = new TwigTemplateEngine();

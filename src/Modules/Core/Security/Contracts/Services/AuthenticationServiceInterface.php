@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Contracts\Services;
+namespace HdmBoot\Modules\Core\Security\Contracts\Services;
 
 /**
  * Authentication Service Interface - Public API for Security Module.

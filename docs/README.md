@@ -20,7 +20,7 @@
 | Dokument | Popis | Status |
 |----------|--------|--------|
 | [Security](SECURITY.md) | Bezpečnostné funkcie | ✅ |
-| [Database](DATABASE_MANAGER.md) | Databázový systém | ✅ |
+| [Storage System](../content/docs/hybrid-storage.md) | Hybrid storage systém | ✅ |
 | [Session](SESSION.md) | Správa sessions | ✅ |
 
 ### 4. API Documentation [P1]
@@ -44,6 +44,12 @@
 | [DI Container](architecture/dependency-injection.md) | Dependency Injection | ✅ |
 | [Monitoring](architecture/monitoring-logging.md) | Monitoring a logging | ✅ |
 
+### 7. Quality Assurance [P0]
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [PHPStan Success](PHPSTAN_COMPLETE_SUCCESS.md) | 100% PHPStan Level MAX úspech | ✅ |
+| [Code Analysis](PHPSTAN_CODE_ANALYSIS.md) | Detailná analýza kvality kódu | ✅ |
+
 ## 📈 Documentation Status
 
 | Kategória | Hotové | Status |
@@ -54,6 +60,7 @@
 | API Documentation | 2/3 | ⏳ In Progress |
 | Development Guides | 6/10 | ⏳ In Progress |
 | Advanced Features | 3/3 | ✅ Completed |
+| Quality Assurance | 2/2 | ✅ Completed |
 
 ## 🎯 Priority Levels
 

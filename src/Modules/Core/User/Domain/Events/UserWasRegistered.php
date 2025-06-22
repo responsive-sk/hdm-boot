@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Domain\Events;
+namespace HdmBoot\Modules\Core\User\Domain\Events;
 
-use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * User Was Registered Event.

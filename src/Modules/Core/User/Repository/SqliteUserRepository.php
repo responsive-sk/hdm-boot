@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Repository;
+namespace HdmBoot\Modules\Core\User\Repository;
 
 use PDO;
 use PDOException;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Application\Queries;
+namespace HdmBoot\Modules\Core\User\Application\Queries;
 
-use MvaBootstrap\Modules\Core\CQRS\Infrastructure\Queries\QueryInterface;
+use HdmBoot\Modules\Core\CQRS\Infrastructure\Queries\QueryInterface;
 
 /**
  * Get User Profile Query.

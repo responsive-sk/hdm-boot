@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Enum;
+namespace HdmBoot\Modules\Core\Security\Enum;
 
 /**
  * Security Type Enumeration

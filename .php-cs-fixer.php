@@ -5,10 +5,9 @@ declare(strict_types=1);
 $finder = PhpCsFixer\Finder::create()
     ->in([
         __DIR__ . '/src',
-        __DIR__ . '/modules',
-        __DIR__ . '/bootstrap',
         __DIR__ . '/config',
         __DIR__ . '/public',
+        __DIR__ . '/tests',
     ])
     ->exclude([
         'vendor',
@@ -128,4 +127,4 @@ return $config
     ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setUsingCache(true)
-    ->setCacheFile(__DIR__ . '/.php-cs-fixer.cache');
+    ->setCacheFile(__DIR__ . '/var/cache/.php-cs-fixer.cache');

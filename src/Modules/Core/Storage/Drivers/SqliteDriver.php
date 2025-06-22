@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Storage\Drivers;
+namespace HdmBoot\Modules\Core\Storage\Drivers;
 
-use MvaBootstrap\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use MvaBootstrap\SharedKernel\Services\PathsFactory;
+use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
+use HdmBoot\SharedKernel\Services\PathsFactory;
 use SplFileInfo;
 use PDO;
 

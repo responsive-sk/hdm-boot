@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\HealthChecks\Contracts;
+namespace HdmBoot\SharedKernel\HealthChecks\Contracts;
 
-use MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
+use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
 
 /**
  * Health Check Interface.

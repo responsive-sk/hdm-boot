@@ -1,43 +1,92 @@
-# Monitoring & Logging Infrastructure
+# 📊 Monitoring & Logging Infrastructure
 
-## Overview
+## 🎯 **Overview**
 
 This document describes the comprehensive monitoring and logging infrastructure implemented in the MVA Bootstrap project. The system provides centralized logging, health checks, performance monitoring, and observability features essential for production applications.
 
-## Architecture Components
+### ✅ **Recent Updates (2025-06-20)**
+- **LoggerFactory refactored** - Unified formatting and specialized loggers
+- **Log rotation implemented** - Automated cleanup and compression
+- **Duplicate logging eliminated** - Clean, consistent log output
+- **CLI tools added** - Manual log management capabilities
+- **Cron automation** - Scheduled maintenance scripts
 
-### 1. Centralized Logging System
+## 🏗️ **Architecture Components**
+
+### 1. **LoggerFactory - Centralized Logger Management**
+
+The logging system uses a refactored LoggerFactory with unified formatting and specialized loggers for different purposes.
+
+#### **LoggerFactory Features**
+- **Unified formatting** - Consistent log format across all channels
+- **Specialized loggers** - Security, performance, audit, and general logging
+- **Environment-aware** - Different configurations for dev/staging/production
+- **Monolog compatibility** - Support for both array and LogRecord formats
+- **Automatic rotation** - Built-in file rotation with configurable retention
+
+#### **Available Logger Types**
+```php
+// Get specialized loggers from DI container
+$securityLogger = $container->get('logger.security');    // Security events
+$auditLogger = $container->get('logger.audit');          // Audit trail
+$performanceLogger = $container->get('logger.performance'); // Performance metrics
+$profileLogger = $container->get('logger.profile');      // Profile actions
+$generalLogger = $container->get(LoggerInterface::class); // General application
+```
+
+### 2. **Centralized Logging System**
 
 The logging system uses Monolog with multiple specialized loggers and handlers for different environments and purposes.
 
-#### Logger Configuration
+#### **Unified Log Format**
+
+All loggers now use consistent formatting for better readability and monitoring:
+
+```
+🔍 [2025-06-20 12:34:56] app.INFO: User profile accessed | Context: {"user_id":"123"} | Extra: {"memory":"2MB"}
+🔒 [2025-06-20 12:34:56] security.WARNING: Login failed | Context: {"email":"user@example.com"} | Extra: {"ip":"192.168.1.1"}
+⚡ [2025-06-20 12:34:56] performance.INFO: Slow query detected | Context: {"duration":2.5} | Extra: {"query":"SELECT..."}
+📋 [2025-06-20 12:34:56] audit.INFO: User created | Context: {"user_id":"456"} | Extra: {"created_by":"admin"}
+```
+
+#### **Logger Configuration**
 
 ```php
-// config/logging/logger.php
+// src/Modules/Core/Logging/config.php
 return [
-    LoggerInterface::class => function (Container $container): LoggerInterface {
-        $environment = $_ENV['APP_ENV'] ?? 'development';
-        
-        if ($environment === 'production') {
-            return $container->get('logger.production');
-        } elseif ($environment === 'staging') {
-            return $container->get('logger.staging');
-        } else {
-            return $container->get('logger.development');
-        }
-    },
-    
-    'logger.security' => function (): LoggerInterface {
-        // Security-specific logging configuration
-    },
-    
-    'logger.performance' => function (): LoggerInterface {
-        // Performance metrics logging
-    },
-    
-    'logger.audit' => function (): LoggerInterface {
-        // Permanent audit trail logging
-    },
+    'services' => [
+        // Logger Factory
+        LoggerFactory::class => function (Container $c): LoggerFactory {
+            return new LoggerFactory(
+                $c->get(Paths::class),
+                $_ENV['APP_ENV'] ?? 'production',
+                (bool) ($_ENV['APP_DEBUG'] ?? false)
+            );
+        },
+
+        // Default application logger
+        LoggerInterface::class => function (Container $c): LoggerInterface {
+            return $c->get(LoggerFactory::class)->createLogger('app');
+        },
+
+        // Specialized loggers with unique names
+        'logger.security' => function (Container $c): LoggerInterface {
+            return $c->get(LoggerFactory::class)->createSecurityLogger();
+        },
+
+        'logger.audit' => function (Container $c): LoggerInterface {
+            return $c->get(LoggerFactory::class)->createAuditLogger();
+        },
+
+        'logger.performance' => function (Container $c): LoggerInterface {
+            return $c->get(LoggerFactory::class)->createPerformanceLogger();
+        },
+
+        // Action-specific loggers
+        'logger.profile' => function (Container $c): LoggerInterface {
+            return $c->get(LoggerFactory::class)->createLogger('profile');
+        },
+    ],
 ];
 ```
 
@@ -1752,3 +1801,124 @@ final class RedisHealthCheck implements HealthCheckInterface
     }
 }
 ```
+
+---
+
+## 🔄 **Log Rotation & Cleanup**
+
+### **Automatic Log Rotation**
+
+The system implements comprehensive log rotation to prevent disk space issues:
+
+#### **Retention Policies**
+```php
+// LoggerFactory retention configuration
+private const DEFAULT_RETENTION_DAYS = 30;     // General logs
+private const PERFORMANCE_RETENTION_DAYS = 14; // Performance logs
+private const DEBUG_RETENTION_DAYS = 7;        // Debug logs
+private const AUDIT_RETENTION_DAYS = 365;      // Audit logs (compliance)
+private const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB per file
+```
+
+#### **Log Types & Retention**
+| Log Type | Retention | Compression | Purpose |
+|----------|-----------|-------------|---------|
+| **Security** | 30 days | After 7 days | Security incident investigation |
+| **Performance** | 14 days | After 7 days | Performance monitoring |
+| **Debug** | 7 days | After 3 days | Development debugging |
+| **Audit** | 365 days | After 30 days | Compliance requirements |
+| **General** | 30 days | After 7 days | Application monitoring |
+| **Errors** | 30 days | After 7 days | Error tracking |
+
+### **Manual Log Management**
+
+#### **CLI Tools**
+```bash
+# Show log statistics
+php bin/log-cleanup stats
+
+# Bash script for full management
+./bin/log-rotation stats      # Show statistics
+./bin/log-rotation cleanup    # Clean old files
+./bin/log-rotation compress   # Compress old files
+./bin/log-rotation health     # Health check
+./bin/log-rotation full       # Complete maintenance
+```
+
+#### **Automated Cron Jobs**
+```bash
+# Recommended cron schedule
+0 2 * * * /path/to/bootstrap/bin/log-rotation cleanup    # Daily cleanup
+0 3 * * 0 /path/to/bootstrap/bin/log-rotation compress   # Weekly compression
+0 4 1 * * /path/to/bootstrap/bin/log-rotation health     # Monthly health check
+```
+
+### **Log Directory Structure**
+```
+var/logs/
+├── debug-app.log              # Current application debug log
+├── debug-app-2025-06-19.log   # Rotated debug log
+├── debug-profile.log          # Current profile debug log
+├── security-2025-06-20.log    # Daily security log
+├── performance-2025-06-20.log # Daily performance log
+├── audit-2025-06-20.log       # Daily audit log
+├── errors.log                 # Current error log
+└── compressed/
+    ├── debug-app-2025-06-01.log.gz    # Compressed old logs
+    └── security-2025-06-01.log.gz
+```
+
+### **Health Monitoring**
+```bash
+# Check log rotation health
+./bin/log-rotation health
+
+# Output example:
+🏥 Log Rotation Health Check
+==================================================
+Status: ✅ healthy
+
+✅ All log rotation systems are working properly!
+```
+
+For detailed log rotation documentation, see: **[Log Rotation Guide](../LOG_ROTATION.md)**
+
+---
+
+## 📈 **Best Practices**
+
+### **Production Logging**
+- ✅ **Use structured logging** with consistent context
+- ✅ **Implement log rotation** to prevent disk issues
+- ✅ **Monitor log health** with automated checks
+- ✅ **Separate security logs** for audit compliance
+- ✅ **Compress old logs** to save disk space
+- ✅ **Set up alerting** for critical log events
+
+### **Development Logging**
+- ✅ **Use debug level** for detailed information
+- ✅ **Shorter retention** (3-7 days) for faster development
+- ✅ **Console output** for immediate feedback
+- ✅ **Disable compression** for easier debugging
+
+### **Security Considerations**
+- ✅ **Secure log files** with proper permissions (644)
+- ✅ **Sanitize sensitive data** before logging
+- ✅ **Audit log access** and modifications
+- ✅ **Backup critical logs** to separate storage
+- ✅ **Monitor for log tampering** attempts
+
+---
+
+## 🎯 **Summary**
+
+**MVA Bootstrap provides enterprise-grade logging infrastructure:**
+
+- ✅ **Unified formatting** - Consistent, readable log output
+- ✅ **Specialized loggers** - Security, audit, performance, and general
+- ✅ **Automatic rotation** - Prevents disk space issues
+- ✅ **Manual management** - CLI tools for maintenance
+- ✅ **Health monitoring** - Proactive issue detection
+- ✅ **Production ready** - Battle-tested in enterprise environments
+
+**Your application logging is comprehensive, maintainable, and production-ready!** 🚀

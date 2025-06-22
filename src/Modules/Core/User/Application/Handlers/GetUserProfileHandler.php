@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User\Application\Handlers;
+namespace HdmBoot\Modules\Core\User\Application\Handlers;
 
 use InvalidArgumentException;
-use MvaBootstrap\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
-use MvaBootstrap\SharedKernel\CQRS\Queries\QueryInterface;
-use MvaBootstrap\Modules\Core\User\Application\Queries\GetUserProfileQuery;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
+use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
+use HdmBoot\Modules\Core\User\Application\Queries\GetUserProfileQuery;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**

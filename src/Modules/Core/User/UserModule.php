@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\User;
+namespace HdmBoot\Modules\Core\User;
 
-use MvaBootstrap\Modules\Core\User\Contracts\Events\UserModuleEvents;
-use MvaBootstrap\Modules\Core\User\Contracts\Services\UserServiceInterface;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
-use MvaBootstrap\SharedKernel\Modules\ModuleInterface;
+use HdmBoot\Modules\Core\User\Contracts\Events\UserModuleEvents;
+use HdmBoot\Modules\Core\User\Contracts\Services\UserServiceInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\SharedKernel\Modules\ModuleInterface;
 use Psr\Log\LoggerInterface;
 
 /**

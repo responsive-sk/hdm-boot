@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\EventStore\ValueObjects;
+namespace HdmBoot\SharedKernel\EventStore\ValueObjects;
 
-use MvaBootstrap\SharedKernel\CQRS\Events\DomainEventInterface;
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * Stored Event Value Object.

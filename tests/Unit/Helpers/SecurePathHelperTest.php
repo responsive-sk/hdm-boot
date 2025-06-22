@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Unit\Helpers;
+namespace HdmBoot\Tests\Unit\Helpers;
 
 use InvalidArgumentException;
-use MvaBootstrap\Shared\Helpers\SecurePathHelper;
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Shared\Helpers\SecurePathHelper;
+use HdmBoot\Tests\TestCase;
 
 /**
  * Unit tests for SecurePathHelper.

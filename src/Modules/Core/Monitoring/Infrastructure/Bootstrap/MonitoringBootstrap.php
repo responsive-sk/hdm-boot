@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Bootstrap;
+namespace HdmBoot\Modules\Core\Monitoring\Infrastructure\Bootstrap;
 
-use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\DatabaseHealthCheck;
-use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\FilesystemHealthCheck;
-use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager;
+use HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\DatabaseHealthCheck;
+use HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\FilesystemHealthCheck;
+use HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager;
 use PDO;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -137,7 +137,7 @@ final class MonitoringBootstrap
     private function setupPerformanceMonitoring(): void
     {
         try {
-            $performanceMonitorRaw = $this->container->get(\MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class);
+            $performanceMonitorRaw = $this->container->get(\HdmBoot\Modules\Core\Monitoring\Infrastructure\Metrics\PerformanceMonitor::class);
 
             if (!is_object($performanceMonitorRaw) || !method_exists($performanceMonitorRaw, 'recordMemoryUsage')) {
                 $this->logger->warning('Failed to get valid PerformanceMonitor from container');
@@ -159,7 +159,7 @@ final class MonitoringBootstrap
 /**
  * Simple Application Health Check.
  */
-class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\Contracts\HealthCheckInterface
+class ApplicationHealthCheck implements \HdmBoot\SharedKernel\HealthChecks\Contracts\HealthCheckInterface
 {
     public function __construct(
         private readonly LoggerInterface $logger
@@ -171,7 +171,7 @@ class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\
         return 'application';
     }
 
-    public function check(): \MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult
+    public function check(): \HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult
     {
         $startTime = microtime(true);
 
@@ -194,7 +194,7 @@ class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\
             }
 
             if (!empty($missingExtensions)) {
-                return \MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::unhealthy(
+                return \HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::unhealthy(
                     $this->getName(),
                     'Missing required PHP extensions: ' . implode(', ', $missingExtensions),
                     [
@@ -205,7 +205,7 @@ class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\
                 );
             }
 
-            return \MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::healthy(
+            return \HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::healthy(
                 $this->getName(),
                 'Application is running normally',
                 [
@@ -217,7 +217,7 @@ class ApplicationHealthCheck implements \MvaBootstrap\SharedKernel\HealthChecks\
                 microtime(true) - $startTime
             );
         } catch (\Exception $e) {
-            return \MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::unhealthy(
+            return \HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult::unhealthy(
                 $this->getName(),
                 'Application health check failed: ' . $e->getMessage(),
                 ['error_type' => get_class($e)],

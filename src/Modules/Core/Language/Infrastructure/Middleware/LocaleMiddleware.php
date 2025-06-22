@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Infrastructure\Middleware;
+namespace HdmBoot\Modules\Core\Language\Infrastructure\Middleware;
 
-use MvaBootstrap\Modules\Core\Language\Services\LocaleService;
-use MvaBootstrap\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\Language\Services\LocaleService;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,39 +41,39 @@ final class LocaleMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $detectedLocale = null;
+
         try {
-            $locale = $this->detectLocale($request);
+            $detectedLocale = $this->detectLocale($request);
+            $result = $this->localeService->setLanguage($detectedLocale);
 
-            if ($locale) {
-                $result = $this->localeService->setLanguage($locale);
+            if ($result !== false) {
+                // Store in session for future requests
+                $this->session->set('app_language', $detectedLocale);
 
-                if ($result !== false) {
-                    // Store in session for future requests
-                    $this->session->set('app_language', $locale);
-
-                    $this->logger->debug('Locale set via middleware', [
-                        'locale'           => $locale,
-                        'detection_method' => $this->getDetectionMethod($request, $locale),
-                    ]);
-                } else {
-                    $this->logger->warning('Failed to set locale via middleware', [
-                        'locale' => $locale,
-                    ]);
-                }
+                $this->logger->debug('Locale set via middleware', [
+                    'locale'           => $detectedLocale,
+                    'detection_method' => $this->getDetectionMethod($request, $detectedLocale),
+                ]);
+            } else {
+                $this->logger->warning('Failed to set locale via middleware', [
+                    'locale' => $detectedLocale,
+                ]);
             }
         } catch (\Exception $e) {
             $this->logger->error('Locale middleware error', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
             ]);
+            $detectedLocale = null; // Reset on error
         }
 
         // Continue to next middleware/handler
         $response = $handler->handle($request);
 
         // Set language cookie in response if locale was detected
-        if (isset($locale) && $locale) {
-            $response = $this->setLanguageCookie($response, $locale);
+        if ($detectedLocale !== null) {
+            $response = $this->setLanguageCookie($response, $detectedLocale);
         }
 
         return $response;

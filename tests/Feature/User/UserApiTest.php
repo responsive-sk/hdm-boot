@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests\Feature\User;
+namespace HdmBoot\Tests\Feature\User;
 
-use MvaBootstrap\Tests\TestCase;
+use HdmBoot\Tests\TestCase;
 
 /**
  * Feature tests for User API.
@@ -71,7 +71,7 @@ class UserApiTest extends TestCase
     }
 
     /**
-     * @covers \MvaBootstrap\Modules\Core\User\Actions\GetUserAction
+     * @covers \HdmBoot\Modules\Core\User\Actions\GetUserAction
      */
     public function testGetUserById(): void
     {

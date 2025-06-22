@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Language\Contracts\Events;
+namespace HdmBoot\Modules\Core\Language\Contracts\Events;
 
 /**
  * Language Module Events - Public Event Names.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Documentation\Infrastructure\Actions;
+namespace HdmBoot\Modules\Core\Documentation\Infrastructure\Actions;
 
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;

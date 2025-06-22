@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Tests;
+namespace HdmBoot\Tests;
 
 use DI\Container;
-use MvaBootstrap\Bootstrap\App;
-use MvaBootstrap\Shared\Services\DatabaseManager;
+use HdmBoot\Bootstrap\App;
+use HdmBoot\Shared\Services\DatabaseManager;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

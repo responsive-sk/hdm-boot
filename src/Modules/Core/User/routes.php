@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use MvaBootstrap\Modules\Core\Security\Middleware\AuthenticationMiddleware;
-use MvaBootstrap\Modules\Core\Security\Middleware\AuthorizationMiddleware;
-use MvaBootstrap\Modules\Core\Security\Services\AuthorizationService;
-use MvaBootstrap\Modules\Core\User\Actions\CreateUserAction;
-use MvaBootstrap\Modules\Core\User\Actions\GetUserAction;
-use MvaBootstrap\Modules\Core\User\Actions\ListUsersAction;
+use HdmBoot\Modules\Core\Security\Middleware\AuthenticationMiddleware;
+use HdmBoot\Modules\Core\Security\Middleware\AuthorizationMiddleware;
+use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
+use HdmBoot\Modules\Core\User\Actions\CreateUserAction;
+use HdmBoot\Modules\Core\User\Actions\GetUserAction;
+use HdmBoot\Modules\Core\User\Actions\ListUsersAction;
 use Slim\App;
 
 /*
@@ -100,7 +100,7 @@ return function (App $app): void {
             try {
                 /** @var Container $container */
                 $container = $this->get(\DI\Container::class);
-                $userService = $container->get(\MvaBootstrap\Modules\Core\User\Services\UserService::class);
+                $userService = $container->get(\HdmBoot\Modules\Core\User\Services\UserService::class);
 
                 $statistics = $userService->getUserStatistics();
 

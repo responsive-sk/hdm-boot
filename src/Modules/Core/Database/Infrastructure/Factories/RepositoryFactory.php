@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Database\Infrastructure\Factories;
+namespace HdmBoot\Modules\Core\Database\Infrastructure\Factories;
 
-use MvaBootstrap\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
-use MvaBootstrap\Modules\Core\User\Repository\SqliteUserRepository;
-use MvaBootstrap\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
+use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
+use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use PDO;
 
 /**

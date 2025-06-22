@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Monitoring\Infrastructure\Actions;
+namespace HdmBoot\Modules\Core\Monitoring\Infrastructure\Actions;
 
-use MvaBootstrap\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager;
+use HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks\HealthCheckManager;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

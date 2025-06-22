@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\HealthChecks\Infrastructure;
+namespace HdmBoot\SharedKernel\HealthChecks\Infrastructure;
 
-use MvaBootstrap\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
-use MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
-use MvaBootstrap\SharedKernel\HealthChecks\ValueObjects\HealthStatus;
+use HdmBoot\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
+use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
+use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthStatus;
 use Psr\Log\LoggerInterface;
 
 /**

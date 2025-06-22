@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\Modules\Core\Security\Actions\Web;
+namespace HdmBoot\Modules\Core\Security\Actions\Web;
 
-use MvaBootstrap\Modules\Core\Security\Exceptions\AuthenticationException;
-use MvaBootstrap\Modules\Core\Security\Exceptions\SecurityException;
-use MvaBootstrap\Modules\Core\Security\Exceptions\ValidationException;
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationService;
-use MvaBootstrap\Modules\Core\Security\Services\AuthenticationValidator;
-use MvaBootstrap\Modules\Core\Session\Services\CsrfService;
-use MvaBootstrap\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
+use HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException;
+use HdmBoot\Modules\Core\Security\Exceptions\SecurityException;
+use HdmBoot\Modules\Core\Security\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

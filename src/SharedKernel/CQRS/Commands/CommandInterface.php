@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MvaBootstrap\SharedKernel\CQRS\Commands;
+namespace HdmBoot\SharedKernel\CQRS\Commands;
 
 /**
  * Command Interface.
