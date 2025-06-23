@@ -20,8 +20,7 @@ $paths = new Paths($projectRoot);
 // Get safe paths
 $rootDir = $paths->base();
 $moduleDir = __DIR__;
-$modulePaths = new Paths($moduleDir);
-$phpunitBin = $modulePaths->path('vendor/bin/phpunit');
+$phpunitBin = $paths->path('vendor/bin/phpunit');
 $phpunitConfig = $moduleDir . '/phpunit.xml';
 
 echo "🧪 HDM Boot Blog Module Test Runner\n";
