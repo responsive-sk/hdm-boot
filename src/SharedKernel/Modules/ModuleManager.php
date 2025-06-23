@@ -301,6 +301,85 @@ final class ModuleManager
     }
 
     /**
+     * Check if module has isolated configuration (Full Module Isolation).
+     */
+    public function hasIsolatedConfig(string $moduleName): bool
+    {
+        $manifest = $this->getModuleManifest($moduleName);
+        if (!$manifest) {
+            return false;
+        }
+
+        $modulePath = dirname($manifest->getConfigFile() ?? '');
+        return file_exists($modulePath . '/composer.json');
+    }
+
+    /**
+     * Run module tests (Full Module Isolation).
+     */
+    public function runModuleTests(string $moduleName): array
+    {
+        $manifest = $this->getModuleManifest($moduleName);
+        if (!$manifest) {
+            throw new \InvalidArgumentException("Module '{$moduleName}' not found");
+        }
+
+        $modulePath = dirname($manifest->getConfigFile() ?? '');
+        $phpunitConfig = $modulePath . '/phpunit.xml';
+
+        if (!file_exists($phpunitConfig)) {
+            throw new \RuntimeException("Module '{$moduleName}' has no phpunit.xml configuration");
+        }
+
+        // Run PHPUnit for this module
+        $command = "cd {$modulePath} && composer test 2>&1";
+        $output = [];
+        $returnCode = 0;
+
+        exec($command, $output, $returnCode);
+
+        return [
+            'success' => $returnCode === 0,
+            'output' => $output,
+            'return_code' => $returnCode,
+            'module_path' => $modulePath
+        ];
+    }
+
+    /**
+     * Get module isolation info (Full Module Isolation).
+     */
+    public function getModuleIsolationInfo(string $moduleName): array
+    {
+        $manifest = $this->getModuleManifest($moduleName);
+        if (!$manifest) {
+            return ['isolated' => false, 'reason' => 'Module not found'];
+        }
+
+        $modulePath = dirname($manifest->getConfigFile() ?? '');
+
+        $info = [
+            'isolated' => false,
+            'module_path' => $modulePath,
+            'has_composer' => file_exists($modulePath . '/composer.json'),
+            'has_tests' => file_exists($modulePath . '/phpunit.xml'),
+            'has_ci' => file_exists($modulePath . '/.github/workflows/ci.yml'),
+            'has_readme' => file_exists($modulePath . '/README.md'),
+        ];
+
+        $info['isolated'] = $info['has_composer'] && $info['has_tests'];
+
+        if (!$info['isolated']) {
+            $missing = [];
+            if (!$info['has_composer']) $missing[] = 'composer.json';
+            if (!$info['has_tests']) $missing[] = 'phpunit.xml';
+            $info['reason'] = 'Missing: ' . implode(', ', $missing);
+        }
+
+        return $info;
+    }
+
+    /**
      * Find module directories.
      *
      * @return array<string>

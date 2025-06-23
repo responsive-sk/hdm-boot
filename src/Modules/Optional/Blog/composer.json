@@ -1,0 +1,63 @@
+{
+    "name": "hdm-boot/blog-module",
+    "description": "HDM Boot Blog Module - Standalone blog functionality with Hexagonal Architecture",
+    "type": "hdm-boot-module",
+    "keywords": ["hdm-boot", "blog", "module", "hexagonal-architecture", "ddd"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "HDM Boot Team",
+            "email": "team@responsive.sk"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "hdm-boot/core": "^0.9.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "HdmBoot\\Modules\\Optional\\Blog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HdmBoot\\Modules\\Optional\\Blog\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage",
+        "analyse": "phpstan analyse src tests --level max",
+        "cs:check": "php-cs-fixer fix --dry-run --diff",
+        "cs:fix": "php-cs-fixer fix",
+        "ci": [
+            "@cs:check",
+            "@analyse", 
+            "@test"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "extra": {
+        "hdm-boot": {
+            "module-type": "optional",
+            "module-name": "Blog",
+            "module-version": "2.0.0",
+            "dependencies": ["Storage", "Template"],
+            "provides": ["blog-api", "blog-web"],
+            "routes": "routes.php",
+            "config": "config.php",
+            "migrations": "migrations/",
+            "assets": "assets/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
