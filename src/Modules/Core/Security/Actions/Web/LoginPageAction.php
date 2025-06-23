@@ -24,20 +24,10 @@ final class LoginPageAction
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        // Debug: Check session state
-        error_log('LoginPageAction: Checking if user is logged in...');
-        $sessionNameFromEnv = $_ENV['SESSION_NAME'] ?? 'NOT_SET';
-        $sessionNameFromEnvString = is_string($sessionNameFromEnv) ? $sessionNameFromEnv : 'NOT_SET';
-        error_log('LoginPageAction: SESSION_NAME from env = ' . $sessionNameFromEnvString);
-        error_log('LoginPageAction: Current session name = ' . session_name());
-
         // Check if user is already logged in
         $isLoggedIn = $this->sessionService->isLoggedIn();
 
-        error_log('LoginPageAction: isLoggedIn() result = ' . ($isLoggedIn ? 'TRUE' : 'FALSE'));
-
         if ($isLoggedIn) {
-            error_log('LoginPageAction: User is logged in, redirecting to profile');
             $this->sessionService->setFlash('info', 'You are already logged in.');
 
             // Redirect to profile or home
@@ -45,8 +35,6 @@ final class LoginPageAction
                 ->withHeader('Location', '/profile')
                 ->withStatus(302);
         }
-
-        error_log('LoginPageAction: User not logged in, showing login form');
 
         return $this->templateRenderer->render(
             $response,

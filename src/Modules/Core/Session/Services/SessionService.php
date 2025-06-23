@@ -32,12 +32,8 @@ final class SessionService
     {
         $currentTime = time();
 
-        error_log('SessionService.loginUser() START: session_id=' . $this->session->getId());
-
         // Regenerate session ID for security
         $this->session->regenerateId();
-
-        error_log('SessionService.loginUser() AFTER regenerateId: session_id=' . $this->session->getId());
 
         $this->session->set(self::USER_KEY, $user->getId()->toString());
         $this->session->set(self::LOGIN_TIME_KEY, $currentTime);
@@ -50,17 +46,6 @@ final class SessionService
             'role'   => $user->getRole(),
             'status' => $user->getStatus(),
         ]);
-
-        // Debug: Verify data was set
-        $verifyUserId = $this->session->get(self::USER_KEY);
-        $verifyLastActivity = $this->session->get(self::LAST_ACTIVITY_KEY);
-
-        error_log(sprintf(
-            'SessionService.loginUser() END: user_id=%s, last_activity=%s, current_time=%s',
-            is_string($verifyUserId) ? $verifyUserId : 'NULL',
-            is_int($verifyLastActivity) ? (string) $verifyLastActivity : 'NULL',
-            (string) $currentTime
-        ));
     }
 
     /**
@@ -83,34 +68,18 @@ final class SessionService
      */
     public function isLoggedIn(): bool
     {
-        // Debug: Log session check
-        $hasUserKey = $this->session->has(self::USER_KEY);
-        $userIdValue = $this->session->get(self::USER_KEY);
-
-        error_log(sprintf(
-            'SessionService.isLoggedIn() check: has_user_key=%s, user_id_value=%s',
-            $hasUserKey ? 'YES' : 'NO',
-            is_string($userIdValue) ? $userIdValue : 'NULL'
-        ));
-
-        if (!$hasUserKey) {
-            error_log('SessionService.isLoggedIn() = FALSE (no user key)');
-
+        if (!$this->session->has(self::USER_KEY)) {
             return false;
         }
 
         // Check session timeout
         if ($this->isSessionExpired()) {
-            error_log('SessionService.isLoggedIn() = FALSE (session expired)');
             $this->logoutUser();
-
             return false;
         }
 
         // Update last activity
         $this->session->set(self::LAST_ACTIVITY_KEY, time());
-
-        error_log('SessionService.isLoggedIn() = TRUE');
 
         return true;
     }
@@ -160,18 +129,8 @@ final class SessionService
         $currentTime = time();
         $lastActivityInt = is_int($lastActivity) ? $lastActivity : (is_numeric($lastActivity) ? (int) $lastActivity : 0);
         $timeDiff = $currentTime - $lastActivityInt;
-        $isExpired = $timeDiff > self::SESSION_TIMEOUT;
 
-        error_log(sprintf(
-            'SessionService.isSessionExpired(): last_activity=%s, current_time=%s, time_diff=%s, timeout=%s, expired=%s',
-            (string) $lastActivityInt,
-            (string) $currentTime,
-            (string) $timeDiff,
-            (string) self::SESSION_TIMEOUT,
-            $isExpired ? 'YES' : 'NO'
-        ));
-
-        return $isExpired;
+        return $timeDiff > self::SESSION_TIMEOUT;
     }
 
     /**
