@@ -7,7 +7,7 @@ namespace HdmBoot\Tests\Unit\Modules;
 use HdmBoot\Modules\Core\Session\Services\CsrfService;
 use HdmBoot\Modules\Core\Session\Services\SessionService;
 use HdmBoot\Tests\TestCase\ModuleTestCase;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Session Module Test.

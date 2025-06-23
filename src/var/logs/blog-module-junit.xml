@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/phpunit.xml" tests="39" assertions="98" errors="1" failures="12" skipped="0" time="0.053176">
+    <testsuite name="Blog Module Tests" tests="39" assertions="98" errors="1" failures="12" skipped="0" time="0.053176">
+      <testsuite name="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" tests="14" assertions="26" errors="1" failures="7" skipped="0" time="0.020233">
+        <testcase name="testFeaturedArticlesFilter" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="76" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.006520">
+          <error type="Error">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testFeaturedArticlesFilter
+Error: Call to a member function getAttribute() on null
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:95</error>
+        </testcase>
+        <testcase name="testArticlesByCategory" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="98" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.001637">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testArticlesByCategory
+Failed asserting that actual size 0 matches expected size 1.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:115</failure>
+        </testcase>
+        <testcase name="testArticlesByTag" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="121" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.001305">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testArticlesByTag
+Failed asserting that actual size 0 matches expected size 1.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:138</failure>
+        </testcase>
+        <testcase name="testArticleSearch" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="166" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="2" time="0.001383">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testArticleSearch
+Failed asserting that actual size 0 matches expected size 1.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:184</failure>
+        </testcase>
+        <testcase name="testGetCategoriesReturnsUniqueList" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="188" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.001196">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testGetCategoriesReturnsUniqueList
+Failed asserting that actual size 4 matches expected size 2.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:196</failure>
+        </testcase>
+        <testcase name="testGetTagsReturnsUniqueList" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="201" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.001353">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testGetTagsReturnsUniqueList
+Failed asserting that an array contains 'php'.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:209</failure>
+        </testcase>
+        <testcase name="testPublishedArticlesFilter" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="56" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.001170">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testPublishedArticlesFilter
+Failed asserting that actual size 9 matches expected size 1.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:72</failure>
+        </testcase>
+        <testcase name="testRecentArticlesOrdering" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="143" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="2" time="0.002119">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest::testRecentArticlesOrdering
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'New Article'
++'Test Article 2'
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php:162</failure>
+        </testcase>
+        <testcase name="testCreateArticleWithBasicData" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="15" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="4" time="0.000781"/>
+        <testcase name="testArticleCalculatesReadingTime" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="41" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="2" time="0.000474"/>
+        <testcase name="testIsPublishedMethod" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="229" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="3" time="0.000387"/>
+        <testcase name="testArticleSlugIsGeneratedFromTitle" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="29" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="1" time="0.000335"/>
+        <testcase name="testWhereQueryBuilder" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="217" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="3" time="0.001036"/>
+        <testcase name="testGenerateExcerpt" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Models/ArticleTest.php" line="250" class="HdmBoot\Modules\Optional\Blog\Tests\Models\ArticleTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Models.ArticleTest" assertions="3" time="0.000538"/>
+      </testsuite>
+      <testsuite name="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" tests="11" assertions="23" errors="0" failures="3" skipped="0" time="0.017935">
+        <testcase name="testArticleDisplaysCorrectMetadata" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="106" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="1" time="0.001319">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest::testArticleDisplaysCorrectMetadata
+Failed asserting that '&lt;h1&gt;Article Not Found&lt;/h1&gt;&lt;p&gt;&lt;a href="/blog"&gt;← Back to Blog&lt;/a&gt;&lt;/p&gt;' [UTF-8](length: 69) contains "John Doe" [ASCII](length: 8).
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php:117</failure>
+        </testcase>
+        <testcase name="testHomeWithoutArticlesShowsWelcomeMessage" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="36" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="1" time="0.003911">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest::testHomeWithoutArticlesShowsWelcomeMessage
+Failed asserting that '&lt;!DOCTYPE html&gt;\n
+&lt;html lang="en"&gt;\n
+&lt;head&gt;\n
+    &lt;meta charset="UTF-8"&gt;\n
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;\n
+    &lt;title&gt;MVA Bootstrap Blog&lt;/title&gt;\n
+    &lt;style&gt;\n
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; background: #f8fafc; }\n
+        .container { max-width: 800px; margin: 0 auto; }\n
+        .header { background: #2563eb; color: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; }\n
+        .nav { margin: 1rem 0; }\n
+        .nav a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px; }\n
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }\n
+        .stat { background: white; padding: 1rem; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }\n
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2563eb; }\n
+        .article { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }\n
+        .article h2 { margin: 0 0 0.5rem 0; color: #1f2937; }\n
+        .article h2 a { color: inherit; text-decoration: none; }\n
+        .meta { color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; }\n
+        .tag { background: #e5e7eb; color: #374151; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem; }\n
+    &lt;/style&gt;\n
+&lt;/head&gt;\n
+&lt;body&gt;\n
+    &lt;div class="container"&gt;\n
+        &lt;div class="header"&gt;\n
+            &lt;h1&gt;🚀 MVA Bootstrap Blog&lt;/h1&gt;\n
+            &lt;div class="nav"&gt;\n
+                &lt;a href="/blog"&gt;Home&lt;/a&gt;\n
+                &lt;a href="/blog/categories"&gt;Categories&lt;/a&gt;\n
+                &lt;a href="/blog/tags"&gt;Tags&lt;/a&gt;\n
+                &lt;a href="/blog/about"&gt;About&lt;/a&gt;\n
+                &lt;a href="/"&gt;← Back to Main&lt;/a&gt;\n
+            &lt;/div&gt;\n
+        &lt;/div&gt;\n
+\n
+        &lt;div class="stats"&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;13&lt;/div&gt;&lt;div&gt;Total Articles&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;9&lt;/div&gt;&lt;div&gt;Published&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;4&lt;/div&gt;&lt;div&gt;Categories&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;6&lt;/div&gt;&lt;div&gt;Tags&lt;/div&gt;&lt;/div&gt;\n
+        &lt;/div&gt;&lt;h2&gt;Latest Articles&lt;/h2&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-2"&gt;Test Article 2&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 2&lt;/p&gt;&lt;a href="/blog/article/test-article-2"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-1"&gt;Test Article 1&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 1&lt;/p&gt;&lt;a href="/blog/article/test-article-1"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-3"&gt;Test Article 3&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 3&lt;/p&gt;&lt;a href="/blog/article/test-article-3"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/api-test-article"&gt;API Test Article&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/api-test-article"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-slug"&gt;Test Article Title&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/test-article-slug"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-slug"&gt;Test Article&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/test-slug"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/multi-database"&gt;Multi-Database Architecture&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By System Architect • June 18, 2025 • 1 min read • Architecture&lt;/div&gt;&lt;a href="/blog/article/multi-database"&gt;Read more →&lt;/a&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/hybrid-test"&gt;Hybrid Storage Test&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By System • June 17, 2025 • 1 min read • Testing&lt;/div&gt;&lt;a href="/blog/article/hybrid-test"&gt;Read more →&lt;/a&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/web-interface-demo"&gt;Web Interface Demo&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By MVA Bootstrap Team • January 20, 2024 • 3 min read • Demo&lt;/div&gt;&lt;p&gt;See MVA Bootstrap&amp;#039;s Orbit-style content management in action with this interactive web interface demo.&lt;/p&gt;&lt;a href="/blog/article/web-interface-demo"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;&amp;quot;demo&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;web&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;interface&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;orbit&amp;quot;&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;' [UTF-8](length: 5990) contains "Welcome to MVA Bootstrap Blog!" [ASCII](length: 30).
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php:40</failure>
+        </testcase>
+        <testcase name="testHomeHandlesArticlesWithMissingData" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="124" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="1" time="0.004004">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest::testHomeHandlesArticlesWithMissingData
+Failed asserting that '&lt;!DOCTYPE html&gt;\n
+&lt;html lang="en"&gt;\n
+&lt;head&gt;\n
+    &lt;meta charset="UTF-8"&gt;\n
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;\n
+    &lt;title&gt;MVA Bootstrap Blog&lt;/title&gt;\n
+    &lt;style&gt;\n
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; background: #f8fafc; }\n
+        .container { max-width: 800px; margin: 0 auto; }\n
+        .header { background: #2563eb; color: white; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; }\n
+        .nav { margin: 1rem 0; }\n
+        .nav a { color: white; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.1); border-radius: 4px; }\n
+        .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }\n
+        .stat { background: white; padding: 1rem; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }\n
+        .stat-number { font-size: 2rem; font-weight: bold; color: #2563eb; }\n
+        .article { background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }\n
+        .article h2 { margin: 0 0 0.5rem 0; color: #1f2937; }\n
+        .article h2 a { color: inherit; text-decoration: none; }\n
+        .meta { color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; }\n
+        .tag { background: #e5e7eb; color: #374151; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem; }\n
+    &lt;/style&gt;\n
+&lt;/head&gt;\n
+&lt;body&gt;\n
+    &lt;div class="container"&gt;\n
+        &lt;div class="header"&gt;\n
+            &lt;h1&gt;🚀 MVA Bootstrap Blog&lt;/h1&gt;\n
+            &lt;div class="nav"&gt;\n
+                &lt;a href="/blog"&gt;Home&lt;/a&gt;\n
+                &lt;a href="/blog/categories"&gt;Categories&lt;/a&gt;\n
+                &lt;a href="/blog/tags"&gt;Tags&lt;/a&gt;\n
+                &lt;a href="/blog/about"&gt;About&lt;/a&gt;\n
+                &lt;a href="/"&gt;← Back to Main&lt;/a&gt;\n
+            &lt;/div&gt;\n
+        &lt;/div&gt;\n
+\n
+        &lt;div class="stats"&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;13&lt;/div&gt;&lt;div&gt;Total Articles&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;9&lt;/div&gt;&lt;div&gt;Published&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;4&lt;/div&gt;&lt;div&gt;Categories&lt;/div&gt;&lt;/div&gt;\n
+            &lt;div class="stat"&gt;&lt;div class="stat-number"&gt;6&lt;/div&gt;&lt;div&gt;Tags&lt;/div&gt;&lt;/div&gt;\n
+        &lt;/div&gt;&lt;h2&gt;Latest Articles&lt;/h2&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-2"&gt;Test Article 2&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 2&lt;/p&gt;&lt;a href="/blog/article/test-article-2"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-1"&gt;Test Article 1&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 1&lt;/p&gt;&lt;a href="/blog/article/test-article-1"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-3"&gt;Test Article 3&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Excerpt for article 3&lt;/p&gt;&lt;a href="/blog/article/test-article-3"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/api-test-article"&gt;API Test Article&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/api-test-article"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-article-slug"&gt;Test Article Title&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/test-article-slug"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/test-slug"&gt;Test Article&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By Test Author • June 22, 2025 • 5 min read • Test&lt;/div&gt;&lt;p&gt;Test excerpt&lt;/p&gt;&lt;a href="/blog/article/test-slug"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;test&lt;/span&gt;&lt;span class="tag"&gt;phpunit&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/multi-database"&gt;Multi-Database Architecture&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By System Architect • June 18, 2025 • 1 min read • Architecture&lt;/div&gt;&lt;a href="/blog/article/multi-database"&gt;Read more →&lt;/a&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/hybrid-test"&gt;Hybrid Storage Test&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By System • June 17, 2025 • 1 min read • Testing&lt;/div&gt;&lt;a href="/blog/article/hybrid-test"&gt;Read more →&lt;/a&gt;&lt;/article&gt;&lt;article class="article"&gt;\n
+                    &lt;h2&gt;&lt;a href="/blog/article/web-interface-demo"&gt;Web Interface Demo&lt;/a&gt;&lt;/h2&gt;\n
+                    &lt;div class="meta"&gt;By MVA Bootstrap Team • January 20, 2024 • 3 min read • Demo&lt;/div&gt;&lt;p&gt;See MVA Bootstrap&amp;#039;s Orbit-style content management in action with this interactive web interface demo.&lt;/p&gt;&lt;a href="/blog/article/web-interface-demo"&gt;Read more →&lt;/a&gt;&lt;div style="margin-top: 1rem;"&gt;&lt;span class="tag"&gt;&amp;quot;demo&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;web&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;interface&amp;quot;&lt;/span&gt;&lt;span class="tag"&gt;&amp;quot;orbit&amp;quot;&lt;/span&gt;&lt;/div&gt;&lt;/article&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;' [UTF-8](length: 5990) contains "Minimal Article" [ASCII](length: 15).
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php:137</failure>
+        </testcase>
+        <testcase name="testCategoriesReturnsComingSoon" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="66" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="1" time="0.000282"/>
+        <testcase name="testTagsReturnsComingSoon" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="73" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="1" time="0.000230"/>
+        <testcase name="testAboutReturnsHtmlWithFeatures" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="80" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="5" time="0.000511"/>
+        <testcase name="testArticleWithValidSlugReturnsHtml" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="44" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="3" time="0.001021"/>
+        <testcase name="testArticleWithInvalidSlugReturnsNotFound" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="58" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="2" time="0.000846"/>
+        <testcase name="testHomeReturnsHtmlString" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="15" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="3" time="0.001945"/>
+        <testcase name="testHomeWithArticlesShowsArticleList" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="24" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="3" time="0.001957"/>
+        <testcase name="testHomeShowsCorrectStatistics" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Controllers/BlogControllerTest.php" line="91" class="HdmBoot\Modules\Optional\Blog\Tests\Controllers\BlogControllerTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Controllers.BlogControllerTest" assertions="2" time="0.001908"/>
+      </testsuite>
+      <testsuite name="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" tests="14" assertions="49" errors="0" failures="2" skipped="0" time="0.015008">
+        <testcase name="testApiListWithEmptyDatabase" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="50" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.004364">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest::testApiListWithEmptyDatabase
+Failed asserting that actual size 13 matches expected size 0.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php:63</failure>
+        </testcase>
+        <testcase name="testApiListReturnsArticles" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="27" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="9" time="0.004891">
+          <failure type="PHPUnit\Framework\ExpectationFailedException">HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest::testApiListReturnsArticles
+Failed asserting that actual size 13 matches expected size 3.
+
+/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php:47</failure>
+        </testcase>
+        <testcase name="testApiCreateWithMissingTitle" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="132" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.000451"/>
+        <testcase name="testApiCreateWithMissingContent" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="154" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.000375"/>
+        <testcase name="testApiCreateWithInvalidData" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="176" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="3" time="0.000341"/>
+        <testcase name="testApiUpdateReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="192" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.000365"/>
+        <testcase name="testApiDeleteReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="209" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.000356"/>
+        <testcase name="testApiStatsReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="226" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="1" time="0.000279"/>
+        <testcase name="testApiSearchReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="236" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="1" time="0.000272"/>
+        <testcase name="testApiCategoriesReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="246" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="1" time="0.000271"/>
+        <testcase name="testApiTagsReturnsNotImplemented" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="256" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="1" time="0.000277"/>
+        <testcase name="testApiShowWithValidSlug" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="67" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.001077"/>
+        <testcase name="testApiShowWithInvalidSlug" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="90" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="4" time="0.001039"/>
+        <testcase name="testApiCreateWithValidData" file="/home/dan/Desktop/06/bootstrap/src/Modules/Optional/Blog/tests/Integration/BlogApiIntegrationTest.php" line="107" class="HdmBoot\Modules\Optional\Blog\Tests\Integration\BlogApiIntegrationTest" classname="HdmBoot.Modules.Optional.Blog.Tests.Integration.BlogApiIntegrationTest" assertions="5" time="0.000649"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

@@ -9,7 +9,7 @@ use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use HdmBoot\Modules\Core\User\Services\UserService;
 use HdmBoot\Shared\Middleware\UserAuthenticationMiddleware;
-use Odan\Session\SessionInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

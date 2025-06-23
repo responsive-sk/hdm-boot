@@ -356,7 +356,20 @@ final class ModuleManager
             return ['isolated' => false, 'reason' => 'Module not found'];
         }
 
-        $modulePath = dirname($manifest->getConfigFile() ?? '');
+        // Get module path from manifest or config file
+        $configFile = $manifest->getConfigFile();
+        $modulePath = $configFile ? dirname($configFile) : '';
+
+        // If no config file, try to find module directory
+        if (empty($modulePath)) {
+            $moduleDirectories = $this->findModuleDirectories();
+            foreach ($moduleDirectories as $dir) {
+                if (basename($dir) === $moduleName || str_contains($dir, $moduleName)) {
+                    $modulePath = $dir;
+                    break;
+                }
+            }
+        }
 
         $info = [
             'isolated' => false,
@@ -374,6 +387,8 @@ final class ModuleManager
             if (!$info['has_composer']) $missing[] = 'composer.json';
             if (!$info['has_tests']) $missing[] = 'phpunit.xml';
             $info['reason'] = 'Missing: ' . implode(', ', $missing);
+        } else {
+            $info['reason'] = 'Fully isolated module';
         }
 
         return $info;

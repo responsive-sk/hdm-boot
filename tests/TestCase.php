@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HdmBoot\Tests;
 
 use DI\Container;
-use HdmBoot\Bootstrap\App;
+use HdmBoot\Boot\App;
 use HdmBoot\Shared\Services\DatabaseManager;
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use Psr\Http\Message\ResponseInterface;

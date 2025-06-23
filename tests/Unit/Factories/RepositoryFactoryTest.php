@@ -6,7 +6,7 @@ namespace HdmBoot\Tests\Unit\Factories;
 
 use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
-use HdmBoot\Shared\Factories\RepositoryFactory;
+use HdmBoot\Modules\Core\Database\Infrastructure\Factories\RepositoryFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;

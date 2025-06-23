@@ -21,7 +21,26 @@ return [
     'services' => [
         // === SESSION CORE SERVICES ===
 
-        // Note: SessionInterface mapping moved to config/services/interfaces.php to avoid conflicts
+        // Session Interface - Map to our enhanced session implementation
+        SessionInterface::class => function (): SessionInterface {
+            $environment = $_ENV['APP_ENV'] ?? 'production';
+
+            $sessionConfig = [
+                'name'            => $_ENV['SESSION_NAME'] ?? 'boot_session',
+                'cookie_lifetime' => (int) ($_ENV['SESSION_LIFETIME'] ?? 7200), // 2 hours
+                'cookie_secure'   => ($_ENV['SESSION_COOKIE_SECURE'] ?? 'false') === 'true',
+                'cookie_httponly' => ($_ENV['SESSION_COOKIE_HTTPONLY'] ?? 'true') === 'true',
+                'cookie_samesite' => $_ENV['SESSION_COOKIE_SAMESITE'] ?? 'Lax',
+                'cache_expire'    => 180,
+                'use_strict_mode' => true,
+            ];
+
+            return match ($environment) {
+                'development' => SessionFactory::createForDevelopment($sessionConfig),
+                'testing' => SessionFactory::createForTesting(),
+                default => SessionFactory::createForProduction($sessionConfig),
+            };
+        },
 
         // === SESSION SERVICES ===
 

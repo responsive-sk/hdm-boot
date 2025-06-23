@@ -8,9 +8,11 @@ use HdmBoot\Modules\Core\User\Domain\Entities\User;
 use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use HdmBoot\Modules\Core\User\Services\UserService;
+use HdmBoot\Modules\Core\User\Exceptions\UserAlreadyExistsException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 /**
  * Test UserService - Enterprise User Management.
@@ -20,13 +22,15 @@ final class UserServiceTest extends TestCase
 {
     private UserService $userService;
     private UserRepositoryInterface $repository;
+    private LoggerInterface $logger;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->repository = $this->createMock(UserRepositoryInterface::class);
-        $this->userService = new UserService($this->repository);
+        $this->logger = $this->createMock(LoggerInterface::class);
+        $this->userService = new UserService($this->repository, $this->logger);
     }
 
     #[Test]
@@ -43,18 +47,28 @@ final class UserServiceTest extends TestCase
             ->with($email)
             ->willReturn(false);
 
-        // Mock repository save method
+        // Mock repository save method to return user array
+        $expectedUserData = [
+            'id' => 'test-user-123',
+            'email' => $email,
+            'name' => $name,
+            'role' => $role,
+            'status' => 'active',
+            'created_at' => '2025-06-22 12:00:00'
+        ];
+
         $this->repository->expects($this->once())
             ->method('save')
-            ->with($this->isInstanceOf(User::class));
+            ->with($this->isType('array'))
+            ->willReturn($expectedUserData);
 
         $user = $this->userService->createUser($email, $name, $password, $role);
 
-        $this->assertInstanceOf(User::class, $user);
-        $this->assertSame($email, $user->getEmail());
-        $this->assertSame($name, $user->getName());
-        $this->assertSame($role, $user->getRole());
-        $this->assertTrue($user->verifyPassword($password));
+        $this->assertIsArray($user);
+        $this->assertSame($email, $user['email']);
+        $this->assertSame($name, $user['name']);
+        $this->assertSame($role, $user['role']);
+        $this->assertSame('active', $user['status']);
     }
 
     #[Test]
@@ -74,8 +88,8 @@ final class UserServiceTest extends TestCase
         $this->repository->expects($this->never())
             ->method('save');
 
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Email address is already in use');
+        $this->expectException(UserAlreadyExistsException::class);
+        $this->expectExceptionMessage("User with email 'existing@example.com' already exists");
 
         $this->userService->createUser($email, $name, $password);
     }
