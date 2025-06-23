@@ -148,6 +148,13 @@ $blogModule->initialize();
 - **PHP Requirement:** ^8.2
 - **Semantic Versioning:** Yes
 
+## 📚 Documentation
+
+- [**Architecture Guide**](docs/ARCHITECTURE.md) - Hexagonal Architecture + DDD implementation
+- [**API Documentation**](docs/API.md) - Complete REST API reference with examples
+- [**Testing Guide**](docs/TESTING.md) - Comprehensive testing strategy (39 tests)
+- [**Deployment Guide**](docs/DEPLOYMENT.md) - Production deployment guide
+
 ## 🤝 Contributing
 
 1. Fork the repository
