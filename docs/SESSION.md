@@ -415,6 +415,45 @@ if ($flash->has('success')) {
 }
 ```
 
+#### 4. Flash Messages Persisting After Logout/Login
+
+**Problem:** After logout and login, old logout message still appears alongside login message.
+
+**Root Cause:**
+- Logout action sets flash message AFTER `session->destroy()`
+- Flash message gets stored in new session
+- Login `clearAll()` operates on different session than logout message
+- TemplateRenderer consumes flash messages on every render
+
+**Incorrect Implementation:**
+```php
+// ❌ WRONG - LogoutAction
+$this->session->destroy();
+$this->session->start();
+$this->session->flash('success', 'Logged out successfully'); // New session!
+
+// ❌ WRONG - LoginSubmitAction
+$this->session->getFlash()->clearAll(); // Different session!
+$this->session->flash('success', 'Login successful');
+```
+
+**Correct Implementation:**
+```php
+// ✅ CORRECT - LogoutAction
+$this->session->flash('success', 'You have been logged out successfully');
+$this->session->destroy(); // Flash message persists to next session
+
+// ✅ CORRECT - LoginSubmitAction
+$this->session->getFlash()->clearAll(); // Clears logout message
+$this->session->flash('success', 'Login successful! Welcome back.');
+```
+
+**Key Points:**
+- Set flash messages **BEFORE** `session->destroy()`
+- Flash messages automatically persist across session destroy/recreate
+- Use `clearAll()` in login to ensure clean slate
+- Proper session lifecycle: flash → destroy → clearAll → new flash
+
 #### 4. Session Data Lost
 
 **Cause:** Session cookies not configured properly
