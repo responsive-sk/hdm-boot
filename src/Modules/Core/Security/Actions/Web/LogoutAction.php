@@ -48,12 +48,11 @@ final class LogoutAction
                 ]);
             }
 
-            // Destroy session
-            $this->session->destroy();
-
-            // Start new session for flash message
-            $this->session->start();
+            // Set flash message before destroying session
             $this->session->flash('success', 'You have been logged out successfully.');
+
+            // Destroy session (flash message will persist to next session)
+            $this->session->destroy();
 
             // Redirect to home
             return $response
@@ -66,12 +65,11 @@ final class LogoutAction
                 'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
+            // Set flash message before destroying session
+            $this->session->flash('error', 'Logout failed due to security error.');
+
             // Still logout for security
             $this->session->destroy();
-
-            // Start new session for flash message
-            $this->session->start();
-            $this->session->flash('error', 'Logout failed due to security error.');
 
             return $response
                 ->withHeader('Location', '/')
