@@ -104,6 +104,9 @@ final class LoginSubmitAction
 
             // Session data set successfully
 
+            // Clear any existing flash messages (e.g., logout messages)
+            $this->session->getFlash()->clearAll();
+
             // Add success message to flash
             $this->session->flash('success', 'Login successful! Welcome back.');
 
