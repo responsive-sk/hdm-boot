@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
-use ResponsiveSk\Slim4Paths\Paths;
 use Dotenv\Dotenv;
+use ResponsiveSk\Slim4Paths\Paths;
 
-/**
+/*
  * Simplified DI Container Configuration.
  *
  * Loads service definitions from separate files for better organization.

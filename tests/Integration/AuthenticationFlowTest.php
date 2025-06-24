@@ -46,7 +46,7 @@ final class AuthenticationFlowTest extends TestCase
         // 1. Get login page to extract CSRF token
         $loginResponse = $this->createRequest('GET', '/login');
         $loginBody = (string) $loginResponse->getBody();
-        
+
         // Extract CSRF token
         preg_match('/name="csrf_token" value="([^"]+)"/', $loginBody, $matches);
         $this->assertNotEmpty($matches, 'CSRF token not found in login form');
@@ -55,8 +55,8 @@ final class AuthenticationFlowTest extends TestCase
 
         // 2. Submit login form
         $response = $this->createRequest('POST', '/login', [
-            'email' => 'admin@example.com',
-            'password' => 'Password123',
+            'email'      => 'admin@example.com',
+            'password'   => 'Password123',
             'csrf_token' => $csrfToken,
         ]);
 
@@ -71,21 +71,21 @@ final class AuthenticationFlowTest extends TestCase
         // 1. Get CSRF token
         $loginResponse = $this->createRequest('GET', '/login');
         $loginBody = (string) $loginResponse->getBody();
-        
+
         preg_match('/name="csrf_token" value="([^"]+)"/', $loginBody, $matches);
         $this->assertArrayHasKey(1, $matches, 'CSRF token not found in invalid credentials test');
         $csrfToken = $matches[1];
 
         // 2. Submit with invalid credentials
         $response = $this->createRequest('POST', '/login', [
-            'email' => 'admin@example.com',
-            'password' => 'WrongPassword',
+            'email'      => 'admin@example.com',
+            'password'   => 'WrongPassword',
             'csrf_token' => $csrfToken,
         ]);
 
         // Should stay on login page
         $this->assertSame(200, $response->getStatusCode());
-        
+
         $body = (string) $response->getBody();
         $this->assertStringContains('Invalid credentials', $body);
     }
@@ -95,7 +95,7 @@ final class AuthenticationFlowTest extends TestCase
     {
         // Direct access to profile should redirect to login
         $response = $this->createRequest('GET', '/profile');
-        
+
         $this->assertSame(302, $response->getStatusCode());
         $this->assertStringContains('/login', $response->getHeaderLine('Location'));
     }
@@ -108,9 +108,9 @@ final class AuthenticationFlowTest extends TestCase
 
         // 2. Access profile page
         $response = $this->createRequest('GET', '/profile');
-        
+
         $this->assertSame(200, $response->getStatusCode());
-        
+
         $body = (string) $response->getBody();
         $this->assertStringContains('User Profile', $body);
         $this->assertStringContains('admin@example.com', $body);
@@ -133,7 +133,7 @@ final class AuthenticationFlowTest extends TestCase
         // Both should show user data
         $body1 = (string) $response1->getBody();
         $body2 = (string) $response2->getBody();
-        
+
         $this->assertStringContains('admin@example.com', $body1);
         $this->assertStringContains('admin@example.com', $body2);
     }
@@ -163,7 +163,7 @@ final class AuthenticationFlowTest extends TestCase
     {
         // Try to login without CSRF token
         $response = $this->createRequest('POST', '/login', [
-            'email' => 'admin@example.com',
+            'email'    => 'admin@example.com',
             'password' => 'Password123',
             // No CSRF token
         ]);
@@ -180,13 +180,13 @@ final class AuthenticationFlowTest extends TestCase
 
         // Check that log files exist and contain authentication events
         $logDir = $this->getContainer()->get(\HdmBoot\Shared\Services\Paths::class)->base() . '/logs';
-        
+
         $this->assertDirectoryExists($logDir);
-        
+
         // Should have app log with authentication events
         $appLogFiles = glob($logDir . '/debug-app.log');
         $this->assertNotEmpty($appLogFiles, 'App log file should exist');
-        
+
         if (!empty($appLogFiles)) {
             $logContent = file_get_contents($appLogFiles[0]);
             $this->assertStringContains('User authenticated successfully', $logContent);
@@ -201,15 +201,15 @@ final class AuthenticationFlowTest extends TestCase
         // Get CSRF token
         $loginResponse = $this->createRequest('GET', '/login');
         $loginBody = (string) $loginResponse->getBody();
-        
+
         preg_match('/name="csrf_token" value="([^"]+)"/', $loginBody, $matches);
         $this->assertArrayHasKey(1, $matches, 'CSRF token not found in helper method');
         $csrfToken = $matches[1];
 
         // Submit login
         $response = $this->createRequest('POST', '/login', [
-            'email' => 'admin@example.com',
-            'password' => 'Password123',
+            'email'      => 'admin@example.com',
+            'password'   => 'Password123',
             'csrf_token' => $csrfToken,
         ]);
 

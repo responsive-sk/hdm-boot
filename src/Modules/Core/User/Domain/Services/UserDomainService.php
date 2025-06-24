@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\User\Domain\Services;
 
-use InvalidArgumentException;
 use HdmBoot\Modules\Core\User\Domain\Models\User;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 

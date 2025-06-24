@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Language\Application\Actions\Api;
 
+use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
 use HdmBoot\Modules\Core\Language\Application\DTOs\TranslateRequest;
 use HdmBoot\Modules\Core\Language\Application\Queries\GetTranslationQuery;
 use HdmBoot\Modules\Core\Language\Domain\Services\TranslationService;
 use HdmBoot\Modules\Core\Language\Domain\ValueObjects\Locale;
-use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -108,12 +108,14 @@ final class TranslateAction
             $parsedBody = $request->getParsedBody();
             /** @var array<string, mixed> $postData */
             $postData = is_array($parsedBody) ? $parsedBody : [];
+
             return $postData;
         }
 
         if ($method === 'GET') {
             /** @var array<string, mixed> $queryParams */
             $queryParams = $request->getQueryParams();
+
             return $queryParams;
         }
 

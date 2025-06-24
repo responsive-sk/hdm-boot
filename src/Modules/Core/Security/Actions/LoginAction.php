@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Security\Actions;
 
-use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
-use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
 use HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException;
 use HdmBoot\Modules\Core\Security\Exceptions\SecurityException;
 use HdmBoot\Modules\Core\Security\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Login Action (API)
+ * Login Action (API).
  *
  * Handles API login requests with JSON responses.
  */
@@ -53,10 +53,10 @@ final class LoginAction
 
             // Log successful login
             $this->securityLogger->info('🔐 API login successful', [
-                'event' => 'api_login_success',
-                'user_id' => $user['id'],
-                'email' => $user['email'],
-                'ip' => $clientIp,
+                'event'      => 'api_login_success',
+                'user_id'    => $user['id'],
+                'email'      => $user['email'],
+                'ip'         => $clientIp,
                 'user_agent' => $request->getServerParams()['HTTP_USER_AGENT'] ?? 'unknown',
             ]);
 
@@ -64,13 +64,13 @@ final class LoginAction
             $responseData = [
                 'success' => true,
                 'message' => 'Login successful',
-                'data' => [
+                'data'    => [
                     'token' => $token,
-                    'user' => [
-                        'id' => $user['id'] ?? '',
+                    'user'  => [
+                        'id'    => $user['id'] ?? '',
                         'email' => $user['email'] ?? '',
-                        'name' => $user['name'] ?? '',
-                        'role' => $user['role'] ?? '',
+                        'name'  => $user['name'] ?? '',
+                        'role'  => $user['role'] ?? '',
                     ],
                 ],
             ];
@@ -81,22 +81,23 @@ final class LoginAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
         } catch (ValidationException $e) {
             // Validation errors
             $this->securityLogger->warning('🚨 API login validation failed', [
-                'event' => 'api_login_validation_failed',
+                'event'  => 'api_login_validation_failed',
                 'errors' => $e->getErrors(),
-                'email' => $data['email'] ?? 'unknown',
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'email'  => $data['email'] ?? 'unknown',
+                'ip'     => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             $errorData = [
                 'success' => false,
                 'message' => 'Validation failed',
-                'errors' => $e->getErrors(),
+                'errors'  => $e->getErrors(),
             ];
 
             $jsonResponse = json_encode($errorData);
@@ -105,14 +106,15 @@ final class LoginAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(422);
         } catch (SecurityException $e) {
             // Security throttling
             $errorData = [
-                'success' => false,
-                'message' => 'Too many login attempts. Please try again later.',
+                'success'    => false,
+                'message'    => 'Too many login attempts. Please try again later.',
                 'error_code' => 'RATE_LIMITED',
             ];
 
@@ -122,6 +124,7 @@ final class LoginAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(429);
@@ -130,12 +133,12 @@ final class LoginAction
             $this->securityLogger->warning('🚨 API login failed - invalid credentials', [
                 'event' => 'api_login_failed_invalid_credentials',
                 'email' => $data['email'] ?? 'unknown',
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'ip'    => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             $errorData = [
-                'success' => false,
-                'message' => 'Invalid email or password',
+                'success'    => false,
+                'message'    => 'Invalid email or password',
                 'error_code' => 'INVALID_CREDENTIALS',
             ];
 
@@ -145,6 +148,7 @@ final class LoginAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(401);
@@ -152,19 +156,19 @@ final class LoginAction
             // General errors - log to both loggers
             $this->logger->error('API login system error', [
                 'message' => $e->getMessage(),
-                'email' => $data['email'] ?? 'unknown',
+                'email'   => $data['email'] ?? 'unknown',
             ]);
 
             $this->securityLogger->error('🚨 API login system error', [
-                'event' => 'api_login_system_error',
+                'event'   => 'api_login_system_error',
                 'message' => $e->getMessage(),
-                'email' => $data['email'] ?? 'unknown',
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'email'   => $data['email'] ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             $errorData = [
-                'success' => false,
-                'message' => 'An unexpected error occurred',
+                'success'    => false,
+                'message'    => 'An unexpected error occurred',
                 'error_code' => 'SYSTEM_ERROR',
             ];
 
@@ -174,6 +178,7 @@ final class LoginAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

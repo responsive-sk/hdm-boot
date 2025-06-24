@@ -7,9 +7,9 @@ namespace HdmBoot\Modules\Core\Security\Services;
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use InvalidArgumentException;
 use HdmBoot\Modules\Core\Security\Domain\ValueObjects\JwtToken;
 use HdmBoot\Modules\Core\User\Domain\Entities\User;
+use InvalidArgumentException;
 use RuntimeException;
 
 /**

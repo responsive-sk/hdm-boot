@@ -8,10 +8,10 @@ use HdmBoot\Modules\Core\Security\Domain\DTOs\LoginRequest;
 use HdmBoot\Modules\Core\Security\Domain\Services\AuthenticationDomainService;
 use HdmBoot\Modules\Core\Session\Services\CsrfService;
 use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Login Submit Action - HTTP Adapter.

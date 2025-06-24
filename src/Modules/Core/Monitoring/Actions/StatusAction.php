@@ -27,20 +27,20 @@ final class StatusAction
             : [];
 
         $status = [
-            'status' => 'OK',
+            'status'    => 'OK',
             'timestamp' => time(),
-            'version' => $appSettings['version'] ?? '1.0.0',
-            'app' => [
-                'name' => $appSettings['name'] ?? 'MVA Bootstrap',
+            'version'   => $appSettings['version'] ?? '1.0.0',
+            'app'       => [
+                'name'        => $appSettings['name'] ?? 'MVA Bootstrap',
                 'environment' => $_ENV['APP_ENV'] ?? 'production',
-                'debug' => $appSettings['debug'] ?? false,
-                'timezone' => $appSettings['timezone'] ?? 'UTC'
+                'debug'       => $appSettings['debug'] ?? false,
+                'timezone'    => $appSettings['timezone'] ?? 'UTC',
             ],
             'php' => [
-                'version' => PHP_VERSION,
+                'version'      => PHP_VERSION,
                 'memory_limit' => ini_get('memory_limit'),
-                'timezone' => date_default_timezone_get()
-            ]
+                'timezone'     => date_default_timezone_get(),
+            ],
         ];
 
         $jsonContent = json_encode($status, JSON_PRETTY_PRINT);
@@ -49,6 +49,7 @@ final class StatusAction
         }
 
         $response->getBody()->write($jsonContent);
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

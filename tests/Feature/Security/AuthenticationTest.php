@@ -17,7 +17,7 @@ class AuthenticationTest extends TestCase
     public function testSuccessfulLogin(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'admin@example.com',
+            'email'    => 'admin@example.com',
             'password' => 'Password123',
         ]);
 
@@ -48,7 +48,7 @@ class AuthenticationTest extends TestCase
     public function testLoginWithInvalidCredentials(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'admin@example.com',
+            'email'    => 'admin@example.com',
             'password' => 'WrongPassword',
         ]);
 
@@ -62,7 +62,7 @@ class AuthenticationTest extends TestCase
     public function testLoginWithNonExistentUser(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'nonexistent@example.com',
+            'email'    => 'nonexistent@example.com',
             'password' => 'Password123',
         ]);
 
@@ -102,7 +102,7 @@ class AuthenticationTest extends TestCase
     public function testLoginWithInvalidEmailFormat(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'invalid-email',
+            'email'    => 'invalid-email',
             'password' => 'Password123',
         ]);
 
@@ -223,9 +223,9 @@ class AuthenticationTest extends TestCase
     public function testMultipleLoginAttempts(): void
     {
         // Test multiple successful logins
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 3; ++$i) {
             $request = $this->createJsonRequest('POST', '/api/auth/login', [
-                'email' => 'admin@example.com',
+                'email'    => 'admin@example.com',
                 'password' => 'Password123',
             ]);
 
@@ -245,7 +245,7 @@ class AuthenticationTest extends TestCase
         $token = $this->loginAndGetToken();
 
         // Use token multiple times concurrently (simulated)
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 5; ++$i) {
             $request = $this->createAuthenticatedRequest('GET', '/api/auth/me', $token);
             $response = $this->executeRequest($request);
             $this->assertJsonResponse($response, 200, true);

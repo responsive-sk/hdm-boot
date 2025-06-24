@@ -13,7 +13,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Authentication Middleware
+ * Authentication Middleware.
  *
  * Validates JWT tokens and sets user/token attributes on request.
  */
@@ -58,14 +58,14 @@ final class AuthenticationMiddleware implements MiddlewareInterface
 
             $this->logger->debug('User authenticated successfully', [
                 'user_id' => $user['id'] ?? 'unknown',
-                'email' => $user['email'] ?? 'unknown',
+                'email'   => $user['email'] ?? 'unknown',
             ]);
 
             return $handler->handle($request);
         } catch (\Exception $e) {
             $this->logger->error('Authentication middleware error', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
             ]);
 
             return $this->handleAuthError($request, $handler);
@@ -105,8 +105,8 @@ final class AuthenticationMiddleware implements MiddlewareInterface
     private function createUnauthorizedResponse(string $message): ResponseInterface
     {
         $errorData = [
-            'success' => false,
-            'message' => $message,
+            'success'    => false,
+            'message'    => $message,
             'error_code' => 'UNAUTHORIZED',
         ];
 

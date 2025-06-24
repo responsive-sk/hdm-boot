@@ -45,21 +45,21 @@ class AppUser extends DatabaseModel
     public static function schema(): array
     {
         return [
-            'id' => 'integer|primary|auto_increment',
-            'username' => 'string|required|unique',
-            'email' => 'string|required|unique',
-            'password_hash' => 'string|required',
-            'first_name' => 'string|nullable',
-            'last_name' => 'string|nullable',
-            'role' => 'string|default:user',
-            'status' => 'string|default:active', // active, inactive, banned
-            'email_verified' => 'boolean|default:false',
+            'id'                => 'integer|primary|auto_increment',
+            'username'          => 'string|required|unique',
+            'email'             => 'string|required|unique',
+            'password_hash'     => 'string|required',
+            'first_name'        => 'string|nullable',
+            'last_name'         => 'string|nullable',
+            'role'              => 'string|default:user',
+            'status'            => 'string|default:active', // active, inactive, banned
+            'email_verified'    => 'boolean|default:false',
             'email_verified_at' => 'datetime|nullable',
-            'last_login_at' => 'datetime|nullable',
-            'login_count' => 'integer|default:0',
-            'preferences' => 'json|nullable',
-            'created_at' => 'datetime|auto',
-            'updated_at' => 'datetime|auto',
+            'last_login_at'     => 'datetime|nullable',
+            'login_count'       => 'integer|default:0',
+            'preferences'       => 'json|nullable',
+            'created_at'        => 'datetime|auto',
+            'updated_at'        => 'datetime|auto',
         ];
     }
 
@@ -125,6 +125,7 @@ class AppUser extends DatabaseModel
     public function verifyPassword(string $password): bool
     {
         $hash = $this->getAttribute('password_hash');
+
         return is_string($hash) && password_verify($password, $hash);
     }
 
@@ -134,6 +135,7 @@ class AppUser extends DatabaseModel
     public function setPassword(string $password): self
     {
         $this->setAttribute('password_hash', password_hash($password, PASSWORD_DEFAULT));
+
         return $this;
     }
 
@@ -192,6 +194,7 @@ class AppUser extends DatabaseModel
     {
         $this->setAttribute('email_verified', true);
         $this->setAttribute('email_verified_at', date('Y-m-d H:i:s'));
+
         return $this;
     }
 
@@ -224,14 +227,17 @@ class AppUser extends DatabaseModel
             if (is_array($decoded)) {
                 /** @var array<string, mixed> $typedDecoded */
                 $typedDecoded = $decoded;
+
                 return $typedDecoded;
             }
+
             return [];
         }
 
         if (is_array($preferences)) {
             /** @var array<string, mixed> $typedPreferences */
             $typedPreferences = $preferences;
+
             return $typedPreferences;
         }
 
@@ -246,6 +252,7 @@ class AppUser extends DatabaseModel
     public function setPreferences(array $preferences): self
     {
         $this->setAttribute('preferences', json_encode($preferences));
+
         return $this;
     }
 
@@ -255,6 +262,7 @@ class AppUser extends DatabaseModel
     public function getPreference(string $key, mixed $default = null): mixed
     {
         $preferences = $this->getPreferences();
+
         return $preferences[$key] ?? $default;
     }
 
@@ -265,6 +273,7 @@ class AppUser extends DatabaseModel
     {
         $preferences = $this->getPreferences();
         $preferences[$key] = $value;
+
         return $this->setPreferences($preferences);
     }
 

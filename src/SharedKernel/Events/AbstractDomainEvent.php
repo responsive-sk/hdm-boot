@@ -12,7 +12,9 @@ namespace HdmBoot\SharedKernel\Events;
 abstract class AbstractDomainEvent implements DomainEvent
 {
     private readonly string $eventId;
+
     private readonly \DateTimeImmutable $occurredAt;
+
     private readonly int $version;
 
     public function __construct(
@@ -43,22 +45,22 @@ abstract class AbstractDomainEvent implements DomainEvent
     public function toArray(): array
     {
         return [
-            'event_id' => $this->getEventId(),
-            'event_name' => $this->getEventName(),
+            'event_id'    => $this->getEventId(),
+            'event_name'  => $this->getEventName(),
             'occurred_at' => $this->getOccurredAt()->format('Y-m-d H:i:s.u'),
-            'version' => $this->getVersion(),
-            'data' => $this->getEventData(),
+            'version'     => $this->getVersion(),
+            'data'        => $this->getEventData(),
         ];
     }
 
     public function toLogArray(): array
     {
         return [
-            'event_id' => $this->getEventId(),
-            'event_name' => $this->getEventName(),
+            'event_id'    => $this->getEventId(),
+            'event_name'  => $this->getEventName(),
             'occurred_at' => $this->getOccurredAt()->format('Y-m-d H:i:s'),
-            'version' => $this->getVersion(),
-            'data' => $this->getEventData(),
+            'version'     => $this->getVersion(),
+            'data'        => $this->getEventData(),
         ];
     }
 

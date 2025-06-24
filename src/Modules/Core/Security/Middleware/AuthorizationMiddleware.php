@@ -7,12 +7,12 @@ namespace HdmBoot\Modules\Core\Security\Middleware;
 use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
 use HdmBoot\Modules\Core\User\Services\UserService;
 use HdmBoot\SharedKernel\Contracts\MiddlewareInterface;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Authorization Middleware with Proper Dependency Injection.

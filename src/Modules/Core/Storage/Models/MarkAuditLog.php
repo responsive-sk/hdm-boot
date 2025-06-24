@@ -45,15 +45,15 @@ class MarkAuditLog extends DatabaseModel
     public static function schema(): array
     {
         return [
-            'id' => 'integer|primary|auto_increment',
-            'user_id' => 'integer|required',
-            'action' => 'string|required',
+            'id'            => 'integer|primary|auto_increment',
+            'user_id'       => 'integer|required',
+            'action'        => 'string|required',
             'resource_type' => 'string|nullable',
-            'resource_id' => 'string|nullable',
-            'details' => 'json|nullable',
-            'ip_address' => 'string|nullable',
-            'user_agent' => 'string|nullable',
-            'created_at' => 'datetime|auto',
+            'resource_id'   => 'string|nullable',
+            'details'       => 'json|nullable',
+            'ip_address'    => 'string|nullable',
+            'user_agent'    => 'string|nullable',
+            'created_at'    => 'datetime|auto',
         ];
     }
 
@@ -109,6 +109,7 @@ class MarkAuditLog extends DatabaseModel
             $bDateRaw = $b->getAttribute('created_at');
             $aDate = is_string($aDateRaw) ? $aDateRaw : '';
             $bDate = is_string($bDateRaw) ? $bDateRaw : '';
+
             return strcmp($bDate, $aDate); // Descending order
         });
 
@@ -121,6 +122,7 @@ class MarkAuditLog extends DatabaseModel
     public function getUser(): ?MarkUser
     {
         $userId = $this->getAttribute('user_id');
+
         return is_numeric($userId) ? MarkUser::find((int) $userId) : null;
     }
 
@@ -138,14 +140,17 @@ class MarkAuditLog extends DatabaseModel
             if (is_array($decoded)) {
                 /** @var array<string, mixed> $typedDecoded */
                 $typedDecoded = $decoded;
+
                 return $typedDecoded;
             }
+
             return [];
         }
 
         if (is_array($details)) {
             /** @var array<string, mixed> $typedDetails */
             $typedDetails = $details;
+
             return $typedDetails;
         }
 
@@ -193,13 +198,13 @@ class MarkAuditLog extends DatabaseModel
     public static function logArticleAction(int $userId, string $action, string $articleSlug, ?array $details = null): void
     {
         static::create([
-            'user_id' => $userId,
-            'action' => $action,
+            'user_id'       => $userId,
+            'action'        => $action,
             'resource_type' => 'article',
-            'resource_id' => $articleSlug,
-            'details' => $details ? json_encode($details) : null,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'resource_id'   => $articleSlug,
+            'details'       => $details ? json_encode($details) : null,
+            'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? null,
         ]);
     }
 
@@ -211,13 +216,13 @@ class MarkAuditLog extends DatabaseModel
     public static function logUserAction(int $adminUserId, string $action, int $targetUserId, ?array $details = null): void
     {
         static::create([
-            'user_id' => $adminUserId,
-            'action' => $action,
+            'user_id'       => $adminUserId,
+            'action'        => $action,
             'resource_type' => 'user',
-            'resource_id' => (string) $targetUserId,
-            'details' => $details ? json_encode($details) : null,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'resource_id'   => (string) $targetUserId,
+            'details'       => $details ? json_encode($details) : null,
+            'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? null,
         ]);
     }
 
@@ -229,13 +234,13 @@ class MarkAuditLog extends DatabaseModel
     public static function logSystemAction(int $userId, string $action, ?array $details = null): void
     {
         static::create([
-            'user_id' => $userId,
-            'action' => $action,
+            'user_id'       => $userId,
+            'action'        => $action,
             'resource_type' => 'system',
-            'resource_id' => null,
-            'details' => $details ? json_encode($details) : null,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'resource_id'   => null,
+            'details'       => $details ? json_encode($details) : null,
+            'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? null,
         ]);
     }
 }

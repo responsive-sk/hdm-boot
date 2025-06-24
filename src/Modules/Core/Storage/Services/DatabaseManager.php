@@ -47,7 +47,7 @@ class DatabaseManager
 
         // Ensure directory exists
         if (!is_dir(self::$baseDirectory)) {
-            mkdir(self::$baseDirectory, 0755, true);
+            mkdir(self::$baseDirectory, 0o755, true);
         }
 
         // Register default database configurations
@@ -113,55 +113,55 @@ class DatabaseManager
     {
         // Main application database
         self::registerDatabase('app', [
-            'filename' => 'app.db',
+            'filename'    => 'app.db',
             'description' => 'Main application database for users, sessions, preferences',
-            'tables' => [
-                'users' => 'Application users and authentication',
-                'user_sessions' => 'User session management',
-                'user_preferences' => 'User settings and preferences',
+            'tables'      => [
+                'users'              => 'Application users and authentication',
+                'user_sessions'      => 'User session management',
+                'user_preferences'   => 'User settings and preferences',
                 'user_activity_logs' => 'User activity tracking',
-                'notifications' => 'User notifications',
+                'notifications'      => 'User notifications',
             ],
         ]);
 
         // Mark admin database
         self::registerDatabase('mark', [
-            'filename' => 'mark.db',
+            'filename'    => 'mark.db',
             'description' => 'Mark admin system database for admin users and operations',
-            'tables' => [
-                'mark_users' => 'Admin users for Mark system',
-                'mark_sessions' => 'Admin session management',
-                'mark_settings' => 'Admin configuration settings',
-                'mark_audit_logs' => 'Admin action audit trail',
+            'tables'      => [
+                'mark_users'        => 'Admin users for Mark system',
+                'mark_sessions'     => 'Admin session management',
+                'mark_settings'     => 'Admin configuration settings',
+                'mark_audit_logs'   => 'Admin action audit trail',
                 'content_revisions' => 'Article revision history',
-                'publishing_queue' => 'Scheduled content publishing',
+                'publishing_queue'  => 'Scheduled content publishing',
             ],
         ]);
 
         // Cache and temporary data database
         self::registerDatabase('cache', [
-            'filename' => 'cache.db',
+            'filename'    => 'cache.db',
             'description' => 'Cache and temporary data storage',
-            'tables' => [
+            'tables'      => [
                 'file_metadata_cache' => 'File modification times and metadata',
-                'query_result_cache' => 'Cached query results',
-                'search_index_cache' => 'Search index data',
-                'temp_uploads' => 'Temporary file uploads',
-                'background_jobs' => 'Background job queue',
-                'system_metrics' => 'Performance and system metrics',
+                'query_result_cache'  => 'Cached query results',
+                'search_index_cache'  => 'Search index data',
+                'temp_uploads'        => 'Temporary file uploads',
+                'background_jobs'     => 'Background job queue',
+                'system_metrics'      => 'Performance and system metrics',
             ],
         ]);
 
         // Analytics database (optional)
         self::registerDatabase('analytics', [
-            'filename' => 'analytics.db',
+            'filename'    => 'analytics.db',
             'description' => 'Analytics and reporting data',
-            'tables' => [
-                'page_views' => 'Article and page view tracking',
-                'user_engagement' => 'User interaction metrics',
-                'search_queries' => 'Search query analytics',
+            'tables'      => [
+                'page_views'       => 'Article and page view tracking',
+                'user_engagement'  => 'User interaction metrics',
+                'search_queries'   => 'Search query analytics',
                 'performance_logs' => 'Application performance data',
-                'error_logs' => 'Application error tracking',
+                'error_logs'       => 'Application error tracking',
             ],
         ]);
     }
@@ -191,14 +191,14 @@ class DatabaseManager
             $path = self::buildSecurePath(self::$baseDirectory, $filename);
 
             $dbStatus = [
-                'name' => $name,
-                'filename' => $filename,
-                'path' => $path,
-                'exists' => file_exists($path),
-                'size' => file_exists($path) ? filesize($path) : 0,
-                'writable' => is_writable(dirname($path)),
+                'name'        => $name,
+                'filename'    => $filename,
+                'path'        => $path,
+                'exists'      => file_exists($path),
+                'size'        => file_exists($path) ? filesize($path) : 0,
+                'writable'    => is_writable(dirname($path)),
                 'description' => $config['description'] ?? '',
-                'tables' => $config['tables'] ?? [],
+                'tables'      => $config['tables'] ?? [],
             ];
 
             // Test connection if file exists
@@ -419,6 +419,7 @@ class DatabaseManager
 
         // Use PathsFactory for secure cross-platform path joining
         $paths = PathsFactory::create();
+
         return $paths->getPath($baseDirectory, $filename);
     }
 }

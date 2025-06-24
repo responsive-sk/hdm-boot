@@ -1,7 +1,7 @@
 <?php
 
 /**
- * EventStore Configuration
+ * EventStore Configuration.
  *
  * Provides DI container bindings for EventStore infrastructure.
  */
@@ -18,8 +18,8 @@ return [
 
     'settings' => [
         'event_store' => [
-            'driver' => 'database', // 'database' or 'memory'
-            'table_name' => 'event_store',
+            'driver'            => 'database', // 'database' or 'memory'
+            'table_name'        => 'event_store',
             'auto_create_table' => true,
         ],
     ],
@@ -40,9 +40,9 @@ return [
             }
 
             $eventStore = match ($driver) {
-                'memory' => $container->get(InMemoryEventStore::class),
+                'memory'   => $container->get(InMemoryEventStore::class),
                 'database' => $container->get(DatabaseEventStore::class),
-                default => throw new \InvalidArgumentException("Unsupported EventStore driver: $driver"),
+                default    => throw new \InvalidArgumentException("Unsupported EventStore driver: $driver"),
             };
 
             if (!$eventStore instanceof EventStoreInterface) {
@@ -63,6 +63,7 @@ return [
             if (!$pdo instanceof \PDO) {
                 throw new \RuntimeException('PDO service not properly configured');
             }
+
             return new DatabaseEventStore($pdo);
         },
     ],
@@ -85,8 +86,8 @@ return [
     'health_check' => function (): array {
         return [
             'eventstore_available' => true,
-            'drivers_available' => [
-                'memory' => class_exists(InMemoryEventStore::class),
+            'drivers_available'    => [
+                'memory'   => class_exists(InMemoryEventStore::class),
                 'database' => class_exists(DatabaseEventStore::class),
             ],
             'last_check' => date('Y-m-d H:i:s'),
@@ -96,10 +97,10 @@ return [
     // === MODULE INFO ===
 
     'info' => [
-        'name' => 'EventStore',
+        'name'        => 'EventStore',
         'description' => 'Event Store infrastructure for Event Sourcing and Domain Events',
-        'version' => '1.0.0',
-        'features' => [
+        'version'     => '1.0.0',
+        'features'    => [
             'Multiple storage drivers (Database, In-Memory)',
             'Event versioning and aggregate tracking',
             'Event querying by type, date range, aggregate',
@@ -110,7 +111,7 @@ return [
         ],
         'drivers' => [
             'database' => 'Persistent storage using PDO',
-            'memory' => 'In-memory storage for testing',
+            'memory'   => 'In-memory storage for testing',
         ],
     ],
 ];

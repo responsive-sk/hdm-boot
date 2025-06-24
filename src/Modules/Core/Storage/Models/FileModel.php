@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Storage\Models;
 
 use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
 use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
 use HdmBoot\SharedKernel\Services\PathsFactory;
 
@@ -78,6 +77,7 @@ abstract class FileModel
     public static function getStorageName(): string
     {
         $className = basename(str_replace('\\', '/', static::class));
+
         return static::pluralize(static::snakeCase($className));
     }
 
@@ -97,6 +97,7 @@ abstract class FileModel
         if (static::$storageService === null) {
             static::$storageService = new FileStorageService();
         }
+
         return static::$storageService;
     }
 
@@ -118,6 +119,7 @@ abstract class FileModel
         foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
         }
+
         return $this;
     }
 
@@ -127,6 +129,7 @@ abstract class FileModel
     public function setAttribute(string $key, mixed $value): self
     {
         $this->attributes[$key] = $value;
+
         return $this;
     }
 
@@ -275,6 +278,7 @@ abstract class FileModel
         // @phpstan-ignore-next-line
         $model = new static($attributes);
         $model->save();
+
         return $model;
     }
 
@@ -326,6 +330,7 @@ abstract class FileModel
     protected static function snakeCase(string $value): string
     {
         $result = preg_replace('/(?<!^)[A-Z]/', '_$0', $value);
+
         return strtolower($result ?? $value);
     }
 
@@ -340,6 +345,7 @@ abstract class FileModel
         if (str_ends_with($value, 's') || str_ends_with($value, 'x') || str_ends_with($value, 'ch') || str_ends_with($value, 'sh')) {
             return $value . 'es';
         }
+
         return $value . 's';
     }
 
@@ -362,6 +368,7 @@ abstract class FileModel
 
         // Build secure path using PathsFactory for cross-platform compatibility
         $paths = PathsFactory::create();
+
         return $paths->getPath($directory, $key . '.' . $extension);
     }
 }

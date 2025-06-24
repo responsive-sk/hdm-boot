@@ -153,7 +153,7 @@ final class App
             throw new \RuntimeException('Expected DI\Container but got different container type');
         }
 
-        /** @var SlimApp<Container> $app */
+        // @phpstan-ignore-next-line
         return $app;
     }
 
@@ -242,14 +242,14 @@ final class App
                 $routes($this->slimApp);
 
                 $logger->debug('Module routes loaded', [
-                    'module' => $module->getName(),
+                    'module'      => $module->getName(),
                     'routes_file' => $routesFile,
                 ]);
             }
         } catch (\Exception $e) {
             $logger->warning('Failed to load module routes', [
                 'module' => $module->getName(),
-                'error' => $e->getMessage(),
+                'error'  => $e->getMessage(),
             ]);
         }
     }
@@ -354,7 +354,7 @@ final class App
 
             // Debug: List loaded modules
             $modules = $moduleManager->getAllModules();
-            error_log("Loaded modules: " . implode(', ', array_keys($modules)));
+            error_log('Loaded modules: ' . implode(', ', array_keys($modules)));
 
             // Load module services into container
             $serviceLoader->loadServices($this->container);

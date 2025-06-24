@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
- * User ID Value Object
+ * User ID Value Object.
  *
  * Represents a unique user identifier using UUID.
  */

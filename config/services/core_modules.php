@@ -64,7 +64,7 @@ return [
         // Ensure storage directory exists
         $storageDir = dirname($dbPath);
         if (!is_dir($storageDir)) {
-            mkdir($storageDir, 0777, true);
+            mkdir($storageDir, 0o777, true);
         }
 
         $pdo = new PDO($dsn);

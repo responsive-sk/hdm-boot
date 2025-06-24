@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\User\Application\Handlers;
 
-use InvalidArgumentException;
-use HdmBoot\SharedKernel\CQRS\Commands\CommandInterface;
-use HdmBoot\SharedKernel\CQRS\Handlers\CommandHandlerInterface;
 use HdmBoot\Modules\Core\User\Application\Commands\RegisterUserCommand;
 use HdmBoot\Modules\Core\User\Domain\Events\UserWasRegistered;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\SharedKernel\CQRS\Commands\CommandInterface;
+use HdmBoot\SharedKernel\CQRS\Handlers\CommandHandlerInterface;
+use InvalidArgumentException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 

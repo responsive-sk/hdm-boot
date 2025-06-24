@@ -41,6 +41,7 @@ final class GenericModule implements ModuleInterface
     public function getVersion(): string
     {
         $version = $this->manifest?->getVersion() ?? ($this->config['version'] ?? '1.0.0');
+
         return is_string($version) ? $version : '1.0.0';
     }
 
@@ -50,6 +51,7 @@ final class GenericModule implements ModuleInterface
     public function getDescription(): string
     {
         $description = $this->manifest?->getDescription() ?? ($this->config['description'] ?? "Module: {$this->name}");
+
         return is_string($description) ? $description : "Module: {$this->name}";
     }
 
@@ -74,6 +76,7 @@ final class GenericModule implements ModuleInterface
         // Ensure all dependencies are strings
         /** @var array<string> $typedDependencies */
         $typedDependencies = array_filter($dependencies, 'is_string');
+
         return array_values($typedDependencies);
     }
 
@@ -97,6 +100,7 @@ final class GenericModule implements ModuleInterface
 
         /** @var array<string, mixed> $typedServices */
         $typedServices = $services;
+
         return $typedServices;
     }
 
@@ -112,6 +116,7 @@ final class GenericModule implements ModuleInterface
 
         /** @var array<string, mixed> $typedSettings */
         $typedSettings = $settings;
+
         return $typedSettings;
     }
 
@@ -133,6 +138,7 @@ final class GenericModule implements ModuleInterface
                 $typedServices[$interface] = $implementation;
             }
         }
+
         return $typedServices;
     }
 
@@ -154,6 +160,7 @@ final class GenericModule implements ModuleInterface
                 $typedEvents[$eventName] = $description;
             }
         }
+
         return $typedEvents;
     }
 
@@ -175,6 +182,7 @@ final class GenericModule implements ModuleInterface
                 $typedSubscriptions[$eventName] = $callable;
             }
         }
+
         return $typedSubscriptions;
     }
 
@@ -196,6 +204,7 @@ final class GenericModule implements ModuleInterface
                 $typedEndpoints[$endpoint] = $description;
             }
         }
+
         return $typedEndpoints;
     }
 
@@ -217,6 +226,7 @@ final class GenericModule implements ModuleInterface
                 $typedMiddleware[$class] = $description;
             }
         }
+
         return $typedMiddleware;
     }
 
@@ -238,6 +248,7 @@ final class GenericModule implements ModuleInterface
                 $typedPermissions[$permission] = $description;
             }
         }
+
         return $typedPermissions;
     }
 
@@ -254,6 +265,7 @@ final class GenericModule implements ModuleInterface
         // Ensure all table names are strings
         /** @var array<string> $typedTables */
         $typedTables = array_filter($tables, 'is_string');
+
         return array_values($typedTables);
     }
 

@@ -35,14 +35,14 @@ final readonly class HealthCheckReport implements JsonSerializable
      */
     public static function fromResults(array $results): self
     {
-        $statuses = array_map(fn(HealthCheckResult $result) => $result->status, $results);
+        $statuses = array_map(fn (HealthCheckResult $result) => $result->status, $results);
         $overallStatus = HealthStatus::getWorst($statuses);
 
-        $totalDuration = array_sum(array_map(fn(HealthCheckResult $result) => $result->duration ?? 0, $results));
+        $totalDuration = array_sum(array_map(fn (HealthCheckResult $result) => $result->duration ?? 0, $results));
 
-        $healthyCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isHealthy()));
-        $unhealthyCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isUnhealthy()));
-        $degradedCount = count(array_filter($results, fn(HealthCheckResult $r) => $r->isDegraded()));
+        $healthyCount = count(array_filter($results, fn (HealthCheckResult $r) => $r->isHealthy()));
+        $unhealthyCount = count(array_filter($results, fn (HealthCheckResult $r) => $r->isUnhealthy()));
+        $degradedCount = count(array_filter($results, fn (HealthCheckResult $r) => $r->isDegraded()));
 
         return new self(
             overallStatus: $overallStatus,
@@ -63,7 +63,7 @@ final readonly class HealthCheckReport implements JsonSerializable
      */
     public function getResultsByStatus(HealthStatus $status): array
     {
-        return array_filter($this->results, fn(HealthCheckResult $result) => $result->status === $status);
+        return array_filter($this->results, fn (HealthCheckResult $result) => $result->status === $status);
     }
 
     /**
@@ -73,7 +73,7 @@ final readonly class HealthCheckReport implements JsonSerializable
      */
     public function getResultsByCategory(string $category): array
     {
-        return array_filter($this->results, fn(HealthCheckResult $result) => $result->category === $category);
+        return array_filter($this->results, fn (HealthCheckResult $result) => $result->category === $category);
     }
 
     /**
@@ -83,7 +83,7 @@ final readonly class HealthCheckReport implements JsonSerializable
      */
     public function getFailedResults(): array
     {
-        return array_filter($this->results, fn(HealthCheckResult $result) => $result->status->isProblematic());
+        return array_filter($this->results, fn (HealthCheckResult $result) => $result->status->isProblematic());
     }
 
     /**
@@ -118,14 +118,14 @@ final readonly class HealthCheckReport implements JsonSerializable
     public function getSummary(): array
     {
         return [
-            'overall_status' => $this->overallStatus->value,
-            'total_checks' => $this->totalChecks,
-            'healthy_checks' => $this->healthyChecks,
+            'overall_status'   => $this->overallStatus->value,
+            'total_checks'     => $this->totalChecks,
+            'healthy_checks'   => $this->healthyChecks,
             'unhealthy_checks' => $this->unhealthyChecks,
-            'degraded_checks' => $this->degradedChecks,
-            'total_duration' => $this->totalDuration,
+            'degraded_checks'  => $this->degradedChecks,
+            'total_duration'   => $this->totalDuration,
             'average_duration' => $this->totalChecks > 0 ? $this->totalDuration / $this->totalChecks : 0,
-            'timestamp' => $this->timestamp->format('Y-m-d\TH:i:s.u\Z'),
+            'timestamp'        => $this->timestamp->format('Y-m-d\TH:i:s.u\Z'),
         ];
     }
 
@@ -138,7 +138,7 @@ final readonly class HealthCheckReport implements JsonSerializable
     {
         return [
             'summary' => $this->getSummary(),
-            'results' => array_map(fn(HealthCheckResult $result) => $result->toArray(), $this->results),
+            'results' => array_map(fn (HealthCheckResult $result) => $result->toArray(), $this->results),
         ];
     }
 

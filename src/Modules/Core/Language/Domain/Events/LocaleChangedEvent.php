@@ -93,13 +93,13 @@ final readonly class LocaleChangedEvent implements DomainEvent
     public function toArray(): array
     {
         return [
-            'event_id' => $this->getEventId(),
-            'event_name' => $this->getEventName(),
-            'version' => $this->getVersion(),
-            'user_id' => $this->userId,
+            'event_id'        => $this->getEventId(),
+            'event_name'      => $this->getEventName(),
+            'version'         => $this->getVersion(),
+            'user_id'         => $this->userId,
             'previous_locale' => $this->previousLocale->toString(),
-            'new_locale' => $this->newLocale->toString(),
-            'occurred_at' => $this->occurredAt->format('Y-m-d H:i:s'),
+            'new_locale'      => $this->newLocale->toString(),
+            'occurred_at'     => $this->occurredAt->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -111,10 +111,10 @@ final readonly class LocaleChangedEvent implements DomainEvent
     public function toLogArray(): array
     {
         return [
-            'event' => $this->getEventName(),
-            'user_id' => $this->userId,
+            'event'           => $this->getEventName(),
+            'user_id'         => $this->userId,
             'previous_locale' => $this->previousLocale->toString(),
-            'new_locale' => $this->newLocale->toString(),
+            'new_locale'      => $this->newLocale->toString(),
         ];
     }
 }

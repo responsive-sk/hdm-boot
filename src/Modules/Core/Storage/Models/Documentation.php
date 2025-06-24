@@ -30,20 +30,20 @@ class Documentation extends FileModel
     public static function schema(): array
     {
         return [
-            'title' => 'string|required',
-            'slug' => 'string|required|unique',
-            'category' => 'string|required',
-            'order' => 'integer|default:0',
-            'description' => 'string|nullable',
-            'tags' => 'array|nullable',
-            'version' => 'string|nullable',
-            'updated_at' => 'datetime|nullable',
-            'author' => 'string|nullable',
-            'difficulty' => 'string|nullable', // beginner, intermediate, advanced
+            'title'          => 'string|required',
+            'slug'           => 'string|required|unique',
+            'category'       => 'string|required',
+            'order'          => 'integer|default:0',
+            'description'    => 'string|nullable',
+            'tags'           => 'array|nullable',
+            'version'        => 'string|nullable',
+            'updated_at'     => 'datetime|nullable',
+            'author'         => 'string|nullable',
+            'difficulty'     => 'string|nullable', // beginner, intermediate, advanced
             'estimated_time' => 'string|nullable', // e.g., "5 minutes"
-            'prerequisites' => 'array|nullable',
-            'related_docs' => 'array|nullable',
-            'content' => 'text', // Markdown content
+            'prerequisites'  => 'array|nullable',
+            'related_docs'   => 'array|nullable',
+            'content'        => 'text', // Markdown content
         ];
     }
 
@@ -64,6 +64,7 @@ class Documentation extends FileModel
             $bOrderRaw = $b->getAttribute('order');
             $aOrder = is_numeric($aOrderRaw) ? (int) $aOrderRaw : 0;
             $bOrder = is_numeric($bOrderRaw) ? (int) $bOrderRaw : 0;
+
             return $aOrder <=> $bOrder;
         });
 
@@ -94,6 +95,7 @@ class Documentation extends FileModel
                 $bOrderRaw = $b->getAttribute('order');
                 $aOrder = is_numeric($aOrderRaw) ? (int) $aOrderRaw : 0;
                 $bOrder = is_numeric($bOrderRaw) ? (int) $bOrderRaw : 0;
+
                 return $aOrder <=> $bOrder;
             });
             $grouped[$category] = $docs;
@@ -162,6 +164,7 @@ class Documentation extends FileModel
 
         $categories = array_unique($categories);
         sort($categories);
+
         // @phpstan-ignore-next-line arrayValues.list
         return array_values($categories);
     }
@@ -187,6 +190,7 @@ class Documentation extends FileModel
 
         $allTags = array_unique($allTags);
         sort($allTags);
+
         // @phpstan-ignore-next-line arrayValues.list
         return array_values($allTags);
     }
@@ -206,11 +210,11 @@ class Documentation extends FileModel
             $categoryDocs = [];
             foreach ($docs as $doc) {
                 $categoryDocs[] = [
-                    'title' => $doc->getAttribute('title'),
-                    'slug' => $doc->getAttribute('slug'),
-                    'url' => $doc->getUrl(),
+                    'title'       => $doc->getAttribute('title'),
+                    'slug'        => $doc->getAttribute('slug'),
+                    'url'         => $doc->getUrl(),
                     'description' => $doc->getAttribute('description'),
-                    'difficulty' => $doc->getAttribute('difficulty'),
+                    'difficulty'  => $doc->getAttribute('difficulty'),
                 ];
             }
             $navigation[$category] = $categoryDocs;
@@ -236,6 +240,7 @@ class Documentation extends FileModel
             $filtered = array_filter($categoryDocs, function (Documentation $doc) {
                 return $doc->getAttribute('slug') !== $this->getAttribute('slug');
             });
+
             return array_slice($filtered, 0, 3);
         }
 
@@ -299,6 +304,7 @@ class Documentation extends FileModel
     {
         $slug = $this->getAttribute('slug');
         $slugString = is_string($slug) ? $slug : '';
+
         return '/docs/' . $slugString;
     }
 

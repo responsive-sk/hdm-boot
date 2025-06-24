@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Storage\Services;
 
 use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
-use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
 use HdmBoot\Modules\Core\Storage\Drivers\JsonDriver;
+use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
 use HdmBoot\SharedKernel\Services\PathsFactory;
 use ResponsiveSk\Slim4Paths\Paths;
 
@@ -78,7 +78,7 @@ class FileStorageService
 
         // Ensure directory exists
         if (!is_dir($directory)) {
-            mkdir($directory, 0755, true);
+            mkdir($directory, 0o755, true);
         }
 
         return $directory;
@@ -125,6 +125,7 @@ class FileStorageService
         // Fallback: Use PathsFactory for secure path resolution
         try {
             $paths = PathsFactory::create();
+
             return $paths->content();
         } catch (\Exception $e) {
             // Last resort fallback
@@ -162,6 +163,7 @@ class FileStorageService
 
         // Use PathsFactory for secure cross-platform path joining
         $paths = PathsFactory::create();
+
         return $paths->getPath($basePath, $relativePath);
     }
 }

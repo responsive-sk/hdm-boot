@@ -55,10 +55,10 @@ final class HealthCheckRegistry
         $this->categories[$category][] = $name;
 
         $this->logger->debug('Health check registered', [
-            'name' => $name,
+            'name'     => $name,
             'category' => $category,
             'critical' => $healthCheck->isCritical(),
-            'timeout' => $healthCheck->getTimeout(),
+            'timeout'  => $healthCheck->getTimeout(),
         ]);
     }
 
@@ -80,7 +80,7 @@ final class HealthCheckRegistry
         if (isset($this->categories[$category])) {
             $this->categories[$category] = array_filter(
                 $this->categories[$category],
-                fn($checkName) => $checkName !== $name
+                fn ($checkName) => $checkName !== $name
             );
 
             if (empty($this->categories[$category])) {
@@ -117,19 +117,22 @@ final class HealthCheckRegistry
     public function getByCategory(string $category): array
     {
         $names = $this->categories[$category] ?? [];
-        return array_map(fn($name) => $this->healthChecks[$name], $names);
+
+        return array_map(fn ($name) => $this->healthChecks[$name], $names);
     }
 
     /**
      * Get health checks by tags.
      *
      * @param array<string> $tags
+     *
      * @return HealthCheckInterface[]
      */
     public function getByTags(array $tags): array
     {
         return array_filter($this->healthChecks, function (HealthCheckInterface $healthCheck) use ($tags) {
             $checkTags = $healthCheck->getTags();
+
             return !empty(array_intersect($tags, $checkTags));
         });
     }
@@ -141,7 +144,7 @@ final class HealthCheckRegistry
      */
     public function getCritical(): array
     {
-        return array_filter($this->healthChecks, fn(HealthCheckInterface $check) => $check->isCritical());
+        return array_filter($this->healthChecks, fn (HealthCheckInterface $check) => $check->isCritical());
     }
 
     /**
@@ -151,7 +154,7 @@ final class HealthCheckRegistry
      */
     public function getNonCritical(): array
     {
-        return array_filter($this->healthChecks, fn(HealthCheckInterface $check) => !$check->isCritical());
+        return array_filter($this->healthChecks, fn (HealthCheckInterface $check) => !$check->isCritical());
     }
 
     /**
@@ -223,7 +226,7 @@ final class HealthCheckRegistry
     public function getOverallStatus(): HealthStatus
     {
         $results = $this->executeAll();
-        $statuses = array_map(fn(HealthCheckResult $result) => $result->status, $results);
+        $statuses = array_map(fn (HealthCheckResult $result) => $result->status, $results);
 
         return HealthStatus::getWorst($statuses);
     }
@@ -271,8 +274,8 @@ final class HealthCheckRegistry
             $duration = microtime(true) - $startTime;
 
             $this->logger->debug('Health check completed', [
-                'name' => $name,
-                'status' => $result->status->value,
+                'name'     => $name,
+                'status'   => $result->status->value,
                 'duration' => $duration,
             ]);
 
@@ -290,8 +293,8 @@ final class HealthCheckRegistry
             $duration = microtime(true) - $startTime;
 
             $this->logger->error('Health check failed with exception', [
-                'name' => $name,
-                'error' => $e->getMessage(),
+                'name'     => $name,
+                'error'    => $e->getMessage(),
                 'duration' => $duration,
             ]);
 
@@ -300,8 +303,8 @@ final class HealthCheckRegistry
                 message: "Health check failed: {$e->getMessage()}",
                 data: [
                     'exception' => get_class($e),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
+                    'file'      => $e->getFile(),
+                    'line'      => $e->getLine(),
                 ],
                 duration: $duration,
                 category: $healthCheck->getCategory(),

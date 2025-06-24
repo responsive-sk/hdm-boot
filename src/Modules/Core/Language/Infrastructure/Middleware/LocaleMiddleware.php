@@ -6,12 +6,12 @@ namespace HdmBoot\Modules\Core\Language\Infrastructure\Middleware;
 
 use HdmBoot\Modules\Core\Language\Services\LocaleService;
 use HdmBoot\Modules\Core\User\Services\UserService;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Locale Middleware - Automatic Language Detection and Setting.
@@ -127,6 +127,7 @@ final class LocaleMiddleware implements MiddlewareInterface
 
         // 5. Default locale from config
         $defaultLocale = $config['default_locale'] ?? 'en_US';
+
         return is_string($defaultLocale) ? $defaultLocale : 'en_US';
     }
 

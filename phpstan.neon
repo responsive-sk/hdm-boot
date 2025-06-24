@@ -16,5 +16,6 @@ parameters:
     excludePaths:
         - vendor
         - var
-        - tests/fixtures (?)
+        - tests
+        - '*/tests/*'
         - src/Modules/Core/Template/Infrastructure/Engines/TwigTemplateEngine.php

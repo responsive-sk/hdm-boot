@@ -86,6 +86,7 @@ final class LoggerFactory
             $extra = $record->extra;
             $extra['security_event'] = true;
             $extra['timestamp_iso'] = date('c');
+
             return $record->with(extra: $extra);
         });
 
@@ -120,6 +121,7 @@ final class LoggerFactory
             // Monolog 3.x uses LogRecord objects
             $extra = $record->extra;
             $extra['performance_metric'] = true;
+
             return $record->with(extra: $extra);
         });
 
@@ -149,6 +151,7 @@ final class LoggerFactory
             $extra = $record->extra;
             $extra['audit_event'] = true;
             $extra['timestamp_iso'] = date('c');
+
             return $record->with(extra: $extra);
         });
 

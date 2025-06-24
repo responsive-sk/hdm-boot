@@ -6,8 +6,8 @@ namespace HdmBoot\Modules\Core\Storage\Drivers;
 
 use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
 use HdmBoot\SharedKernel\Services\PathsFactory;
-use SplFileInfo;
 use PDO;
+use SplFileInfo;
 
 /**
  * SQLite Driver.
@@ -18,6 +18,7 @@ use PDO;
 class SqliteDriver implements StorageDriverInterface
 {
     protected PDO $pdo;
+
     protected string $tableName;
 
     /**
@@ -135,6 +136,7 @@ class SqliteDriver implements StorageDriverInterface
     {
         // Not used for database storage - data is stored directly in database
         $result = json_encode($data, JSON_PRETTY_PRINT);
+
         return $result !== false ? $result : '{}';
     }
 
@@ -151,6 +153,7 @@ class SqliteDriver implements StorageDriverInterface
         $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM {$this->tableName} WHERE id = ?");
         $stmt->execute([$id]);
         $count = $stmt->fetchColumn();
+
         return is_numeric($count) && (int) $count > 0;
     }
 
@@ -162,13 +165,13 @@ class SqliteDriver implements StorageDriverInterface
     protected function insertRecord(array $data): bool
     {
         // Add timestamps
-        $data['created_at'] = $data['created_at'] ?? date('Y-m-d H:i:s');
+        $data['created_at'] ??= date('Y-m-d H:i:s');
         $data['updated_at'] = date('Y-m-d H:i:s');
 
         $columns = array_keys($data);
         $placeholders = array_fill(0, count($columns), '?');
 
-        $sql = "INSERT INTO {$this->tableName} (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $placeholders) . ")";
+        $sql = "INSERT INTO {$this->tableName} (" . implode(', ', $columns) . ') VALUES (' . implode(', ', $placeholders) . ')';
 
         $stmt = $this->pdo->prepare($sql);
         $result = $stmt->execute(array_values($data));
@@ -202,7 +205,7 @@ class SqliteDriver implements StorageDriverInterface
 
         $values[] = $id; // Add ID for WHERE clause
 
-        $sql = "UPDATE {$this->tableName} SET " . implode(', ', $setParts) . " WHERE id = ?";
+        $sql = "UPDATE {$this->tableName} SET " . implode(', ', $setParts) . ' WHERE id = ?';
 
         $stmt = $this->pdo->prepare($sql);
         $result = $stmt->execute($values);
@@ -220,6 +223,7 @@ class SqliteDriver implements StorageDriverInterface
     protected function extractIdFromPath(string $filePath): string
     {
         $basename = basename($filePath, '.db');
+
         return $basename;
     }
 
@@ -303,6 +307,7 @@ class SqliteDriver implements StorageDriverInterface
 
         // Build secure path using PathsFactory for cross-platform compatibility
         $paths = PathsFactory::create();
+
         return $paths->getPath($directory, $id . '.db');
     }
 }

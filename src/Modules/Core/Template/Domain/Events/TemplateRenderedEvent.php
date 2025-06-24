@@ -92,10 +92,10 @@ final readonly class TemplateRenderedEvent implements DomainEvent
     public function toLogArray(): array
     {
         return [
-            'event' => $this->getEventName(),
-            'template' => $this->templateName->toString(),
+            'event'          => $this->getEventName(),
+            'template'       => $this->templateName->toString(),
             'render_time_ms' => round($this->renderTime * 1000, 2),
-            'data_count' => $this->templateData->count(),
+            'data_count'     => $this->templateData->count(),
         ];
     }
 

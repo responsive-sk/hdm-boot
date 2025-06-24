@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\User\Application\Handlers;
 
-use InvalidArgumentException;
-use HdmBoot\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
-use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
 use HdmBoot\Modules\Core\User\Application\Queries\GetUserProfileQuery;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
+use HdmBoot\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
+use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 /**

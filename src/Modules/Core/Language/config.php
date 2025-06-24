@@ -70,6 +70,7 @@ return [
             $responseFactory = $container->get(ResponseFactoryInterface::class);
             /** @var LoggerInterface $logger */
             $logger = $container->get(LoggerInterface::class);
+
             return new TranslateAction($translationService, $responseFactory, $logger);
         },
 
@@ -77,6 +78,7 @@ return [
         LocaleChangedListener::class => function (Container $container): LocaleChangedListener {
             /** @var LoggerInterface $logger */
             $logger = $container->get(LoggerInterface::class);
+
             return new LocaleChangedListener($logger);
         },
 

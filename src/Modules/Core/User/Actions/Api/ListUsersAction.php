@@ -21,8 +21,8 @@ final class ListUsersAction
 
         // Parse filters from query parameters
         $filters = [
-            'role' => $queryParams['role'] ?? null,
-            'status' => $queryParams['status'] ?? null
+            'role'   => $queryParams['role'] ?? null,
+            'status' => $queryParams['status'] ?? null,
         ];
 
         // Remove null values
@@ -34,10 +34,11 @@ final class ListUsersAction
         // Format response
         $data = [
             'success' => true,
-            'data' => $users
+            'data'    => $users,
         ];
 
         $response->getBody()->write(json_encode($data, JSON_PRETTY_PRINT));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 }

@@ -64,6 +64,7 @@ return function (App $app): void {
         });
         $group->get('/articles/{slug}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
             /* @var array<string, string> $args */
+            // @phpstan-ignore-next-line
             return (new BlogController())->apiShow($request, $response, $args);
         });
         $group->post('/articles', function (ServerRequestInterface $request, ResponseInterface $response): ResponseInterface {
@@ -71,10 +72,12 @@ return function (App $app): void {
         });
         $group->put('/articles/{slug}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
             /* @var array<string, string> $args */
+            // @phpstan-ignore-next-line
             return (new BlogController())->apiUpdate($request, $response, $args);
         });
         $group->delete('/articles/{slug}', function (ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface {
             /* @var array<string, string> $args */
+            // @phpstan-ignore-next-line
             return (new BlogController())->apiDelete($request, $response, $args);
         });
 

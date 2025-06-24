@@ -187,17 +187,17 @@ class ModuleManifest
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'version' => $this->version,
+            'name'         => $this->name,
+            'version'      => $this->version,
             'dependencies' => $this->dependencies,
-            'routes' => $this->routesFile,
-            'config' => $this->configFile,
-            'description' => $this->description,
-            'authors' => $this->authors,
-            'tags' => $this->tags,
-            'provides' => $this->provides,
-            'requires' => $this->requires,
-            'enabled' => $this->enabled,
+            'routes'       => $this->routesFile,
+            'config'       => $this->configFile,
+            'description'  => $this->description,
+            'authors'      => $this->authors,
+            'tags'         => $this->tags,
+            'provides'     => $this->provides,
+            'requires'     => $this->requires,
+            'enabled'      => $this->enabled,
         ];
     }
 

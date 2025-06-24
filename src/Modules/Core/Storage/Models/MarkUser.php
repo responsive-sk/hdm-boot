@@ -45,15 +45,15 @@ class MarkUser extends DatabaseModel
     public static function schema(): array
     {
         return [
-            'id' => 'integer|primary|auto_increment',
-            'username' => 'string|required|unique',
-            'email' => 'string|required|unique',
+            'id'            => 'integer|primary|auto_increment',
+            'username'      => 'string|required|unique',
+            'email'         => 'string|required|unique',
             'password_hash' => 'string|required',
-            'role' => 'string|default:admin', // admin, super_admin
-            'status' => 'string|default:active', // active, inactive
+            'role'          => 'string|default:admin', // admin, super_admin
+            'status'        => 'string|default:active', // active, inactive
             'last_login_at' => 'datetime|nullable',
-            'created_at' => 'datetime|auto',
-            'updated_at' => 'datetime|auto',
+            'created_at'    => 'datetime|auto',
+            'updated_at'    => 'datetime|auto',
         ];
     }
 
@@ -119,6 +119,7 @@ class MarkUser extends DatabaseModel
     public function verifyPassword(string $password): bool
     {
         $hash = $this->getAttribute('password_hash');
+
         return is_string($hash) && password_verify($password, $hash);
     }
 
@@ -128,6 +129,7 @@ class MarkUser extends DatabaseModel
     public function setPassword(string $password): self
     {
         $this->setAttribute('password_hash', password_hash($password, PASSWORD_DEFAULT));
+
         return $this;
     }
 
@@ -161,6 +163,7 @@ class MarkUser extends DatabaseModel
     public function recordLogin(): self
     {
         $this->setAttribute('last_login_at', date('Y-m-d H:i:s'));
+
         return $this;
     }
 
@@ -172,13 +175,13 @@ class MarkUser extends DatabaseModel
     public function logAction(string $action, ?string $resourceType = null, ?string $resourceId = null, ?array $details = null): void
     {
         MarkAuditLog::create([
-            'user_id' => $this->getKey(),
-            'action' => $action,
+            'user_id'       => $this->getKey(),
+            'action'        => $action,
             'resource_type' => $resourceType,
-            'resource_id' => $resourceId,
-            'details' => $details ? json_encode($details) : null,
-            'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
+            'resource_id'   => $resourceId,
+            'details'       => $details ? json_encode($details) : null,
+            'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? null,
+            'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? null,
         ]);
     }
 

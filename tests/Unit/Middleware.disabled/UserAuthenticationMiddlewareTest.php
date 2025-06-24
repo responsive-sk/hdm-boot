@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace HdmBoot\Tests\Unit\Middleware;
 
 use HdmBoot\Modules\Core\User\Domain\Entities\User;
-use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
 use HdmBoot\Modules\Core\User\Services\UserService;
 use HdmBoot\Shared\Middleware\UserAuthenticationMiddleware;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +18,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Test UserAuthenticationMiddleware - samuelgfeller pattern.
@@ -28,12 +27,19 @@ use Psr\Log\LoggerInterface;
 final class UserAuthenticationMiddlewareTest extends TestCase
 {
     private UserAuthenticationMiddleware $middleware;
+
     private SessionInterface $session;
+
     private ResponseFactoryInterface $responseFactory;
+
     private UserService $userService;
+
     private LoggerInterface $logger;
+
     private RequestHandlerInterface $handler;
+
     private ServerRequestInterface $request;
+
     private ResponseInterface $response;
 
     protected function setUp(): void
@@ -266,6 +272,7 @@ final class UserAuthenticationMiddlewareTest extends TestCase
     {
         $user = $this->createMock(User::class);
         $user->method('getStatus')->willReturn($status);
+
         return $user;
     }
 

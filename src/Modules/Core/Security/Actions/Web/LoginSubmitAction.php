@@ -9,12 +9,11 @@ use HdmBoot\Modules\Core\Security\Exceptions\SecurityException;
 use HdmBoot\Modules\Core\Security\Exceptions\ValidationException;
 use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
 use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
-use HdmBoot\Modules\Core\Session\Services\CsrfService;
 use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Login Submit Action.
@@ -80,8 +79,8 @@ final class LoginSubmitAction
             $newSessionId = $this->session->getId();
 
             $this->logger->debug('LoginSubmitAction: Session regeneration', [
-                'old_session_id' => $oldSessionId,
-                'new_session_id' => $newSessionId,
+                'old_session_id'  => $oldSessionId,
+                'new_session_id'  => $newSessionId,
                 'session_started' => $this->session->isStarted(),
             ]);
 
@@ -98,8 +97,8 @@ final class LoginSubmitAction
             ]);
 
             $this->logger->debug('LoginSubmitAction: Session data set', [
-                'session_id' => $this->session->getId(),
-                'user_id' => $this->session->get('user_id'),
+                'session_id'      => $this->session->getId(),
+                'user_id'         => $this->session->get('user_id'),
                 'session_started' => $this->session->isStarted(),
             ]);
 

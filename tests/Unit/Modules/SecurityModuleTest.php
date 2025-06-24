@@ -14,7 +14,7 @@ use PDO;
 
 /**
  * Security Module Test.
- * 
+ *
  * Tests the Security module in isolation with mocked dependencies.
  */
 class SecurityModuleTest extends ModuleTestCase
@@ -68,10 +68,10 @@ class SecurityModuleTest extends ModuleTestCase
             'settings' => [
                 'app' => [
                     'name' => 'MVA Bootstrap Test',
-                    'env' => 'testing',
+                    'env'  => 'testing',
                 ],
                 'paths' => [
-                    'root' => dirname(__DIR__, 3),
+                    'root'    => dirname(__DIR__, 3),
                     'modules' => dirname(__DIR__, 3) . '/src/Modules/Core',
                 ],
                 'security' => [
@@ -121,7 +121,7 @@ class SecurityModuleTest extends ModuleTestCase
     public function testJwtServiceCanBeCreated(): void
     {
         $this->assertServiceInstanceOf(JwtService::class, JwtService::class);
-        
+
         $jwtService = $this->getService(JwtService::class);
         $this->assertInstanceOf(JwtService::class, $jwtService);
     }
@@ -129,7 +129,7 @@ class SecurityModuleTest extends ModuleTestCase
     public function testAuthenticationServiceCanBeCreated(): void
     {
         $this->assertServiceInstanceOf(AuthenticationService::class, AuthenticationService::class);
-        
+
         $authService = $this->getService(AuthenticationService::class);
         $this->assertInstanceOf(AuthenticationService::class, $authService);
     }
@@ -137,7 +137,7 @@ class SecurityModuleTest extends ModuleTestCase
     public function testAuthorizationServiceCanBeCreated(): void
     {
         $this->assertServiceInstanceOf(AuthorizationService::class, AuthorizationService::class);
-        
+
         $authzService = $this->getService(AuthorizationService::class);
         $this->assertInstanceOf(AuthorizationService::class, $authzService);
     }

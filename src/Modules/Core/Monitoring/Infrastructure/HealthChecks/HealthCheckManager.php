@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Monitoring\Infrastructure\HealthChecks;
 
 use HdmBoot\SharedKernel\HealthChecks\Contracts\HealthCheckInterface;
-use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
 use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckReport;
+use HdmBoot\SharedKernel\HealthChecks\ValueObjects\HealthCheckResult;
 use Psr\Log\LoggerInterface;
 
 /**

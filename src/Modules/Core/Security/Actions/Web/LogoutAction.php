@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Security\Actions\Web;
 
 use HdmBoot\Modules\Core\Session\Services\CsrfService;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Logout Action.

@@ -73,7 +73,7 @@ return [
             'css', 'js', 'images', 'fonts', 'media',
             'keys', 'exports', 'imports',
             'lang', 'translations', 'locales',
-            'scripts', 'bin'
+            'scripts', 'bin',
         ],
         'forbidden_paths'     => ['.env', 'config', 'src', 'bootstrap', 'modules', 'vendor', 'bin'],
         'upload_restrictions' => [
@@ -90,7 +90,7 @@ return [
         'css', 'js', 'images', 'fonts', 'media',
         'keys', 'exports', 'imports',
         'lang', 'translations', 'locales',
-        'scripts', 'bin'
+        'scripts', 'bin',
     ],
     'permissions' => ['directories' => 0o755, 'files' => 0o644],
 ];

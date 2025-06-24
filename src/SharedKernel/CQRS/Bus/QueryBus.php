@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\CQRS\Bus;
 
-use InvalidArgumentException;
 use HdmBoot\SharedKernel\CQRS\Handlers\QueryHandlerInterface;
 use HdmBoot\SharedKernel\CQRS\Queries\QueryInterface;
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 

@@ -35,6 +35,7 @@ class MarkdownDriver extends AbstractFileDriver
     public function setContentColumn(string $column): self
     {
         $this->contentColumn = $column;
+
         return $this;
     }
 
@@ -64,6 +65,7 @@ class MarkdownDriver extends AbstractFileDriver
         // Combine front-matter and content
         if (!empty($frontMatter)) {
             $contentString = is_string($content) ? $content : '';
+
             return "---\n" . $yaml . "---\n\n" . $contentString;
         }
 
@@ -172,6 +174,7 @@ class MarkdownDriver extends AbstractFileDriver
             if (empty(trim($arrayContent))) {
                 return [];
             }
+
             return array_map('trim', explode(',', $arrayContent));
         }
 
@@ -212,6 +215,7 @@ class MarkdownDriver extends AbstractFileDriver
             if (empty($value)) {
                 return '[]';
             }
+
             return '[' . implode(', ', array_map([$this, 'valueToYaml'], $value)) . ']';
         }
 
@@ -220,6 +224,7 @@ class MarkdownDriver extends AbstractFileDriver
             if (preg_match('/[:\[\]{}|>]/', $value) || trim($value) !== $value) {
                 return '"' . str_replace('"', '\\"', $value) . '"';
             }
+
             return $value;
         }
 

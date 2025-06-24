@@ -30,19 +30,19 @@ class Article extends FileModel
     public static function schema(): array
     {
         return [
-            'title' => 'string|required',
-            'slug' => 'string|required|unique',
-            'author' => 'string|required',
-            'published_at' => 'datetime|nullable',
-            'published' => 'boolean|default:false',
-            'featured' => 'boolean|default:false',
-            'excerpt' => 'string|nullable',
-            'tags' => 'array|nullable',
-            'category' => 'string|nullable',
-            'reading_time' => 'integer|nullable',
-            'seo_title' => 'string|nullable',
+            'title'           => 'string|required',
+            'slug'            => 'string|required|unique',
+            'author'          => 'string|required',
+            'published_at'    => 'datetime|nullable',
+            'published'       => 'boolean|default:false',
+            'featured'        => 'boolean|default:false',
+            'excerpt'         => 'string|nullable',
+            'tags'            => 'array|nullable',
+            'category'        => 'string|nullable',
+            'reading_time'    => 'integer|nullable',
+            'seo_title'       => 'string|nullable',
             'seo_description' => 'string|nullable',
-            'content' => 'text', // Markdown content
+            'content'         => 'text', // Markdown content
         ];
     }
 
@@ -55,6 +55,7 @@ class Article extends FileModel
     {
         return array_filter(static::all(), function (Article $article) {
             $publishedAt = $article->getAttribute('published_at');
+
             return $article->getAttribute('published') === true &&
                    ($publishedAt === null || (is_string($publishedAt) && strtotime($publishedAt) <= time()));
         });
@@ -93,6 +94,7 @@ class Article extends FileModel
     {
         return array_filter(static::published(), function (Article $article) use ($tag) {
             $tags = $article->getAttribute('tags') ?? [];
+
             return is_array($tags) && in_array($tag, $tags);
         });
     }
@@ -112,6 +114,7 @@ class Article extends FileModel
             $bDateRaw = $b->getAttribute('published_at');
             $aDate = is_string($aDateRaw) ? $aDateRaw : '';
             $bDate = is_string($bDateRaw) ? $bDateRaw : '';
+
             return strcmp($bDate, $aDate); // Descending order
         });
 
@@ -159,6 +162,7 @@ class Article extends FileModel
 
         $categories = array_unique($categories);
         sort($categories);
+
         // @phpstan-ignore-next-line arrayValues.list
         return array_values($categories);
     }
@@ -184,6 +188,7 @@ class Article extends FileModel
 
         $allTags = array_unique($allTags);
         sort($allTags);
+
         // @phpstan-ignore-next-line arrayValues.list
         return array_values($allTags);
     }
@@ -227,6 +232,7 @@ class Article extends FileModel
     public function isPublished(): bool
     {
         $publishedAt = $this->getAttribute('published_at');
+
         return $this->getAttribute('published') === true &&
                ($publishedAt === null || (is_string($publishedAt) && strtotime($publishedAt) <= time()));
     }
@@ -251,6 +257,7 @@ class Article extends FileModel
     {
         $slug = $this->getAttribute('slug');
         $slugString = is_string($slug) ? $slug : '';
+
         return '/articles/' . $slugString;
     }
 
@@ -297,6 +304,7 @@ class Article extends FileModel
         }
 
         $article->save();
+
         return $article;
     }
 
@@ -308,6 +316,7 @@ class Article extends FileModel
         $slug = strtolower($title);
         $slug = preg_replace('/[^a-z0-9\s-]/', '', $slug) ?? $slug;
         $slug = preg_replace('/[\s-]+/', '-', $slug) ?? $slug;
+
         return trim($slug, '-');
     }
 
@@ -332,6 +341,7 @@ class Article extends FileModel
             $paths = $storageService->getPaths();
             if (is_object($paths) && method_exists($paths, 'articles')) {
                 $articlesPath = $paths->articles();
+
                 return is_string($articlesPath) ? $articlesPath : '';
             }
         }

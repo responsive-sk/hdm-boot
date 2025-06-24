@@ -183,28 +183,28 @@ final class SqliteUserRepository implements UserRepositoryInterface
             ");
 
             // Create trigger to keep FTS index up to date on INSERT
-            $this->pdo->exec("
+            $this->pdo->exec('
                 CREATE TRIGGER IF NOT EXISTS users_ai AFTER INSERT ON users BEGIN
                     INSERT INTO users_fts(rowid, id, email, name)
                     VALUES (new.rowid, new.id, new.email, new.name);
                 END
-            ");
+            ');
 
             // Create trigger for UPDATE
-            $this->pdo->exec("
+            $this->pdo->exec('
                 CREATE TRIGGER IF NOT EXISTS users_au AFTER UPDATE ON users BEGIN
                     DELETE FROM users_fts WHERE rowid = old.rowid;
                     INSERT INTO users_fts(rowid, id, email, name)
                     VALUES (new.rowid, new.id, new.email, new.name);
                 END
-            ");
+            ');
 
             // Create trigger for DELETE
-            $this->pdo->exec("
+            $this->pdo->exec('
                 CREATE TRIGGER IF NOT EXISTS users_ad AFTER DELETE ON users BEGIN
                     DELETE FROM users_fts WHERE rowid = old.rowid;
                 END
-            ");
+            ');
 
             // Create test user if no users exist
             $stmt = $this->pdo->query('SELECT COUNT(*) FROM users');
@@ -234,16 +234,17 @@ final class SqliteUserRepository implements UserRepositoryInterface
     }
 
     /**
-     * Search users using full-text search
+     * Search users using full-text search.
      *
      * @param string $query Search query
      * @param array<string, mixed> $filters Additional filters (role, status, etc.)
+     *
      * @return array<int, array<string, mixed>>
      */
     public function search(string $query, array $filters = []): array
     {
         try {
-            $sql = "
+            $sql = '
                 WITH RECURSIVE
                 search_results AS (
                     SELECT users.*, rank
@@ -252,7 +253,7 @@ final class SqliteUserRepository implements UserRepositoryInterface
                     WHERE users_fts MATCH :query
                     ORDER BY rank
                 )
-            ";
+            ';
 
             $params = [':query' => $query];
             $conditions = [];

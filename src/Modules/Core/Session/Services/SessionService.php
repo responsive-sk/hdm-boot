@@ -75,6 +75,7 @@ final class SessionService
         // Check session timeout
         if ($this->isSessionExpired()) {
             $this->logoutUser();
+
             return false;
         }
 
@@ -117,6 +118,7 @@ final class SessionService
 
         /** @var array<string, mixed> $typedUserData */
         $typedUserData = $userData;
+
         return $typedUserData;
     }
 
@@ -147,6 +149,7 @@ final class SessionService
     public function getFlash(string $type): ?string
     {
         $message = $this->session->getFlashMessage($type);
+
         return is_string($message) ? $message : null;
     }
 

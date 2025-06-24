@@ -51,6 +51,7 @@ final class MonitoringBootstrap
 
         if (!$healthCheckManagerRaw instanceof HealthCheckManager) {
             $this->logger->error('Failed to get HealthCheckManager from container');
+
             return;
         }
 
@@ -80,6 +81,7 @@ final class MonitoringBootstrap
 
             if (!$pdoRaw instanceof \PDO) {
                 $this->logger->warning('Failed to get PDO instance from container');
+
                 return;
             }
 
@@ -141,6 +143,7 @@ final class MonitoringBootstrap
 
             if (!is_object($performanceMonitorRaw) || !method_exists($performanceMonitorRaw, 'recordMemoryUsage')) {
                 $this->logger->warning('Failed to get valid PerformanceMonitor from container');
+
                 return;
             }
 

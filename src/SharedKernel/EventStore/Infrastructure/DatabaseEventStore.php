@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\EventStore\Infrastructure;
 
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 use HdmBoot\SharedKernel\EventStore\Contracts\EventStoreInterface;
 use HdmBoot\SharedKernel\EventStore\ValueObjects\StoredEvent;
-use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 use PDO;
-use PDOException;
 
 /**
  * Database Event Store Implementation.
@@ -92,15 +91,17 @@ final class DatabaseEventStore implements EventStoreInterface
     public function getEventsByType(string $eventType): array
     {
         $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' WHERE event_type = :event_type ORDER BY stored_at ASC';
+
         return $this->executeQuery($sql, ['event_type' => $eventType]);
     }
 
     public function getEventsByDateRange(\DateTimeInterface $from, \DateTimeInterface $to): array
     {
         $sql = 'SELECT * FROM ' . self::TABLE_NAME . ' WHERE occurred_at BETWEEN :from AND :to ORDER BY occurred_at ASC';
+
         return $this->executeQuery($sql, [
             'from' => $from->format('Y-m-d H:i:s'),
-            'to' => $to->format('Y-m-d H:i:s'),
+            'to'   => $to->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -138,6 +139,7 @@ final class DatabaseEventStore implements EventStoreInterface
         }
 
         $result = $stmt->fetchColumn();
+
         return is_numeric($result) ? (int) $result : 0;
     }
 
@@ -196,7 +198,7 @@ final class DatabaseEventStore implements EventStoreInterface
         // Insert into database
         $data = $storedEvent->toArray();
         $sql = 'INSERT INTO ' . self::TABLE_NAME . ' (' . implode(', ', array_keys($data)) . ') VALUES (' .
-               implode(', ', array_map(fn($key) => ":$key", array_keys($data))) . ')';
+               implode(', ', array_map(fn ($key) => ":$key", array_keys($data))) . ')';
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($data);
@@ -206,6 +208,7 @@ final class DatabaseEventStore implements EventStoreInterface
      * Execute query and return StoredEvent objects.
      *
      * @param array<string, mixed> $params
+     *
      * @return StoredEvent[]
      */
     private function executeQuery(string $sql, array $params = []): array
@@ -230,8 +233,8 @@ final class DatabaseEventStore implements EventStoreInterface
      */
     private function ensureTableExists(): void
     {
-        $sql = "
-            CREATE TABLE IF NOT EXISTS " . self::TABLE_NAME . " (
+        $sql = '
+            CREATE TABLE IF NOT EXISTS ' . self::TABLE_NAME . ' (
                 id VARCHAR(36) PRIMARY KEY,
                 aggregate_id VARCHAR(255) NOT NULL,
                 aggregate_type VARCHAR(255) NOT NULL,
@@ -246,7 +249,7 @@ final class DatabaseEventStore implements EventStoreInterface
                 INDEX idx_occurred_at (occurred_at),
                 UNIQUE KEY unique_aggregate_version (aggregate_id, aggregate_type, version)
             )
-        ";
+        ';
 
         $this->pdo->exec($sql);
     }

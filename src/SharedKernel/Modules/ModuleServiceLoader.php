@@ -44,7 +44,7 @@ final class ModuleServiceLoader
 
         $this->logger->info('Module services loaded', [
             'total_services' => $loadedServices,
-            'modules_count' => count($modules),
+            'modules_count'  => count($modules),
         ]);
     }
 
@@ -70,7 +70,7 @@ final class ModuleServiceLoader
         }
 
         $this->logger->info('Module routes loaded', [
-            'total_routes' => count($allRoutes),
+            'total_routes'  => count($allRoutes),
             'modules_count' => count($modules),
         ]);
 
@@ -102,7 +102,7 @@ final class ModuleServiceLoader
 
         $this->logger->info('Module middleware loaded', [
             'total_middleware' => count($allMiddleware),
-            'modules_count' => count($modules),
+            'modules_count'    => count($modules),
         ]);
 
         return $allMiddleware;
@@ -123,8 +123,8 @@ final class ModuleServiceLoader
 
             if (isset($config['api_endpoints']) && is_array($config['api_endpoints'])) {
                 $allEndpoints[$module->getName()] = [
-                    'module' => $module->getName(),
-                    'version' => $config['version'] ?? '1.0.0',
+                    'module'    => $module->getName(),
+                    'version'   => $config['version'] ?? '1.0.0',
                     'endpoints' => $config['api_endpoints'],
                 ];
             }
@@ -168,14 +168,14 @@ final class ModuleServiceLoader
                 $container->set($serviceId, $definition);
 
                 $this->logger->debug('Service loaded', [
-                    'module' => $moduleName,
+                    'module'  => $moduleName,
                     'service' => $serviceId,
                 ]);
             } catch (\Throwable $e) {
                 $this->logger->error('Failed to load service', [
-                    'module' => $moduleName,
+                    'module'  => $moduleName,
                     'service' => $serviceId,
-                    'error' => $e->getMessage(),
+                    'error'   => $e->getMessage(),
                 ]);
             }
         }
@@ -185,6 +185,7 @@ final class ModuleServiceLoader
      * Load routes for a specific module.
      *
      * @param array<mixed> $routes
+     *
      * @return array<array<string, mixed>>
      */
     private function loadModuleRoutes(string $moduleName, array $routes): array
@@ -195,7 +196,7 @@ final class ModuleServiceLoader
             if (!is_array($route)) {
                 $this->logger->warning('Invalid route definition', [
                     'module' => $moduleName,
-                    'route' => $route,
+                    'route'  => $route,
                 ]);
                 continue;
             }
@@ -207,8 +208,8 @@ final class ModuleServiceLoader
             $processedRoutes[] = $typedRoute;
 
             $this->logger->debug('Route loaded', [
-                'module' => $moduleName,
-                'method' => $route['method'] ?? 'UNKNOWN',
+                'module'  => $moduleName,
+                'method'  => $route['method'] ?? 'UNKNOWN',
                 'pattern' => $route['pattern'] ?? 'UNKNOWN',
                 'handler' => $route['handler'] ?? 'UNKNOWN',
             ]);
@@ -221,6 +222,7 @@ final class ModuleServiceLoader
      * Load middleware for a specific module.
      *
      * @param array<string, string> $middleware
+     *
      * @return array<string, string>
      */
     private function loadModuleMiddleware(string $moduleName, array $middleware): array
@@ -231,8 +233,8 @@ final class ModuleServiceLoader
             $processedMiddleware[$middlewareClass] = $description;
 
             $this->logger->debug('Middleware loaded', [
-                'module' => $moduleName,
-                'middleware' => $middlewareClass,
+                'module'      => $moduleName,
+                'middleware'  => $middlewareClass,
                 'description' => $description,
             ]);
         }
@@ -268,14 +270,14 @@ final class ModuleServiceLoader
         }
 
         return [
-            'modules_count' => count($modules),
-            'total_services' => $totalServices,
-            'total_routes' => $totalRoutes,
-            'total_middleware' => $totalMiddleware,
-            'total_permissions' => $totalPermissions,
-            'modules_with_services' => count(array_filter($modules, fn($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['services'] ?? []))),
-            'modules_with_routes' => count(array_filter($modules, fn($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['routes'] ?? []))),
-            'modules_with_middleware' => count(array_filter($modules, fn($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['middleware'] ?? []))),
+            'modules_count'           => count($modules),
+            'total_services'          => $totalServices,
+            'total_routes'            => $totalRoutes,
+            'total_middleware'        => $totalMiddleware,
+            'total_permissions'       => $totalPermissions,
+            'modules_with_services'   => count(array_filter($modules, fn ($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['services'] ?? []))),
+            'modules_with_routes'     => count(array_filter($modules, fn ($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['routes'] ?? []))),
+            'modules_with_middleware' => count(array_filter($modules, fn ($m) => !empty($this->moduleManager->getModuleConfig($m->getName())['middleware'] ?? []))),
         ];
     }
 }

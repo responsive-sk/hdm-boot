@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Helpers;
 
-use HdmBoot\Modules\Core\User\Exceptions\UserAlreadyExistsException;
-use HdmBoot\Modules\Core\User\Exceptions\UserNotFoundException;
 use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthenticationException;
 use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\AuthorizationException;
 use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\SecurityException;
 use HdmBoot\Modules\Core\ErrorHandling\Infrastructure\Exceptions\ValidationException;
+use HdmBoot\Modules\Core\User\Exceptions\UserAlreadyExistsException;
+use HdmBoot\Modules\Core\User\Exceptions\UserNotFoundException;
 
 /**
  * Error Helper.

@@ -170,9 +170,11 @@ final class LocaleService implements LocaleServiceInterface
             $localeData = $availableLocales[$locale];
             if (is_array($localeData)) {
                 $name = $localeData['name'] ?? $locale;
+
                 return is_string($name) ? $name : $locale;
             }
         }
+
         return $locale;
     }
 
@@ -186,9 +188,11 @@ final class LocaleService implements LocaleServiceInterface
             $localeData = $availableLocales[$locale];
             if (is_array($localeData)) {
                 $nativeName = $localeData['native_name'] ?? $locale;
+
                 return is_string($nativeName) ? $nativeName : $locale;
             }
         }
+
         return $locale;
     }
 
@@ -202,9 +206,11 @@ final class LocaleService implements LocaleServiceInterface
             $localeData = $availableLocales[$locale];
             if (is_array($localeData)) {
                 $flag = $localeData['flag'] ?? '🌍';
+
                 return is_string($flag) ? $flag : '🌍';
             }
         }
+
         return '🌍';
     }
 
@@ -271,9 +277,11 @@ final class LocaleService implements LocaleServiceInterface
                 if (is_array($arg)) {
                     return '';
                 }
+
                 // Safe casting for remaining types
                 return '';
             }, $args);
+
             return sprintf($translated, ...$safeArgs);
         }
 

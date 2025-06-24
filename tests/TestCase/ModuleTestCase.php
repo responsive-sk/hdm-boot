@@ -6,28 +6,31 @@ namespace HdmBoot\Tests\TestCase;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use HdmBoot\SharedKernel\Contracts\ModuleInterface;
 use HdmBoot\SharedKernel\Events\EventDispatcher;
 use HdmBoot\SharedKernel\Modules\GenericModule;
-use HdmBoot\SharedKernel\Contracts\ModuleInterface;
 use HdmBoot\SharedKernel\Modules\ModuleManager;
 use HdmBoot\SharedKernel\Modules\ModuleManifest;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * Module Test Case.
- * 
+ *
  * Base test case for testing individual modules in isolation.
  * Provides automatic module loading, mock services, and testing utilities.
  */
 abstract class ModuleTestCase extends TestCase
 {
     protected Container $container;
+
     protected ModuleManager $moduleManager;
+
     protected ModuleInterface $module;
+
     protected string $moduleName;
+
     protected string $modulePath;
 
     /** @var MockObject|LoggerInterface */
@@ -105,25 +108,25 @@ abstract class ModuleTestCase extends TestCase
     protected function setupContainer(): void
     {
         $builder = new ContainerBuilder();
-        
+
         // Add core services
         $builder->addDefinitions([
             LoggerInterface::class => $this->mockLogger,
             EventDispatcher::class => $this->mockEventDispatcher,
-            
+
             // Module Manager
             ModuleManager::class => function (Container $c): ModuleManager {
                 return new ModuleManager($c->get(LoggerInterface::class));
             },
-            
+
             // Settings
             'settings' => [
                 'app' => [
                     'name' => 'MVA Bootstrap Test',
-                    'env' => 'testing',
+                    'env'  => 'testing',
                 ],
                 'paths' => [
-                    'root' => dirname(__DIR__, 2),
+                    'root'    => dirname(__DIR__, 2),
                     'modules' => dirname(__DIR__, 2) . '/src/Modules/Core',
                 ],
             ],
@@ -160,7 +163,7 @@ abstract class ModuleTestCase extends TestCase
     protected function loadModuleByName(string $moduleName): ModuleInterface
     {
         $modulePath = $this->getModulePath($moduleName);
-        
+
         // Check for manifest file
         $manifestFile = $modulePath . '/module.php';
         $configFile = $modulePath . '/config.php';
@@ -181,7 +184,7 @@ abstract class ModuleTestCase extends TestCase
     {
         $manifestData = require $manifestFile;
         $manifest = ModuleManifest::fromArray($manifestData, dirname($manifestFile));
-        
+
         // Load config if specified
         $config = [];
         if ($manifest->getConfigFile() && file_exists($manifest->getConfigFile())) {
@@ -205,7 +208,7 @@ abstract class ModuleTestCase extends TestCase
     protected function loadModuleFromConfig(string $moduleName, string $configFile): ModuleInterface
     {
         $config = require $configFile;
-        
+
         // Register services in container
         if (isset($config['services'])) {
             $this->registerModuleServices($config['services']);
@@ -237,6 +240,7 @@ abstract class ModuleTestCase extends TestCase
     protected function getModulePath(string $moduleName): string
     {
         $settings = $this->container->get('settings');
+
         return $settings['paths']['modules'] . '/' . $moduleName;
     }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HdmBoot\SharedKernel\Contracts\Modules;
 
 /**
- * Module Interface
+ * Module Interface.
  *
  * Defines the contract that all modules must implement.
  * Provides standardized module lifecycle and dependency management.

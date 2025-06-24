@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\EventStore\Infrastructure;
 
+use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 use HdmBoot\SharedKernel\EventStore\Contracts\EventStoreInterface;
 use HdmBoot\SharedKernel\EventStore\ValueObjects\StoredEvent;
-use HdmBoot\SharedKernel\CQRS\Events\DomainEventInterface;
 
 /**
  * In-Memory Event Store Implementation.
@@ -99,6 +99,7 @@ final class InMemoryEventStore implements EventStoreInterface
     {
         return array_filter($this->events, function (StoredEvent $event) use ($from, $to) {
             $occurredAt = $event->getOccurredAt();
+
             return $occurredAt >= $from && $occurredAt <= $to;
         });
     }
@@ -106,6 +107,7 @@ final class InMemoryEventStore implements EventStoreInterface
     public function getAggregateVersion(string $aggregateId, ?string $aggregateType = null): int
     {
         $aggregateKey = $this->getAggregateKey($aggregateId, $aggregateType ?? 'unknown');
+
         return $this->aggregateVersions[$aggregateKey] ?? 0;
     }
 

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\User\Actions\Web;
 
-use HdmBoot\Modules\Core\User\Services\UserService;
 use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
-use ResponsiveSk\Slim4Session\SessionInterface;
+use HdmBoot\Modules\Core\User\Services\UserService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Profile Page Action.
@@ -49,7 +49,7 @@ final class ProfilePageAction
 
             // Convert user object to array if needed
             if (is_object($user)) {
-                $user = method_exists($user, 'toArray') ? $user->toArray() : (array)$user;
+                $user = method_exists($user, 'toArray') ? $user->toArray() : (array) $user;
             }
             // Always add user_id for template simplicity
             $user['user_id'] = $userIdString;
@@ -64,10 +64,10 @@ final class ProfilePageAction
 
             // Log successful profile access
             $this->logger->info('Profile page accessed successfully', [
-                'user_id' => $userIdString,
-                'email' => $user['email'] ?? 'unknown',
+                'user_id'    => $userIdString,
+                'email'      => $user['email'] ?? 'unknown',
                 'session_id' => session_id(),
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'ip'         => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             // Render user profile template
@@ -85,10 +85,10 @@ final class ProfilePageAction
         } catch (\Exception $e) {
             // Log profile access error
             $this->logger->error('Profile page access failed', [
-                'user_id' => $userIdString ?? 'unknown',
-                'error' => $e->getMessage(),
+                'user_id'    => $userIdString ?? 'unknown',
+                'error'      => $e->getMessage(),
                 'session_id' => session_id(),
-                'ip' => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                'ip'         => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             // User not found or other error

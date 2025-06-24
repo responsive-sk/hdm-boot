@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace HdmBoot\SharedKernel\Modules;
 
 use HdmBoot\SharedKernel\Contracts\ModuleInterface;
-use Psr\Log\LoggerInterface;
 use Psr\Container\ContainerInterface;
-use ResponsiveSk\Slim4Paths\Paths;
+use Psr\Log\LoggerInterface;
 
 /**
  * Module Manager.
@@ -172,10 +171,11 @@ final class ModuleManager
         $result = [];
         foreach ($this->modules as $name => $module) {
             $result[$name] = [
-                'module' => $module,
+                'module'   => $module,
                 'manifest' => $this->moduleManifests[$name] ?? null,
             ];
         }
+
         return $result;
     }
 
@@ -311,11 +311,14 @@ final class ModuleManager
         }
 
         $modulePath = dirname($manifest->getConfigFile() ?? '');
+
         return file_exists($modulePath . '/composer.json');
     }
 
     /**
      * Run module tests (Full Module Isolation).
+     *
+     * @return array{success: bool, return_code: int, module_path: string, output: string[]}
      */
     public function runModuleTests(string $moduleName): array
     {
@@ -339,21 +342,31 @@ final class ModuleManager
         exec($command, $output, $returnCode);
 
         return [
-            'success' => $returnCode === 0,
-            'output' => $output,
+            'success'     => $returnCode === 0,
+            'output'      => $output,
             'return_code' => $returnCode,
-            'module_path' => $modulePath
+            'module_path' => $modulePath,
         ];
     }
 
     /**
      * Get module isolation info (Full Module Isolation).
+     *
+     * @return array{isolated: bool, module_path: string, has_composer: bool, has_tests: bool, has_ci: bool, has_readme: bool, reason?: string}
      */
     public function getModuleIsolationInfo(string $moduleName): array
     {
         $manifest = $this->getModuleManifest($moduleName);
         if (!$manifest) {
-            return ['isolated' => false, 'reason' => 'Module not found'];
+            return [
+                'isolated'     => false,
+                'module_path'  => '',
+                'has_composer' => false,
+                'has_tests'    => false,
+                'has_ci'       => false,
+                'has_readme'   => false,
+                'reason'       => 'Module not found',
+            ];
         }
 
         // Get module path from manifest or config file
@@ -372,20 +385,24 @@ final class ModuleManager
         }
 
         $info = [
-            'isolated' => false,
-            'module_path' => $modulePath,
+            'isolated'     => false,
+            'module_path'  => $modulePath,
             'has_composer' => file_exists($modulePath . '/composer.json'),
-            'has_tests' => file_exists($modulePath . '/phpunit.xml'),
-            'has_ci' => file_exists($modulePath . '/.github/workflows/ci.yml'),
-            'has_readme' => file_exists($modulePath . '/README.md'),
+            'has_tests'    => file_exists($modulePath . '/phpunit.xml'),
+            'has_ci'       => file_exists($modulePath . '/.github/workflows/ci.yml'),
+            'has_readme'   => file_exists($modulePath . '/README.md'),
         ];
 
         $info['isolated'] = $info['has_composer'] && $info['has_tests'];
 
         if (!$info['isolated']) {
             $missing = [];
-            if (!$info['has_composer']) $missing[] = 'composer.json';
-            if (!$info['has_tests']) $missing[] = 'phpunit.xml';
+            if (!$info['has_composer']) {
+                $missing[] = 'composer.json';
+            }
+            if (!$info['has_tests']) {
+                $missing[] = 'phpunit.xml';
+            }
             $info['reason'] = 'Missing: ' . implode(', ', $missing);
         } else {
             $info['reason'] = 'Fully isolated module';
@@ -472,6 +489,7 @@ final class ModuleManager
                     'expected'      => 'array',
                     'actual'        => gettype($manifestData),
                 ]);
+
                 return;
             }
 
@@ -487,6 +505,7 @@ final class ModuleManager
                     'module_dir' => $moduleDir,
                     'errors'     => $errors,
                 ]);
+
                 return;
             }
 
@@ -496,6 +515,7 @@ final class ModuleManager
                     'module_name' => $manifest->getName(),
                     'module_dir'  => $moduleDir,
                 ]);
+
                 return;
             }
 
@@ -540,6 +560,7 @@ final class ModuleManager
                     'expected'   => 'array',
                     'actual'     => gettype($config),
                 ]);
+
                 return;
             }
 

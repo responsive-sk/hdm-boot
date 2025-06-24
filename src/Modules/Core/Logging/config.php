@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use DI\Container;
-use HdmBoot\Modules\Core\Logging\Infrastructure\Services\LoggerFactory;
 use HdmBoot\Modules\Core\Logging\Infrastructure\Services\LogCleanupService;
+use HdmBoot\Modules\Core\Logging\Infrastructure\Services\LoggerFactory;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
 
@@ -30,6 +30,7 @@ return [
         LoggerInterface::class => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createLogger('app');
         },
 
@@ -37,18 +38,21 @@ return [
         'logger.security' => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createSecurityLogger();
         },
 
         'logger.audit' => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createAuditLogger();
         },
 
         'logger.performance' => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createPerformanceLogger();
         },
 
@@ -56,12 +60,14 @@ return [
         'logger.login' => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createLogger('login');
         },
 
         'logger.profile' => function (Container $c): LoggerInterface {
             /** @var LoggerFactory $factory */
             $factory = $c->get(LoggerFactory::class);
+
             return $factory->createLogger('profile');
         },
 

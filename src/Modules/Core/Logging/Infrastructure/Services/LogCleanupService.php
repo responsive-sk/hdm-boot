@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Logging\Infrastructure\Services;
 
-use ResponsiveSk\Slim4Paths\Paths;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
- * Log Cleanup Service
+ * Log Cleanup Service.
  *
  * Handles manual log cleanup, rotation monitoring, and disk space management.
  * Provides enterprise-grade log management capabilities.
@@ -40,12 +40,12 @@ final class LogCleanupService
     {
         $logPath = $this->paths->logs();
         $stats = [
-            'total_files' => 0,
-            'total_size_bytes' => 0,
-            'total_size_mb' => 0,
-            'oldest_file' => null,
-            'newest_file' => null,
-            'files_by_type' => [],
+            'total_files'        => 0,
+            'total_size_bytes'   => 0,
+            'total_size_mb'      => 0,
+            'oldest_file'        => null,
+            'newest_file'        => null,
+            'files_by_type'      => [],
             'disk_usage_warning' => false,
         ];
 
@@ -74,15 +74,15 @@ final class LogCleanupService
                 continue;
             }
 
-            $stats['total_files']++;
+            ++$stats['total_files'];
             $stats['total_size_bytes'] += $size;
 
             // Track oldest and newest
             if ($mtime < $oldestTime) {
                 $oldestTime = $mtime;
                 $stats['oldest_file'] = [
-                    'name' => $basename,
-                    'date' => date('Y-m-d H:i:s', $mtime),
+                    'name'    => $basename,
+                    'date'    => date('Y-m-d H:i:s', $mtime),
                     'size_mb' => round($size / self::BYTES_PER_MB, 2),
                 ];
             }
@@ -90,8 +90,8 @@ final class LogCleanupService
             if ($mtime > $newestTime) {
                 $newestTime = $mtime;
                 $stats['newest_file'] = [
-                    'name' => $basename,
-                    'date' => date('Y-m-d H:i:s', $mtime),
+                    'name'    => $basename,
+                    'date'    => date('Y-m-d H:i:s', $mtime),
                     'size_mb' => round($size / self::BYTES_PER_MB, 2),
                 ];
             }
@@ -100,13 +100,13 @@ final class LogCleanupService
             $type = $this->getLogType($basename);
             if (!isset($stats['files_by_type'][$type])) {
                 $stats['files_by_type'][$type] = [
-                    'count' => 0,
+                    'count'      => 0,
                     'size_bytes' => 0,
-                    'size_mb' => 0,
+                    'size_mb'    => 0,
                 ];
             }
 
-            $stats['files_by_type'][$type]['count']++;
+            ++$stats['files_by_type'][$type]['count'];
             $stats['files_by_type'][$type]['size_bytes'] += $size;
             $stats['files_by_type'][$type]['size_mb'] = round(
                 $stats['files_by_type'][$type]['size_bytes'] / self::BYTES_PER_MB,
@@ -138,14 +138,15 @@ final class LogCleanupService
         $cutoffTime = time() - ($daysToKeep * 24 * 60 * 60);
 
         $result = [
-            'files_removed' => 0,
-            'bytes_freed' => 0,
+            'files_removed'   => 0,
+            'bytes_freed'     => 0,
             'files_processed' => [],
-            'errors' => [],
+            'errors'          => [],
         ];
 
         if (!is_dir($logPath)) {
             $result['errors'][] = "Log directory does not exist: {$logPath}";
+
             return $result;
         }
 
@@ -169,21 +170,21 @@ final class LogCleanupService
 
             if ($mtime < $cutoffTime) {
                 $result['files_processed'][] = [
-                    'name' => $basename,
-                    'date' => date('Y-m-d H:i:s', $mtime),
+                    'name'    => $basename,
+                    'date'    => date('Y-m-d H:i:s', $mtime),
                     'size_mb' => round($size / self::BYTES_PER_MB, 2),
-                    'action' => $dryRun ? 'would_remove' : 'removed',
+                    'action'  => $dryRun ? 'would_remove' : 'removed',
                 ];
 
                 if (!$dryRun) {
                     if (unlink($file)) {
-                        $result['files_removed']++;
+                        ++$result['files_removed'];
                         $result['bytes_freed'] += $size;
 
                         $this->logger->info('Log file cleaned up', [
-                            'file' => $basename,
+                            'file'     => $basename,
                             'age_days' => round((time() - $mtime) / (24 * 60 * 60)),
-                            'size_mb' => round($size / self::BYTES_PER_MB, 2),
+                            'size_mb'  => round($size / self::BYTES_PER_MB, 2),
                         ]);
                     } else {
                         $result['errors'][] = "Failed to remove: {$basename}";
@@ -195,9 +196,9 @@ final class LogCleanupService
         if (!$dryRun && $result['files_removed'] > 0) {
             $this->logger->info('Log cleanup completed', [
                 'files_removed' => $result['files_removed'],
-                'bytes_freed' => $result['bytes_freed'],
-                'mb_freed' => round($result['bytes_freed'] / self::BYTES_PER_MB, 2),
-                'days_to_keep' => $daysToKeep,
+                'bytes_freed'   => $result['bytes_freed'],
+                'mb_freed'      => round($result['bytes_freed'] / self::BYTES_PER_MB, 2),
+                'days_to_keep'  => $daysToKeep,
             ]);
         }
 
@@ -221,18 +222,20 @@ final class LogCleanupService
 
         $result = [
             'files_compressed' => 0,
-            'bytes_saved' => 0,
-            'files_processed' => [],
-            'errors' => [],
+            'bytes_saved'      => 0,
+            'files_processed'  => [],
+            'errors'           => [],
         ];
 
         if (!function_exists('gzencode')) {
             $result['errors'][] = 'GZ compression not available';
+
             return $result;
         }
 
         if (!is_dir($logPath)) {
             $result['errors'][] = "Log directory does not exist: {$logPath}";
+
             return $result;
         }
 
@@ -283,15 +286,15 @@ final class LogCleanupService
                         $compressedSize = filesize($compressedFile);
                         $saved = $originalSize - $compressedSize;
 
-                        $result['files_compressed']++;
+                        ++$result['files_compressed'];
                         $result['bytes_saved'] += $saved;
 
                         $this->logger->info('Log file compressed', [
-                            'file' => $basename,
-                            'original_size_mb' => round($originalSize / self::BYTES_PER_MB, 2),
+                            'file'               => $basename,
+                            'original_size_mb'   => round($originalSize / self::BYTES_PER_MB, 2),
                             'compressed_size_mb' => round($compressedSize / self::BYTES_PER_MB, 2),
-                            'bytes_saved' => $saved,
-                            'compression_ratio' => round(($saved / $originalSize) * 100, 1) . '%',
+                            'bytes_saved'        => $saved,
+                            'compression_ratio'  => round(($saved / $originalSize) * 100, 1) . '%',
                         ]);
                     } else {
                         $result['errors'][] = "Failed to remove original: {$basename}";
@@ -300,10 +303,10 @@ final class LogCleanupService
                 }
 
                 $result['files_processed'][] = [
-                    'name' => $basename,
-                    'date' => date('Y-m-d H:i:s', $mtime),
+                    'name'    => $basename,
+                    'date'    => date('Y-m-d H:i:s', $mtime),
                     'size_mb' => round($originalSize / self::BYTES_PER_MB, 2),
-                    'action' => $dryRun ? 'would_compress' : 'compressed',
+                    'action'  => $dryRun ? 'would_compress' : 'compressed',
                 ];
             }
         }
@@ -348,8 +351,8 @@ final class LogCleanupService
     {
         $stats = $this->getLogStats();
         $health = [
-            'status' => 'healthy',
-            'issues' => [],
+            'status'          => 'healthy',
+            'issues'          => [],
             'recommendations' => [],
         ];
 
@@ -376,7 +379,7 @@ final class LogCleanupService
                 $ageInDays = (time() - $oldestDate) / (24 * 60 * 60);
 
                 if ($ageInDays > 60) {
-                    $health['issues'][] = "Very old log file: {$stats['oldest_file']['name']} (" . round($ageInDays) . " days)";
+                    $health['issues'][] = "Very old log file: {$stats['oldest_file']['name']} (" . round($ageInDays) . ' days)';
                     $health['recommendations'][] = 'Clean up old log files';
                 }
             }

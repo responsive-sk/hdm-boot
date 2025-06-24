@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Template\Infrastructure\Services;
 
 use HdmBoot\Modules\Core\Session\Services\CsrfService;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use ResponsiveSk\Slim4Paths\Paths;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Simple Template Renderer.

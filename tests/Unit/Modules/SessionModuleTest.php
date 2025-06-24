@@ -11,7 +11,7 @@ use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Session Module Test.
- * 
+ *
  * Tests the Session module in isolation with mocked dependencies.
  */
 class SessionModuleTest extends ModuleTestCase
@@ -38,10 +38,10 @@ class SessionModuleTest extends ModuleTestCase
             'settings' => [
                 'app' => [
                     'name' => 'MVA Bootstrap Test',
-                    'env' => 'testing',
+                    'env'  => 'testing',
                 ],
                 'paths' => [
-                    'root' => dirname(__DIR__, 3),
+                    'root'    => dirname(__DIR__, 3),
                     'modules' => dirname(__DIR__, 3) . '/src/Modules/Core',
                 ],
                 'session' => [

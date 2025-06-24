@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Security\Services;
 
-use InvalidArgumentException;
 use HdmBoot\Modules\Core\Security\Contracts\Services\AuthenticationServiceInterface;
-use HdmBoot\Modules\Core\Security\Services\JwtService;
-use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
 use HdmBoot\Modules\Core\User\Domain\Entities\User;
 use HdmBoot\Modules\Core\User\Services\UserService;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -241,7 +239,7 @@ final class AuthenticationService implements AuthenticationServiceInterface
         // In production, you would add the token to a blacklist/cache
         $this->logger->info('Token invalidated', [
             'token_type' => gettype($token),
-            'action' => 'logout',
+            'action'     => 'logout',
         ]);
     }
 }

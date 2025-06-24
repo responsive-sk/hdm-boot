@@ -4,8 +4,8 @@
 declare(strict_types=1);
 
 /**
- * Blog Module Test Runner
- * 
+ * Blog Module Test Runner.
+ *
  * Uses responsive-sk/slim4-paths for safe path handling
  */
 
@@ -53,7 +53,7 @@ $command = escapeshellarg($phpunitBin) . ' --configuration=' . escapeshellarg($p
 
 // Add coverage if requested
 if (in_array('--coverage', $argv, true)) {
-    $coverageDir = $paths->join($moduleDir, 'coverage');
+    $coverageDir = $moduleDir . '/coverage';
     $command .= ' --coverage-html=' . escapeshellarg($coverageDir);
     echo "📊 Coverage report will be generated in: {$coverageDir}\n\n";
 }

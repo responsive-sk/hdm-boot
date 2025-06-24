@@ -150,11 +150,12 @@ final readonly class TemplateName
     {
         // Validate directory for security (already validated in constructor, but double-check)
         if (str_contains($directory, '..') || str_contains($filename, '..')) {
-            throw new \InvalidArgumentException("Path traversal detected in template path");
+            throw new \InvalidArgumentException('Path traversal detected in template path');
         }
 
         // Use PathsFactory for secure cross-platform path joining
         $paths = PathsFactory::create();
+
         return $paths->getPath($directory, $filename);
     }
 }

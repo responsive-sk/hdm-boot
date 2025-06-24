@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Logout Action (API)
+ * Logout Action (API).
  *
  * Handles API logout requests with JSON responses.
  */
@@ -50,10 +50,10 @@ final class LogoutAction
                 }
 
                 $this->securityLogger->info('🔐 API logout successful', [
-                    'event' => 'api_logout_success',
+                    'event'   => 'api_logout_success',
                     'user_id' => $userId,
-                    'email' => $email,
-                    'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                    'email'   => $email,
+                    'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
                 ]);
             }
 
@@ -69,6 +69,7 @@ final class LogoutAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
@@ -79,9 +80,9 @@ final class LogoutAction
             ]);
 
             $this->securityLogger->error('🚨 API logout error', [
-                'event' => 'api_logout_error',
+                'event'   => 'api_logout_error',
                 'message' => $e->getMessage(),
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             // Still return success to prevent information leakage

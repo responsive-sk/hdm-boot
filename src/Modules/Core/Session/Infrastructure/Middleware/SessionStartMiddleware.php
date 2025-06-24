@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Session\Infrastructure\Middleware;
 
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /**
  * Session Start Middleware.
@@ -34,8 +34,8 @@ final class SessionStartMiddleware implements MiddlewareInterface
             $this->session->start();
 
             $this->logger->debug('Session started by SessionStartMiddleware', [
-                'session_id' => $this->session->getId(),
-                'request_uri' => $request->getUri()->getPath(),
+                'session_id'     => $this->session->getId(),
+                'request_uri'    => $request->getUri()->getPath(),
                 'request_method' => $request->getMethod(),
             ]);
         }
@@ -45,7 +45,7 @@ final class SessionStartMiddleware implements MiddlewareInterface
 
         // Log session info after request processing
         $this->logger->debug('Session info after request processing', [
-            'session_id' => $this->session->getId(),
+            'session_id'      => $this->session->getId(),
             'session_started' => $this->session->isStarted(),
         ]);
 

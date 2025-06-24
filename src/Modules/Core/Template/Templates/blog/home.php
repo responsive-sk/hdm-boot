@@ -15,21 +15,21 @@ $tags = $tagsArray;
 
 <div class="stats">
     <div class="stat">
-        <div class="stat-number"><?= $totalArticles ?></div>
+        <div class="stat-number"><?= $totalArticles; ?></div>
         <div class="stat-label">Total Articles</div>
     </div>
     <div class="stat">
-        <div class="stat-number"><?= $publishedCount ?></div>
+        <div class="stat-number"><?= $publishedCount; ?></div>
         <div class="stat-label">Published</div>
     </div>
     <div class="stat">
-        <?php // @phpstan-ignore-next-line function.alreadyNarrowedType ?>
-        <div class="stat-number"><?= is_countable($categories) ? count($categories) : 0 ?></div>
+        <?php // @phpstan-ignore-next-line function.alreadyNarrowedType?>
+        <div class="stat-number"><?= is_countable($categories) ? count($categories) : 0; ?></div>
         <div class="stat-label">Categories</div>
     </div>
     <div class="stat">
-        <?php // @phpstan-ignore-next-line function.alreadyNarrowedType ?>
-        <div class="stat-number"><?= is_countable($tags) ? count($tags) : 0 ?></div>
+        <?php // @phpstan-ignore-next-line function.alreadyNarrowedType?>
+        <div class="stat-number"><?= is_countable($tags) ? count($tags) : 0; ?></div>
         <div class="stat-label">Tags</div>
     </div>
 </div>
@@ -63,6 +63,7 @@ Hello world! This is my first article.</pre>
             return $default;
         }
         $value = $obj->getAttribute($key);
+
         return is_string($value) ? $value : $default;
     }
 
@@ -73,6 +74,7 @@ Hello world! This is my first article.</pre>
             return $default;
         }
         $value = $obj->getAttribute($key);
+
         return is_numeric($value) ? (int) $value : $default;
     }
     ?>
@@ -82,41 +84,41 @@ Hello world! This is my first article.</pre>
     foreach ($articlesIterable as $article) : ?>
         <article class="article">
             <h2>
-                <a href="/blog/article/<?= urlencode(safeGetAttribute($article, 'slug')) ?>">
-                    <?= htmlspecialchars(safeGetAttribute($article, 'title', 'Untitled')) ?>
+                <a href="/blog/article/<?= urlencode(safeGetAttribute($article, 'slug')); ?>">
+                    <?= htmlspecialchars(safeGetAttribute($article, 'title', 'Untitled')); ?>
                 </a>
             </h2>
 
             <div class="meta">
-                By <?= htmlspecialchars(safeGetAttribute($article, 'author', 'Unknown')) ?>
+                By <?= htmlspecialchars(safeGetAttribute($article, 'author', 'Unknown')); ?>
                 • <?php
                     $publishedAt = safeGetAttribute($article, 'published_at', 'now');
-                    $timestamp = strtotime($publishedAt);
-                    echo date('F j, Y', $timestamp !== false ? $timestamp : time());
-                ?>
-                • <?= safeGetNumericAttribute($article, 'reading_time', 1) ?> min read
+        $timestamp = strtotime($publishedAt);
+        echo date('F j, Y', $timestamp !== false ? $timestamp : time());
+        ?>
+                • <?= safeGetNumericAttribute($article, 'reading_time', 1); ?> min read
                 <?php $category = safeGetAttribute($article, 'category'); ?>
                 <?php if ($category) : ?>
-                    • <?= ucfirst($category) ?>
+                    • <?= ucfirst($category); ?>
                 <?php endif; ?>
             </div>
 
             <?php $excerpt = safeGetAttribute($article, 'excerpt'); ?>
             <?php if ($excerpt) : ?>
-                <div class="excerpt"><?= htmlspecialchars($excerpt) ?></div>
+                <div class="excerpt"><?= htmlspecialchars($excerpt); ?></div>
             <?php endif; ?>
 
-            <a href="/blog/article/<?= urlencode(safeGetAttribute($article, 'slug')) ?>">Read more →</a>
+            <a href="/blog/article/<?= urlencode(safeGetAttribute($article, 'slug')); ?>">Read more →</a>
 
             <?php
             $articleTags = is_object($article) && method_exists($article, 'getAttribute')
-                ? $article->getAttribute('tags')
-                : null;
-            if (is_array($articleTags)) : ?>
+        ? $article->getAttribute('tags')
+        : null;
+        if (is_array($articleTags)) : ?>
                 <div class="tags">
                     <?php foreach ($articleTags as $tag) : ?>
                         <?php if (is_string($tag)) : ?>
-                            <span class="tag"><?= htmlspecialchars($tag) ?></span>
+                            <span class="tag"><?= htmlspecialchars($tag); ?></span>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
@@ -130,19 +132,19 @@ Hello world! This is my first article.</pre>
                 <h3>Categories</h3>
                 <ul>
                     <?php
-                    $categoriesIterable = is_iterable($categories) ? $categories : [];
-                    foreach ($categoriesIterable as $category) : ?>
+                $categoriesIterable = is_iterable($categories) ? $categories : [];
+                foreach ($categoriesIterable as $category) : ?>
                         <?php if (is_string($category)) : ?>
                             <?php
-                            $categoryCounts = $categoryCounts ?? [];
+                        $categoryCounts ??= [];
                             $categoryData = is_array($categoryCounts) && isset($categoryCounts[$category])
                                 ? $categoryCounts[$category]
                                 : [];
                             $count = is_array($categoryData) ? count($categoryData) : 0;
                             ?>
                             <li>
-                                <a href="/blog/category/<?= urlencode($category) ?>">
-                                    <?= ucfirst($category) ?> (<?= $count ?>)
+                                <a href="/blog/category/<?= urlencode($category); ?>">
+                                    <?= ucfirst($category); ?> (<?= $count; ?>)
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -155,9 +157,9 @@ Hello world! This is my first article.</pre>
                 <div class="tags">
                     <?php
                     $tagsArray = is_array($tags) ? array_slice($tags, 0, 10) : [];
-                    foreach ($tagsArray as $tag) : ?>
+                foreach ($tagsArray as $tag) : ?>
                         <?php if (is_string($tag)) : ?>
-                            <span class="tag"><?= htmlspecialchars($tag) ?></span>
+                            <span class="tag"><?= htmlspecialchars($tag); ?></span>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>

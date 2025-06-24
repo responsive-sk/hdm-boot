@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\Tests\Unit\Factories;
 
+use HdmBoot\Modules\Core\Database\Infrastructure\Factories\RepositoryFactory;
 use HdmBoot\Modules\Core\User\Repository\SqliteUserRepository;
 use HdmBoot\Modules\Core\User\Repository\UserRepositoryInterface;
-use HdmBoot\Modules\Core\Database\Infrastructure\Factories\RepositoryFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,16 +18,17 @@ use PHPUnit\Framework\TestCase;
 final class RepositoryFactoryTest extends TestCase
 {
     private RepositoryFactory $factory;
+
     private \PDO $pdo;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create in-memory SQLite for testing
         $this->pdo = new \PDO('sqlite::memory:');
         $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        
+
         // Create factory with SQLite type
         $this->factory = new RepositoryFactory('sqlite', 'pdo');
     }
@@ -36,7 +37,7 @@ final class RepositoryFactoryTest extends TestCase
     public function factoryCreatesCorrectRepositoryType(): void
     {
         $repository = $this->factory->createUserRepository($this->pdo);
-        
+
         $this->assertInstanceOf(UserRepositoryInterface::class, $repository);
         $this->assertInstanceOf(SqliteUserRepository::class, $repository);
     }
@@ -57,7 +58,7 @@ final class RepositoryFactoryTest extends TestCase
     public function factoryReturnsSupportedTypes(): void
     {
         $supportedTypes = $this->factory->getSupportedTypes();
-        
+
         $this->assertIsArray($supportedTypes);
         $this->assertContains('sqlite', $supportedTypes);
         $this->assertContains('mysql', $supportedTypes);
@@ -78,10 +79,10 @@ final class RepositoryFactoryTest extends TestCase
     public function factoryThrowsExceptionForUnsupportedType(): void
     {
         $factory = new RepositoryFactory('invalid', 'pdo');
-        
+
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported repository type: invalid');
-        
+
         $factory->createUserRepository($this->pdo);
     }
 
@@ -90,7 +91,7 @@ final class RepositoryFactoryTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('PDO is required for SQLite repository');
-        
+
         $this->factory->createUserRepository();
     }
 
@@ -98,10 +99,10 @@ final class RepositoryFactoryTest extends TestCase
     public function factoryThrowsExceptionForUnimplementedTypes(): void
     {
         $factory = new RepositoryFactory('doctrine', 'doctrine');
-        
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Doctrine User Repository not implemented yet');
-        
+
         $factory->createUserRepository(null, $this->createMock(\HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface::class));
     }
 
@@ -110,7 +111,7 @@ final class RepositoryFactoryTest extends TestCase
     {
         $mysqlFactory = new RepositoryFactory('mysql', 'pdo');
         $this->assertSame('mysql', $mysqlFactory->getRepositoryType());
-        
+
         $doctrineFactory = new RepositoryFactory('doctrine', 'doctrine');
         $this->assertSame('doctrine', $doctrineFactory->getRepositoryType());
         $this->assertSame('doctrine', $doctrineFactory->getDatabaseManager());
@@ -121,10 +122,10 @@ final class RepositoryFactoryTest extends TestCase
     {
         // Test that factory properly abstracts repository creation
         $repository = $this->factory->createUserRepository($this->pdo);
-        
+
         // Should be able to use repository through interface
         $this->assertInstanceOf(UserRepositoryInterface::class, $repository);
-        
+
         // Should have all required methods
         $this->assertTrue(method_exists($repository, 'findById'));
         $this->assertTrue(method_exists($repository, 'findByEmail'));

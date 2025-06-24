@@ -13,7 +13,9 @@ namespace HdmBoot\SharedKernel\Events;
 abstract class AbstractSystemEvent extends AbstractDomainEvent implements SystemEvent
 {
     private readonly int $priority;
+
     private readonly bool $async;
+
     /** @var array<string, mixed> */
     private readonly array $context;
 

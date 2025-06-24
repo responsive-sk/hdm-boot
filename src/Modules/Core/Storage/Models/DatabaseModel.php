@@ -6,8 +6,8 @@ namespace HdmBoot\Modules\Core\Storage\Models;
 
 use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
 use HdmBoot\Modules\Core\Storage\Drivers\SqliteDriver;
-use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
 use HdmBoot\Modules\Core\Storage\Services\DatabaseManager;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
 use PDO;
 
 /**
@@ -93,6 +93,7 @@ abstract class DatabaseModel
         }
 
         $className = basename(str_replace('\\', '/', static::class));
+
         return static::pluralize(static::snakeCase($className));
     }
 
@@ -142,6 +143,7 @@ abstract class DatabaseModel
         if (static::$storageService === null) {
             static::$storageService = new FileStorageService();
         }
+
         return static::$storageService;
     }
 
@@ -163,6 +165,7 @@ abstract class DatabaseModel
         foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
         }
+
         return $this;
     }
 
@@ -172,6 +175,7 @@ abstract class DatabaseModel
     public function setAttribute(string $key, mixed $value): self
     {
         $this->attributes[$key] = $value;
+
         return $this;
     }
 
@@ -314,6 +318,7 @@ abstract class DatabaseModel
         // @phpstan-ignore-next-line
         $model = new static($attributes);
         $model->save();
+
         return $model;
     }
 
@@ -358,6 +363,7 @@ abstract class DatabaseModel
     protected static function snakeCase(string $value): string
     {
         $result = preg_replace('/(?<!^)[A-Z]/', '_$0', $value);
+
         return strtolower($result ?? $value);
     }
 
@@ -372,6 +378,7 @@ abstract class DatabaseModel
         if (str_ends_with($value, 's') || str_ends_with($value, 'x') || str_ends_with($value, 'ch') || str_ends_with($value, 'sh')) {
             return $value . 'es';
         }
+
         return $value . 's';
     }
 

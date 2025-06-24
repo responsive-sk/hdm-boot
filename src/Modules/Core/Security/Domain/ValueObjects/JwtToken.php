@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace HdmBoot\Modules\Core\Security\Domain\ValueObjects;
 
 /**
- * JWT Token Value Object
+ * JWT Token Value Object.
  *
  * Represents a JSON Web Token with its payload and metadata.
  */
@@ -59,6 +59,7 @@ final class JwtToken
     public function getUserId(): ?string
     {
         $userId = $this->payload['user_id'] ?? null;
+
         return is_string($userId) ? $userId : null;
     }
 
@@ -68,6 +69,7 @@ final class JwtToken
     public function getUserEmail(): ?string
     {
         $email = $this->payload['email'] ?? null;
+
         return is_string($email) ? $email : null;
     }
 
@@ -77,6 +79,7 @@ final class JwtToken
     public function getUserRole(): ?string
     {
         $role = $this->payload['role'] ?? null;
+
         return is_string($role) ? $role : null;
     }
 
@@ -125,6 +128,7 @@ final class JwtToken
         if (!is_string($offset) && !is_int($offset)) {
             return false;
         }
+
         return array_key_exists($offset, $this->payload);
     }
 
@@ -144,8 +148,8 @@ final class JwtToken
     public function toArray(): array
     {
         return [
-            'token' => $this->token,
-            'payload' => $this->payload,
+            'token'      => $this->token,
+            'payload'    => $this->payload,
             'expires_at' => $this->expiresAt->format('Y-m-d H:i:s'),
             'expires_in' => $this->getTimeToExpiration(),
             'is_expired' => $this->isExpired(),

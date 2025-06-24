@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?= htmlspecialchars($description ?? 'HDM Boot Blog - Articles about Hexagonal Architecture, Domain-Driven Design, and modern PHP development with enterprise patterns.') ?>">
+    <meta name="description" content="<?= htmlspecialchars(is_string($description ?? null) ? $description : 'HDM Boot Blog - Articles about Hexagonal Architecture, Domain-Driven Design, and modern PHP development with enterprise patterns.'); ?>">
     <meta name="keywords" content="HDM Boot, PHP blog, Hexagonal Architecture, DDD, Domain-Driven Design, enterprise PHP, software architecture">
     <meta name="author" content="HDM Boot Team">
     <meta name="robots" content="index, follow">
 
     <!-- Open Graph -->
-    <meta property="og:type" content="<?= isset($article) ? 'article' : 'website' ?>">
-    <meta property="og:title" content="<?= htmlspecialchars(is_string($title ?? null) ? $title : 'HDM Boot Blog') ?>">
-    <meta property="og:description" content="<?= htmlspecialchars($description ?? 'HDM Boot Blog - Articles about modern PHP development') ?>">
+    <meta property="og:type" content="<?= isset($article) ? 'article' : 'website'; ?>">
+    <meta property="og:title" content="<?= htmlspecialchars(is_string($title ?? null) ? $title : 'HDM Boot Blog'); ?>">
+    <meta property="og:description" content="<?= htmlspecialchars(is_string($description ?? null) ? $description : 'HDM Boot Blog - Articles about modern PHP development'); ?>">
     <meta property="og:site_name" content="HDM Boot Blog">
 
-    <title><?= htmlspecialchars(is_string($title ?? null) ? $title : 'HDM Boot Blog') ?></title>
+    <title><?= htmlspecialchars(is_string($title ?? null) ? $title : 'HDM Boot Blog'); ?></title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; }
@@ -115,7 +115,7 @@
     </header>
 
     <div class="container">
-        <?= is_string($content ?? null) ? $content : '' ?>
+        <?= is_string($content ?? null) ? $content : ''; ?>
     </div>
 </body>
 </html>

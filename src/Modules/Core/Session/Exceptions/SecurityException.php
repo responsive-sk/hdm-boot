@@ -45,9 +45,9 @@ class SecurityException extends RuntimeException
     {
         return match ($this->getSecurityType()) {
             SecurityType::CSRF_TOKEN_INVALID => 'CSRF token validation failed. Please refresh the page and try again.',
-            SecurityType::SESSION_EXPIRED => 'Your session has expired. Please log in again.',
-            SecurityType::SESSION_INVALID => 'Invalid session. Please log in again.',
-            default => 'Security check failed. Please try again.',
+            SecurityType::SESSION_EXPIRED    => 'Your session has expired. Please log in again.',
+            SecurityType::SESSION_INVALID    => 'Invalid session. Please log in again.',
+            default                          => 'Security check failed. Please try again.',
         };
     }
 

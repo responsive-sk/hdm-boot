@@ -13,10 +13,10 @@ use HdmBoot\Modules\Core\Template\Infrastructure\Engines\TwigTemplateEngine;
 use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use HdmBoot\SharedKernel\Events\ModuleEventBus;
 use HdmBoot\SharedKernel\Services\PathsFactory;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
 use ResponsiveSk\Slim4Paths\Paths;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /*
  * Template Module Configuration.
@@ -135,6 +135,7 @@ return [
         TemplateRendererInterface::class => function (Container $container): TemplateRendererInterface {
             $templateService = $container->get(TemplateService::class);
             assert($templateService instanceof TemplateService);
+
             return $templateService;
         },
 

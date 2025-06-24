@@ -22,7 +22,7 @@ final class SecurityException extends ProblemDetailsException
         ?string $instance = null
     ): self {
         $extensions = $retryAfter ? ['retry_after' => $retryAfter] : [];
-        
+
         $problemDetails = ProblemDetails::custom(
             type: 'https://httpstatuses.com/429',
             title: 'Too Many Requests',

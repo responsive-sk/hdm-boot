@@ -25,8 +25,11 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 abstract class TestCase extends PHPUnitTestCase
 {
     protected App $app;
+
     protected SlimApp $slimApp;
+
     protected Container $container;
+
     protected DatabaseManager $databaseManager;
 
     protected function setUp(): void
@@ -186,7 +189,7 @@ abstract class TestCase extends PHPUnitTestCase
     protected function loginAndGetToken(string $email = 'admin@example.com', string $password = 'Password123'): string
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => $email,
+            'email'    => $email,
             'password' => $password,
         ]);
 
@@ -209,7 +212,7 @@ abstract class TestCase extends PHPUnitTestCase
         ?string $token = null,
         array $data = []
     ): ServerRequestInterface {
-        $token = $token ?? $this->loginAndGetToken();
+        $token ??= $this->loginAndGetToken();
         $headers = ['Authorization' => 'Bearer ' . $token];
 
         if (!empty($data)) {

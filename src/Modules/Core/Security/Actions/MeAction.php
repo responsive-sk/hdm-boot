@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Me Action (API)
+ * Me Action (API).
  *
  * Returns current authenticated user information.
  */
@@ -31,8 +31,8 @@ final class MeAction
 
             if (!$user) {
                 $errorData = [
-                    'success' => false,
-                    'message' => 'User not authenticated',
+                    'success'    => false,
+                    'message'    => 'User not authenticated',
                     'error_code' => 'NOT_AUTHENTICATED',
                 ];
 
@@ -42,6 +42,7 @@ final class MeAction
                 }
 
                 $response->getBody()->write($jsonResponse);
+
                 return $response
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus(401);
@@ -88,13 +89,13 @@ final class MeAction
             $responseData = [
                 'success' => true,
                 'message' => 'User information retrieved successfully',
-                'data' => [
+                'data'    => [
                     'user' => [
-                        'id' => $userData['id'] ?? '',
-                        'email' => $userData['email'] ?? '',
-                        'name' => $userData['name'] ?? '',
-                        'role' => $userData['role'] ?? '',
-                        'status' => $userData['status'] ?? '',
+                        'id'         => $userData['id'] ?? '',
+                        'email'      => $userData['email'] ?? '',
+                        'name'       => $userData['name'] ?? '',
+                        'role'       => $userData['role'] ?? '',
+                        'status'     => $userData['status'] ?? '',
                         'created_at' => $userData['created_at'] ?? null,
                         'updated_at' => $userData['updated_at'] ?? null,
                     ],
@@ -108,6 +109,7 @@ final class MeAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
@@ -115,12 +117,12 @@ final class MeAction
             // Log error
             $this->logger->error('Error in MeAction', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'trace'   => $e->getTraceAsString(),
             ]);
 
             $errorData = [
-                'success' => false,
-                'message' => 'Failed to retrieve user information',
+                'success'    => false,
+                'message'    => 'Failed to retrieve user information',
                 'error_code' => 'SYSTEM_ERROR',
             ];
 
@@ -130,6 +132,7 @@ final class MeAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

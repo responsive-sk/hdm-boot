@@ -52,8 +52,8 @@ return [
 
         return match ($environment) {
             'development' => \ResponsiveSk\Slim4Session\SessionFactory::createForDevelopment($sessionConfig),
-            'testing' => \ResponsiveSk\Slim4Session\SessionFactory::createForTesting(),
-            default => \ResponsiveSk\Slim4Session\SessionFactory::createForProduction($sessionConfig),
+            'testing'     => \ResponsiveSk\Slim4Session\SessionFactory::createForTesting(),
+            default       => \ResponsiveSk\Slim4Session\SessionFactory::createForProduction($sessionConfig),
         };
     },
 

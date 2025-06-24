@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\Helpers;
 
-use InvalidArgumentException;
 use HdmBoot\SharedKernel\Services\PathsFactory;
+use InvalidArgumentException;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /**
@@ -248,8 +248,6 @@ final class SecurePathHelper
             $this->validatePathTraversal($decodedPath);
         }
     }
-
-
 
     /**
      * Sanitize filename for safe storage.

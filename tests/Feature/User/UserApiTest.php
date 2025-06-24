@@ -113,10 +113,10 @@ class UserApiTest extends TestCase
         $uniqueEmail = 'newuser' . time() . '@example.com';
 
         $userData = [
-            'email' => $uniqueEmail,
-            'name' => 'New User',
+            'email'    => $uniqueEmail,
+            'name'     => 'New User',
             'password' => 'NewPassword123',
-            'role' => 'user',
+            'role'     => 'user',
         ];
 
         $request = $this->createAuthenticatedRequest('POST', '/api/users', null, $userData);
@@ -137,8 +137,8 @@ class UserApiTest extends TestCase
     public function testCreateUserWithInvalidData(): void
     {
         $userData = [
-            'email' => 'invalid-email',
-            'name' => '',
+            'email'    => 'invalid-email',
+            'name'     => '',
             'password' => '123', // Too short
         ];
 
@@ -154,8 +154,8 @@ class UserApiTest extends TestCase
     public function testCreateUserWithDuplicateEmail(): void
     {
         $userData = [
-            'email' => 'admin@example.com', // Already exists
-            'name' => 'Duplicate User',
+            'email'    => 'admin@example.com', // Already exists
+            'name'     => 'Duplicate User',
             'password' => 'Password123',
         ];
 
@@ -168,8 +168,8 @@ class UserApiTest extends TestCase
     public function testCreateUserWithoutAuthentication(): void
     {
         $userData = [
-            'email' => 'test@example.com',
-            'name' => 'Test User',
+            'email'    => 'test@example.com',
+            'name'     => 'Test User',
             'password' => 'Password123',
         ];
 
@@ -219,7 +219,7 @@ class UserApiTest extends TestCase
         $expectedFields = [
             'id', 'email', 'name', 'role', 'status', 'email_verified',
             'last_login_at', 'login_count', 'is_active', 'is_admin',
-            'is_editor', 'created_at', 'updated_at'
+            'is_editor', 'created_at', 'updated_at',
         ];
 
         foreach ($expectedFields as $field) {

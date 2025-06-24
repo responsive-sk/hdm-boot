@@ -28,11 +28,11 @@ $testDirs = [
 
 foreach ($testDirs as $dir) {
     if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+        mkdir($dir, 0o755, true);
     }
 }
 
 echo "🧪 Test environment initialized\n";
 echo "📁 Test directories created\n";
-echo "🔧 Environment: " . ($_ENV['APP_ENV'] ?? 'unknown') . "\n";
-echo "🗄️ Database: " . ($_ENV['DATABASE_URL'] ?? 'unknown') . "\n\n";
+echo '🔧 Environment: ' . ($_ENV['APP_ENV'] ?? 'unknown') . "\n";
+echo '🗄️ Database: ' . ($_ENV['DATABASE_URL'] ?? 'unknown') . "\n\n";

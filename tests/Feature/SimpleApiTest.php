@@ -17,7 +17,7 @@ class SimpleApiTest extends TestCase
     public function testLoginEndpoint(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'admin@example.com',
+            'email'    => 'admin@example.com',
             'password' => 'Password123',
         ]);
 
@@ -78,7 +78,7 @@ class SimpleApiTest extends TestCase
     public function testInvalidLogin(): void
     {
         $request = $this->createJsonRequest('POST', '/api/auth/login', [
-            'email' => 'admin@example.com',
+            'email'    => 'admin@example.com',
             'password' => 'WrongPassword',
         ]);
 

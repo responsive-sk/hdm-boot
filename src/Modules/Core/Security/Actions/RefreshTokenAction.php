@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Security\Actions;
 
-use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
-use HdmBoot\Modules\Core\Security\Services\JwtService;
 use HdmBoot\Modules\Core\Security\Exceptions\AuthenticationException;
+use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Refresh Token Action (API)
+ * Refresh Token Action (API).
  *
  * Handles JWT token refresh requests.
  */
@@ -51,18 +50,18 @@ final class RefreshTokenAction
 
             // Log successful token refresh
             $this->securityLogger->info('🔐 Token refresh successful', [
-                'event' => 'token_refresh_success',
+                'event'   => 'token_refresh_success',
                 'user_id' => $newToken->getUserId() ?? 'unknown',
-                'email' => $newToken->getUserEmail() ?? 'unknown',
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'email'   => $newToken->getUserEmail() ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             // Return new token
             $responseData = [
                 'success' => true,
                 'message' => 'Token refreshed successfully',
-                'data' => [
-                    'token' => $newToken->getToken(),
+                'data'    => [
+                    'token'      => $newToken->getToken(),
                     'expires_at' => $newToken->getExpiresAt()->format('Y-m-d H:i:s'),
                     'expires_in' => $newToken->getTimeToExpiration(),
                 ],
@@ -74,20 +73,21 @@ final class RefreshTokenAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
         } catch (AuthenticationException $e) {
             // Invalid or expired refresh token
             $this->securityLogger->warning('🚨 Token refresh failed', [
-                'event' => 'token_refresh_failed',
+                'event'   => 'token_refresh_failed',
                 'message' => $e->getMessage(),
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             $errorData = [
-                'success' => false,
-                'message' => 'Invalid or expired refresh token',
+                'success'    => false,
+                'message'    => 'Invalid or expired refresh token',
                 'error_code' => 'INVALID_REFRESH_TOKEN',
             ];
 
@@ -97,6 +97,7 @@ final class RefreshTokenAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(401);
@@ -107,14 +108,14 @@ final class RefreshTokenAction
             ]);
 
             $this->securityLogger->error('🚨 Token refresh system error', [
-                'event' => 'token_refresh_system_error',
+                'event'   => 'token_refresh_system_error',
                 'message' => $e->getMessage(),
-                'ip' => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
+                'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
             $errorData = [
-                'success' => false,
-                'message' => 'Token refresh failed',
+                'success'    => false,
+                'message'    => 'Token refresh failed',
                 'error_code' => 'SYSTEM_ERROR',
             ];
 
@@ -124,6 +125,7 @@ final class RefreshTokenAction
             }
 
             $response->getBody()->write($jsonResponse);
+
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);

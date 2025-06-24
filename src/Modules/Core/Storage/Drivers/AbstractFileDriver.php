@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\Modules\Core\Storage\Drivers;
 
+use DirectoryIterator;
 use HdmBoot\Modules\Core\Storage\Contracts\StorageDriverInterface;
 use SplFileInfo;
-use DirectoryIterator;
 
 /**
  * Abstract File Driver.
@@ -37,6 +37,7 @@ abstract class AbstractFileDriver implements StorageDriverInterface
         }
 
         $lastModified = $this->getDirectoryLastModified($directory);
+
         return $lastModified > $this->cacheTimestamps[$directory];
     }
 
@@ -46,7 +47,7 @@ abstract class AbstractFileDriver implements StorageDriverInterface
             // Ensure directory exists
             $directory = dirname($filePath);
             if (!is_dir($directory)) {
-                mkdir($directory, 0755, true);
+                mkdir($directory, 0o755, true);
             }
 
             // Generate file content
@@ -79,6 +80,7 @@ abstract class AbstractFileDriver implements StorageDriverInterface
 
                 return $result;
             }
+
             return true;
         } catch (\Exception) {
             return false;

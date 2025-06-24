@@ -54,6 +54,7 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
     {
         try {
             $statement = $this->getConnection()->execute($sql, $params);
+
             return $statement;
         } catch (\Exception $e) {
             throw new RuntimeException('Failed to execute SQL: ' . $e->getMessage(), 0, $e);
@@ -106,6 +107,7 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
                 ->where(['type' => 'table', 'name' => $tableName]);
 
             $result = $query->execute()->fetch();
+
             return $result !== false;
         } catch (\Exception) {
             return false;
@@ -126,14 +128,14 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
             $connection = $this->getConnection();
 
             // Create metadata table
-            $connection->execute("
+            $connection->execute('
                 CREATE TABLE IF NOT EXISTS _database_metadata (
                     key TEXT PRIMARY KEY,
                     value TEXT NOT NULL,
                     created_at TEXT NOT NULL,
                     updated_at TEXT NOT NULL
                 )
-            ");
+            ');
 
             // Insert application metadata
             $connection->execute("
@@ -200,6 +202,7 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
     {
         try {
             $this->getConnection()->execute('SELECT 1');
+
             return true;
         } catch (\Exception) {
             return false;
@@ -264,13 +267,13 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
             }
 
             $config = [
-                'driver' => Sqlite::class,
-                'database' => $this->databaseFile,
-                'encoding' => 'utf8',
-                'timezone' => 'UTC',
-                'flags' => [],
+                'driver'        => Sqlite::class,
+                'database'      => $this->databaseFile,
+                'encoding'      => 'utf8',
+                'timezone'      => 'UTC',
+                'flags'         => [],
                 'cacheMetadata' => true,
-                'log' => false,
+                'log'           => false,
             ];
 
             $connection = new Connection($config);

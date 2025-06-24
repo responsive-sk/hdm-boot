@@ -8,8 +8,6 @@ use HdmBoot\Modules\Core\Security\Actions\LogoutAction;
 use HdmBoot\Modules\Core\Security\Actions\MeAction;
 use HdmBoot\Modules\Core\Security\Actions\RefreshTokenAction;
 use HdmBoot\Modules\Core\Security\Middleware\AuthenticationMiddleware;
-use HdmBoot\Modules\Core\Security\Middleware\AuthorizationMiddleware;
-use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
 use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

@@ -89,14 +89,14 @@ final readonly class TranslationAddedEvent implements DomainEvent
     public function toArray(): array
     {
         return [
-            'event_id' => $this->getEventId(),
-            'event_name' => $this->getEventName(),
-            'version' => $this->getVersion(),
+            'event_id'        => $this->getEventId(),
+            'event_name'      => $this->getEventName(),
+            'version'         => $this->getVersion(),
             'translation_key' => $this->translation->getKey()->toString(),
-            'locale' => $this->translation->getLocale()->toString(),
-            'value' => $this->translation->getValue(),
-            'added_by' => $this->addedBy,
-            'occurred_at' => $this->occurredAt->format('Y-m-d H:i:s'),
+            'locale'          => $this->translation->getLocale()->toString(),
+            'value'           => $this->translation->getValue(),
+            'added_by'        => $this->addedBy,
+            'occurred_at'     => $this->occurredAt->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -108,10 +108,10 @@ final readonly class TranslationAddedEvent implements DomainEvent
     public function toLogArray(): array
     {
         return [
-            'event' => $this->getEventName(),
+            'event'           => $this->getEventName(),
             'translation_key' => $this->translation->getKey()->toString(),
-            'locale' => $this->translation->getLocale()->toString(),
-            'added_by' => $this->addedBy,
+            'locale'          => $this->translation->getLocale()->toString(),
+            'added_by'        => $this->addedBy,
         ];
     }
 }

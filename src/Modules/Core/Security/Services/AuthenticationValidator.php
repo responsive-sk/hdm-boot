@@ -118,6 +118,7 @@ final class AuthenticationValidator
                     if (!is_array($context) || !isset($context['data']) || !is_array($context['data'])) {
                         return false;
                     }
+
                     return isset($context['data']['password']) && $value === $context['data']['password'];
                 },
                 'message' => 'Passwords do not match',

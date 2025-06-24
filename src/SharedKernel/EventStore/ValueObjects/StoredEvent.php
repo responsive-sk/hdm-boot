@@ -98,7 +98,7 @@ final class StoredEvent
             eventType: get_class($event),
             eventData: $event->toArray(),
             metadata: array_merge([
-                'user_id' => $_SESSION['user_id'] ?? null,
+                'user_id'    => $_SESSION['user_id'] ?? null,
                 'ip_address' => $_SERVER['REMOTE_ADDR'] ?? null,
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,
             ], $metadata),
@@ -116,15 +116,15 @@ final class StoredEvent
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'aggregate_id' => $this->aggregateId,
+            'id'             => $this->id,
+            'aggregate_id'   => $this->aggregateId,
             'aggregate_type' => $this->aggregateType,
-            'event_type' => $this->eventType,
-            'event_data' => json_encode($this->eventData),
-            'metadata' => json_encode($this->metadata),
-            'version' => $this->version,
-            'occurred_at' => $this->occurredAt->format('Y-m-d H:i:s.u'),
-            'stored_at' => $this->storedAt->format('Y-m-d H:i:s.u'),
+            'event_type'     => $this->eventType,
+            'event_data'     => json_encode($this->eventData),
+            'metadata'       => json_encode($this->metadata),
+            'version'        => $this->version,
+            'occurred_at'    => $this->occurredAt->format('Y-m-d H:i:s.u'),
+            'stored_at'      => $this->storedAt->format('Y-m-d H:i:s.u'),
         ];
     }
 

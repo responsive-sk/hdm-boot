@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 use DI\Container;
 use HdmBoot\Modules\Core\Database\Domain\Contracts\DatabaseManagerInterface;
-use HdmBoot\Modules\Core\Database\Infrastructure\Services\DatabaseManager;
 use HdmBoot\Modules\Core\Database\Infrastructure\Services\CakePHPDatabaseManager;
-use Psr\Log\LoggerInterface;
+use HdmBoot\Modules\Core\Database\Infrastructure\Services\DatabaseManager;
 use ResponsiveSk\Slim4Paths\Paths;
 
 /*
@@ -54,6 +53,7 @@ return [
             if (!$manager instanceof DatabaseManagerInterface) {
                 throw new \RuntimeException('DatabaseManager service not properly configured');
             }
+
             return $manager;
         },
 
@@ -63,6 +63,7 @@ return [
             if (!$paths instanceof Paths) {
                 throw new \RuntimeException('Paths service not properly configured');
             }
+
             return new CakePHPDatabaseManager($paths);
         },
 
@@ -72,6 +73,7 @@ return [
             if (!$paths instanceof Paths) {
                 throw new \RuntimeException('Paths service not properly configured');
             }
+
             return new DatabaseManager($paths);
         },
 

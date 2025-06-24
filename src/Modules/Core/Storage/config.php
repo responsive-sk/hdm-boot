@@ -10,50 +10,50 @@
 declare(strict_types=1);
 
 use DI\Container;
-use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
-use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
 use HdmBoot\Modules\Core\Storage\Drivers\JsonDriver;
+use HdmBoot\Modules\Core\Storage\Drivers\MarkdownDriver;
 use HdmBoot\Modules\Core\Storage\Models\Article;
 use HdmBoot\Modules\Core\Storage\Models\Documentation;
+use HdmBoot\Modules\Core\Storage\Services\FileStorageService;
 use ResponsiveSk\Slim4Paths\Paths;
 
 return [
     // === MODULE METADATA ===
 
-    'name' => 'Storage',
-    'version' => '1.0.0',
+    'name'        => 'Storage',
+    'version'     => '1.0.0',
     'description' => 'File-based storage system with multiple drivers',
 
     // === SETTINGS ===
 
     'settings' => [
-        'content_directory' => 'content',
-        'default_driver' => 'markdown',
-        'cache_enabled' => true,
+        'content_directory'       => 'content',
+        'default_driver'          => 'markdown',
+        'cache_enabled'           => true,
         'auto_create_directories' => true,
 
         'drivers' => [
             'markdown' => [
-                'extension' => 'md',
+                'extension'      => 'md',
                 'content_column' => 'content',
             ],
             'json' => [
-                'extension' => 'json',
+                'extension'    => 'json',
                 'pretty_print' => true,
             ],
         ],
 
         'models' => [
             'articles' => [
-                'driver' => 'markdown',
-                'directory' => 'articles',
-                'auto_slug' => true,
+                'driver'            => 'markdown',
+                'directory'         => 'articles',
+                'auto_slug'         => true,
                 'auto_reading_time' => true,
             ],
             'docs' => [
-                'driver' => 'markdown',
-                'directory' => 'docs',
-                'auto_slug' => true,
+                'driver'     => 'markdown',
+                'directory'  => 'docs',
+                'auto_slug'  => true,
                 'navigation' => true,
             ],
         ],
@@ -93,6 +93,7 @@ return [
             return function (array $attributes = []): Article {
                 /** @var array<string, mixed> $typedAttributes */
                 $typedAttributes = $attributes;
+
                 return new Article($typedAttributes);
             };
         },
@@ -102,6 +103,7 @@ return [
             return function (array $attributes = []): Documentation {
                 /** @var array<string, mixed> $typedAttributes */
                 $typedAttributes = $attributes;
+
                 return new Documentation($typedAttributes);
             };
         },
@@ -111,20 +113,20 @@ return [
 
     'public_services' => [
         FileStorageService::class => FileStorageService::class,
-        'storage' => FileStorageService::class,
-        'article.factory' => 'article.factory',
-        'documentation.factory' => 'documentation.factory',
+        'storage'                 => FileStorageService::class,
+        'article.factory'         => 'article.factory',
+        'documentation.factory'   => 'documentation.factory',
     ],
 
     // === EVENT SYSTEM ===
 
     'published_events' => [
-        'storage.file_saved' => 'Fired when a file is saved to storage',
-        'storage.file_deleted' => 'Fired when a file is deleted from storage',
+        'storage.file_saved'    => 'Fired when a file is saved to storage',
+        'storage.file_deleted'  => 'Fired when a file is deleted from storage',
         'storage.cache_cleared' => 'Fired when storage cache is cleared',
-        'article.created' => 'Fired when a new article is created',
-        'article.updated' => 'Fired when an article is updated',
-        'article.published' => 'Fired when an article is published',
+        'article.created'       => 'Fired when a new article is created',
+        'article.updated'       => 'Fired when an article is updated',
+        'article.published'     => 'Fired when an article is published',
         'documentation.created' => 'Fired when new documentation is created',
         'documentation.updated' => 'Fired when documentation is updated',
     ],
@@ -136,14 +138,14 @@ return [
     // === API ENDPOINTS ===
 
     'api_endpoints' => [
-        'GET /api/articles' => 'List all published articles',
-        'GET /api/articles/{slug}' => 'Get specific article by slug',
+        'GET /api/articles'                     => 'List all published articles',
+        'GET /api/articles/{slug}'              => 'Get specific article by slug',
         'GET /api/articles/category/{category}' => 'Get articles by category',
-        'GET /api/articles/tag/{tag}' => 'Get articles by tag',
-        'GET /api/docs' => 'List all documentation',
-        'GET /api/docs/{slug}' => 'Get specific documentation by slug',
-        'GET /api/docs/category/{category}' => 'Get documentation by category',
-        'GET /api/storage/stats' => 'Get storage statistics',
+        'GET /api/articles/tag/{tag}'           => 'Get articles by tag',
+        'GET /api/docs'                         => 'List all documentation',
+        'GET /api/docs/{slug}'                  => 'Get specific documentation by slug',
+        'GET /api/docs/category/{category}'     => 'Get documentation by category',
+        'GET /api/storage/stats'                => 'Get storage statistics',
     ],
 
     // === MIDDLEWARE ===
@@ -155,30 +157,30 @@ return [
     // === PERMISSIONS ===
 
     'permissions' => [
-        'storage.read' => 'Read access to storage files',
-        'storage.write' => 'Write access to storage files',
-        'storage.delete' => 'Delete access to storage files',
-        'articles.read' => 'Read access to articles',
-        'articles.write' => 'Write access to articles',
+        'storage.read'     => 'Read access to storage files',
+        'storage.write'    => 'Write access to storage files',
+        'storage.delete'   => 'Delete access to storage files',
+        'articles.read'    => 'Read access to articles',
+        'articles.write'   => 'Write access to articles',
         'articles.publish' => 'Publish articles',
-        'docs.read' => 'Read access to documentation',
-        'docs.write' => 'Write access to documentation',
+        'docs.read'        => 'Read access to documentation',
+        'docs.write'       => 'Write access to documentation',
     ],
 
     // === CONTENT TYPES ===
 
     'content_types' => [
         'articles' => [
-            'model' => Article::class,
+            'model'     => Article::class,
             'directory' => 'articles',
-            'driver' => 'markdown',
-            'schema' => Article::schema(),
+            'driver'    => 'markdown',
+            'schema'    => Article::schema(),
         ],
         'docs' => [
-            'model' => Documentation::class,
+            'model'     => Documentation::class,
             'directory' => 'docs',
-            'driver' => 'markdown',
-            'schema' => Documentation::schema(),
+            'driver'    => 'markdown',
+            'schema'    => Documentation::schema(),
         ],
     ],
 
@@ -224,7 +226,7 @@ return [
 
             foreach ($directories as $dir) {
                 if (!is_dir($dir)) {
-                    mkdir($dir, 0755, true);
+                    mkdir($dir, 0o755, true);
                 }
             }
 
@@ -236,35 +238,35 @@ return [
             if (is_dir($articlesDir) && is_array($articleFiles) && count($articleFiles) <= 2) {
                 // Create sample article
                 $sampleArticle = <<<'MD'
----
-title: "Welcome to MVA Bootstrap"
-slug: "welcome"
-author: "MVA Team"
-published: true
-published_at: "2024-01-01 12:00:00"
-featured: true
-category: "getting-started"
-tags: ["welcome", "introduction"]
-excerpt: "Welcome to MVA Bootstrap - a modern PHP framework for rapid application development."
----
+                    ---
+                    title: "Welcome to MVA Bootstrap"
+                    slug: "welcome"
+                    author: "MVA Team"
+                    published: true
+                    published_at: "2024-01-01 12:00:00"
+                    featured: true
+                    category: "getting-started"
+                    tags: ["welcome", "introduction"]
+                    excerpt: "Welcome to MVA Bootstrap - a modern PHP framework for rapid application development."
+                    ---
 
-# Welcome to MVA Bootstrap
+                    # Welcome to MVA Bootstrap
 
-This is your first article! MVA Bootstrap provides a powerful file-based storage system that allows you to manage content using simple Markdown files.
+                    This is your first article! MVA Bootstrap provides a powerful file-based storage system that allows you to manage content using simple Markdown files.
 
-## Features
+                    ## Features
 
-- **Markdown Support**: Write content in Markdown with YAML front-matter
-- **File-based Storage**: No database required for content
-- **Git-friendly**: Version control your content easily
-- **Fast Performance**: Built-in caching for optimal speed
+                    - **Markdown Support**: Write content in Markdown with YAML front-matter
+                    - **File-based Storage**: No database required for content
+                    - **Git-friendly**: Version control your content easily
+                    - **Fast Performance**: Built-in caching for optimal speed
 
-## Getting Started
+                    ## Getting Started
 
-To create a new article, simply create a new `.md` file in the `content/articles/` directory with YAML front-matter at the top.
+                    To create a new article, simply create a new `.md` file in the `content/articles/` directory with YAML front-matter at the top.
 
-Happy writing! 🚀
-MD;
+                    Happy writing! 🚀
+                    MD;
 
                 file_put_contents($articlesDir . '/welcome.md', $sampleArticle);
             }
@@ -273,35 +275,35 @@ MD;
             if (is_dir($docsDir) && is_array($docFiles) && count($docFiles) <= 2) {
                 // Create sample documentation
                 $sampleDoc = <<<'MD'
----
-title: "Installation Guide"
-slug: "installation"
-category: "getting-started"
-order: 1
-description: "Learn how to install and set up MVA Bootstrap"
-difficulty: "beginner"
-estimated_time: "5 minutes"
----
+                    ---
+                    title: "Installation Guide"
+                    slug: "installation"
+                    category: "getting-started"
+                    order: 1
+                    description: "Learn how to install and set up MVA Bootstrap"
+                    difficulty: "beginner"
+                    estimated_time: "5 minutes"
+                    ---
 
-# Installation Guide
+                    # Installation Guide
 
-This guide will help you install and set up MVA Bootstrap on your system.
+                    This guide will help you install and set up MVA Bootstrap on your system.
 
-## Requirements
+                    ## Requirements
 
-- PHP 8.1 or higher
-- Composer
-- Web server (Apache/Nginx)
+                    - PHP 8.1 or higher
+                    - Composer
+                    - Web server (Apache/Nginx)
 
-## Installation Steps
+                    ## Installation Steps
 
-1. Clone the repository
-2. Install dependencies with Composer
-3. Configure your environment
-4. Set up your web server
+                    1. Clone the repository
+                    2. Install dependencies with Composer
+                    3. Configure your environment
+                    4. Set up your web server
 
-That's it! You're ready to start building with MVA Bootstrap.
-MD;
+                    That's it! You're ready to start building with MVA Bootstrap.
+                    MD;
 
                 file_put_contents($docsDir . '/installation.md', $sampleDoc);
             }
@@ -312,12 +314,12 @@ MD;
 
     'health_check' => function (Container $container): array {
         $health = [
-            'content_directory_exists' => false,
+            'content_directory_exists'   => false,
             'content_directory_writable' => false,
-            'articles_directory_exists' => false,
-            'docs_directory_exists' => false,
-            'sample_files_exist' => false,
-            'last_check' => date('Y-m-d H:i:s'),
+            'articles_directory_exists'  => false,
+            'docs_directory_exists'      => false,
+            'sample_files_exist'         => false,
+            'last_check'                 => date('Y-m-d H:i:s'),
         ];
 
         try {

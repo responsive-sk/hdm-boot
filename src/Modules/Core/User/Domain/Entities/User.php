@@ -7,7 +7,7 @@ namespace HdmBoot\Modules\Core\User\Domain\Entities;
 use HdmBoot\Modules\Core\User\Domain\ValueObjects\UserId;
 
 /**
- * User Entity
+ * User Entity.
  *
  * Represents a user in the system with all their properties and behaviors.
  */
@@ -63,6 +63,7 @@ class User
     {
         $this->email = $email;
         $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class User
     {
         $this->name = $name;
         $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -77,6 +79,7 @@ class User
     {
         $this->role = $role;
         $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -84,6 +87,7 @@ class User
     {
         $this->status = $status;
         $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -105,11 +109,11 @@ class User
     public function toArray(): array
     {
         return [
-            'id' => $this->id->toString(),
-            'email' => $this->email,
-            'name' => $this->name,
-            'role' => $this->role,
-            'status' => $this->status,
+            'id'         => $this->id->toString(),
+            'email'      => $this->email,
+            'name'       => $this->name,
+            'role'       => $this->role,
+            'status'     => $this->status,
             'created_at' => $this->createdAt->format('Y-m-d H:i:s'),
             'updated_at' => $this->updatedAt?->format('Y-m-d H:i:s'),
         ];

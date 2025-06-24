@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-use DI\Container;
 use HdmBoot\Modules\Core\Security\Actions\Web\LoginPageAction;
 use HdmBoot\Modules\Core\Security\Actions\Web\LoginSubmitAction;
 use HdmBoot\Modules\Core\Security\Actions\Web\LogoutAction;
 use HdmBoot\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware;
 use HdmBoot\Modules\Core\Session\Infrastructure\Middleware\SessionStartMiddleware;
 use HdmBoot\Modules\Core\User\Actions\Web\ProfilePageAction;
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;

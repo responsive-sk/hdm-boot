@@ -16,15 +16,15 @@ use HdmBoot\Modules\Core\Security\Middleware\AuthorizationMiddleware;
 use HdmBoot\Modules\Core\Security\Services\AuthenticationService;
 use HdmBoot\Modules\Core\Security\Services\AuthenticationValidator;
 use HdmBoot\Modules\Core\Security\Services\AuthorizationService;
-use HdmBoot\Modules\Core\Session\Services\CsrfService;
-use HdmBoot\Modules\Core\Session\Services\SessionService;
 use HdmBoot\Modules\Core\Security\Services\JwtService;
 use HdmBoot\Modules\Core\Security\Services\SecurityLoginChecker;
+use HdmBoot\Modules\Core\Session\Services\CsrfService;
+use HdmBoot\Modules\Core\Session\Services\SessionService;
 use HdmBoot\Modules\Core\Template\Infrastructure\Services\TemplateRenderer;
 use HdmBoot\Modules\Core\User\Services\UserService;
-use ResponsiveSk\Slim4Session\SessionInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Log\LoggerInterface;
+use ResponsiveSk\Slim4Session\SessionInterface;
 
 /*
  * Security Module Configuration.
@@ -38,8 +38,6 @@ return [
 
     // Service definitions for DI container
     'services' => [
-
-
         // Authentication Validator
         AuthenticationValidator::class => function (): AuthenticationValidator {
             return new AuthenticationValidator();

@@ -27,7 +27,7 @@ return [
 
             $sessionConfig = [
                 'name'            => $_ENV['SESSION_NAME'] ?? 'boot_session',
-                'cookie_lifetime' => (int) ($_ENV['SESSION_LIFETIME'] ?? 7200), // 2 hours
+                'cookie_lifetime' => (int) (is_string($_ENV['SESSION_LIFETIME'] ?? null) ? $_ENV['SESSION_LIFETIME'] : '7200'), // 2 hours
                 'cookie_secure'   => ($_ENV['SESSION_COOKIE_SECURE'] ?? 'false') === 'true',
                 'cookie_httponly' => ($_ENV['SESSION_COOKIE_HTTPONLY'] ?? 'true') === 'true',
                 'cookie_samesite' => $_ENV['SESSION_COOKIE_SAMESITE'] ?? 'Lax',
@@ -37,8 +37,8 @@ return [
 
             return match ($environment) {
                 'development' => SessionFactory::createForDevelopment($sessionConfig),
-                'testing' => SessionFactory::createForTesting(),
-                default => SessionFactory::createForProduction($sessionConfig),
+                'testing'     => SessionFactory::createForTesting(),
+                default       => SessionFactory::createForProduction($sessionConfig),
             };
         },
 
@@ -48,6 +48,7 @@ return [
         SessionService::class => function (Container $container): SessionService {
             /** @var SessionInterface $session */
             $session = $container->get(SessionInterface::class);
+
             return new SessionService($session);
         },
 
@@ -55,6 +56,7 @@ return [
         CsrfService::class => function (Container $container): CsrfService {
             /** @var SessionInterface $session */
             $session = $container->get(SessionInterface::class);
+
             return new CsrfService($session);
         },
 

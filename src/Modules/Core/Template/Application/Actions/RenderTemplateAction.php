@@ -99,6 +99,7 @@ final class RenderTemplateAction
             $queryParams = $request->getQueryParams();
             /** @var array<string, mixed> $typedQueryParams */
             $typedQueryParams = $queryParams;
+
             return $typedQueryParams;
         }
 
@@ -107,8 +108,10 @@ final class RenderTemplateAction
             if (is_array($parsedBody)) {
                 /** @var array<string, mixed> $typedParsedBody */
                 $typedParsedBody = $parsedBody;
+
                 return $typedParsedBody;
             }
+
             return [];
         }
 

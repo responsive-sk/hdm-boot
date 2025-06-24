@@ -32,6 +32,7 @@ class JsonDriver extends AbstractFileDriver
 
         /** @var array<string, mixed> $typedData */
         $typedData = $data;
+
         return $typedData;
     }
 
@@ -42,6 +43,7 @@ class JsonDriver extends AbstractFileDriver
         unset($cleanData['_file_path'], $cleanData['_file_name'], $cleanData['_modified_at']);
 
         $result = json_encode($cleanData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
         return $result !== false ? $result : '{}';
     }
 }

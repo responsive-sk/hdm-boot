@@ -272,6 +272,7 @@ final class FilesystemHealthCheck implements HealthCheckInterface
         } catch (\Exception $e) {
             // Fallback to original path if PathsFactory fails
         }
+
         return $path;
     }
 }

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace HdmBoot\Tests\Unit\Helpers;
 
-use InvalidArgumentException;
 use HdmBoot\Shared\Helpers\SecurePathHelper;
 use HdmBoot\Tests\TestCase;
+use InvalidArgumentException;
 
 /**
  * Unit tests for SecurePathHelper.
@@ -193,7 +193,7 @@ class SecurePathHelperTest extends TestCase
         $startTime = microtime(true);
 
         // Test multiple path validations
-        for ($i = 0; $i < 1000; $i++) {
+        for ($i = 0; $i < 1000; ++$i) {
             $this->pathHelper->securePath("test-{$i}.txt", 'storage');
         }
 

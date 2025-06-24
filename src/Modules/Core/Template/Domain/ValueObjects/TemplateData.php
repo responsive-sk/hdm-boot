@@ -196,6 +196,7 @@ final readonly class TemplateData
 
         /** @var array<string, mixed> $typedData */
         $typedData = $data;
+
         return new self($typedData);
     }
 }
