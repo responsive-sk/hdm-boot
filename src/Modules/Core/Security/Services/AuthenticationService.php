@@ -34,14 +34,21 @@ final class AuthenticationService implements AuthenticationServiceInterface
     public function authenticateForWeb(string $email, string $password, string $clientIp): ?array
     {
         try {
+            error_log('🔍 AUTH DEBUG: Starting security check for: ' . $email . ' from IP: ' . $clientIp);
+
             // Security check before authentication attempt
             $this->securityChecker->checkLoginSecurity($email, $clientIp);
 
+            error_log('🔍 AUTH DEBUG: Security check passed for: ' . $email);
+
             // Authenticate user
+            error_log('🔍 AUTH DEBUG: Calling userService->authenticate for: ' . $email);
             $user = $this->userService->authenticate($email, $password);
+            error_log('🔍 AUTH DEBUG: UserService result: ' . ($user ? 'USER_FOUND' : 'USER_NOT_FOUND'));
 
             if (!$user) {
                 // Record failed attempt
+                error_log('🔍 AUTH DEBUG: Recording failed attempt for: ' . $email);
                 $this->securityChecker->recordFailedAttempt($email, $clientIp);
 
                 $this->logger->warning('Authentication failed - invalid credentials', [

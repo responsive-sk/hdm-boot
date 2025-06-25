@@ -60,12 +60,17 @@ final class UserService implements UserServiceInterface
      */
     public function authenticate(string $email, string $password): ?array
     {
+        error_log('🔍 USER DEBUG: Looking up user by email: ' . $email);
         $user = $this->userRepository->findByEmail($email);
+
         if (!$user) {
+            error_log('🔍 USER DEBUG: User not found in repository: ' . $email);
             $this->logger->warning('Authentication failed: user not found', ['email' => $email]);
 
             return null;
         }
+
+        error_log('🔍 USER DEBUG: User found, checking password for: ' . $email);
 
         if (!isset($user['password_hash']) || !password_verify($password, $user['password_hash'])) {
             $this->logger->warning('Authentication failed: invalid password', ['email' => $email]);

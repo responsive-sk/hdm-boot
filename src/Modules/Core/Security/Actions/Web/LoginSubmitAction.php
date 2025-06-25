@@ -44,6 +44,12 @@ final class LoginSubmitAction
             // Note: CSRF validation disabled for login
             // Consider implementing reCaptcha or other anti-bot protection instead
 
+            // Debug logging for production issue
+            $email = is_string($data['email'] ?? null) ? $data['email'] : 'unknown';
+            $clientIp = is_string($request->getServerParams()['REMOTE_ADDR'] ?? null) ? $request->getServerParams()['REMOTE_ADDR'] : 'unknown';
+            error_log('🔍 LOGIN DEBUG: Starting login for email: ' . $email);
+            error_log('🔍 LOGIN DEBUG: Client IP: ' . $clientIp);
+
             // Validate input data
             $this->validator->validateUserLogin($data);
 
@@ -52,7 +58,10 @@ final class LoginSubmitAction
             $clientIp = is_string($serverParams['REMOTE_ADDR'] ?? null) ? $serverParams['REMOTE_ADDR'] : '127.0.0.1';
             $email = is_string($data['email'] ?? null) ? $data['email'] : '';
             $password = is_string($data['password'] ?? null) ? $data['password'] : '';
+
+            error_log('🔍 LOGIN DEBUG: About to authenticate user: ' . $email);
             $user = $this->authenticationService->authenticateForWeb($email, $password, $clientIp);
+            error_log('🔍 LOGIN DEBUG: Authentication result: ' . ($user ? 'SUCCESS' : 'FAILED'));
 
             // Check if authentication failed
             if (!$user) {
@@ -184,12 +193,21 @@ final class LoginSubmitAction
                 'ip'      => $request->getServerParams()['REMOTE_ADDR'] ?? 'unknown',
             ]);
 
+            // Debug output for production issue
+            $debugInfo = [
+                'error_message' => $e->getMessage(),
+                'error_file' => $e->getFile(),
+                'error_line' => $e->getLine(),
+                'email' => $data['email'] ?? 'unknown',
+                'trace' => substr($e->getTraceAsString(), 0, 1000), // Limit trace length
+            ];
+
             return $this->templateRenderer->render(
                 $response->withStatus(500),
                 'auth/login.php',
                 [
                     'title'       => 'Login',
-                    'error'       => 'An unexpected error occurred. Please try again.',
+                    'error'       => 'DEBUG: ' . json_encode($debugInfo, JSON_PRETTY_PRINT),
                     'email'       => $data['email'] ?? '',
                     'queryParams' => $request->getQueryParams(),
                 ]
