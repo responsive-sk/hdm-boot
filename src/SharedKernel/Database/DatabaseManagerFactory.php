@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\Database;
 
+use HdmBoot\Modules\Core\App\Database\AppSqliteDatabaseManager;
 use HdmBoot\Modules\Core\User\Database\UserSqliteDatabaseManager;
 use HdmBoot\Modules\Mark\Database\MarkSqliteDatabaseManager;
 use ResponsiveSk\Slim4Paths\Paths;
@@ -40,10 +41,9 @@ final class DatabaseManagerFactory
     /**
      * Create App database manager.
      */
-    public function createAppManager(string $databasePath = 'storage/app.db'): AbstractDatabaseManager
+    public function createAppManager(string $databasePath = 'storage/app.db'): AppSqliteDatabaseManager
     {
-        // TODO: Implement AppSqliteDatabaseManager
-        throw new \RuntimeException('App database manager not yet implemented');
+        return new AppSqliteDatabaseManager($databasePath, $this->paths);
     }
     
     /**
@@ -56,7 +56,7 @@ final class DatabaseManagerFactory
         return [
             'mark' => $this->createMarkManager(),
             'user' => $this->createUserManager(),
-            // 'app' => $this->createAppManager(),
+            'app' => $this->createAppManager(),
         ];
     }
     
@@ -82,7 +82,7 @@ final class DatabaseManagerFactory
     {
         $health = [];
         
-        foreach (['mark', 'user'] as $dbName) {
+        foreach (['mark', 'user', 'app'] as $dbName) {
             try {
                 $manager = $this->getManager($dbName);
                 $health[$dbName] = $manager->checkIntegrity();
@@ -120,11 +120,13 @@ final class DatabaseManagerFactory
         $markManager = $this->createMarkManager();
         $markManager->getConnection(); // This triggers initialization
         
-        // Initialize User database  
+        // Initialize User database
         $userManager = $this->createUserManager();
         $userManager->getConnection(); // This triggers initialization
-        
-        // TODO: Initialize App database when implemented
+
+        // Initialize App database
+        $appManager = $this->createAppManager();
+        $appManager->getConnection(); // This triggers initialization
     }
     
     /**
@@ -136,7 +138,7 @@ final class DatabaseManagerFactory
     {
         $results = [];
         
-        foreach (['mark', 'user'] as $dbName) {
+        foreach (['mark', 'user', 'app'] as $dbName) {
             try {
                 $manager = $this->getManager($dbName);
                 $results[$dbName] = $manager->cleanExpiredData();

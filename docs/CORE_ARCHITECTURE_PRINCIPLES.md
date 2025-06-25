@@ -141,28 +141,12 @@ user_activity_logs (
 )
 ```
 
-#### **3. 🟢 APP CORE DATABASE (app.db)**
-**Purpose:** Core application modules and shared data
+#### **3. 🟢 CORE SYSTEM DATABASE (app.db)**
+**Purpose:** Core system modules that require data persistence
 
 **Tables:**
 ```sql
--- Blog articles
-blog_articles (
-    id TEXT PRIMARY KEY,
-    title TEXT NOT NULL,
-    slug TEXT UNIQUE NOT NULL,
-    content TEXT NOT NULL,
-    excerpt TEXT,
-    author_id TEXT,
-    category TEXT,
-    tags TEXT, -- JSON array
-    status TEXT DEFAULT 'draft',
-    published_at TEXT,
-    created_at TEXT NOT NULL,
-    updated_at TEXT NOT NULL
-)
-
--- Application cache
+-- System cache
 app_cache (
     cache_key TEXT PRIMARY KEY,
     cache_value TEXT,
@@ -191,15 +175,49 @@ file_metadata_cache (
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 )
+
+-- Template cache
+template_cache (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    template_path TEXT UNIQUE NOT NULL,
+    compiled_path TEXT,
+    template_hash TEXT,
+    compiled_at TEXT,
+    expires_at TEXT,
+    created_at TEXT NOT NULL
+)
 ```
+
+## 📦 OPTIONAL MODULES ARCHITECTURE
+
+### **OPTIONAL MODULE DATABASES**
+Optional modules CAN have their own dedicated databases:
+
+```sql
+-- Blog module (optional)
+blog.db → blog_articles, blog_categories, blog_tags
+
+-- E-commerce modules (optional)
+orders.db → orders, order_items, payments
+products.db → products, categories, inventory
+
+-- CRM modules (optional)
+customers.db → customers, contacts, communications
+```
+
+### **OPTIONAL MODULE CHOICES**
+1. **Dedicated database** (recommended for complex modules)
+2. **Use app.db** (for simple modules)
+3. **External storage** (for specific requirements)
 
 ## 🔐 DATABASE ACCESS RULES
 
 ### **STRICT SEPARATION**
 1. **Mark modules** → ONLY access `mark.db`
-2. **User modules** → ONLY access `user.db`  
-3. **Core modules** → ONLY access `app.db`
-4. **NO cross-database queries** without explicit service layer
+2. **User modules** → ONLY access `user.db`
+3. **Core system modules** → ONLY access `app.db`
+4. **Optional modules** → Access their own database OR app.db
+5. **NO cross-database queries** without explicit service layer
 
 ### **CONNECTION MANAGEMENT**
 ```php
@@ -224,10 +242,16 @@ $connection = DatabaseManager::getConnection('default');
 - User authentication, user preferences, user activity
 - **NEVER** interact with mark.db or app.db directly
 
-### **CORE MODULES**
-- `src/Modules/Core/` - Shared application functionality
-- Blog, Template, Storage, Session, etc.
+### **CORE APPLICATION MODULES**
+- `src/Modules/Core/` - Core modules that require data persistence
+- Blog, Cache, System logs, Template cache, etc.
+- **ONLY** interact with app.db
 - **NEVER** interact with mark.db or user.db directly
+
+### **SHARED CORE MODULES**
+- `src/Modules/Core/` - Core modules without data persistence
+- Template (rendering only), Session (PHP sessions), Language (translations), etc.
+- **NO database access** - stateless or use external storage
 
 ## 🔐 PERMISSION MANAGEMENT PRINCIPLES
 

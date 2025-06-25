@@ -125,6 +125,23 @@ CREATE TABLE IF NOT EXISTS users (
 **Keep:** `src/Modules/Core/User/Repository/SqliteUserRepository.php` (most consistent)
 **Remove/Deprecate:** Other database managers with conflicting schemas
 
+### Priority 4: Clarify App Database Purpose
+
+**Current Confusion:** App.db described as "Core modules" but actually contains application data.
+
+**Correct Definition:**
+- **app.db** = Application data (Blog articles, Cache, System logs)
+- **NOT** = Core modules (Template, Session, Language are shared, not app-specific)
+
+**Module Structure:**
+```
+src/Modules/
+├── Mark/              # Mark system (mark.db)
+├── Core/User/         # User system (user.db)
+├── Core/App/          # Application data (app.db)
+└── Core/              # Shared modules (no direct DB access)
+```
+
 ## 🎯 Production Impact Analysis
 
 ### **Admin vs User Login Issue**
