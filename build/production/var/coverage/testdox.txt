@@ -1,0 +1,135 @@
+Authentication (HdmBoot\Tests\Feature\Security\Authentication)
+ [ ] Successful login
+ [ ] Login with invalid credentials
+ [ ] Login with non existent user
+ [ ] Login with missing email
+ [ ] Login with missing password
+ [ ] Login with invalid email format
+ [ ] Me endpoint with valid token
+ [ ] Me endpoint without token
+ [ ] Me endpoint with invalid token
+ [ ] Refresh token with valid token
+ [ ] Refresh token without token
+ [ ] Logout with valid token
+ [ ] Logout without token
+ [ ] Token expiration
+ [ ] Multiple login attempts
+ [ ] Concurrent token usage
+
+Authentication Flow (HdmBoot\Tests\Integration\AuthenticationFlow)
+ [ ] Complete authentication flow works
+ [ ] Login page loads correctly
+ [ ] Login with valid credentials works
+ [ ] Login with invalid credentials fails
+ [ ] Profile page requires authentication
+ [ ] Authenticated user can access profile
+ [ ] Session persists across requests
+ [ ] Logout clears session
+ [ ] Csrf protection works
+ [ ] Enterprise logging works
+
+Database Manager (HdmBoot\Tests\Unit\Database\DatabaseManager)
+ [ ] Get connection
+ [ ] Test connection
+ [ ] Get statistics
+ [ ] Execute raw sql
+ [ ] Execute raw sql with invalid sql
+ [ ] Database exists
+ [ ] Get database path
+ [ ] Database initialization
+ [ ] Sqlite optimizations
+ [ ] Multiple connections
+ [ ] Transaction support
+ [ ] Transaction rollback
+
+Repository Factory (HdmBoot\Tests\Unit\Factories\RepositoryFactory)
+ [x] Factory creates correct repository type
+ [x] Factory returns correct repository type
+ [x] Factory returns correct database manager
+ [x] Factory returns supported types
+ [x] Factory checks if type is supported
+ [x] Factory throws exception for unsupported type
+ [x] Factory requires pdo for sqlite repository
+ [x] Factory throws exception for unimplemented types
+ [x] Factory can be configured with different types
+ [x] Factory creates repository with proper abstraction
+
+Secure Path Helper (HdmBoot\Tests\Unit\Helpers\SecurePathHelper)
+ [ ] Secure path with valid path
+ [ ] Secure path with path traversal
+ [ ] Secure path with invalid directory
+ [ ] Secure path with empty path
+ [ ] Secure path with absolute path
+ [ ] File exists
+ [ ] Create secure file
+ [ ] Create secure file with invalid path
+ [ ] Get allowed directories
+ [ ] Validate path security
+ [ ] Normalize path
+ [ ] Secure path with different directories
+ [ ] Secure path with subdirectories
+ [ ] Secure path with special characters
+ [ ] Path security with null bytes
+ [ ] Create secure file creates directory
+ [ ] Secure path performance
+
+Security Module (HdmBoot\Tests\Unit\Modules\SecurityModule)
+ [x] Module is loaded
+ [x] Module has manifest
+ [x] Security services are registered
+ [x] Jwt service can be created
+ [x] Authentication service can be created
+ [x] Authorization service can be created
+ [x] Jwt service configuration
+ [x] Module manifest metadata
+ [x] Module dependencies
+
+Session Module (HdmBoot\Tests\Unit\Modules\SessionModule)
+ [x] Module is loaded
+ [x] Module has manifest
+ [x] Session services are registered
+ [x] Session service can be created
+ [x] Csrf service can be created
+ [x] Module manifest metadata
+ [x] Module dependencies
+
+Simple Api (HdmBoot\Tests\Feature\SimpleApi)
+ [ ] Login endpoint
+ [ ] Me endpoint
+ [ ] Users endpoint
+ [ ] Unauthorized access
+ [ ] Invalid login
+
+Simple Database (HdmBoot\Tests\Unit\Database\SimpleDatabase)
+ [ ] Database connection
+ [ ] Database has test user
+ [ ] Database metadata
+ [ ] Basic query
+ [ ] Table exists
+
+User Api (HdmBoot\Tests\Feature\User\UserApi)
+ [ ] List users with authentication
+ [ ] List users without authentication
+ [ ] List users with pagination
+ [ ] List users with filters
+ [ ] Get user by id
+ [ ] Get user by id not found
+ [ ] Get user without authentication
+ [ ] Create user
+ [ ] Create user with invalid data
+ [ ] Create user with duplicate email
+ [ ] Create user without authentication
+ [ ] Update user not implemented
+ [ ] Delete user not implemented
+ [ ] User api requires proper permissions
+ [ ] User data structure
+ [ ] User search functionality
+
+User Authentication Middleware (HdmBoot\Tests\Unit\Middleware\UserAuthenticationMiddleware)
+ [ ] Middleware starts session if not started
+ [ ] Middleware allows access for authenticated user
+ [ ] Middleware redirects unauthenticated user
+ [ ] Middleware redirects inactive user
+ [ ] Middleware handles user service exception
+ [ ] Middleware returns json for api requests
+

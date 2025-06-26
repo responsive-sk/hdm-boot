@@ -1,0 +1,20 @@
+# HDM Boot Production Security
+RewriteEngine On
+
+# Deny access to sensitive files
+<FilesMatch "\.(env|log|db|json|lock|md)$">
+    Require all denied
+</FilesMatch>
+
+# Deny access to directories
+<DirectoryMatch "(storage|var|config|src|vendor)">
+    Require all denied
+</DirectoryMatch>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options nosniff
+    Header always set X-Frame-Options DENY
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>

@@ -14,6 +14,8 @@ final class ContainerFactory
 {
     /**
      * Create container based on type.
+     *
+     * @param array<string, mixed> $options
      */
     public static function create(string $type = 'slim4', array $options = []): AbstractContainer
     {
@@ -30,6 +32,8 @@ final class ContainerFactory
     
     /**
      * Create Slim4 container (default).
+     *
+     * @param array<string, mixed> $options
      */
     private static function createSlim4Container(array $options): Slim4Container
     {
@@ -37,11 +41,18 @@ final class ContainerFactory
         $container->registerCoreServices();
         
         // Apply custom options
-        if (isset($options['definitions'])) {
-            $container->addDefinitions($options['definitions']);
+        if (isset($options['definitions']) && is_array($options['definitions'])) {
+            // Ensure definitions array has proper string keys
+            $definitions = [];
+            foreach ($options['definitions'] as $key => $value) {
+                if (is_string($key)) {
+                    $definitions[$key] = $value;
+                }
+            }
+            $container->addDefinitions($definitions);
         }
-        
-        if (isset($options['compilation_path'])) {
+
+        if (isset($options['compilation_path']) && is_string($options['compilation_path'])) {
             $container->enableCompilation($options['compilation_path']);
         }
         
@@ -50,33 +61,41 @@ final class ContainerFactory
     
     /**
      * Create Symfony container.
+     *
+     * @param array<string, mixed> $options
      */
     private static function createSymfonyContainer(array $options): AbstractContainer
     {
         // TODO: Implement SymfonyContainer
         throw new \RuntimeException('Symfony container not yet implemented');
     }
-    
+
     /**
      * Create Laravel container.
+     *
+     * @param array<string, mixed> $options
      */
     private static function createLaravelContainer(array $options): AbstractContainer
     {
         // TODO: Implement LaravelContainer
         throw new \RuntimeException('Laravel container not yet implemented');
     }
-    
+
     /**
      * Create Laminas container.
+     *
+     * @param array<string, mixed> $options
      */
     private static function createLaminasContainer(array $options): AbstractContainer
     {
         // TODO: Implement LaminasContainer
         throw new \RuntimeException('Laminas container not yet implemented');
     }
-    
+
     /**
      * Create Pimple container.
+     *
+     * @param array<string, mixed> $options
      */
     private static function createPimpleContainer(array $options): AbstractContainer
     {
@@ -86,15 +105,17 @@ final class ContainerFactory
     
     /**
      * Create custom container.
+     *
+     * @param array<string, mixed> $options
      */
     private static function createCustomContainer(array $options): AbstractContainer
     {
-        if (!isset($options['class'])) {
-            throw new \InvalidArgumentException('Custom container requires "class" option');
+        if (!isset($options['class']) || !is_string($options['class'])) {
+            throw new \InvalidArgumentException('Custom container requires "class" option as string');
         }
-        
+
         $className = $options['class'];
-        
+
         if (!class_exists($className)) {
             throw new \InvalidArgumentException("Custom container class does not exist: {$className}");
         }
@@ -145,6 +166,8 @@ final class ContainerFactory
     
     /**
      * Create container with auto-detection.
+     *
+     * @param array<string, mixed> $options
      */
     public static function createAuto(array $options = []): AbstractContainer
     {
@@ -201,6 +224,9 @@ final class ContainerFactory
     
     /**
      * Validate container configuration.
+     *
+     * @param array<string, mixed> $options
+     * @return array<string, mixed>
      */
     public static function validateConfiguration(string $type, array $options = []): array
     {
@@ -210,13 +236,13 @@ final class ContainerFactory
             case 'slim4':
                 // Validate Slim4 options
                 if (isset($options['compilation_path']) && !is_string($options['compilation_path'])) {
-                    $errors[] = 'compilation_path must be a string';
+                    $errors['compilation_path'] = 'compilation_path must be a string';
                 }
                 break;
-                
+
             case 'custom':
                 if (!isset($options['class'])) {
-                    $errors[] = 'Custom container requires "class" option';
+                    $errors['class'] = 'Custom container requires "class" option';
                 }
                 break;
         }

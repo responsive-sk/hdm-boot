@@ -18,6 +18,9 @@ abstract class AbstractDatabaseManager
     protected ?PDO $connection = null;
     protected readonly string $secureDatabasePath;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function __construct(
         protected readonly string $databasePath,
         protected readonly array $options = [],
@@ -44,7 +47,8 @@ abstract class AbstractDatabaseManager
             $directory = dirname($path);
             if (!is_dir($directory)) {
                 mkdir($directory, 0755, true); // 755 = rwxr-xr-x (owner: rwx, group: r-x, other: r-x)
-                $this->setDirectoryPermissions($directory);
+                // Set directory permissions for shared hosting compatibility
+                chmod($directory, 0777);
             }
             $realPath = realpath(dirname($path));
         }
@@ -58,6 +62,8 @@ abstract class AbstractDatabaseManager
     
     /**
      * Get database connection.
+     *
+     * @throws \RuntimeException If connection cannot be established
      */
     public function getConnection(): PDO
     {
@@ -65,7 +71,11 @@ abstract class AbstractDatabaseManager
             $this->connection = $this->createConnection();
             $this->initializeDatabase();
         }
-        
+
+        if ($this->connection === null) {
+            throw new \RuntimeException('Database connection is null after initialization');
+        }
+
         return $this->connection;
     }
     
@@ -81,6 +91,8 @@ abstract class AbstractDatabaseManager
     
     /**
      * Get database statistics - implemented by concrete classes.
+     *
+     * @return array<string, mixed>
      */
     abstract public function getStatistics(): array;
     
@@ -135,6 +147,8 @@ abstract class AbstractDatabaseManager
     
     /**
      * Check database integrity.
+     *
+     * @return array<string, mixed>
      */
     public function checkIntegrity(): array
     {
@@ -166,20 +180,24 @@ abstract class AbstractDatabaseManager
     
     /**
      * Get list of tables in database.
+     *
+     * @return array<string>
      */
     protected function getTableList(): array
     {
         try {
             $connection = $this->getConnection();
             $stmt = $connection->query("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'");
-            
+
             $tables = [];
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                if (is_array($row) && isset($row['name'])) {
-                    $tables[] = $row['name'];
+            if ($stmt !== false) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    if (is_array($row) && isset($row['name']) && is_string($row['name'])) {
+                        $tables[] = $row['name'];
+                    }
                 }
             }
-            
+
             return $tables;
         } catch (\Exception) {
             return [];
@@ -229,6 +247,8 @@ abstract class AbstractDatabaseManager
     
     /**
      * Execute query with parameters.
+     *
+     * @param array<string, mixed> $params
      */
     public function execute(string $sql, array $params = []): \PDOStatement
     {

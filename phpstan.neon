@@ -7,6 +7,7 @@ parameters:
         - src/Modules/Core/Storage
         - src/Modules/Core/Template
         - src/Modules/Core/Language
+        - src/Modules/Core/Mark/
         - src/Modules/Core/Monitoring
         - src/Modules/Core/Logging
         - src/Modules/Core/Security

@@ -114,6 +114,8 @@ final class PermissionManager
     
     /**
      * Fix permissions for entire directory tree.
+     *
+     * @return array<string, mixed>
      */
     public function fixDirectoryTreePermissions(string $path): array
     {
@@ -136,17 +138,24 @@ final class PermissionManager
         
         foreach ($iterator as $item) {
             try {
+                if (!$item instanceof \SplFileInfo) {
+                    continue;
+                }
+
                 if ($item->isDir()) {
-                    if ($this->setDirectoryPermissions($item->getPathname())) {
+                    $pathname = $item->getPathname();
+                    if ($this->setDirectoryPermissions($pathname)) {
                         $results['directories_fixed']++;
                     }
                 } elseif ($item->isFile()) {
-                    if ($this->setFilePermissions($item->getPathname())) {
+                    $pathname = $item->getPathname();
+                    if ($this->setFilePermissions($pathname)) {
                         $results['files_fixed']++;
                     }
                 }
             } catch (\Exception $e) {
-                $results['errors'][] = "Failed to fix permissions for {$item->getPathname()}: " . $e->getMessage();
+                $pathnameStr = $item->getPathname();
+                $results['errors'][] = "Failed to fix permissions for {$pathnameStr}: " . $e->getMessage();
             }
         }
         
@@ -155,6 +164,8 @@ final class PermissionManager
     
     /**
      * Setup system directories with correct permissions.
+     *
+     * @return array<string, mixed>
      */
     public function setupSystemDirectories(): array
     {
@@ -189,6 +200,8 @@ final class PermissionManager
     
     /**
      * Setup log files with correct permissions.
+     *
+     * @return array<string, mixed>
      */
     public function setupLogFiles(): array
     {
@@ -259,6 +272,8 @@ final class PermissionManager
     
     /**
      * Get permission info for debugging.
+     *
+     * @return array<string, mixed>
      */
     public function getPermissionInfo(): array
     {

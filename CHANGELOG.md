@@ -1,11 +1,85 @@
-# Changelog
+# HDM Boot Protocol - Changelog
 
-All notable changes to the MVA Bootstrap Application will be documented in this file.
+All notable changes to HDM Boot Protocol will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.0] - 2025-06-26 - Mark System & Three-Database Architecture
+
+### 🔴 Added - Mark System Implementation
+- **NEW**: Complete Mark system for super user management
+- **NEW**: Separate `/mark` route for mark admin authentication
+- **NEW**: Mark module with dedicated authentication service
+- **NEW**: MarkSqliteDatabaseManager for mark.db database
+- **NEW**: SqliteMarkRepository for mark user data access
+- **NEW**: MarkAuthenticationService for mark-specific authentication
+- **NEW**: Mark login page with security warnings and branding
+- **NEW**: Mark dashboard with super user functionality
+
+### 🔵 Enhanced - User System Separation
+- **IMPROVED**: User system now uses dedicated user.db database
+- **IMPROVED**: UserSqliteDatabaseManager for user.db database
+- **IMPROVED**: Complete separation between user and mark authentication
+- **IMPROVED**: User login remains on `/login` route with user.db
+
+### 🗄️ Changed - Database Architecture
+- **BREAKING**: Migrated from single app.db to three-database architecture:
+  - `storage/mark.db` - Mark users (super admins)
+  - `storage/user.db` - Application users
+  - `storage/system.db` - System data (cache, logs)
+- **BREAKING**: Moved storage from `var/storage/` to `storage/` (root directory)
+- **IMPROVED**: Database managers with auto-creation and permission handling
+- **IMPROVED**: Debug error reporting for database connection issues
+
+### 🔐 Security Improvements
+- **FIXED**: Session cookie_secure auto-detection for HTTPS
+- **IMPROVED**: Bcrypt password hashing for all users
+- **IMPROVED**: Separate authentication flows for mark vs user systems
+- **IMPROVED**: Enhanced error reporting without exposing sensitive data
+- **IMPROVED**: Proper file permissions (777/666) for shared hosting
+
+### 🛠️ Technical Improvements
+- **FIXED**: Method visibility issues in database managers (private → protected)
+- **FIXED**: Path resolution using secureDatabasePath instead of databasePath
+- **IMPROVED**: DatabaseManagerFactory for consistent database creation
+- **IMPROVED**: AbstractDatabaseManager inheritance properly implemented
+- **IMPROVED**: Production build process with database initialization
+- **IMPROVED**: Comprehensive debug logging for troubleshooting
+
+### 🐛 Bug Fixes
+- **FIXED**: Argon2ID password hashing compatibility issues → Bcrypt
+- **FIXED**: Database path resolution in production environments
+- **FIXED**: Session cookie security warnings on HTTPS
+- **FIXED**: Method visibility inheritance issues
+- **FIXED**: Duplicate storage directory confusion
+- **FIXED**: Production build database creation failures
+
+### 🔑 Default Credentials
+
+#### Mark Users (storage/mark.db):
+- **mark@responsive.sk** / mark123 (role: mark_admin)
+- **admin@example.com** / admin123 (role: mark_admin)
+
+#### Application Users (storage/user.db):
+- **test@example.com** / password123 (role: user)
+- **user@example.com** / user123 (role: user)
+
+### ⚠️ Breaking Changes
+- **BREAKING**: Mark admins must now use `/mark` route instead of `/login`
+- **BREAKING**: Database structure completely changed (migration required)
+- **BREAKING**: Storage directory moved from `var/storage/` to `storage/`
+- **BREAKING**: Password hashing changed from Argon2ID to Bcrypt
+
+### 🎯 Route Changes
+- **NEW**: `GET /mark` - Mark login page
+- **NEW**: `POST /mark/login` - Mark login submission
+- **NEW**: `GET /mark/dashboard` - Mark dashboard
+- **NEW**: `POST /mark/logout` - Mark logout
+- **UNCHANGED**: `GET /login` - User login page (now user.db only)
+- **UNCHANGED**: `POST /login` - User login submission (now user.db only)
+
+## [2.0.0] - Previous Architecture
 
 ### Added
 - **Dependency Injection & IoC Implementation** - Comprehensive DI/IoC system with interface-based bindings

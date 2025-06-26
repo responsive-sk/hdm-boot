@@ -20,12 +20,14 @@ This protocol defines mandatory standards, patterns, and practices that ensure:
 ```
 mark.db    → Mark system (administrative functionality)
 user.db    → User system (application users)
-app.db     → Core system modules (Cache, System logs, Template cache)
+system.db  → Core system modules (Cache, System logs, Template cache)
 ```
 
 **MANDATORY:** All applications MUST implement three foundational databases with strict isolation.
 
 **OPTIONAL:** Additional databases for optional modules (blog.db, orders.db, products.db, etc.)
+
+**CONSERVATIVE APPROACH:** Three databases are sufficient for most applications. Additional databases should only be added when there is a clear business need, not preventively.
 
 ### **PILLAR II: Forbidden Terminology**
 ```

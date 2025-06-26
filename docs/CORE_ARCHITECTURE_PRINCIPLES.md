@@ -141,13 +141,13 @@ user_activity_logs (
 )
 ```
 
-#### **3. 🟢 CORE SYSTEM DATABASE (app.db)**
+#### **3. 🟢 CORE SYSTEM DATABASE (system.db)**
 **Purpose:** Core system modules that require data persistence
 
 **Tables:**
 ```sql
 -- System cache
-app_cache (
+system_cache (
     cache_key TEXT PRIMARY KEY,
     cache_value TEXT,
     expires_at INTEGER,
@@ -215,8 +215,8 @@ customers.db → customers, contacts, communications
 ### **STRICT SEPARATION**
 1. **Mark modules** → ONLY access `mark.db`
 2. **User modules** → ONLY access `user.db`
-3. **Core system modules** → ONLY access `app.db`
-4. **Optional modules** → Access their own database OR app.db
+3. **Core system modules** → ONLY access `system.db`
+4. **Optional modules** → Access their own database OR system.db
 5. **NO cross-database queries** without explicit service layer
 
 ### **CONNECTION MANAGEMENT**
@@ -233,14 +233,16 @@ $connection = DatabaseManager::getConnection('default');
 ## 🏗️ MODULE ARCHITECTURE
 
 ### **MARK MODULES**
-- `src/Modules/Mark/` - All mark-related functionality
+- `src/Modules/Core/Mark/` - Mark system (super user functionality)
 - Mark authentication, mark users, mark settings
-- **NEVER** interact with user.db or app.db directly
+- **ONLY** interact with mark.db
+- **NEVER** interact with user.db or system.db directly
 
-### **USER MODULES**  
+### **USER MODULES**
 - `src/Modules/Core/User/` - User management
 - User authentication, user preferences, user activity
-- **NEVER** interact with mark.db or app.db directly
+- **ONLY** interact with user.db
+- **NEVER** interact with mark.db or system.db directly
 
 ### **CORE APPLICATION MODULES**
 - `src/Modules/Core/` - Core modules that require data persistence

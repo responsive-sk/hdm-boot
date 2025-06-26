@@ -17,6 +17,12 @@ use Psr\Container\ContainerInterface;
 final class Slim4Container extends AbstractContainer
 {
     private Container $container;
+
+    /**
+     * Service registry for tracking registered services.
+     *
+     * @var array<string, mixed>
+     */
     private array $serviceRegistry = [];
     
     public function __construct(?Container $container = null)
@@ -125,29 +131,44 @@ final class Slim4Container extends AbstractContainer
         // Register PermissionManager
         $this->factory(\HdmBoot\SharedKernel\System\PermissionManager::class, function() {
             $paths = $this->get(\ResponsiveSk\Slim4Paths\Paths::class);
+            if (!$paths instanceof \ResponsiveSk\Slim4Paths\Paths) {
+                throw new \RuntimeException('Paths service must be instance of ResponsiveSk\Slim4Paths\Paths');
+            }
             return new \HdmBoot\SharedKernel\System\PermissionManager($paths);
         });
         
         // Register DatabaseManagerFactory
         $this->factory(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class, function() {
             $paths = $this->get(\ResponsiveSk\Slim4Paths\Paths::class);
+            if (!$paths instanceof \ResponsiveSk\Slim4Paths\Paths) {
+                throw new \RuntimeException('Paths service must be instance of ResponsiveSk\Slim4Paths\Paths');
+            }
             return new \HdmBoot\SharedKernel\Database\DatabaseManagerFactory($paths);
         });
         
         // Register individual database managers
         $this->factory('database.mark', function() {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
+            if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
+                throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
+            }
             return $factory->createMarkManager();
         });
-        
+
         $this->factory('database.user', function() {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
+            if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
+                throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
+            }
             return $factory->createUserManager();
         });
-        
+
         $this->factory('database.app', function() {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
-            return $factory->createAppManager();
+            if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
+                throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
+            }
+            return $factory->createSystemManager();
         });
         
         // Register PSR-3 Logger (if available)
@@ -157,10 +178,17 @@ final class Slim4Container extends AbstractContainer
                 return new class implements \Psr\Log\LoggerInterface {
                     use \Psr\Log\LoggerTrait;
                     
+                    /**
+                     * @param mixed $level
+                     * @param mixed $message
+                     * @param array<string, mixed> $context
+                     */
                     public function log($level, $message, array $context = []): void
                     {
+                        $levelStr = is_string($level) ? $level : 'INFO';
+                        $messageStr = is_string($message) ? $message : (is_object($message) && method_exists($message, '__toString') ? (string) $message : 'UNKNOWN');
                         $contextStr = empty($context) ? '' : ' ' . json_encode($context);
-                        error_log("[{$level}] {$message}{$contextStr}");
+                        error_log("[{$levelStr}] {$messageStr}{$contextStr}");
                     }
                 };
             });
@@ -187,6 +215,8 @@ final class Slim4Container extends AbstractContainer
     
     /**
      * Create container snapshot.
+     *
+     * @return array<string, mixed>
      */
     public function snapshot(): array
     {
@@ -198,16 +228,31 @@ final class Slim4Container extends AbstractContainer
     
     /**
      * Restore container from snapshot.
+     *
+     * @param array<string, mixed> $snapshot
      */
     public function restore(array $snapshot): void
     {
         // Note: PHP-DI doesn't support full restoration
         // This is a limitation of the underlying container
-        $this->serviceRegistry = $snapshot['services'] ?? [];
+        if (isset($snapshot['services']) && is_array($snapshot['services'])) {
+            // Ensure all values are properly typed
+            $services = [];
+            foreach ($snapshot['services'] as $key => $value) {
+                if (is_string($key)) {
+                    $services[$key] = $value;
+                }
+            }
+            $this->serviceRegistry = $services;
+        } else {
+            $this->serviceRegistry = [];
+        }
     }
     
     /**
      * Get PHP-DI specific container builder.
+     *
+     * @return ContainerBuilder<Container>
      */
     public function getContainerBuilder(): ContainerBuilder
     {
