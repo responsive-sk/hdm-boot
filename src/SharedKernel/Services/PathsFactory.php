@@ -42,12 +42,10 @@ final class PathsFactory
         /** @var array{base_path: string, paths: array<string, string>} $config */
         $config = require $configFile;
 
-        // @phpstan-ignore-next-line booleanOr.alwaysFalse
         if (!isset($config['base_path']) || !isset($config['paths'])) {
             throw new \RuntimeException('Invalid paths configuration');
         }
 
-        // @phpstan-ignore-next-line booleanOr.alwaysFalse
         if (!is_string($config['base_path']) || !is_array($config['paths'])) {
             throw new \RuntimeException('Invalid paths configuration types');
         }

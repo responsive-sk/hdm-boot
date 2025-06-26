@@ -65,15 +65,15 @@ function safeGetNumericAttribute(mixed $obj, string $key, int $default = 0): int
         <?php
         // @phpstan-ignore-next-line booleanAnd.leftAlwaysTrue
         $tags = $article && is_object($article) && method_exists($article, 'getAttribute')
-    ? $article->getAttribute('tags')
-    : null;
+        ? $article->getAttribute('tags')
+        : null;
     if (is_array($tags)) : ?>
             <div class="tags">
-                <?php foreach ($tags as $tag) : ?>
-                    <?php if (is_string($tag)) : ?>
+                    <?php foreach ($tags as $tag) : ?>
+                        <?php if (is_string($tag)) : ?>
                         <span class="tag"><?= htmlspecialchars($tag); ?></span>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
             </div>
         <?php endif; ?>
     </article>

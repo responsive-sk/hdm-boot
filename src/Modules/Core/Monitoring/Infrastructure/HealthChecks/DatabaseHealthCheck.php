@@ -223,7 +223,7 @@ final class DatabaseHealthCheck implements HealthCheckInterface
             $stmt = $this->pdo->query('PRAGMA database_list');
             if ($stmt !== false) {
                 $databases = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                // @phpstan-ignore-next-line function.alreadyNarrowedType
+
                 if (is_array($databases)) {
                     $info['databases'] = $databases;
 
@@ -266,7 +266,7 @@ final class DatabaseHealthCheck implements HealthCheckInterface
             $stmt = $this->pdo->query("SHOW VARIABLES LIKE 'version%'");
             if ($stmt !== false) {
                 $variables = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-                // @phpstan-ignore-next-line function.alreadyNarrowedType
+
                 if (is_array($variables)) {
                     $info['mysql_variables'] = $variables;
                 }

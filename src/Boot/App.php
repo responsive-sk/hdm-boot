@@ -134,7 +134,6 @@ final class App
         /** @var Container $container */
         $container = require $configPath;
 
-        // @phpstan-ignore-next-line instanceof.alwaysTrue
         if (!$container instanceof Container) {
             throw new \RuntimeException('Container configuration must return DI\Container instance');
         }

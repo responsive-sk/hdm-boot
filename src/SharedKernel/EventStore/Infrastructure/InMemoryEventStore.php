@@ -34,7 +34,6 @@ final class InMemoryEventStore implements EventStoreInterface
     public function storeMany(array $events): void
     {
         foreach ($events as $event) {
-            // @phpstan-ignore-next-line instanceof.alwaysTrue
             if (!$event instanceof DomainEventInterface) {
                 throw new \InvalidArgumentException('All events must implement DomainEventInterface');
             }

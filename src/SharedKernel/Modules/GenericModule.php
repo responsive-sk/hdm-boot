@@ -362,7 +362,6 @@ final class GenericModule implements ModuleInterface
 
         // Validate dependencies exist
         foreach ($this->getDependencies() as $dependency) {
-            // @phpstan-ignore-next-line function.alreadyNarrowedType
             if (empty($dependency) || !is_string($dependency)) {
                 $errors[] = "Invalid dependency: '{$dependency}'";
             }

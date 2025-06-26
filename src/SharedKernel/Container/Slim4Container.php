@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 
 /**
  * Slim4 Container Implementation for HDM Boot Protocol.
- * 
+ *
  * Wraps PHP-DI container used by Slim4 framework.
  * Provides HDM Boot protocol compliance while maintaining Slim4 compatibility.
  */
@@ -24,32 +24,32 @@ final class Slim4Container extends AbstractContainer
      * @var array<string, mixed>
      */
     private array $serviceRegistry = [];
-    
+
     public function __construct(?Container $container = null)
     {
         $this->container = $container ?? $this->createDefaultContainer();
     }
-    
+
     /**
      * Create default PHP-DI container.
      */
     private function createDefaultContainer(): Container
     {
         $builder = new ContainerBuilder();
-        
+
         // Enable compilation in production
         if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
             $builder->enableCompilation(__DIR__ . '/../../var/cache/container');
         }
-        
+
         // Enable definition cache in production
         if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
             $builder->enableDefinitionCache();
         }
-        
+
         return $builder->build();
     }
-    
+
     /**
      * Get service from container.
      */
@@ -65,7 +65,7 @@ final class Slim4Container extends AbstractContainer
             );
         }
     }
-    
+
     /**
      * Check if service exists in container.
      */
@@ -73,7 +73,7 @@ final class Slim4Container extends AbstractContainer
     {
         return $this->container->has($id);
     }
-    
+
     /**
      * Set service in container.
      */
@@ -82,7 +82,7 @@ final class Slim4Container extends AbstractContainer
         $this->container->set($id, $value);
         $this->serviceRegistry[$id] = 'value';
     }
-    
+
     /**
      * Register service factory in container.
      */
@@ -91,7 +91,7 @@ final class Slim4Container extends AbstractContainer
         $this->container->set($id, $factory);
         $this->serviceRegistry[$id] = 'factory';
     }
-    
+
     /**
      * Register singleton service in container.
      */
@@ -101,7 +101,7 @@ final class Slim4Container extends AbstractContainer
         $this->factory($id, $factory);
         $this->serviceRegistry[$id] = 'singleton';
     }
-    
+
     /**
      * Get container type identifier.
      */
@@ -109,7 +109,7 @@ final class Slim4Container extends AbstractContainer
     {
         return 'slim4-phpdi';
     }
-    
+
     /**
      * Get underlying container instance.
      */
@@ -117,67 +117,72 @@ final class Slim4Container extends AbstractContainer
     {
         return $this->container;
     }
-    
+
     /**
      * Register HDM Boot core services.
      */
     public function registerCoreServices(): void
     {
         // Register Paths service
-        $this->factory(\ResponsiveSk\Slim4Paths\Paths::class, function() {
+        $this->factory(\ResponsiveSk\Slim4Paths\Paths::class, function () {
             return new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
         });
-        
+
         // Register PermissionManager
-        $this->factory(\HdmBoot\SharedKernel\System\PermissionManager::class, function() {
+        $this->factory(\HdmBoot\SharedKernel\System\PermissionManager::class, function () {
             $paths = $this->get(\ResponsiveSk\Slim4Paths\Paths::class);
             if (!$paths instanceof \ResponsiveSk\Slim4Paths\Paths) {
                 throw new \RuntimeException('Paths service must be instance of ResponsiveSk\Slim4Paths\Paths');
             }
+
             return new \HdmBoot\SharedKernel\System\PermissionManager($paths);
         });
-        
+
         // Register DatabaseManagerFactory
-        $this->factory(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class, function() {
+        $this->factory(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class, function () {
             $paths = $this->get(\ResponsiveSk\Slim4Paths\Paths::class);
             if (!$paths instanceof \ResponsiveSk\Slim4Paths\Paths) {
                 throw new \RuntimeException('Paths service must be instance of ResponsiveSk\Slim4Paths\Paths');
             }
+
             return new \HdmBoot\SharedKernel\Database\DatabaseManagerFactory($paths);
         });
-        
+
         // Register individual database managers
-        $this->factory('database.mark', function() {
+        $this->factory('database.mark', function () {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
             if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
                 throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
             }
+
             return $factory->createMarkManager();
         });
 
-        $this->factory('database.user', function() {
+        $this->factory('database.user', function () {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
             if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
                 throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
             }
+
             return $factory->createUserManager();
         });
 
-        $this->factory('database.app', function() {
+        $this->factory('database.app', function () {
             $factory = $this->get(\HdmBoot\SharedKernel\Database\DatabaseManagerFactory::class);
             if (!$factory instanceof \HdmBoot\SharedKernel\Database\DatabaseManagerFactory) {
                 throw new \RuntimeException('DatabaseManagerFactory service not properly configured');
             }
+
             return $factory->createSystemManager();
         });
-        
+
         // Register PSR-3 Logger (if available)
         if (interface_exists(\Psr\Log\LoggerInterface::class)) {
-            $this->factory(\Psr\Log\LoggerInterface::class, function() {
+            $this->factory(\Psr\Log\LoggerInterface::class, function () {
                 // Default to error_log logger if no other logger is configured
-                return new class implements \Psr\Log\LoggerInterface {
+                return new class () implements \Psr\Log\LoggerInterface {
                     use \Psr\Log\LoggerTrait;
-                    
+
                     /**
                      * @param mixed $level
                      * @param mixed $message
@@ -194,7 +199,7 @@ final class Slim4Container extends AbstractContainer
             });
         }
     }
-    
+
     /**
      * Get list of registered services.
      */
@@ -202,7 +207,7 @@ final class Slim4Container extends AbstractContainer
     {
         return array_keys($this->serviceRegistry);
     }
-    
+
     /**
      * Clear all services (for testing).
      */
@@ -212,7 +217,7 @@ final class Slim4Container extends AbstractContainer
         $this->container = $this->createDefaultContainer();
         $this->serviceRegistry = [];
     }
-    
+
     /**
      * Create container snapshot.
      *
@@ -221,11 +226,11 @@ final class Slim4Container extends AbstractContainer
     public function snapshot(): array
     {
         return [
-            'services' => $this->serviceRegistry,
+            'services'       => $this->serviceRegistry,
             'container_type' => $this->getContainerType(),
         ];
     }
-    
+
     /**
      * Restore container from snapshot.
      *
@@ -248,7 +253,7 @@ final class Slim4Container extends AbstractContainer
             $this->serviceRegistry = [];
         }
     }
-    
+
     /**
      * Get PHP-DI specific container builder.
      *
@@ -258,10 +263,10 @@ final class Slim4Container extends AbstractContainer
     {
         return new ContainerBuilder();
     }
-    
+
     /**
      * Add PHP-DI definitions.
-     * 
+     *
      * @param array<string, mixed> $definitions
      */
     public function addDefinitions(array $definitions): void
@@ -271,7 +276,7 @@ final class Slim4Container extends AbstractContainer
             $this->serviceRegistry[$id] = 'definition';
         }
     }
-    
+
     /**
      * Enable container compilation (production optimization).
      */
@@ -281,7 +286,7 @@ final class Slim4Container extends AbstractContainer
         // For now, just store the path for future use
         $this->set('container.compilation_path', $compilationPath);
     }
-    
+
     /**
      * Get PSR-11 compatible container interface.
      */

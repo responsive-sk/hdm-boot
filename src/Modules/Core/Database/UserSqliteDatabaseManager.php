@@ -40,7 +40,6 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
     {
         return 'user';
     }
-    
 
     /**
      * Create PDO connection to user.db.
@@ -55,10 +54,10 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
             // Check if directory exists and is writable
             if (!is_dir($dbDir)) {
                 // Try to create directory with 777 permissions for shared hosting
-                if (!mkdir($dbDir, 0777, true)) {
+                if (!mkdir($dbDir, 0o777, true)) {
                     throw new RuntimeException("Cannot create database directory: {$dbDir}");
                 }
-                chmod($dbDir, 0777); // Ensure 777 permissions
+                chmod($dbDir, 0o777); // Ensure 777 permissions
             }
 
             // Check if database file exists
@@ -67,7 +66,7 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                 if (!touch($dbPath)) {
                     throw new RuntimeException("Cannot create database file: {$dbPath}");
                 }
-                chmod($dbPath, 0666); // Ensure 666 permissions
+                chmod($dbPath, 0o666); // Ensure 666 permissions
             }
 
             // Check permissions
@@ -81,9 +80,9 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
 
             $dsn = 'sqlite:' . $dbPath;
             $connection = new PDO($dsn, null, null, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_EMULATE_PREPARES   => false,
             ]);
 
             // Enable WAL mode for better concurrency
@@ -94,12 +93,12 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
 
             return $connection;
         } catch (PDOException $e) {
-            throw new RuntimeException("Failed to connect to user database: {$e->getMessage()} | Path: {$this->secureDatabasePath} | Dir exists: " . (is_dir(dirname($this->secureDatabasePath)) ? 'yes' : 'no') . " | File exists: " . (file_exists($this->secureDatabasePath) ? 'yes' : 'no'), 0, $e);
+            throw new RuntimeException("Failed to connect to user database: {$e->getMessage()} | Path: {$this->secureDatabasePath} | Dir exists: " . (is_dir(dirname($this->secureDatabasePath)) ? 'yes' : 'no') . ' | File exists: ' . (file_exists($this->secureDatabasePath) ? 'yes' : 'no'), 0, $e);
         } catch (\Exception $e) {
             throw new RuntimeException("User database error: {$e->getMessage()} | Path: {$this->secureDatabasePath}", 0, $e);
         }
     }
-    
+
     /**
      * Initialize user database schema.
      */
@@ -124,7 +123,7 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                     updated_at TEXT NOT NULL DEFAULT (datetime('now', 'localtime'))
                 )
             ");
-            
+
             // User sessions table
             $connection->exec("
                 CREATE TABLE IF NOT EXISTS user_sessions (
@@ -138,7 +137,7 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
                 )
             ");
-            
+
             // User preferences table
             $connection->exec("
                 CREATE TABLE IF NOT EXISTS user_preferences (
@@ -152,7 +151,7 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                     UNIQUE(user_id, preference_key)
                 )
             ");
-            
+
             // User activity logs table
             $connection->exec("
                 CREATE TABLE IF NOT EXISTS user_activity_logs (
@@ -170,14 +169,14 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
             ");
 
             // Create indexes for performance
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_users_status ON users(status)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_user_sessions_expires ON user_sessions(expires_at)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON user_preferences(user_id)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON user_activity_logs(user_id)");
-            $connection->exec("CREATE INDEX IF NOT EXISTS idx_user_activity_created ON user_activity_logs(created_at)");
-            
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_users_status ON users(status)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_user_sessions_expires ON user_sessions(expires_at)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_user_preferences_user_id ON user_preferences(user_id)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_user_activity_user_id ON user_activity_logs(user_id)');
+            $connection->exec('CREATE INDEX IF NOT EXISTS idx_user_activity_created ON user_activity_logs(created_at)');
+
             // Create FTS5 virtual table for user search
             $connection->exec("
                 CREATE VIRTUAL TABLE IF NOT EXISTS users_fts USING fts5(
@@ -210,15 +209,14 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                     DELETE FROM users_fts WHERE rowid = old.rowid;
                 END
             ');
-            
+
             // Create default test user if none exists
             $this->createDefaultTestUser();
-            
         } catch (PDOException $e) {
             throw new RuntimeException('Failed to initialize user database: ' . $e->getMessage(), 0, $e);
         }
     }
-    
+
     /**
      * Create default test user for development.
      */
@@ -236,10 +234,10 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
         $userUserExists = (int) $stmt->fetchColumn() > 0;
 
         // Prepare statement for user creation
-        $stmt = $connection->prepare("
+        $stmt = $connection->prepare('
             INSERT INTO users (id, email, name, password_hash, role, status, email_verified, created_at, updated_at)
             VALUES (:id, :email, :name, :password_hash, :role, :status, :email_verified, :created_at, :updated_at)
-        ");
+        ');
 
         if (!$testUserExists) {
             // Create test@example.com user
@@ -247,15 +245,15 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
             error_log('🔍 DB DEBUG: Creating test@example.com with password hash: ' . $testPasswordHash);
 
             $testUser = [
-                'id' => 'user-' . uniqid(),
-                'email' => 'test@example.com',
-                'name' => 'Test User',
-                'password_hash' => $testPasswordHash,
-                'role' => 'user',
-                'status' => 'active',
+                'id'             => 'user-' . uniqid(),
+                'email'          => 'test@example.com',
+                'name'           => 'Test User',
+                'password_hash'  => $testPasswordHash,
+                'role'           => 'user',
+                'status'         => 'active',
                 'email_verified' => 1,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at'     => date('Y-m-d H:i:s'),
+                'updated_at'     => date('Y-m-d H:i:s'),
             ];
 
             $stmt->execute($testUser);
@@ -264,21 +262,21 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
         if (!$userUserExists) {
             // Create user@example.com user
             $userUser = [
-                'id' => 'user-' . uniqid(),
-                'email' => 'user@example.com',
-                'name' => 'Example User',
-                'password_hash' => password_hash('user123', PASSWORD_DEFAULT),
-                'role' => 'user',
-                'status' => 'active',
+                'id'             => 'user-' . uniqid(),
+                'email'          => 'user@example.com',
+                'name'           => 'Example User',
+                'password_hash'  => password_hash('user123', PASSWORD_DEFAULT),
+                'role'           => 'user',
+                'status'         => 'active',
                 'email_verified' => 1,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
+                'created_at'     => date('Y-m-d H:i:s'),
+                'updated_at'     => date('Y-m-d H:i:s'),
             ];
 
             $stmt->execute($userUser);
         }
     }
-    
+
     /**
      * Get database statistics.
      *
@@ -300,10 +298,10 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
                 $stats[$table] = 0;
             }
         }
-        
+
         return $stats;
     }
-    
+
     /**
      * Clean expired sessions.
      */
@@ -312,10 +310,10 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
         $connection = $this->getConnection();
         $stmt = $connection->prepare("DELETE FROM user_sessions WHERE expires_at < datetime('now')");
         $stmt->execute();
-        
+
         return $stmt->rowCount();
     }
-    
+
     /**
      * Clean expired data.
      */

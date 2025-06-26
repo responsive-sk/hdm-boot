@@ -9,7 +9,7 @@ use Psr\Log\LoggerInterface;
 
 /**
  * SQLite Mark Repository.
- * 
+ *
  * Implements mark user data access using SQLite (mark.db).
  * Uses mark.db database exclusively.
  */
@@ -18,8 +18,12 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
     public function __construct(
         private readonly PDO $connection,
         private readonly LoggerInterface $logger
-    ) {}
+    ) {
+    }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function findByEmail(string $email): ?array
     {
         $this->logger->debug('🔴 MARK REPO: Finding user by email', ['email' => $email]);
@@ -30,32 +34,50 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                 FROM mark_users 
                 WHERE email = ? AND status = "active"
             ');
-            
+
             $stmt->execute([$email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user === false) {
                 $this->logger->debug('🔴 MARK REPO: User not found', ['email' => $email]);
+
+                return null;
+            }
+
+            if (!is_array($user)) {
+                $this->logger->error('🔴 MARK REPO: Invalid user data type', ['email' => $email]);
+
                 return null;
             }
 
             $this->logger->debug('🔴 MARK REPO: User found', [
-                'email' => $email,
-                'user_id' => $user['id'],
-                'role' => $user['role']
+                'email'   => $email,
+                'user_id' => $user['id'] ?? 'unknown',
+                'role'    => $user['role'] ?? 'unknown',
             ]);
 
-            return $user;
+            // Ensure proper array structure for return type
+            $typedUser = [];
+            foreach ($user as $key => $value) {
+                if (is_string($key)) {
+                    $typedUser[$key] = $value;
+                }
+            }
 
+            return $typedUser;
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error finding user by email', [
                 'email' => $email,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return null;
         }
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     public function findById(string $id): ?array
     {
         $this->logger->debug('🔴 MARK REPO: Finding user by ID', ['user_id' => $id]);
@@ -66,17 +88,35 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                 FROM mark_users 
                 WHERE id = ?
             ');
-            
+
             $stmt->execute([$id]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            return $user === false ? null : $user;
+            if ($user === false) {
+                return null;
+            }
 
+            if (!is_array($user)) {
+                $this->logger->error('🔴 MARK REPO: Invalid user data type', ['user_id' => $id]);
+
+                return null;
+            }
+
+            // Ensure proper array structure for return type
+            $typedUser = [];
+            foreach ($user as $key => $value) {
+                if (is_string($key)) {
+                    $typedUser[$key] = $value;
+                }
+            }
+
+            return $typedUser;
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error finding user by ID', [
                 'user_id' => $id,
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage(),
             ]);
+
             return null;
         }
     }
@@ -91,44 +131,76 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                     updated_at = datetime("now")
                 WHERE id = ?
             ');
-            
+
             $result = $stmt->execute([$id]);
 
             $this->logger->debug('🔴 MARK REPO: Updated last login', [
                 'user_id' => $id,
-                'success' => $result
+                'success' => $result,
             ]);
 
             return $result;
-
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error updating last login', [
                 'user_id' => $id,
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage(),
             ]);
+
             return false;
         }
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function findAll(): array
     {
         try {
             $stmt = $this->connection->query('
                 SELECT id, username, email, role, status, last_login_at, login_count, created_at, updated_at
-                FROM mark_users 
+                FROM mark_users
                 ORDER BY created_at DESC
             ');
-            
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+            if ($stmt === false) {
+                $this->logger->error('🔴 MARK REPO: Failed to prepare statement for findAll');
+
+                return [];
+            }
+
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Ensure proper array structure
+            $typedResult = [];
+            if (is_array($result)) {
+                foreach ($result as $row) {
+                    if (is_array($row)) {
+                        // Ensure string keys
+                        $typedRow = [];
+                        foreach ($row as $key => $value) {
+                            if (is_string($key)) {
+                                $typedRow[$key] = $value;
+                            }
+                        }
+                        $typedResult[] = $typedRow;
+                    }
+                }
+            }
+
+            return $typedResult;
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error finding all users', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
+
             return [];
         }
     }
 
+    /**
+     * @param array<string, mixed> $userData
+     */
     public function create(array $userData): string
     {
         try {
@@ -139,7 +211,7 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                 INSERT INTO mark_users (id, username, email, password_hash, role, status, last_login_at, login_count, created_at, updated_at)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ');
-            
+
             $stmt->execute([
                 $id,
                 $userData['username'] ?? '',
@@ -150,25 +222,27 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                 null,
                 0,
                 $now,
-                $now
+                $now,
             ]);
 
             $this->logger->info('🔴 MARK REPO: Created new mark user', [
                 'user_id' => $id,
-                'email' => $userData['email']
+                'email'   => $userData['email'],
             ]);
 
             return $id;
-
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error creating user', [
                 'email' => $userData['email'] ?? 'unknown',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
             throw $e;
         }
     }
 
+    /**
+     * @param array<string, mixed> $userData
+     */
     public function update(string $id, array $userData): bool
     {
         try {
@@ -182,27 +256,27 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
                 }
             }
 
-            $fields[] = "updated_at = ?";
+            $fields[] = 'updated_at = ?';
             $values[] = date('Y-m-d H:i:s');
             $values[] = $id;
 
             $sql = 'UPDATE mark_users SET ' . implode(', ', $fields) . ' WHERE id = ?';
             $stmt = $this->connection->prepare($sql);
-            
+
             $result = $stmt->execute($values);
 
             $this->logger->info('🔴 MARK REPO: Updated mark user', [
                 'user_id' => $id,
-                'success' => $result
+                'success' => $result,
             ]);
 
             return $result;
-
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error updating user', [
                 'user_id' => $id,
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage(),
             ]);
+
             return false;
         }
     }
@@ -215,16 +289,16 @@ final class SqliteMarkRepository implements MarkRepositoryInterface
 
             $this->logger->info('🔴 MARK REPO: Deleted mark user', [
                 'user_id' => $id,
-                'success' => $result
+                'success' => $result,
             ]);
 
             return $result;
-
         } catch (\Exception $e) {
             $this->logger->error('🔴 MARK REPO: Error deleting user', [
                 'user_id' => $id,
-                'error' => $e->getMessage()
+                'error'   => $e->getMessage(),
             ]);
+
             return false;
         }
     }

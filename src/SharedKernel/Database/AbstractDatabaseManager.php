@@ -9,13 +9,14 @@ use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Abstract Database Manager.
- * 
+ *
  * Defines the contract for all database managers in HDM Boot.
  * Each database type (Mark, User, App) has its own manager that extends this.
  */
 abstract class AbstractDatabaseManager
 {
     protected ?PDO $connection = null;
+
     protected readonly string $secureDatabasePath;
 
     /**
@@ -46,9 +47,9 @@ abstract class AbstractDatabaseManager
             // Directory doesn't exist, create it securely with strict permissions
             $directory = dirname($path);
             if (!is_dir($directory)) {
-                mkdir($directory, 0755, true); // 755 = rwxr-xr-x (owner: rwx, group: r-x, other: r-x)
+                mkdir($directory, 0o755, true); // 755 = rwxr-xr-x (owner: rwx, group: r-x, other: r-x)
                 // Set directory permissions for shared hosting compatibility
-                chmod($directory, 0777);
+                chmod($directory, 0o777);
             }
             $realPath = realpath(dirname($path));
         }
@@ -59,7 +60,7 @@ abstract class AbstractDatabaseManager
 
         return $realPath . DIRECTORY_SEPARATOR . basename($path);
     }
-    
+
     /**
      * Get database connection.
      *
@@ -78,39 +79,39 @@ abstract class AbstractDatabaseManager
 
         return $this->connection;
     }
-    
+
     /**
      * Create database connection - implemented by concrete classes.
      */
     abstract protected function createConnection(): PDO;
-    
+
     /**
      * Initialize database schema - implemented by concrete classes.
      */
     abstract protected function initializeDatabase(): void;
-    
+
     /**
      * Get database statistics - implemented by concrete classes.
      *
      * @return array<string, mixed>
      */
     abstract public function getStatistics(): array;
-    
+
     /**
      * Clean expired data - implemented by concrete classes.
      */
     abstract public function cleanExpiredData(): int;
-    
+
     /**
      * Get database type identifier.
      */
     abstract public function getDatabaseType(): string;
-    
+
     /**
      * Get database name/identifier.
      */
     abstract public function getDatabaseName(): string;
-    
+
     /**
      * Check if database exists and is accessible.
      */
@@ -119,12 +120,13 @@ abstract class AbstractDatabaseManager
         try {
             $connection = $this->getConnection();
             $connection->query('SELECT 1');
+
             return true;
         } catch (\Exception) {
             return false;
         }
     }
-    
+
     /**
      * Get database file size (for file-based databases).
      */
@@ -144,7 +146,7 @@ abstract class AbstractDatabaseManager
     {
         return $this->secureDatabasePath;
     }
-    
+
     /**
      * Check database integrity.
      *
@@ -154,30 +156,30 @@ abstract class AbstractDatabaseManager
     {
         try {
             $connection = $this->getConnection();
-            
+
             // Basic connectivity check
             $result = [
                 'accessible' => true,
-                'size' => $this->getDatabaseSize(),
-                'type' => $this->getDatabaseType(),
-                'name' => $this->getDatabaseName(),
-                'tables' => $this->getTableList(),
-                'errors' => [],
+                'size'       => $this->getDatabaseSize(),
+                'type'       => $this->getDatabaseType(),
+                'name'       => $this->getDatabaseName(),
+                'tables'     => $this->getTableList(),
+                'errors'     => [],
             ];
-            
+
             return $result;
         } catch (\Exception $e) {
             return [
                 'accessible' => false,
-                'size' => 0,
-                'type' => $this->getDatabaseType(),
-                'name' => $this->getDatabaseName(),
-                'tables' => [],
-                'errors' => [$e->getMessage()],
+                'size'       => 0,
+                'type'       => $this->getDatabaseType(),
+                'name'       => $this->getDatabaseName(),
+                'tables'     => [],
+                'errors'     => [$e->getMessage()],
             ];
         }
     }
-    
+
     /**
      * Get list of tables in database.
      *
@@ -203,7 +205,7 @@ abstract class AbstractDatabaseManager
             return [];
         }
     }
-    
+
     /**
      * Execute SQL file.
      */
@@ -212,15 +214,15 @@ abstract class AbstractDatabaseManager
         if (!file_exists($filePath)) {
             throw new \RuntimeException("SQL file not found: {$filePath}");
         }
-        
+
         $sql = file_get_contents($filePath);
         if ($sql === false) {
             throw new \RuntimeException("Failed to read SQL file: {$filePath}");
         }
-        
+
         $this->getConnection()->exec($sql);
     }
-    
+
     /**
      * Begin transaction.
      */
@@ -228,7 +230,7 @@ abstract class AbstractDatabaseManager
     {
         return $this->getConnection()->beginTransaction();
     }
-    
+
     /**
      * Commit transaction.
      */
@@ -236,7 +238,7 @@ abstract class AbstractDatabaseManager
     {
         return $this->getConnection()->commit();
     }
-    
+
     /**
      * Rollback transaction.
      */
@@ -244,7 +246,7 @@ abstract class AbstractDatabaseManager
     {
         return $this->getConnection()->rollBack();
     }
-    
+
     /**
      * Execute query with parameters.
      *
@@ -254,10 +256,10 @@ abstract class AbstractDatabaseManager
     {
         $stmt = $this->getConnection()->prepare($sql);
         $stmt->execute($params);
-        
+
         return $stmt;
     }
-    
+
     /**
      * Close database connection.
      */
@@ -265,7 +267,7 @@ abstract class AbstractDatabaseManager
     {
         $this->connection = null;
     }
-    
+
     /**
      * Destructor - ensure connection is closed.
      */

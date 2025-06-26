@@ -64,7 +64,6 @@ final class CommandBus
             /** @var CommandHandlerInterface $handler */
             $handler = $this->container->get($handlerClass);
 
-            // @phpstan-ignore-next-line instanceof.alwaysTrue
             if (!$handler instanceof CommandHandlerInterface) {
                 throw new InvalidArgumentException(
                     "Handler {$handlerClass} must implement CommandHandlerInterface"

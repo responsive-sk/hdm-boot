@@ -112,15 +112,15 @@ Hello world! This is my first article.</pre>
 
             <?php
             $articleTags = is_object($article) && method_exists($article, 'getAttribute')
-        ? $article->getAttribute('tags')
-        : null;
+            ? $article->getAttribute('tags')
+            : null;
         if (is_array($articleTags)) : ?>
                 <div class="tags">
-                    <?php foreach ($articleTags as $tag) : ?>
-                        <?php if (is_string($tag)) : ?>
+                        <?php foreach ($articleTags as $tag) : ?>
+                            <?php if (is_string($tag)) : ?>
                             <span class="tag"><?= htmlspecialchars($tag); ?></span>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </article>
@@ -134,20 +134,20 @@ Hello world! This is my first article.</pre>
                     <?php
                 $categoriesIterable = is_iterable($categories) ? $categories : [];
                 foreach ($categoriesIterable as $category) : ?>
-                        <?php if (is_string($category)) : ?>
-                            <?php
-                        $categoryCounts ??= [];
-                            $categoryData = is_array($categoryCounts) && isset($categoryCounts[$category])
+                            <?php if (is_string($category)) : ?>
+                                <?php
+                            $categoryCounts ??= [];
+                                $categoryData = is_array($categoryCounts) && isset($categoryCounts[$category])
                                 ? $categoryCounts[$category]
                                 : [];
-                            $count = is_array($categoryData) ? count($categoryData) : 0;
-                            ?>
+                                $count = is_array($categoryData) ? count($categoryData) : 0;
+                                ?>
                             <li>
                                 <a href="/blog/category/<?= urlencode($category); ?>">
                                     <?= ucfirst($category); ?> (<?= $count; ?>)
                                 </a>
                             </li>
-                        <?php endif; ?>
+                            <?php endif; ?>
                     <?php endforeach; ?>
                 </ul>
             <?php endif; ?>
@@ -158,9 +158,9 @@ Hello world! This is my first article.</pre>
                     <?php
                     $tagsArray = is_array($tags) ? array_slice($tags, 0, 10) : [];
                 foreach ($tagsArray as $tag) : ?>
-                        <?php if (is_string($tag)) : ?>
+                            <?php if (is_string($tag)) : ?>
                             <span class="tag"><?= htmlspecialchars($tag); ?></span>
-                        <?php endif; ?>
+                            <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>

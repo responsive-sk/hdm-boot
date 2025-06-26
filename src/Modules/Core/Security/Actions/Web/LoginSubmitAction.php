@@ -196,10 +196,10 @@ final class LoginSubmitAction
             // Debug output for production issue
             $debugInfo = [
                 'error_message' => $e->getMessage(),
-                'error_file' => $e->getFile(),
-                'error_line' => $e->getLine(),
-                'email' => $data['email'] ?? 'unknown',
-                'trace' => substr($e->getTraceAsString(), 0, 1000), // Limit trace length
+                'error_file'    => $e->getFile(),
+                'error_line'    => $e->getLine(),
+                'email'         => $data['email'] ?? 'unknown',
+                'trace'         => substr($e->getTraceAsString(), 0, 1000), // Limit trace length
             ];
 
             return $this->templateRenderer->render(

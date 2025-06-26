@@ -345,7 +345,6 @@ final class CakePHPDatabaseManager implements DatabaseManagerInterface, QueryBui
                 ->andWhere(['name NOT LIKE' => 'sqlite_%']);
 
             foreach ($query->execute() as $row) {
-                // @phpstan-ignore-next-line function.alreadyNarrowedType
                 if (is_array($row) && isset($row['name']) && is_string($row['name'])) {
                     $tableName = $row['name'];
                     $countQuery = $this->selectQuery()

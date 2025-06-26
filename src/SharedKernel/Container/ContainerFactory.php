@@ -6,7 +6,7 @@ namespace HdmBoot\SharedKernel\Container;
 
 /**
  * Container Factory for HDM Boot Protocol.
- * 
+ *
  * Creates different DI container implementations based on client requirements.
  * Supports Slim4, Symfony, Laravel, and custom containers.
  */
@@ -24,12 +24,12 @@ final class ContainerFactory
             'symfony' => self::createSymfonyContainer($options),
             'laravel' => self::createLaravelContainer($options),
             'laminas' => self::createLaminasContainer($options),
-            'pimple' => self::createPimpleContainer($options),
-            'custom' => self::createCustomContainer($options),
-            default => throw new \InvalidArgumentException("Unsupported container type: {$type}"),
+            'pimple'  => self::createPimpleContainer($options),
+            'custom'  => self::createCustomContainer($options),
+            default   => throw new \InvalidArgumentException("Unsupported container type: {$type}"),
         };
     }
-    
+
     /**
      * Create Slim4 container (default).
      *
@@ -39,7 +39,7 @@ final class ContainerFactory
     {
         $container = new Slim4Container();
         $container->registerCoreServices();
-        
+
         // Apply custom options
         if (isset($options['definitions']) && is_array($options['definitions'])) {
             // Ensure definitions array has proper string keys
@@ -55,10 +55,10 @@ final class ContainerFactory
         if (isset($options['compilation_path']) && is_string($options['compilation_path'])) {
             $container->enableCompilation($options['compilation_path']);
         }
-        
+
         return $container;
     }
-    
+
     /**
      * Create Symfony container.
      *
@@ -102,7 +102,7 @@ final class ContainerFactory
         // TODO: Implement PimpleContainer
         throw new \RuntimeException('Pimple container not yet implemented');
     }
-    
+
     /**
      * Create custom container.
      *
@@ -119,17 +119,18 @@ final class ContainerFactory
         if (!class_exists($className)) {
             throw new \InvalidArgumentException("Custom container class does not exist: {$className}");
         }
-        
+
         if (!is_subclass_of($className, AbstractContainer::class)) {
             throw new \InvalidArgumentException(
                 "Custom container must extend AbstractContainer: {$className}"
             );
         }
-        
+
         $constructorArgs = $options['constructor_args'] ?? [];
+
         return new $className(...$constructorArgs);
     }
-    
+
     /**
      * Auto-detect container type based on available packages.
      */
@@ -139,31 +140,31 @@ final class ContainerFactory
         if (class_exists(\DI\Container::class)) {
             return 'slim4';
         }
-        
+
         // Check for Symfony
         if (class_exists(\Symfony\Component\DependencyInjection\Container::class)) {
             return 'symfony';
         }
-        
+
         // Check for Laravel
         if (class_exists(\Illuminate\Container\Container::class)) {
             return 'laravel';
         }
-        
+
         // Check for Laminas
         if (class_exists(\Laminas\ServiceManager\ServiceManager::class)) {
             return 'laminas';
         }
-        
+
         // Check for Pimple
         if (class_exists(\Pimple\Container::class)) {
             return 'pimple';
         }
-        
+
         // Default to Slim4
         return 'slim4';
     }
-    
+
     /**
      * Create container with auto-detection.
      *
@@ -172,66 +173,68 @@ final class ContainerFactory
     public static function createAuto(array $options = []): AbstractContainer
     {
         $type = self::autoDetect();
+
         return self::create($type, $options);
     }
-    
+
     /**
      * Get supported container types.
-     * 
+     *
      * @return array<string, array<string, mixed>>
      */
     public static function getSupportedTypes(): array
     {
         return [
             'slim4' => [
-                'name' => 'Slim4 (PHP-DI)',
+                'name'        => 'Slim4 (PHP-DI)',
                 'description' => 'Default HDM Boot container with PHP-DI',
-                'status' => 'implemented',
-                'package' => 'php-di/php-di',
+                'status'      => 'implemented',
+                'package'     => 'php-di/php-di',
             ],
             'symfony' => [
-                'name' => 'Symfony DI Container',
+                'name'        => 'Symfony DI Container',
                 'description' => 'Symfony dependency injection container',
-                'status' => 'planned',
-                'package' => 'symfony/dependency-injection',
+                'status'      => 'planned',
+                'package'     => 'symfony/dependency-injection',
             ],
             'laravel' => [
-                'name' => 'Laravel Container',
+                'name'        => 'Laravel Container',
                 'description' => 'Laravel/Illuminate container',
-                'status' => 'planned',
-                'package' => 'illuminate/container',
+                'status'      => 'planned',
+                'package'     => 'illuminate/container',
             ],
             'laminas' => [
-                'name' => 'Laminas ServiceManager',
+                'name'        => 'Laminas ServiceManager',
                 'description' => 'Laminas dependency injection container',
-                'status' => 'planned',
-                'package' => 'laminas/laminas-servicemanager',
+                'status'      => 'planned',
+                'package'     => 'laminas/laminas-servicemanager',
             ],
             'pimple' => [
-                'name' => 'Pimple Container',
+                'name'        => 'Pimple Container',
                 'description' => 'Lightweight dependency injection container',
-                'status' => 'planned',
-                'package' => 'pimple/pimple',
+                'status'      => 'planned',
+                'package'     => 'pimple/pimple',
             ],
             'custom' => [
-                'name' => 'Custom Container',
+                'name'        => 'Custom Container',
                 'description' => 'Client-provided container implementation',
-                'status' => 'supported',
-                'package' => 'user-defined',
+                'status'      => 'supported',
+                'package'     => 'user-defined',
             ],
         ];
     }
-    
+
     /**
      * Validate container configuration.
      *
      * @param array<string, mixed> $options
+     *
      * @return array<string, mixed>
      */
     public static function validateConfiguration(string $type, array $options = []): array
     {
         $errors = [];
-        
+
         switch (strtolower($type)) {
             case 'slim4':
                 // Validate Slim4 options
@@ -246,7 +249,7 @@ final class ContainerFactory
                 }
                 break;
         }
-        
+
         return $errors;
     }
 }

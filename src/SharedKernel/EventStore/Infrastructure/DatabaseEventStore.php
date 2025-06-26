@@ -40,7 +40,6 @@ final class DatabaseEventStore implements EventStoreInterface
 
         try {
             foreach ($events as $event) {
-                // @phpstan-ignore-next-line instanceof.alwaysTrue
                 if (!$event instanceof DomainEventInterface) {
                     throw new \InvalidArgumentException('All events must implement DomainEventInterface');
                 }
