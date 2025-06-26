@@ -39,7 +39,7 @@ try {
         'templates/',
         'storage/',
         'var/',
-        'vendor/',
+        // vendor/ will be created with composer install --no-dev
         'bin/init-all-databases.php',
         'bin/init-mark-db.php',
         'bin/init-user-db.php',
@@ -91,7 +91,31 @@ try {
         echo "   🗑️  Removing: {$pattern}\n";
         exec("rm -rf " . escapeshellarg($fullPattern));
     }
-    
+
+    // Install production dependencies only
+    echo "\n📦 Installing production dependencies (--no-dev)...\n";
+    $currentDir = getcwd();
+    chdir($buildDir);
+
+    $composerCommand = 'composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist';
+    echo "   Running: {$composerCommand}\n";
+
+    $output = [];
+    $returnCode = 0;
+    exec($composerCommand . ' 2>&1', $output, $returnCode);
+
+    if ($returnCode !== 0) {
+        echo "   ⚠️  Composer install failed, output:\n";
+        foreach ($output as $line) {
+            echo "      {$line}\n";
+        }
+        echo "   ℹ️  Dependencies may need to be installed manually on server\n";
+    } else {
+        echo "   ✅ Production dependencies installed successfully\n";
+    }
+
+    chdir($currentDir);
+
     // Create production .env template
     echo "\n⚙️  Creating production .env template...\n";
     $envTemplate = <<<ENV
