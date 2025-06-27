@@ -5,6 +5,68 @@ All notable changes to HDM Boot Protocol will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2025-06-27 - Paths Service & Directory Structure Optimization
+
+### 🔧 Fixed - Critical Paths Service Issues
+- **CRITICAL FIX**: Resolved Paths service config loading - custom configuration now properly respected
+- **FIXED**: Database path resolution - all databases correctly resolve to `var/storage/`
+- **FIXED**: Container compilation cache path in production environment
+- **FIXED**: Removed hardcoded packages directory reference from test scripts
+
+### 📁 Changed - Directory Structure Optimization
+- **MOVED**: Storage directory from root `storage/` to `var/storage/` for better organization
+- **CONSOLIDATED**: All runtime data under `var/` directory structure
+- **UPDATED**: All database managers to use proper Paths service methods
+- **ENHANCED**: Production build optimization (1.88 MB vs 12 MB, 84% smaller)
+
+### 🛠️ Enhanced - Paths Service Usage
+- **IMPROVED**: Replaced `path('storage/...')` with `storage('...')` method calls throughout codebase
+- **UPDATED**: DatabaseManagerFactory to use specific Paths service methods
+- **FIXED**: Database managers default path resolution using `storage()` method
+- **ENHANCED**: Health checks in Database module to use proper path methods
+
+### 🔍 Added - Development Tools
+- **NEW**: Comprehensive paths audit tool (`bin/audit-paths.php`) for detecting hardcoded paths
+- **NEW**: Paths cleanup tool (`bin/cleanup-paths.php`) for automated directory structure fixes
+- **NEW**: Enhanced audit tool with Paths service call recognition
+- **NEW**: Paths Service Guide documentation with best practices
+
+### 📊 Improved - Code Quality Metrics
+- **REDUCED**: Hardcoded paths from 46 to 21 (54% improvement)
+- **MAINTAINED**: 100% PHPStan Level Max compliance
+- **MAINTAINED**: 100% PHP CS Fixer compliance
+- **ENHANCED**: Path consistency across all modules
+
+### 🛡️ Security Enhancements
+- **ADDED**: `.htaccess` protection to `var/storage/`, `var/logs/`, `config/`, `bin/` directories
+- **IMPROVED**: Path traversal protection through proper Paths service usage
+- **ENHANCED**: Directory isolation with organized structure
+
+### 📚 Documentation Updates
+- **UPDATED**: HDM Boot Protocol with new directory structure guidelines
+- **ADDED**: Paths Service Guide with comprehensive usage examples
+- **ENHANCED**: Compliance checklist with Paths service requirements
+- **ADDED**: Migration guide for Paths service changes
+
+### 🎯 Directory Structure (New)
+```
+var/
+├── storage/          # Database files (NEW LOCATION)
+│   ├── mark.db      # Mark system database
+│   ├── user.db      # User system database
+│   ├── system.db    # Core system database
+│   └── blog.db      # Blog database (HDM Boot Protocol)
+├── logs/            # Application logs
+├── cache/           # Cache files
+└── sessions/        # Session data
+```
+
+### 🔄 Migration Notes
+- **Database Location**: All databases moved from `storage/` to `var/storage/`
+- **Paths Service**: Use `storage()`, `logs()`, `cache()` methods instead of `path()` for configured paths
+- **Configuration**: Custom `config/paths.php` now properly respected by Paths service
+- **Production**: Optimized build excludes development dependencies
+
 ## [2.1.0] - 2025-06-26 - Mark System & Three-Database Architecture
 
 ### 🔴 Added - Mark System Implementation

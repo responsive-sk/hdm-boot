@@ -40,14 +40,20 @@ system.db  → Core system modules (Cache, System logs, Template cache)
 
 ### **PILLAR III: Secure Path Resolution**
 ```php
-// ✅ PROTOCOL COMPLIANT
-$securePath = $this->paths->path('storage/database.db');
+// ✅ PROTOCOL COMPLIANT - Use specific methods for configured paths
+$databasePath = $this->paths->storage('mark.db');
+$logPath = $this->paths->logs('app.log');
+$cachePath = $this->paths->cache('templates');
+
+// ⚠️ LIMITED USE - Generic path method (uses basePath + relativePath)
+$genericPath = $this->paths->path('custom/file.txt');
 
 // ❌ PROTOCOL VIOLATION
 $path = '../storage/database.db';
 ```
 
 **MANDATORY:** All file system operations MUST use ResponsiveSk\Slim4Paths service.
+**RECOMMENDED:** Use specific methods (storage(), logs(), cache()) for configured paths instead of generic path() method.
 
 ### **PILLAR IV: Centralized Permission Management**
 ```php
@@ -72,6 +78,29 @@ $container = new \DI\Container(); // Locked to specific implementation
 
 **MANDATORY:** All applications MUST use AbstractContainer for DI container abstraction.
 
+### **PILLAR VI: Organized Directory Structure**
+```
+var/                  # Runtime data directory
+├── storage/         # Database files (RECOMMENDED LOCATION)
+│   ├── mark.db     # Mark system database
+│   ├── user.db     # User system database
+│   └── system.db   # Core system database
+├── logs/           # Application logs
+├── cache/          # Cache files
+└── sessions/       # Session data
+
+content/            # Content files (Git-friendly)
+├── articles/       # Markdown articles
+└── docs/          # Documentation
+
+public/             # Web-accessible files only
+├── assets/        # CSS, JS, images
+└── media/         # User uploads
+```
+
+**RECOMMENDED:** Store databases in `var/storage/` instead of root `storage/` for better organization.
+**MANDATORY:** Protect sensitive directories with `.htaccess` files.
+
 ## 🔧 IMPLEMENTATION STANDARDS
 
 ### **Database Managers**
@@ -79,15 +108,28 @@ $container = new \DI\Container(); // Locked to specific implementation
 // ✅ PROTOCOL COMPLIANT
 class MarkSqliteDatabaseManager extends AbstractDatabaseManager
 {
+    public function __construct(?string $databasePath = null, ?Paths $paths = null)
+    {
+        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $databasePath = $databasePath ?? $paths->storage('mark.db'); // Use storage() method
+        parent::__construct($databasePath, [], $paths);
+    }
+
     protected function createConnection(): PDO { /* Implementation */ }
     protected function initializeDatabase(): void { /* Schema */ }
 }
 
 // ❌ PROTOCOL VIOLATION
-class AdminDatabaseManager 
+class AdminDatabaseManager
 {
     private PDO $connection; // No inheritance, wrong naming
 }
+
+// ❌ INCORRECT PATH USAGE
+$dbPath = $paths->path('storage/mark.db'); // Uses basePath + relativePath
+
+// ✅ CORRECT PATH USAGE
+$dbPath = $paths->storage('mark.db'); // Uses configured storage path
 ```
 
 ### **Permission Modes**
@@ -135,11 +177,13 @@ src/
 ## 📋 COMPLIANCE CHECKLIST
 
 ### **Architecture Compliance**
-- [ ] Three separate databases implemented
+- [ ] Three separate databases implemented (mark.db, user.db, system.db)
 - [ ] Zero "admin" terminology in codebase
 - [ ] All database managers extend AbstractDatabaseManager
 - [ ] DatabaseManagerFactory used for all database access
 - [ ] Secure path resolution via Paths service
+- [ ] Organized directory structure (var/storage/, var/logs/, var/cache/)
+- [ ] Proper Paths service method usage (storage(), logs(), cache() vs path())
 
 ### **Security Compliance**
 - [ ] PermissionManager used for all file operations
@@ -148,11 +192,21 @@ src/
 - [ ] Path traversal protection active
 - [ ] Database connections properly isolated
 
+### **Paths Service Compliance**
+- [ ] Use storage() method for database files
+- [ ] Use logs() method for log files
+- [ ] Use cache() method for cache files
+- [ ] Use sessions() method for session files
+- [ ] Avoid generic path() method for configured paths
+- [ ] Custom config/paths.php properly configured
+- [ ] PathsFactory used for singleton instance management
+
 ### **Development Tools**
 - [ ] Permission management scripts available
 - [ ] Database health checking implemented
 - [ ] Environment configuration documented
 - [ ] Production deployment procedures defined
+- [ ] Paths audit tool for hardcoded path detection
 
 ## 🚨 PROTOCOL VIOLATIONS
 

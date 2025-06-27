@@ -20,6 +20,8 @@
 - **CSRF Protection** - Cross-site request forgery prevention
 - **Secure Sessions** - Enterprise-grade session management
 - **Path Safety** - Safe file system operations with `responsive-sk/slim4-paths`
+- **Directory Protection** - `.htaccess` protection for sensitive directories
+- **Path Traversal Prevention** - Secure path resolution with Paths service
 
 ### 🌍 **Internationalization**
 - **Multi-language Support** - Slovak, Czech, English, and more
@@ -87,6 +89,44 @@ php bin/build-production.php
 ```
 
 📋 **Complete deployment guide:** [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
+
+## 📁 Directory Structure
+
+HDM Boot follows an organized directory structure with runtime data consolidated under `var/`:
+
+```
+project/
+├── var/                    # Runtime data (protected)
+│   ├── storage/           # Database files
+│   │   ├── mark.db       # Mark system database
+│   │   ├── user.db       # User system database
+│   │   └── system.db     # Core system database
+│   ├── logs/              # Application logs
+│   ├── cache/             # Cache files
+│   └── sessions/          # Session data
+├── content/               # Content files (Git-friendly)
+│   ├── articles/          # Markdown articles
+│   └── docs/              # Documentation
+├── templates/             # Template files
+│   ├── layouts/
+│   └── partials/
+├── public/                # Web-accessible files only
+│   ├── assets/
+│   └── media/
+├── src/                   # Application source code
+│   ├── Modules/
+│   └── SharedKernel/
+└── config/
+    └── paths.php          # Path configuration
+```
+
+**Key Benefits:**
+- **Security** - Sensitive files outside web root
+- **Organization** - Clear separation of concerns
+- **Protection** - `.htaccess` files protect sensitive directories
+- **Flexibility** - Configurable paths via `config/paths.php`
+
+📋 **Paths Service Guide:** [docs/PATHS_SERVICE_GUIDE.md](docs/PATHS_SERVICE_GUIDE.md)
 
 ## 🏗️ Architecture
 
