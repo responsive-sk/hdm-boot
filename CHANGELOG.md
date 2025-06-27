@@ -5,6 +5,46 @@ All notable changes to HDM Boot Protocol will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2025-06-27 - Paths::fromHere() Enhancement & Package Update
+
+### 🚀 Enhanced - Paths Service with fromHere() Method
+- **UPGRADED**: responsive-sk/slim4-paths package to v2.1.0
+- **NEW**: Paths::fromHere() static convenience method for cleaner path creation
+- **IMPROVED**: Developer experience with expressive path initialization
+- **ENHANCED**: Error handling with automatic path validation
+
+### 🔧 Refactored - Codebase with fromHere() Usage
+- **UPDATED**: All database managers to use Paths::fromHere(__DIR__, 3)
+- **IMPROVED**: Config files to use fromHere() for path initialization
+- **ENHANCED**: Test files with cleaner path handling
+- **REDUCED**: Manual path construction errors
+
+### 📝 Code Quality Improvements
+```php
+// Before (error-prone)
+$paths = new Paths(__DIR__ . '/../../..');
+
+// After (clean and safe)
+$paths = Paths::fromHere(__DIR__, 3);
+```
+
+### 📚 Documentation Updates
+- **ENHANCED**: Paths Service Guide with fromHere() examples
+- **ADDED**: Usage patterns and best practices
+- **IMPROVED**: Common mistakes section with before/after comparisons
+- **UPDATED**: Database managers documentation
+
+### 🛠️ Development Improvements
+- **ADDED**: Local package development setup
+- **CONFIGURED**: Composer for local slim4-paths development
+- **ENHANCED**: Development workflow for package contributions
+
+### ✅ Verification
+- **MAINTAINED**: All database connections working correctly
+- **PRESERVED**: 21 hardcoded paths (no regression)
+- **IMPROVED**: Code readability and maintainability
+- **ENHANCED**: Developer experience
+
 ## [2.1.1] - 2025-06-27 - Paths Service & Directory Structure Optimization
 
 ### 🔧 Fixed - Critical Paths Service Issues

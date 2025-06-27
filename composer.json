@@ -1,6 +1,7 @@
 {
     "name": "responsive-sk/hdm-boot",
     "description": "HDM Boot - Hexagonal + DDD + Modular Monolith Architecture Framework",
+    "version": "2.1.2",
     "type": "project",
     "keywords": ["php", "framework", "hexagonal-architecture", "ddd", "modular-monolith", "enterprise", "production-ready", "slim4", "responsive-sk"],
     "repositories": [
@@ -20,7 +21,7 @@
         "php-di/php-di": "^7.0",
         "psr/event-dispatcher": "^1.0",
         "ramsey/uuid": "^4.7",
-        "responsive-sk/slim4-paths": "^2.0",
+        "responsive-sk/slim4-paths": "^2.1",
         "responsive-sk/slim4-session": "^2.2.2",
         "slim/php-view": "^3.4",
         "slim/psr7": "^1.6",
