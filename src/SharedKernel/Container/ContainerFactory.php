@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace HdmBoot\SharedKernel\Container;
 
+use ResponsiveSk\Slim4Paths\Paths;
+
 /**
  * Container Factory for HDM Boot Protocol.
  *
@@ -37,7 +39,10 @@ final class ContainerFactory
      */
     private static function createSlim4Container(array $options): Slim4Container
     {
-        $container = new Slim4Container();
+        // Create Paths service for proper path management
+        $paths = new Paths(dirname(__DIR__, 2));
+
+        $container = new Slim4Container(null, $paths);
         $container->registerCoreServices();
 
         // Apply custom options

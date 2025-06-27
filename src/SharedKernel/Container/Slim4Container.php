@@ -42,13 +42,12 @@ final class Slim4Container extends AbstractContainer
 
         // Enable compilation in production
         if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
-            // Use Paths service if available, fallback to relative path
-            if ($this->paths !== null) {
-                $cacheDir = $this->paths->path('cache/container');
-            } else {
-                $cacheDir = dirname(__DIR__, 2) . '/var/cache/container';
+            // Paths service is required for proper path management
+            if ($this->paths === null) {
+                throw new \RuntimeException('Paths service is required for container compilation in production');
             }
 
+            $cacheDir = $this->paths->path('cache/container');
             if (!is_dir($cacheDir)) {
                 mkdir($cacheDir, 0777, true);
             }
