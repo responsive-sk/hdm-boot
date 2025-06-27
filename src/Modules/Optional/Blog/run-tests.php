@@ -15,10 +15,11 @@ use ResponsiveSk\Slim4Paths\Paths;
 try {
     // Initialize paths from project root
     $projectRoot = dirname(__DIR__, 4);
+    $pathsService = new Paths($projectRoot);
     $paths = new Paths($projectRoot, [
         'vendor' => $projectRoot . '/vendor',
         'tests'  => __DIR__ . '/tests',
-        'logs'   => $projectRoot . '/var/logs',
+        'logs'   => $pathsService->path('logs'),
     ]);
 
     // Get PHPUnit binary path safely

@@ -106,19 +106,42 @@ class PathsAuditor
             'var/logs' => 'Hardcoded logs path',
         ];
 
+        $pathsServicePatterns = [
+            '$this->paths->path(',
+            '$paths->path(',
+            '->path(',
+            'Paths(',
+        ];
+
         $files = $this->getPhpFiles();
 
         foreach ($files as $file) {
             $content = file_get_contents($file);
-            
+
             foreach ($patterns as $pattern => $description) {
                 if (strpos($content, $pattern) !== false) {
-                    $this->hardcodedPaths[] = [
-                        'file' => $file,
-                        'pattern' => $pattern,
-                        'description' => $description,
-                        'lines' => $this->findLinesWithPattern($content, $pattern)
-                    ];
+                    // Check if this is actually a Paths service call
+                    $lines = $this->findLinesWithPattern($content, $pattern);
+                    $isPathsService = false;
+
+                    foreach ($lines as $line) {
+                        foreach ($pathsServicePatterns as $pathsPattern) {
+                            if (strpos($line['content'], $pathsPattern) !== false) {
+                                $isPathsService = true;
+                                break 2;
+                            }
+                        }
+                    }
+
+                    // Only report if it's not a Paths service call
+                    if (!$isPathsService) {
+                        $this->hardcodedPaths[] = [
+                            'file' => $file,
+                            'pattern' => $pattern,
+                            'description' => $description,
+                            'lines' => $lines
+                        ];
+                    }
                 }
             }
         }

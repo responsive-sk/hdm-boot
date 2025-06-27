@@ -19,9 +19,11 @@ use RuntimeException;
 final class UserSqliteDatabaseManager extends AbstractDatabaseManager
 {
     public function __construct(
-        string $databasePath = 'storage/user.db',
+        ?string $databasePath = null,
         ?Paths $paths = null
     ) {
+        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $databasePath = $databasePath ?? $paths->path('storage/user.db');
         parent::__construct($databasePath, [], $paths);
     }
 

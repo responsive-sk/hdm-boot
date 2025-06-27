@@ -22,9 +22,11 @@ use RuntimeException;
 final class SystemSqliteDatabaseManager extends AbstractDatabaseManager
 {
     public function __construct(
-        string $databasePath = 'storage/system.db',
+        ?string $databasePath = null,
         ?Paths $paths = null
     ) {
+        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $databasePath = $databasePath ?? $paths->path('storage/system.db');
         parent::__construct($databasePath, [], $paths);
     }
 

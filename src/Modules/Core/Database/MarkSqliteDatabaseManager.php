@@ -19,9 +19,11 @@ use RuntimeException;
 final class MarkSqliteDatabaseManager extends AbstractDatabaseManager
 {
     public function __construct(
-        string $databasePath = 'storage/mark.db',
+        ?string $databasePath = null,
         ?Paths $paths = null
     ) {
+        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $databasePath = $databasePath ?? $paths->path('storage/mark.db');
         parent::__construct($databasePath, [], $paths);
     }
 
