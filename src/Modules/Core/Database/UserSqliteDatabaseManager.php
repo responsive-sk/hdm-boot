@@ -23,7 +23,7 @@ final class UserSqliteDatabaseManager extends AbstractDatabaseManager
         ?Paths $paths = null
     ) {
         $paths = $paths ?? new Paths(__DIR__ . '/../../..');
-        $databasePath = $databasePath ?? $paths->path('storage/user.db');
+        $databasePath = $databasePath ?? $paths->storage('user.db');
         parent::__construct($databasePath, [], $paths);
     }
 

@@ -26,7 +26,7 @@ final class SystemSqliteDatabaseManager extends AbstractDatabaseManager
         ?Paths $paths = null
     ) {
         $paths = $paths ?? new Paths(__DIR__ . '/../../..');
-        $databasePath = $databasePath ?? $paths->path('storage/system.db');
+        $databasePath = $databasePath ?? $paths->storage('system.db');
         parent::__construct($databasePath, [], $paths);
     }
 

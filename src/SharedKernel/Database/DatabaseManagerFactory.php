@@ -27,7 +27,7 @@ final class DatabaseManagerFactory
      */
     public function createMarkManager(?string $databasePath = null): MarkSqliteDatabaseManager
     {
-        $dbPath = $databasePath ?? $this->paths->path('storage/mark.db');
+        $dbPath = $databasePath ?? $this->paths->storage('mark.db');
         return new MarkSqliteDatabaseManager($dbPath, $this->paths);
     }
 
@@ -36,7 +36,7 @@ final class DatabaseManagerFactory
      */
     public function createUserManager(?string $databasePath = null): UserSqliteDatabaseManager
     {
-        $dbPath = $databasePath ?? $this->paths->path('storage/user.db');
+        $dbPath = $databasePath ?? $this->paths->storage('user.db');
         return new UserSqliteDatabaseManager($dbPath, $this->paths);
     }
 
@@ -45,7 +45,7 @@ final class DatabaseManagerFactory
      */
     public function createSystemManager(?string $databasePath = null): SystemSqliteDatabaseManager
     {
-        $dbPath = $databasePath ?? $this->paths->path('storage/system.db');
+        $dbPath = $databasePath ?? $this->paths->storage('system.db');
         return new SystemSqliteDatabaseManager($dbPath, $this->paths);
     }
 
@@ -108,9 +108,9 @@ final class DatabaseManagerFactory
     public function getDatabasePaths(): array
     {
         return [
-            'mark'   => $this->paths->path('storage/mark.db'),
-            'user'   => $this->paths->path('storage/user.db'),
-            'system' => $this->paths->path('storage/system.db'),
+            'mark'   => $this->paths->storage('mark.db'),
+            'user'   => $this->paths->storage('user.db'),
+            'system' => $this->paths->storage('system.db'),
         ];
     }
 

@@ -98,7 +98,7 @@ return [
                 if (!$paths instanceof Paths) {
                     throw new \RuntimeException('Paths service not properly configured');
                 }
-                $databaseUrl = 'sqlite:' . $paths->path('storage/system.db');
+                $databaseUrl = 'sqlite:' . $paths->storage('system.db');
             }
 
             if (!is_string($databaseUrl)) {
@@ -237,9 +237,9 @@ return [
     'health_check' => function (): array {
         $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
         $health = [
-            'storage_directory_exists'   => is_dir($paths->path('storage')),
-            'storage_directory_writable' => is_writable($paths->path('storage')),
-            'database_file_exists'       => file_exists($paths->path('storage/system.db')),
+            'storage_directory_exists'   => is_dir($paths->storage()),
+            'storage_directory_writable' => is_writable($paths->storage()),
+            'database_file_exists'       => file_exists($paths->storage('system.db')),
             'pdo_extension_loaded'       => extension_loaded('pdo'),
             'sqlite_extension_loaded'    => extension_loaded('pdo_sqlite'),
             'last_check'                 => date('Y-m-d H:i:s'),
@@ -247,7 +247,7 @@ return [
 
         // Test database connection
         try {
-            $pdo = new \PDO('sqlite:' . $paths->path('storage/system.db'));
+            $pdo = new \PDO('sqlite:' . $paths->storage('system.db'));
             $health['database_connection'] = true;
             $stmt = $pdo->query('SELECT sqlite_version()');
             $version = $stmt !== false ? $stmt->fetchColumn() : 'unknown';
