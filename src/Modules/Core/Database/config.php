@@ -235,7 +235,7 @@ return [
     // === HEALTH CHECK ===
 
     'health_check' => function (): array {
-        $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
+        $paths = \ResponsiveSk\Slim4Paths\Paths::fromHere(__DIR__, 3);
         $health = [
             'storage_directory_exists'   => is_dir($paths->storage()),
             'storage_directory_writable' => is_writable($paths->storage()),

@@ -3,6 +3,12 @@
     "description": "HDM Boot - Hexagonal + DDD + Modular Monolith Architecture Framework",
     "type": "project",
     "keywords": ["php", "framework", "hexagonal-architecture", "ddd", "modular-monolith", "enterprise", "production-ready", "slim4", "responsive-sk"],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/slim4-paths"
+        }
+    ],
     "homepage": "https://github.com/responsive-sk/hdm-boot",
     "license": "MIT",
     "require": {

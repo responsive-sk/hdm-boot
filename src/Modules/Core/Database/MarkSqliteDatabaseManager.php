@@ -22,7 +22,7 @@ final class MarkSqliteDatabaseManager extends AbstractDatabaseManager
         ?string $databasePath = null,
         ?Paths $paths = null
     ) {
-        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $paths = $paths ?? Paths::fromHere(__DIR__, 3);
         $databasePath = $databasePath ?? $paths->storage('mark.db');
         parent::__construct($databasePath, [], $paths);
     }

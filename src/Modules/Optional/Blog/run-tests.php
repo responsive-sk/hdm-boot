@@ -15,7 +15,7 @@ use ResponsiveSk\Slim4Paths\Paths;
 try {
     // Initialize paths from project root
     $projectRoot = dirname(__DIR__, 4);
-    $pathsService = new Paths($projectRoot);
+    $pathsService = Paths::fromHere(__DIR__, 4);
     $paths = new Paths($projectRoot, [
         'vendor' => $projectRoot . '/vendor',
         'tests'  => __DIR__ . '/tests',

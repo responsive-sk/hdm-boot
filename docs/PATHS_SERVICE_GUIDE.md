@@ -94,7 +94,7 @@ class MarkSqliteDatabaseManager extends AbstractDatabaseManager
 {
     public function __construct(?string $databasePath = null, ?Paths $paths = null)
     {
-        $paths = $paths ?? new Paths(__DIR__ . '/../../..');
+        $paths = $paths ?? Paths::fromHere(__DIR__, 3); // ✅ IMPROVED
         $databasePath = $databasePath ?? $paths->storage('mark.db'); // ✅ CORRECT
         parent::__construct($databasePath, [], $paths);
     }
@@ -146,6 +146,31 @@ PathsFactory::reset();
 $paths = PathsFactory::createFromConfig();
 ```
 
+## Paths::fromHere() - Convenience Method
+
+The `fromHere()` static method provides a clean way to create Paths instances from the current file location:
+
+```php
+use ResponsiveSk\Slim4Paths\Paths;
+
+// From a file at src/Modules/Core/SomeClass.php, go up 3 levels to project root
+$paths = Paths::fromHere(__DIR__, 3);
+
+// From a file at src/Services/SomeService.php, go up 2 levels to project root
+$paths = Paths::fromHere(__DIR__, 2);
+
+// Use resolved paths
+$dbPath = $paths->storage('database.db');
+$logPath = $paths->logs('app.log');
+```
+
+### Benefits of fromHere()
+
+✅ **More expressive** than manual path construction
+✅ **Less error-prone** than counting `../` manually
+✅ **Works in tests, CLI, without DI** container
+✅ **Automatic path validation** with clear error messages
+
 ## Common Mistakes
 
 ### ❌ WRONG - Using path() for configured paths
@@ -173,11 +198,19 @@ $dbPath = __DIR__ . '/../../var/storage/mark.db';
 $logPath = '../var/logs/app.log';
 ```
 
-### ✅ CORRECT - Paths service
+### ❌ WRONG - Manual path construction
 
 ```php
-$dbPath = $this->paths->storage('mark.db');
-$logPath = $this->paths->logs('app.log');
+$paths = new Paths(__DIR__ . '/../../..');  // Error-prone
+$paths = new Paths(__DIR__ . '/../../../'); // Easy to miscount
+```
+
+### ✅ CORRECT - Paths service with fromHere()
+
+```php
+$paths = Paths::fromHere(__DIR__, 3);       // Clear and safe
+$dbPath = $paths->storage('mark.db');
+$logPath = $paths->logs('app.log');
 ```
 
 ## Security Features

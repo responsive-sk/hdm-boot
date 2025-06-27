@@ -42,6 +42,9 @@ Thumbs.db
 test-*.php
 phpunit.xml
 
+# Development packages
+/packages/
+
 # Backup files
 *.bak
 *.backup

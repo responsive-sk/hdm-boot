@@ -207,7 +207,7 @@ return [
 
     'initialize' => function (): void {
         // Create translation cache directory using Paths service
-        $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
+        $paths = \ResponsiveSk\Slim4Paths\Paths::fromHere(__DIR__, 3);
         $cacheDir = $paths->path('cache/translations');
         if (!file_exists($cacheDir)) {
             mkdir($cacheDir, 0o755, true);
@@ -222,7 +222,7 @@ return [
     // === HEALTH CHECK ===
 
     'health_check' => function (): array {
-        $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
+        $paths = \ResponsiveSk\Slim4Paths\Paths::fromHere(__DIR__, 3);
         return [
             'translation_cache_writable' => is_writable($paths->path('cache/translations')),
             'default_locale_available'   => isset($_SESSION['locale']),
