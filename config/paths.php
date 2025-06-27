@@ -14,8 +14,8 @@ return [
         // Core directories
         'config'    => $basePath . '/config',
         'src'       => $basePath . '/src',
-        'bootstrap' => $basePath . '/bootstrap',
-        'modules'   => $basePath . '/modules',
+//        'bootstrap' => $basePath . '/bootstrap',
+//        'modules'   => $basePath . '/modules',
         'public'    => $basePath . '/public',
         'vendor'    => $basePath . '/vendor',
 
@@ -24,7 +24,7 @@ return [
         'logs'     => $basePath . '/var/logs',
         'cache'    => $basePath . '/var/cache',
         'uploads'  => $basePath . '/var/uploads',
-        'storage'  => $basePath . '/storage',
+        'storage'  => $basePath . '/var/storage',
         'sessions' => $basePath . '/var/sessions',
         'database' => $basePath . '/database',
 
