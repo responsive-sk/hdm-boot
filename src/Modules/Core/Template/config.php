@@ -43,7 +43,7 @@ return [
         'default_engine'    => 'php', // 'php' or 'twig'
         'template_path'     => 'templates', // Will be resolved by TemplateRenderer using Paths service
         'cache_enabled'     => true,
-        'cache_path'        => 'var/cache/templates', // Will be resolved by TemplateRenderer using Paths service
+        'cache_path'        => 'cache/templates', // Will be resolved by TemplateRenderer using Paths service
         'debug'             => $_ENV['APP_DEBUG'] === 'true',
         'auto_reload'       => $_ENV['APP_DEBUG'] === 'true',
         'strict_variables'  => true,

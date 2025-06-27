@@ -108,7 +108,7 @@ final class TwigTemplateEngine implements TemplateEngineInterface
         // Use config values (paths will be resolved by service that creates this engine)
         $templatePath = $this->config['template_path'] ?? 'templates';
         $cacheEnabled = $this->config['cache_enabled'] ?? true;
-        $cachePath = $this->config['cache_path'] ?? 'var/cache/twig';
+        $cachePath = $this->config['cache_path'] ?? 'cache/twig';
         $debug = $this->config['debug'] ?? false;
 
         // Create loader

@@ -176,9 +176,9 @@ final class PermissionManager
         $directories = [
             'storage'       => self::DIR_PERMISSION_STRICT,
             'var'           => self::DIR_PERMISSION_STRICT,
-            'var/logs'      => self::DIR_PERMISSION_STRICT,
-            'var/sessions'  => self::DIR_PERMISSION_STRICT,
-            'var/cache'     => self::CACHE_DIR_PERMISSION,
+            $this->paths->path('logs')      => self::DIR_PERMISSION_STRICT,
+            $this->paths->path('sessions')  => self::DIR_PERMISSION_STRICT,
+            $this->paths->path('cache')     => self::CACHE_DIR_PERMISSION,
         ];
 
         $results = [
@@ -209,10 +209,10 @@ final class PermissionManager
     public function setupLogFiles(): array
     {
         $logFiles = [
-            'var/logs/app.log',
-            'var/logs/security.log',
-            'var/logs/error.log',
-            'var/logs/debug.log',
+            $this->paths->path('logs/app.log'),
+            $this->paths->path('logs/security.log'),
+            $this->paths->path('logs/error.log'),
+            $this->paths->path('logs/debug.log'),
         ];
 
         $results = [
@@ -257,7 +257,7 @@ final class PermissionManager
     public function canUseStrictPermissions(): bool
     {
         // Test by creating a temporary file with strict permissions
-        $testFile = $this->paths->path('var/permission_test_' . uniqid());
+        $testFile = $this->paths->path('var') . '/permission_test_' . uniqid();
 
         try {
             if (file_put_contents($testFile, 'test') === false) {

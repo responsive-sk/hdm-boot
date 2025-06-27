@@ -23,7 +23,8 @@ $containerBuilder = new ContainerBuilder();
 
 // Enable compilation for production
 if (($_ENV['APP_ENV'] ?? 'dev') === 'prod') {
-    $containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
+    $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/..');
+    $containerBuilder->enableCompilation($paths->path('cache/container'));
 }
 
 // Load core service definitions (non-module services)

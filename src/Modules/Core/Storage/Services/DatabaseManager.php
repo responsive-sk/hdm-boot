@@ -13,7 +13,7 @@ use PDO;
  * Manages multiple SQLite databases for different purposes.
  * Prevents read/write conflicts by separating databases by function.
  *
- * Databases are stored in var/orbit/ (Orbit-style) separate from content files.
+ * Databases are stored in storage/ directory separate from content files.
  */
 class DatabaseManager
 {
@@ -41,9 +41,9 @@ class DatabaseManager
      */
     public static function initialize(string $contentDirectory): void
     {
-        // Use var/orbit for databases (Orbit-style) with PathsFactory
+        // Use orbit directory for databases (Orbit-style) with PathsFactory
         $paths = PathsFactory::create();
-        self::$baseDirectory = $paths->getPath(dirname($contentDirectory), 'var/orbit');
+        self::$baseDirectory = $paths->path('orbit');
 
         // Ensure directory exists
         if (!is_dir(self::$baseDirectory)) {

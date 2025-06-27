@@ -7,6 +7,7 @@ namespace HdmBoot\SharedKernel\Container;
 use DI\Container;
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
+use ResponsiveSk\Slim4Paths\Paths;
 
 /**
  * Slim4 Container Implementation for HDM Boot Protocol.
@@ -17,6 +18,7 @@ use Psr\Container\ContainerInterface;
 final class Slim4Container extends AbstractContainer
 {
     private Container $container;
+    private ?Paths $paths = null;
 
     /**
      * Service registry for tracking registered services.
@@ -25,8 +27,9 @@ final class Slim4Container extends AbstractContainer
      */
     private array $serviceRegistry = [];
 
-    public function __construct(?Container $container = null)
+    public function __construct(?Container $container = null, ?Paths $paths = null)
     {
+        $this->paths = $paths;
         $this->container = $container ?? $this->createDefaultContainer();
     }
 
@@ -39,8 +42,13 @@ final class Slim4Container extends AbstractContainer
 
         // Enable compilation in production
         if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
-            // Use relative path that will be resolved properly
-            $cacheDir = dirname(__DIR__, 2) . '/var/cache/container';
+            // Use Paths service if available, fallback to relative path
+            if ($this->paths !== null) {
+                $cacheDir = $this->paths->path('cache/container');
+            } else {
+                $cacheDir = dirname(__DIR__, 2) . '/var/cache/container';
+            }
+
             if (!is_dir($cacheDir)) {
                 mkdir($cacheDir, 0777, true);
             }

@@ -206,9 +206,11 @@ return [
     // === INITIALIZATION ===
 
     'initialize' => function (): void {
-        // Create translation cache directory
-        if (!file_exists('var/cache/translations')) {
-            mkdir('var/cache/translations', 0o755, true);
+        // Create translation cache directory using Paths service
+        $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
+        $cacheDir = $paths->path('cache/translations');
+        if (!file_exists($cacheDir)) {
+            mkdir($cacheDir, 0o755, true);
         }
 
         // Set default locale if not set
@@ -220,8 +222,9 @@ return [
     // === HEALTH CHECK ===
 
     'health_check' => function (): array {
+        $paths = new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..');
         return [
-            'translation_cache_writable' => is_writable('var/cache/translations'),
+            'translation_cache_writable' => is_writable($paths->path('cache/translations')),
             'default_locale_available'   => isset($_SESSION['locale']),
             'supported_locales_count'    => 5,
             'last_check'                 => date('Y-m-d H:i:s'),
