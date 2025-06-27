@@ -31,7 +31,7 @@ return [
     'settings' => [
         'enabled'            => true,
         'default_manager'    => 'pdo', // 'pdo', 'cakephp', 'doctrine'
-        'database_url'       => $_ENV['DATABASE_URL'] ?? 'sqlite:' . (new \ResponsiveSk\Slim4Paths\Paths(__DIR__ . '/../../..'))->path('storage/system.db'),
+        'database_url'       => $_ENV['DATABASE_URL'] ?? null, // Will be resolved by DatabaseManager using Paths service
         'connection_timeout' => 30,
         'query_timeout'      => 60,
         'auto_initialize'    => true,
@@ -90,7 +90,17 @@ return [
                 throw new \RuntimeException('Database configuration not properly configured');
             }
 
-            $databaseUrl = $config['settings']['database_url'] ?? '';
+            $databaseUrl = $config['settings']['database_url'];
+
+            // If no database_url provided, create default using Paths service
+            if ($databaseUrl === null || $databaseUrl === '') {
+                $paths = $container->get(Paths::class);
+                if (!$paths instanceof Paths) {
+                    throw new \RuntimeException('Paths service not properly configured');
+                }
+                $databaseUrl = 'sqlite:' . $paths->path('storage/system.db');
+            }
+
             if (!is_string($databaseUrl)) {
                 throw new \RuntimeException('Database URL must be a string');
             }
