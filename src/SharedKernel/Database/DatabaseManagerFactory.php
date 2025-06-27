@@ -25,25 +25,28 @@ final class DatabaseManagerFactory
     /**
      * Create Mark database manager.
      */
-    public function createMarkManager(string $databasePath = 'storage/mark.db'): MarkSqliteDatabaseManager
+    public function createMarkManager(?string $databasePath = null): MarkSqliteDatabaseManager
     {
-        return new MarkSqliteDatabaseManager($databasePath, $this->paths);
+        $dbPath = $databasePath ?? $this->paths->path('storage/mark.db');
+        return new MarkSqliteDatabaseManager($dbPath, $this->paths);
     }
 
     /**
      * Create User database manager.
      */
-    public function createUserManager(string $databasePath = 'storage/user.db'): UserSqliteDatabaseManager
+    public function createUserManager(?string $databasePath = null): UserSqliteDatabaseManager
     {
-        return new UserSqliteDatabaseManager($databasePath, $this->paths);
+        $dbPath = $databasePath ?? $this->paths->path('storage/user.db');
+        return new UserSqliteDatabaseManager($dbPath, $this->paths);
     }
 
     /**
      * Create System database manager.
      */
-    public function createSystemManager(string $databasePath = 'storage/system.db'): SystemSqliteDatabaseManager
+    public function createSystemManager(?string $databasePath = null): SystemSqliteDatabaseManager
     {
-        return new SystemSqliteDatabaseManager($databasePath, $this->paths);
+        $dbPath = $databasePath ?? $this->paths->path('storage/system.db');
+        return new SystemSqliteDatabaseManager($dbPath, $this->paths);
     }
 
     /**

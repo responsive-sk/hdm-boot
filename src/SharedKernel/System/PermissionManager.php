@@ -175,7 +175,6 @@ final class PermissionManager
     {
         $directories = [
             'storage'       => self::DIR_PERMISSION_STRICT,
-            'storage/cache' => self::CACHE_DIR_PERMISSION,
             'var'           => self::DIR_PERMISSION_STRICT,
             'var/logs'      => self::DIR_PERMISSION_STRICT,
             'var/sessions'  => self::DIR_PERMISSION_STRICT,

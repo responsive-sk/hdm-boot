@@ -39,7 +39,12 @@ final class Slim4Container extends AbstractContainer
 
         // Enable compilation in production
         if (($_ENV['APP_ENV'] ?? 'production') === 'production') {
-            $builder->enableCompilation(__DIR__ . '/../../var/cache/container');
+            // Use relative path that will be resolved properly
+            $cacheDir = dirname(__DIR__, 2) . '/var/cache/container';
+            if (!is_dir($cacheDir)) {
+                mkdir($cacheDir, 0777, true);
+            }
+            $builder->enableCompilation($cacheDir);
         }
 
         // Enable definition cache in production
