@@ -13,7 +13,11 @@
 <!DOCTYPE html>
 <html lang="en" <?= $theme::getHtmlAttributes() ?>>
 <head>
-    <?= $theme::renderHead('HDM Boot Blog') ?>
+    <?= $theme::renderHead(
+        'HDM Boot Blog',
+        null,
+        'Explore HDM Boot blog with articles about modern PHP development, hexagonal architecture, web frameworks, and best practices. Learn from real-world examples and tutorials.'
+    ) ?>
 </head>
 <body class="<?= $theme::getBodyClass() ?> blog-page">
     <!-- Navigation -->
@@ -29,8 +33,29 @@
                 <div class="navbar-nav hidden md:flex">
                     <a href="/" class="nav-link">Home</a>
                     <a href="/blog" class="nav-link active">Blog</a>
-                    <a href="/blog/about" class="nav-link">About</a>
-                    <a href="/api/blog/articles" class="nav-link">API</a>
+                    <a href="/docs" class="nav-link">Docs</a>
+                    <a href="/api" class="nav-link">API</a>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button
+                        class="dark-mode-toggle p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-all duration-200"
+                        x-data="{ dark: false }"
+                        @click="toggleDarkMode()"
+                        :class="{ 'text-yellow-500': !dark, 'text-blue-400': dark }"
+                        title="Toggle dark mode"
+                        aria-label="Toggle dark mode"
+                        role="switch"
+                        :aria-checked="dark"
+                    >
+                        <svg x-show="!dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -121,10 +146,13 @@
                             placeholder="Search articles..."
                             class="form-input w-full pr-10 blog-search"
                             @input="liveSearch()"
+                            aria-label="Search articles"
+                            role="searchbox"
                         >
                         <button
                             type="submit"
                             class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary-600 transition-colors"
+                            aria-label="Submit search"
                         >
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

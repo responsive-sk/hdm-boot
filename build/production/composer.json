@@ -1,0 +1,98 @@
+{
+    "name": "responsive-sk/hdm-boot",
+    "description": "HDM Boot - Hexagonal + DDD + Modular Monolith Architecture Framework",
+    "version": "2.1.2",
+    "type": "project",
+    "keywords": ["php", "framework", "hexagonal-architecture", "ddd", "modular-monolith", "enterprise", "production-ready", "slim4", "responsive-sk"],
+    "homepage": "https://github.com/responsive-sk/hdm-boot",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "cakephp/validation": "^5.2",
+        "firebase/php-jwt": "^6.8",
+        "monolog/monolog": "^3.9",
+        "php-di/php-di": "^7.0",
+        "psr/event-dispatcher": "^1.0",
+        "ramsey/uuid": "^4.7",
+        "responsive-sk/slim4-paths": "^2.2",
+        "responsive-sk/slim4-session": "^2.2.2",
+        "slim/php-view": "^3.4",
+        "slim/psr7": "^1.6",
+        "slim/slim": "^4.12",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.3",
+        "squizlabs/php_codesniffer": "^3.7"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "HdmBoot\\": "src/",
+            "HdmBoot\\Modules\\Core\\": "src/Modules/Core/"
+        },
+        "exclude-from-classmap": [
+            "**/tests/**",
+            "**/Tests/**",
+            "**/_disabled_*/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HdmBoot\\Tests\\": "tests/",
+            "HdmBoot\\Modules\\Optional\\Blog\\Tests\\": "src/Modules/Optional/Blog/tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html var/coverage",
+        "test:blog": "php src/Modules/Optional/Blog/run-tests.php",
+        "test:blog:verbose": "php src/Modules/Optional/Blog/run-tests.php --verbose",
+        "test:blog:coverage": "php src/Modules/Optional/Blog/run-tests.php --coverage-html var/coverage/blog",
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "cs-check:blog": "php-cs-fixer fix src/Modules/Optional/Blog --dry-run --diff",
+        "cs-fix:blog": "php-cs-fixer fix src/Modules/Optional/Blog",
+        "stan": "phpstan analyse",
+        "security-scan": "./bin/check-paths.sh",
+        "security-fix": "echo 'Run: composer security-scan to see issues, then fix manually using Paths service'",
+        "quality": [
+            "@security-scan",
+            "@stan",
+            "@cs-check",
+            "@test"
+        ],
+        "quality:blog": [
+            "@stan",
+            "@cs-check:blog",
+            "@test:blog"
+        ],
+        "deploy:prod": [
+            "composer install --no-dev --optimize-autoloader --classmap-authoritative"
+        ],
+        "deploy:update": [
+            "composer install --no-dev --optimize-autoloader --no-scripts",
+            "composer dump-autoload --optimize --classmap-authoritative"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": false,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "HDM Boot Team",
+            "homepage": "https://responsive.sk"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/responsive-sk/hdm-boot/issues",
+        "source": "https://github.com/responsive-sk/hdm-boot",
+        "docs": "https://github.com/responsive-sk/hdm-boot/blob/main/README.md"
+    }
+}

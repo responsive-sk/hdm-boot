@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://boot.responsive.sk/sitemap.xml
+
+# Disallow sensitive areas
+Disallow: /var/
+Disallow: /vendor/
+Disallow: /config/
+Disallow: /bin/
+Disallow: /.env
+Disallow: /composer.json
+Disallow: /composer.lock
+
+# Allow important pages
+Allow: /blog
+Allow: /api/status
+Allow: /health
+Allow: /login
+
+# Crawl delay (optional)
+Crawl-delay: 1

@@ -226,16 +226,21 @@ class ThemeHelper
     /**
      * Generate complete HTML head section for theme.
      */
-    public static function renderHead(string $title = 'HDM Boot', ?string $theme = null): string
+    public static function renderHead(string $title = 'HDM Boot', ?string $theme = null, ?string $description = null): string
     {
         $themeColor = self::getThemeColor($theme);
         $metaTags = self::getMetaTags($theme);
         $assets = self::renderAssets($theme);
 
+        // Default description if none provided
+        $defaultDescription = 'HDM Boot - Modern PHP framework with hexagonal architecture, blog system, and beautiful themes. Built for developers who value clean code and modern web standards.';
+        $metaDescription = $description ?? $defaultDescription;
+
         return <<<HTML
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{$title}</title>
+            <meta name="description" content="{$metaDescription}">
             <meta name="theme-color" content="{$themeColor}">
             {$metaTags}
             {$assets}

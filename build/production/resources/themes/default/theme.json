@@ -1,0 +1,197 @@
+{
+  "name": "Default Theme",
+  "description": "Modern HDM Boot theme with Tailwind CSS, GSAP animations, and Alpine.js reactivity",
+  "version": "1.0.0",
+  "author": "HDM Boot Team",
+  "license": "MIT",
+  "homepage": "https://hdm-boot.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hdm-boot/themes"
+  },
+  "keywords": [
+    "hdm-boot",
+    "theme",
+    "tailwind",
+    "alpine",
+    "gsap",
+    "responsive",
+    "modern"
+  ],
+  "stack": {
+    "css_framework": "Tailwind CSS",
+    "js_framework": "Alpine.js",
+    "animation_library": "GSAP",
+    "build_tool": "Vite",
+    "package_manager": "pnpm",
+    "css_preprocessor": "PostCSS"
+  },
+  "features": {
+    "responsive_design": true,
+    "dark_mode": false,
+    "animations": true,
+    "components": true,
+    "utilities": true,
+    "forms": true,
+    "typography": true,
+    "accessibility": true,
+    "seo_optimized": true,
+    "performance_optimized": true
+  },
+  "browser_support": {
+    "chrome": ">=88",
+    "firefox": ">=85",
+    "safari": ">=14",
+    "edge": ">=88"
+  },
+  "build": {
+    "entry_points": {
+      "css": "assets/css/app.css",
+      "js": "assets/js/app.js"
+    },
+    "output": {
+      "css": "css/",
+      "js": "js/",
+      "images": "images/",
+      "fonts": "fonts/"
+    },
+    "optimization": {
+      "minify": true,
+      "tree_shake": true,
+      "code_split": true,
+      "source_maps": false
+    }
+  },
+  "assets": {
+    "fonts": [
+      "Inter",
+      "JetBrains Mono"
+    ],
+    "icons": "Heroicons",
+    "images": {
+      "formats": ["webp", "jpg", "png", "svg"],
+      "optimization": true
+    }
+  },
+  "components": {
+    "navigation": {
+      "mobile_menu": true,
+      "breadcrumbs": true,
+      "sidebar": true
+    },
+    "blog": {
+      "cards": true,
+      "pagination": true,
+      "search": true,
+      "filters": true,
+      "reading_progress": true
+    },
+    "forms": {
+      "validation": true,
+      "floating_labels": true,
+      "file_upload": true,
+      "multi_step": false
+    },
+    "ui": {
+      "modals": true,
+      "tooltips": true,
+      "dropdowns": true,
+      "tabs": true,
+      "accordions": true,
+      "carousels": false
+    }
+  },
+  "animations": {
+    "page_transitions": true,
+    "scroll_animations": true,
+    "hover_effects": true,
+    "loading_animations": true,
+    "micro_interactions": true
+  },
+  "layout": {
+    "grid_system": "CSS Grid + Flexbox",
+    "breakpoints": {
+      "sm": "640px",
+      "md": "768px",
+      "lg": "1024px",
+      "xl": "1280px",
+      "2xl": "1536px"
+    },
+    "container": {
+      "max_width": "1200px",
+      "padding": "1rem"
+    }
+  },
+  "colors": {
+    "primary": {
+      "50": "#eff6ff",
+      "500": "#3b82f6",
+      "900": "#1e3a8a"
+    },
+    "secondary": {
+      "50": "#f8fafc",
+      "500": "#64748b",
+      "900": "#0f172a"
+    },
+    "semantic": {
+      "success": "#10b981",
+      "warning": "#f59e0b",
+      "error": "#ef4444",
+      "info": "#3b82f6"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "sans": ["Inter", "system-ui", "sans-serif"],
+      "mono": ["JetBrains Mono", "monospace"]
+    },
+    "font_sizes": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem"
+    },
+    "line_heights": {
+      "tight": "1.25",
+      "normal": "1.5",
+      "relaxed": "1.75"
+    }
+  },
+  "spacing": {
+    "scale": "0.25rem",
+    "custom": {
+      "18": "4.5rem",
+      "88": "22rem",
+      "128": "32rem"
+    }
+  },
+  "shadows": {
+    "soft": "0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)",
+    "medium": "0 4px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+    "strong": "0 10px 40px -10px rgba(0, 0, 0, 0.15), 0 2px 10px -2px rgba(0, 0, 0, 0.05)"
+  },
+  "performance": {
+    "bundle_size": {
+      "css": "~18KB gzipped",
+      "js": "~65KB gzipped"
+    },
+    "load_time": "<100ms",
+    "lighthouse_score": ">95"
+  },
+  "customization": {
+    "css_variables": true,
+    "theme_variants": false,
+    "component_overrides": true,
+    "plugin_system": false
+  },
+  "documentation": {
+    "components": "docs/components.md",
+    "customization": "docs/customization.md",
+    "build": "docs/build.md"
+  }
+}

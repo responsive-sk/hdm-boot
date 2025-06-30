@@ -1,0 +1,14 @@
+# Extra protection for storage directory
+# Contains databases and sensitive files
+
+<RequireAll>
+    Require all denied
+</RequireAll>
+
+Order deny,allow
+Deny from all
+
+<FilesMatch ".*">
+    Order allow,deny
+    Deny from all
+</FilesMatch>

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" <?= $theme::getHtmlAttributes() ?>>
 <head>
-    <?= $theme::renderHead('HDM Boot - Modern PHP Framework') ?>
+    <?= $theme::renderHead(
+        'HDM Boot - Modern PHP Framework',
+        null,
+        'HDM Boot is a modern PHP framework featuring hexagonal architecture, complete blog system, documentation, and beautiful themes. Perfect for building scalable web applications with clean code.'
+    ) ?>
 </head>
 <body class="<?= $theme::getBodyClass() ?> home-page">
     <!-- Navigation -->
@@ -40,6 +44,9 @@
                         @click="toggleDarkMode()"
                         :class="{ 'text-yellow-500': !dark, 'text-blue-400': dark }"
                         title="Toggle dark mode"
+                        aria-label="Toggle dark mode"
+                        role="switch"
+                        :aria-checked="dark"
                     >
                         <svg x-show="!dark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
@@ -53,8 +60,10 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section">
         <div class="hero-background parallax-bg"></div>
         <div class="hero-content">
             <h1 class="hero-title animate-fade-in">
@@ -262,5 +271,6 @@
             </div>
         </div>
     </footer>
+    </main>
 </body>
 </html>

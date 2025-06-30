@@ -23,7 +23,25 @@
   }
   
   body {
-    @apply font-sans text-gray-900 bg-gray-50 antialiased;
+    @apply font-sans text-gray-900 bg-white antialiased;
+  }
+
+  /* Improved contrast colors */
+  .text-gray-600 {
+    @apply text-gray-700;
+  }
+
+  .text-gray-500 {
+    @apply text-gray-600;
+  }
+
+  /* Ensure sufficient contrast for links */
+  a {
+    @apply text-blue-700;
+  }
+
+  a:hover {
+    @apply text-blue-800;
   }
   
   /* Custom scrollbar */
