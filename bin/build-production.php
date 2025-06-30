@@ -37,6 +37,8 @@ try {
         'public/',
         'config/',
         'templates/',
+        'content/',
+        // resources/ will be handled separately to exclude node_modules
         'var/',
         // vendor/ will be created with composer install --no-dev
         'bin/init-all-databases.php',
@@ -69,7 +71,71 @@ try {
             exec("cp -r " . escapeshellarg($source) . " " . escapeshellarg($dest));
         }
     }
-    
+
+    // Copy resources/ selectively (exclude node_modules)
+    echo "\n📁 Copying resources (excluding node_modules)...\n";
+    $resourcesSource = $sourceDir . '/resources';
+    $resourcesDest = $buildDir . '/resources';
+
+    if (is_dir($resourcesSource)) {
+        // Create resources directory
+        if (!is_dir($resourcesDest)) {
+            mkdir($resourcesDest, 0755, true);
+        }
+
+        // Copy specific subdirectories
+        $resourceSubdirs = ['config', 'lang', 'translations', 'views'];
+        foreach ($resourceSubdirs as $subdir) {
+            $subdirSource = $resourcesSource . '/' . $subdir;
+            $subdirDest = $resourcesDest . '/' . $subdir;
+
+            if (is_dir($subdirSource)) {
+                echo "   📁 Copying resources/{$subdir}/\n";
+                exec("cp -r " . escapeshellarg($subdirSource) . " " . escapeshellarg($subdirDest));
+            }
+        }
+
+        // Copy themes but exclude node_modules and build artifacts
+        $themesSource = $resourcesSource . '/themes';
+        $themesDest = $resourcesDest . '/themes';
+
+        if (is_dir($themesSource)) {
+            echo "   📁 Copying themes (excluding node_modules)...\n";
+            if (!is_dir($themesDest)) {
+                mkdir($themesDest, 0755, true);
+            }
+
+            // Get all theme directories
+            $themes = array_diff(scandir($themesSource), ['.', '..']);
+            foreach ($themes as $theme) {
+                $themeSourceDir = $themesSource . '/' . $theme;
+                $themeDestDir = $themesDest . '/' . $theme;
+
+                if (is_dir($themeSourceDir)) {
+                    echo "     📁 Copying theme: {$theme}\n";
+                    if (!is_dir($themeDestDir)) {
+                        mkdir($themeDestDir, 0755, true);
+                    }
+
+                    // Copy only necessary theme files
+                    $themeFiles = ['views', 'theme.json'];
+                    foreach ($themeFiles as $file) {
+                        $fileSource = $themeSourceDir . '/' . $file;
+                        $fileDest = $themeDestDir . '/' . $file;
+
+                        if (file_exists($fileSource)) {
+                            if (is_dir($fileSource)) {
+                                exec("cp -r " . escapeshellarg($fileSource) . " " . escapeshellarg($fileDest));
+                            } else {
+                                copy($fileSource, $fileDest);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // Remove development files from build
     echo "\n🗑️  Removing development files...\n";
     
