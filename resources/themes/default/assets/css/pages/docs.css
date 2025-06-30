@@ -1,0 +1,274 @@
+/* Documentation Page Styles */
+
+.docs-page {
+  @apply min-h-screen bg-gray-50;
+}
+
+.docs-container {
+  @apply max-w-7xl mx-auto px-4 py-8;
+}
+
+.docs-header {
+  @apply rounded-2xl mb-12 shadow-soft;
+}
+
+.docs-icon {
+  @apply filter drop-shadow-lg;
+}
+
+/* Docs Layout */
+.docs-layout {
+  @apply grid grid-cols-1 lg:grid-cols-4 gap-8;
+}
+
+.docs-main {
+  @apply lg:col-span-3 space-y-8;
+}
+
+.docs-sidebar {
+  @apply lg:col-span-1 space-y-6;
+}
+
+/* Docs Content */
+.docs-content {
+  @apply bg-white rounded-xl shadow-soft p-8 prose prose-lg max-w-none;
+}
+
+.docs-content h1 {
+  @apply text-3xl font-bold text-gray-900 mb-6;
+}
+
+.docs-content h2 {
+  @apply text-2xl font-bold text-gray-900 mb-4 mt-8;
+}
+
+.docs-content h3 {
+  @apply text-xl font-semibold text-gray-900 mb-3 mt-6;
+}
+
+.docs-content p {
+  @apply text-gray-700 leading-relaxed mb-4;
+}
+
+.docs-content code {
+  @apply bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm;
+}
+
+.docs-content pre {
+  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto;
+}
+
+.docs-content pre code {
+  @apply bg-transparent text-gray-100 p-0;
+}
+
+.docs-content a {
+  @apply text-primary-600 hover:text-primary-700 underline;
+}
+
+.docs-content ul {
+  @apply list-disc list-inside mb-4 space-y-1;
+}
+
+.docs-content li {
+  @apply text-gray-700;
+}
+
+/* Docs Sections */
+.docs-section {
+  @apply bg-white rounded-xl shadow-soft p-8;
+}
+
+.docs-section h2 {
+  @apply border-b border-gray-200 pb-4 mb-6;
+}
+
+/* Docs Cards */
+.docs-card {
+  @apply bg-white rounded-xl shadow-soft hover:shadow-strong transition-all duration-300 p-6 border border-gray-100 hover:border-primary-200;
+}
+
+.docs-card-icon {
+  @apply text-4xl mb-4 transition-transform duration-300;
+}
+
+.docs-card:hover .docs-card-icon {
+  @apply scale-110;
+}
+
+.docs-card-title {
+  @apply text-xl font-bold text-gray-900 mb-3 transition-colors duration-300;
+}
+
+.docs-card:hover .docs-card-title {
+  @apply text-primary-600;
+}
+
+.docs-card-description {
+  @apply text-gray-600 mb-4 leading-relaxed;
+}
+
+.docs-card-link {
+  @apply text-primary-600 hover:text-primary-700 font-medium transition-colors duration-200;
+}
+
+/* Featured Documentation */
+.docs-featured {
+  @apply space-y-4;
+}
+
+.docs-featured-item {
+  @apply border-l-4 border-primary-500 pl-4 py-2;
+}
+
+.docs-featured-item h3 {
+  @apply text-lg font-semibold mb-2;
+}
+
+.docs-featured-item h3 a {
+  @apply text-gray-900 hover:text-primary-600 transition-colors duration-200 no-underline;
+}
+
+.docs-featured-item p {
+  @apply text-gray-600 text-sm;
+}
+
+/* Docs Sidebar */
+.docs-widget {
+  @apply bg-white rounded-xl shadow-soft p-6;
+}
+
+.docs-widget-title {
+  @apply text-lg font-bold text-gray-900 mb-4 pb-2 border-b border-gray-200;
+}
+
+.docs-widget-list {
+  @apply space-y-2;
+}
+
+.docs-widget-item {
+  @apply flex items-center justify-between;
+}
+
+.docs-widget-link {
+  @apply text-gray-700 hover:text-primary-600 transition-colors duration-200 text-sm;
+}
+
+/* Docs Search */
+.docs-search-form input {
+  @apply focus:border-primary-500 focus:ring-primary-500/20;
+}
+
+/* Docs Tree */
+.docs-tree {
+  @apply space-y-1 text-sm;
+}
+
+.docs-tree-dir {
+  @apply py-1;
+}
+
+.docs-tree-folder {
+  @apply font-medium text-gray-700 cursor-pointer hover:text-primary-600 transition-colors duration-200;
+}
+
+.docs-tree-file {
+  @apply py-1;
+}
+
+.docs-tree-link {
+  @apply text-gray-600 hover:text-primary-600 transition-colors duration-200 block truncate;
+}
+
+/* Breadcrumbs */
+.docs-breadcrumbs {
+  @apply flex items-center space-x-2 text-sm text-gray-500 mb-6;
+}
+
+.docs-breadcrumbs a {
+  @apply hover:text-primary-600 transition-colors duration-200;
+}
+
+.docs-breadcrumb-separator {
+  @apply text-gray-400;
+}
+
+/* Article Styles */
+.docs-article {
+  @apply bg-white rounded-xl shadow-soft;
+}
+
+.docs-article-header {
+  @apply p-8 border-b border-gray-200;
+}
+
+.docs-article-title {
+  @apply text-3xl font-bold text-gray-900 mb-4;
+}
+
+.docs-article-content {
+  @apply p-8 prose prose-lg max-w-none;
+}
+
+/* Table of Contents */
+.docs-toc {
+  @apply bg-gray-50 rounded-lg p-4 mb-6;
+}
+
+.docs-toc-title {
+  @apply font-semibold text-gray-900 mb-3;
+}
+
+.docs-toc-list {
+  @apply space-y-1 text-sm;
+}
+
+.docs-toc-link {
+  @apply text-gray-600 hover:text-primary-600 transition-colors duration-200;
+}
+
+/* Dark mode support */
+.dark .docs-page {
+  @apply bg-gray-900;
+}
+
+.dark .docs-section,
+.dark .docs-card,
+.dark .docs-widget,
+.dark .docs-article {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .docs-content {
+  @apply bg-gray-800 text-gray-200;
+}
+
+.dark .docs-content h1,
+.dark .docs-content h2,
+.dark .docs-content h3 {
+  @apply text-gray-100;
+}
+
+.dark .docs-content p,
+.dark .docs-content li {
+  @apply text-gray-300;
+}
+
+.dark .docs-content code {
+  @apply bg-gray-700 text-gray-200;
+}
+
+.dark .docs-widget-title,
+.dark .docs-card-title,
+.dark .docs-article-title {
+  @apply text-gray-100;
+}
+
+.dark .docs-tree-folder,
+.dark .docs-widget-link {
+  @apply text-gray-300;
+}
+
+.dark .docs-tree-link {
+  @apply text-gray-400;
+}

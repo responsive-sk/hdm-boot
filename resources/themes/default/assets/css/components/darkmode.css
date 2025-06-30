@@ -1,0 +1,238 @@
+/* Dark Mode Styles */
+
+/* Root variables for dark mode */
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+}
+
+.dark {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --border-primary: #374151;
+  --border-secondary: #4b5563;
+}
+
+/* Dark mode transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Body and main containers */
+.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .page-content {
+  @apply bg-gray-900;
+}
+
+/* Navigation */
+.dark .navbar {
+  @apply bg-gray-800/95 border-gray-700/50;
+}
+
+.dark .navbar-brand a {
+  @apply text-gray-100 hover:text-primary-400;
+}
+
+.dark .nav-link {
+  @apply text-gray-300 hover:text-primary-400 hover:bg-gray-700/50;
+}
+
+.dark .nav-link.active {
+  @apply text-primary-400 bg-gray-700/50;
+}
+
+/* Cards and widgets */
+.dark .card,
+.dark .blog-card,
+.dark .feature-card,
+.dark .sidebar-widget {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .blog-card:hover {
+  @apply border-primary-500/50 shadow-xl;
+}
+
+/* Text elements */
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  @apply text-gray-100;
+}
+
+.dark .blog-card-title,
+.dark .feature-title,
+.dark .sidebar-widget-title {
+  @apply text-gray-100;
+}
+
+.dark .blog-card-excerpt,
+.dark .feature-description {
+  @apply text-gray-300;
+}
+
+.dark .blog-card-meta,
+.dark .stat-label {
+  @apply text-gray-400;
+}
+
+/* Buttons */
+.dark .btn-primary {
+  @apply bg-primary-600 hover:bg-primary-700 text-white;
+}
+
+.dark .btn-outline {
+  @apply border-gray-600 text-gray-300 hover:bg-gray-700 hover:border-gray-500;
+}
+
+/* Forms */
+.dark .form-input,
+.dark .form-textarea,
+.dark .form-select {
+  @apply bg-gray-800 border-gray-600 text-gray-100 placeholder-gray-400;
+  @apply focus:border-primary-500 focus:ring-primary-500/20;
+}
+
+/* Hero sections */
+.dark .hero-section {
+  @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+}
+
+.dark .hero-title {
+  background: linear-gradient(135deg, theme('colors.primary.400'), theme('colors.secondary.400'), theme('colors.primary.300'));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.dark .hero-subtitle {
+  @apply text-gray-300;
+}
+
+/* Blog specific */
+.dark .blog-header {
+  @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+}
+
+.dark .article-header {
+  @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+}
+
+.dark .article-body {
+  @apply text-gray-300;
+}
+
+.dark .article-body h1,
+.dark .article-body h2,
+.dark .article-body h3 {
+  @apply text-gray-100;
+}
+
+.dark .article-body a {
+  @apply text-primary-400 hover:text-primary-300;
+}
+
+.dark .article-body code {
+  @apply bg-gray-800 text-gray-200;
+}
+
+.dark .article-body pre {
+  @apply bg-gray-900 text-gray-100;
+}
+
+.dark .article-body blockquote {
+  @apply border-primary-500 bg-gray-800/50 text-gray-300;
+}
+
+/* Tags */
+.dark .tag {
+  @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+}
+
+.dark .blog-post-category {
+  @apply bg-gradient-to-r from-primary-600 to-secondary-600;
+}
+
+/* Stats section */
+.dark .stats-section {
+  @apply bg-gray-800;
+}
+
+.dark .stat-number {
+  @apply text-primary-400;
+}
+
+/* Features section */
+.dark .features-section {
+  @apply bg-gray-800;
+}
+
+/* Footer */
+.dark footer {
+  @apply bg-gradient-to-br from-gray-900 to-black;
+}
+
+/* Search highlighting */
+.dark mark {
+  @apply bg-yellow-600/30 text-yellow-200;
+}
+
+/* Sidebar specific */
+.dark .sidebar-widget-link {
+  @apply text-gray-300 hover:text-primary-400;
+}
+
+.dark .sidebar-widget-count {
+  @apply bg-gray-700 text-gray-300;
+}
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+  @apply relative overflow-hidden;
+}
+
+.dark-mode-toggle svg {
+  @apply transition-all duration-300;
+}
+
+.dark .dark-mode-toggle {
+  @apply text-blue-400 hover:text-blue-300 hover:bg-gray-700;
+}
+
+/* Animation for dark mode transition */
+.dark-mode-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scrollbar dark mode */
+.dark::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.dark::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+.dark::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-full;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}

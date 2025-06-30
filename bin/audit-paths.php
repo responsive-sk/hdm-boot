@@ -5,12 +5,15 @@ declare(strict_types=1);
 
 /**
  * HDM Boot Paths Audit Tool.
- * 
- * Audits path consistency across the codebase and identifies:
- * - Hardcoded paths that should use Paths service
- * - Inconsistent directory structures
- * - Missing path configurations
- * - Path security issues
+ *
+ * Comprehensive audit of paths system including:
+ * - Configuration validation
+ * - Directory structure security
+ * - Code usage patterns
+ * - Permission analysis
+ * - Auto-fix capabilities
+ *
+ * Usage: php bin/audit-paths.php [--fix] [--verbose] [--security-only]
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';

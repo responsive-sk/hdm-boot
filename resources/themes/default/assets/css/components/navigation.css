@@ -1,0 +1,59 @@
+/* Navigation Components */
+
+.navbar {
+  @apply bg-white/95 backdrop-blur-sm shadow-soft border-b border-gray-200/50 sticky top-0 z-40;
+}
+
+.navbar-brand {
+  @apply text-2xl font-bold text-gray-900 hover:text-primary-600 transition-all duration-300;
+}
+
+.navbar-nav {
+  @apply flex items-center space-x-2;
+}
+
+.nav-link {
+  @apply text-gray-600 hover:text-primary-600 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-primary-50;
+}
+
+.nav-link.active {
+  @apply text-primary-600 bg-primary-50 shadow-sm;
+}
+
+.navbar-toggler {
+  @apply md:hidden p-3 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all duration-200;
+}
+
+.mobile-menu {
+  @apply md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-xl rounded-b-xl;
+}
+
+.mobile-menu .nav-link {
+  @apply block px-6 py-4 border-b border-gray-100 last:border-b-0 hover:bg-primary-50;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  @apply flex items-center space-x-2 text-sm text-gray-500;
+}
+
+.breadcrumb-item {
+  @apply hover:text-primary-600 transition-colors duration-200;
+}
+
+.breadcrumb-separator {
+  @apply text-gray-400;
+}
+
+/* Sidebar navigation */
+.sidebar-nav {
+  @apply space-y-1;
+}
+
+.sidebar-nav-item {
+  @apply block px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200;
+}
+
+.sidebar-nav-item.active {
+  @apply text-primary-600 bg-primary-50 border-r-2 border-primary-600;
+}

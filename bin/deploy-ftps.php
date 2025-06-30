@@ -166,8 +166,8 @@ class FtpsDeployment
             '.github',
             'tests',
             'docs',
-            'var/logs',
-            'var/cache',
+            $paths->logs(),
+            $paths->cache(),
             'node_modules',
             '.env.example',
             '.env.dev',
@@ -237,7 +237,7 @@ class FtpsDeployment
         }
         
         // Create required directories
-        $dirs = ['var/logs', 'var/cache', 'var/storage', 'var/sessions'];
+        $dirs = [$paths->logs(), $paths->cache(), 'var/storage', $paths->get('sessions')];
         foreach ($dirs as $dir) {
             $fullPath = $this->buildDir . '/' . $dir;
             if (!is_dir($fullPath)) {

@@ -23,7 +23,7 @@ try {
     $paths = new Paths(__DIR__ . '/..');
     
     // Create User database manager
-    $userManager = new UserSqliteDatabaseManager('storage/user.db', $paths);
+    $userManager = new UserSqliteDatabaseManager($paths->storage('user.db', $paths);
     
     echo "📁 Initializing user.db...\n";
     $connection = $userManager->getConnection();

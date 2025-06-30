@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Optional module for blog functionality using Core Storage and Template modules.
  */
 
-use HdmBoot\Modules\Optional\Blog\Controllers\BlogController;
+use HdmBoot\Modules\Optional\Blog\Actions\BlogAction;
 
 return [
     'name'         => 'Blog',
@@ -20,11 +20,11 @@ return [
     ],
 
     'routes' => [
-        'GET /blog'                => [BlogController::class, 'home'],
-        'GET /blog/article/{slug}' => [BlogController::class, 'article'],
-        'GET /blog/categories'     => [BlogController::class, 'categories'],
-        'GET /blog/tags'           => [BlogController::class, 'tags'],
-        'GET /blog/about'          => [BlogController::class, 'about'],
+        'GET /blog'                => [BlogAction::class, 'home'],
+        'GET /blog/article/{slug}' => [BlogAction::class, 'article'],
+        'GET /blog/categories'     => [BlogAction::class, 'categories'],
+        'GET /blog/tags'           => [BlogAction::class, 'tags'],
+        'GET /blog/about'          => [BlogAction::class, 'about'],
     ],
 
     'services' => [

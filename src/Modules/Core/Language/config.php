@@ -206,9 +206,9 @@ return [
     // === INITIALIZATION ===
 
     'initialize' => function (): void {
-        // Create translation cache directory using Paths service
-        $paths = \ResponsiveSk\Slim4Paths\Paths::fromHere(__DIR__, 3);
-        $cacheDir = $paths->path('cache/translations');
+        // Create translation cache directory using PathsFactory
+        $paths = \HdmBoot\SharedKernel\Services\PathsFactory::create();
+        $cacheDir = $paths->cache('translations');
         if (!file_exists($cacheDir)) {
             mkdir($cacheDir, 0o755, true);
         }

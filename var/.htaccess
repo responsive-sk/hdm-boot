@@ -1,3 +1,15 @@
 # HDM Boot Security Protection
+# Deny all web access to var/ directory
+
+<RequireAll>
+    Require all denied
+</RequireAll>
+
+Order deny,allow
 Deny from all
 
+# Protect sensitive file types
+<Files ~ "\.(db|log|json|php|key)$">
+    Order allow,deny
+    Deny from all
+</Files>

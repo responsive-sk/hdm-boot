@@ -23,6 +23,7 @@ Komplexné príručky pre vývoj, nasadenie a údržbu HDM Boot aplikácie.
 | Príručka | Popis | Priority | Status |
 |----------|--------|----------|--------|
 | [Production Checklist](production-checklist.md) | Checklist pre produkčné nasadenie | P0 | ✅ |
+| [Production Build](production-build.md) | Production build a FTPS deployment | P1 | ✅ |
 | [Environment Setup](environment-setup.md) | Nastavenie vývojového prostredia | P1 | ✅ |
 | [Project Cleanup](project-cleanup.md) | Vyčistenie zbytočných súborov | P1 | ✅ |
 | [CI/CD Setup](cicd-setup.md) | Nastavenie CI/CD pipeline | P2 | ✅ |
@@ -62,6 +63,6 @@ Ak chcete prispieť do dokumentácie:
 |-----------|--------|----------------------|
 | Vývojárske príručky | 4/4 hotové | 2025-06-30 |
 | Bezpečnostné príručky | 3/3 hotové | 2025-06-30 |
-| Deployment príručky | 4/4 hotové | 2025-06-30 |
+| Deployment príručky | 5/5 hotové | 2025-06-30 |
 | Konfiguračné príručky | 3/3 hotové | 2025-06-30 |
 | Integračné príručky | 3/3 hotové | 2025-06-30 |

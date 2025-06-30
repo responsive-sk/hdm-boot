@@ -1,0 +1,108 @@
+/* Home Page Styles */
+
+.home-page {
+  @apply min-h-screen;
+}
+
+.hero-section {
+  @apply relative bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-24 md:py-32 lg:py-40 overflow-hidden;
+}
+
+.hero-section::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-primary-500/10 via-transparent to-secondary-500/10;
+}
+
+.hero-content {
+  @apply relative z-10 max-w-6xl mx-auto text-center px-4;
+}
+
+.hero-title {
+  @apply text-6xl md:text-7xl lg:text-8xl font-bold text-gray-900 mb-8;
+  background: linear-gradient(135deg, theme('colors.primary.600'), theme('colors.secondary.600'), theme('colors.primary.500'));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.hero-subtitle {
+  @apply text-xl md:text-2xl lg:text-3xl text-gray-600 mb-12 max-w-4xl mx-auto leading-relaxed;
+}
+
+.hero-cta {
+  @apply flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6;
+}
+
+.hero-background {
+  @apply absolute inset-0 opacity-20;
+}
+
+/* Features section */
+.features-section {
+  @apply py-20 bg-white;
+}
+
+.features-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+}
+
+.feature-card {
+  @apply text-center p-8 rounded-xl hover:shadow-medium transition-all duration-300;
+}
+
+
+
+.feature-icon {
+  @apply w-16 h-16 mx-auto mb-6 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white text-2xl transition-transform duration-300;
+}
+
+.feature-card:hover .feature-icon {
+  @apply scale-110;
+}
+
+.feature-title {
+  @apply text-xl font-semibold text-gray-900 mb-4;
+}
+
+.feature-description {
+  @apply text-gray-600 leading-relaxed;
+}
+
+/* Stats section */
+.stats-section {
+  @apply py-16 bg-gradient-to-r from-primary-600 to-secondary-600;
+}
+
+.stats-grid {
+  @apply grid grid-cols-2 md:grid-cols-4 gap-8;
+}
+
+.stat-item {
+  @apply text-center text-white;
+}
+
+.stat-number {
+  @apply text-4xl md:text-5xl font-bold mb-2;
+}
+
+.stat-label {
+  @apply text-primary-100 text-sm uppercase tracking-wide;
+}
+
+/* CTA section */
+.cta-section {
+  @apply py-20 bg-gray-900;
+}
+
+.cta-content {
+  @apply text-center text-white max-w-3xl mx-auto px-4;
+}
+
+.cta-title {
+  @apply text-3xl md:text-4xl font-bold mb-6;
+}
+
+.cta-description {
+  @apply text-xl text-gray-300 mb-8 leading-relaxed;
+}

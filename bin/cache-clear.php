@@ -119,7 +119,7 @@ class CacheClearer
     {
         echo "📱 Clearing application cache...\n";
 
-        $cacheDir = 'var/cache';
+        $cacheDir = $paths->cache();
         
         if (!is_dir($cacheDir)) {
             echo "  ℹ️  Cache directory not found\n";
@@ -136,7 +136,7 @@ class CacheClearer
     {
         echo "🎨 Clearing template cache...\n";
 
-        $templateCacheDir = 'var/cache/templates';
+        $templateCacheDir = '$paths->cache("templates")';
         
         if (!is_dir($templateCacheDir)) {
             echo "  ℹ️  Template cache directory not found\n";
@@ -186,7 +186,7 @@ class CacheClearer
     {
         echo "🔐 Clearing session cache...\n";
 
-        $sessionDir = 'var/sessions';
+        $sessionDir = $paths->get('sessions');
         
         if (!is_dir($sessionDir)) {
             echo "  ℹ️  Session directory not found\n";
@@ -204,7 +204,7 @@ class CacheClearer
     {
         echo "📝 Clearing old log files...\n";
 
-        $logDir = 'var/logs';
+        $logDir = $paths->logs();
         
         if (!is_dir($logDir)) {
             echo "  ℹ️  Log directory not found\n";

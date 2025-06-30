@@ -66,7 +66,7 @@ return [
         'var/cache',
         'var/storage',
         'var/sessions',
-        'public/storage',
+        // 'public/storage', // REMOVED - Security fix (storage should be in var/)
     ],
     
     // File permissions

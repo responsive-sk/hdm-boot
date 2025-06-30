@@ -47,9 +47,9 @@ final class Slim4Container extends AbstractContainer
                 throw new \RuntimeException('Paths service is required for container compilation in production');
             }
 
-            $cacheDir = $this->paths->path('cache/container');
+            $cacheDir = $this->paths->cache('container');
             if (!is_dir($cacheDir)) {
-                mkdir($cacheDir, 0777, true);
+                mkdir($cacheDir, 0755, true);
             }
             $builder->enableCompilation($cacheDir);
         }

@@ -56,7 +56,7 @@
         "cs-check:blog": "php-cs-fixer fix src/Modules/Optional/Blog --dry-run --diff",
         "cs-fix:blog": "php-cs-fixer fix src/Modules/Optional/Blog",
         "stan": "phpstan analyse",
-        "security-scan": "./bin/scripts/check-paths.sh",
+        "security-scan": "./bin/check-paths.sh",
         "security-fix": "echo 'Run: composer security-scan to see issues, then fix manually using Paths service'",
         "quality": [
             "@security-scan",

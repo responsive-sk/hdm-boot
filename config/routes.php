@@ -8,6 +8,7 @@ use HdmBoot\Modules\Core\Security\Actions\Web\LogoutAction;
 use HdmBoot\Modules\Core\Security\Infrastructure\Middleware\UserAuthenticationMiddleware;
 use HdmBoot\Modules\Core\Session\Infrastructure\Middleware\SessionStartMiddleware;
 use HdmBoot\Modules\Core\User\Actions\Web\ProfilePageAction;
+use HdmBoot\Modules\Optional\Home\Actions\HomeAction;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\App;
@@ -23,6 +24,15 @@ return function (App $app): void {
 
     // ===== HOME ROUTES =====
     $app->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
+        $homeAction = new HomeAction();
+        $html = $homeAction->index();
+
+        $response->getBody()->write($html);
+        return $response->withHeader('Content-Type', 'text/html');
+    });
+
+    // Original home route as backup
+    $app->get('/old', function (ServerRequestInterface $request, ResponseInterface $response) {
         $html = '<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,7 +187,7 @@ return function (App $app): void {
         $response->getBody()->write($html);
 
         return $response->withHeader('Content-Type', 'text/html');
-    })->setName('home');
+    })->setName('home-old');
 
     // ===== WEB ROUTES =====
     // Authentication routes (with session middleware)
