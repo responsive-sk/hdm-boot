@@ -4,6 +4,8 @@
 
 HDM Boot Protocol v2.1.0 implements a three-database architecture for improved security, performance, and maintainability. This replaces the previous single-database approach.
 
+**Latest Update (2025-06-28)**: Database module refactored to use PDO-only implementation. CakePHP support has been disabled and moved to backup directory.
+
 ## Architecture Diagram
 
 ```
@@ -383,3 +385,52 @@ Permissions: 755
 2. **Read Replicas**: Implement read replicas for performance
 3. **Connection Pooling**: Advanced connection pooling strategies
 4. **Caching**: Database-specific caching strategies
+
+## Database Module Refactoring (2025-06-28)
+
+### Changes Made
+
+The Database module was refactored to use **PDO-only implementation**:
+
+1. **Removed CakePHP Support**:
+   - `CakePHPDatabaseManager.php` → moved to `_disabled_cakephp/`
+   - `DatabaseConnectionManager.php` → moved to `_disabled_cakephp/`
+   - Updated configuration to remove CakePHP services
+
+2. **Simplified Architecture**:
+   - Single database abstraction layer (PDO)
+   - Cleaner service definitions
+   - Reduced complexity and dependencies
+
+3. **Maintained Functionality**:
+   - All existing PDO-based operations work unchanged
+   - Three-database architecture preserved
+   - Repository pattern maintained
+
+### Current Implementation
+
+**Active Database Managers**:
+- `DatabaseManager.php` - Main PDO implementation
+- `MarkSqliteDatabaseManager.php` - Mark database
+- `UserSqliteDatabaseManager.php` - User database
+- `SystemSqliteDatabaseManager.php` - System database
+
+**Supported Repository Types**:
+- `sqlite` - SQLite databases (primary)
+- `mysql` - MySQL databases via PDO
+
+### Benefits
+
+- **Performance**: Native PDO without additional abstraction layers
+- **Simplicity**: Single approach reduces complexity
+- **Maintainability**: Less code to maintain and debug
+- **Type Safety**: All code passes PHPStan level 8
+
+### Future CakePHP Support
+
+If CakePHP support is needed:
+1. Create separate `Database-CakePHP` module
+2. Move files from `_disabled_cakephp/` backup
+3. Implement proper module dependencies
+
+For detailed refactoring information, see: `docs/refactoring/database-module-refactoring.md`

@@ -2,6 +2,28 @@
 
 **Document Purpose:** Track major architectural decisions and changes in HDM Boot Protocol.
 
+## 📅 Version 2.1 - 2025-06-28
+
+### **🎯 DATABASE MODULE REFACTORING**
+
+#### **PDO-Only Implementation**
+- 🔄 **Removed:** CakePHP database implementation (`CakePHPDatabaseManager`, `DatabaseConnectionManager`)
+- 🔄 **Moved:** CakePHP files to `_disabled_cakephp/` backup directory
+- ✅ **Simplified:** Database module now uses only PDO implementation
+- ✅ **Benefit:** Reduced complexity, better performance, easier maintenance
+
+#### **Configuration Cleanup**
+- 🔄 **Updated:** `config.php` - removed CakePHP service definitions
+- 🔄 **Updated:** `module.php` - simplified tags and provides
+- 🔄 **Updated:** `RepositoryFactory.php` - supports only SQLite and MySQL
+- ✅ **Benefit:** Cleaner configuration, no mixed abstractions
+
+#### **Code Quality Improvements**
+- ✅ **Fixed:** PHP CS Fixer - 3 files improved (null coalescing operators)
+- ✅ **Verified:** PHPStan Level 8 - no errors
+- ✅ **Maintained:** Full backward compatibility for PDO operations
+- ✅ **Benefit:** Higher code quality, type safety
+
 ## 📅 Version 2.0 - 2025-06-24
 
 ### **🎯 MAJOR ARCHITECTURAL REFINEMENTS**

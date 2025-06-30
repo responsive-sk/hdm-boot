@@ -37,7 +37,6 @@ try {
         'public/',
         'config/',
         'templates/',
-        'storage/',
         'var/',
         // vendor/ will be created with composer install --no-dev
         'bin/init-all-databases.php',
@@ -83,7 +82,7 @@ try {
         '.php-cs-fixer.dist.php',
         'var/cache/',
         'var/logs/',
-        'storage/*.db',
+        'storage/',  // Remove old storage directory completely
     ];
     
     foreach ($devFiles as $pattern) {
@@ -125,10 +124,10 @@ APP_DEBUG=false
 APP_NAME="HDM Boot Application"
 
 # Database Configuration
-DATABASE_PATH=storage/
-MARK_DATABASE_PATH=storage/mark.db
-USER_DATABASE_PATH=storage/user.db
-SYSTEM_DATABASE_PATH=storage/system.db
+DATABASE_PATH=var/storage/
+MARK_DATABASE_PATH=var/storage/mark.db
+USER_DATABASE_PATH=var/storage/user.db
+SYSTEM_DATABASE_PATH=var/storage/system.db
 
 # Permission Configuration
 PERMISSIONS_STRICT=false
@@ -158,7 +157,7 @@ ENV;
     echo "\n📁 Creating production directories...\n";
     
     $prodDirs = [
-        'storage',
+        'var/storage',
         'var/logs',
         'var/sessions',
         'var/cache',
@@ -286,9 +285,9 @@ or upload the contents of 'public/' to your web root and other files outside web
 
 ## 2. Database Files (Pre-created)
 The following databases are already created and ready to use:
-- storage/mark.db (Mark system users)
-- storage/user.db (Application users)
-- storage/system.db (Core system data)
+- var/storage/mark.db (Mark system users)
+- var/storage/user.db (Application users)
+- var/storage/system.db (Core system data)
 
 NO database initialization needed - just upload and use!
 
@@ -302,8 +301,8 @@ NO database initialization needed - just upload and use!
 ## 4. Set Permissions (if possible)
 If your hosting provider allows:
 ```bash
-chmod 777 storage/ var/ var/logs/ var/sessions/ var/cache/
-chmod 666 var/logs/*.log storage/*.db
+chmod 777 var/ var/storage/ var/logs/ var/sessions/ var/cache/
+chmod 666 var/logs/*.log var/storage/*.db
 ```
 
 ## 5. Default Users (Pre-created)

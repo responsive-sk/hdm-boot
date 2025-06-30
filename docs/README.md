@@ -27,7 +27,7 @@
 | Dokument | Popis | Status |
 |----------|--------|--------|
 | [API Overview](API.md) | Prehľad API | ✅ |
-| [Auth API](api/auth-api.md) | Autentifikačné API | 🚧 |
+| [Auth API](api/auth-api.md) | Autentifikačné API | ✅ |
 | [User API](USER_API.md) | User Management API | ✅ |
 
 ### 5. Development Guides [P1]
@@ -57,8 +57,8 @@
 | Getting Started | 3/3 | ✅ Completed |
 | Core Architecture | 3/3 | ✅ Completed |
 | Core Features | 3/3 | ✅ Completed |
-| API Documentation | 2/3 | ⏳ In Progress |
-| Development Guides | 6/10 | ⏳ In Progress |
+| API Documentation | 3/3 | ✅ Completed |
+| Development Guides | 16/16 | ✅ Completed |
 | Advanced Features | 3/3 | ✅ Completed |
 | Quality Assurance | 2/2 | ✅ Completed |
 
@@ -67,6 +67,21 @@
 - **P0** - Kritické, potrebné pre základné použitie projektu
 - **P1** - Dôležité, potrebné pre plné využitie funkcií
 - **P2** - Rozširujúce, pre pokročilé použitie
+
+## 🔄 Recent Updates
+
+### Database Module Refactoring (2025-06-28)
+| Dokument | Popis | Status |
+|----------|--------|--------|
+| [Database Module Refactoring](refactoring/database-module-refactoring.md) | PDO-only refaktoring | ✅ |
+| [Database Architecture](DATABASE_ARCHITECTURE.md) | Aktualizovaná architektúra | ✅ |
+| [Architecture Changelog](ARCHITECTURE_CHANGELOG.md) | Zmeny v architektúre | ✅ |
+
+**Kľúčové zmeny:**
+- ✅ Database modul používa len PDO implementáciu
+- ✅ CakePHP podpora dočasne vypnutá (backup v `_disabled_cakephp/`)
+- ✅ Zjednodušená konfigurácia a lepšia výkonnosť
+- ✅ Zachovaná spätná kompatibilita pre PDO operácie
 
 ## 📝 Contributing
 
