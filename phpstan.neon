@@ -21,3 +21,5 @@ parameters:
         - tests
         - '*/tests/*'
         - src/Modules/Core/Template/Infrastructure/Engines/TwigTemplateEngine.php
+        - '**/_disabled_*/**'
+        - '*/_disabled_*/*'

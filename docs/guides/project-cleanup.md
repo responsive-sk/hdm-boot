@@ -73,7 +73,7 @@ rm public/fix-permissions.php
 ### **Cleanup Script**
 ```bash
 #!/bin/bash
-# scripts/cleanup-project.sh
+# bin/cleanup-project.sh
 
 set -e
 
@@ -172,7 +172,7 @@ echo "🎯 Project structure optimized"
 
 ### **Make script executable**
 ```bash
-chmod +x scripts/cleanup-project.sh
+chmod +x bin/cleanup-project.sh
 ```
 
 ## 🔒 Security Considerations
@@ -276,13 +276,13 @@ du -sh .
 #### **Weekly Cleanup**
 ```bash
 # Add to crontab
-0 2 * * 0 /path/to/hdm-boot/scripts/cleanup-project.sh
+0 2 * * 0 /path/to/hdm-boot/bin/cleanup-project.sh
 ```
 
 #### **Pre-deployment Cleanup**
 ```bash
 # Add to deployment script
-./scripts/cleanup-project.sh
+./bin/cleanup-project.sh
 composer install --no-dev --optimize-autoloader
 ```
 
