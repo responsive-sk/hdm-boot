@@ -23,7 +23,7 @@ try {
     $paths = new Paths(__DIR__ . '/..');
     
     // Create Mark database manager
-    $markManager = new MarkSqliteDatabaseManager($paths->storage('mark.db', $paths);
+    $markManager = new MarkSqliteDatabaseManager($paths->storage('mark.db'));
     
     echo "📁 Initializing mark.db...\n";
     $connection = $markManager->getConnection();

@@ -23,7 +23,7 @@ try {
     $paths = new Paths(__DIR__ . '/..');
     
     // Create System database manager
-    $systemManager = new SystemSqliteDatabaseManager($paths->storage('system.db', $paths);
+    $systemManager = new SystemSqliteDatabaseManager($paths->storage('system.db'));
     
     echo "📁 Initializing system.db...\n";
     $connection = $systemManager->getConnection();
