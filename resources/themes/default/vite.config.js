@@ -23,7 +23,14 @@ export default defineConfig({
         app: resolve(__dirname, 'assets/js/app.js'),
         style: resolve(__dirname, 'assets/css/app.css')
       },
+
+      // Code splitting for better performance
       output: {
+        manualChunks: {
+          // Vendor libraries
+          'vendor-gsap': ['gsap'],
+          'vendor-alpine': ['alpinejs']
+        },
         // Asset file naming
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')

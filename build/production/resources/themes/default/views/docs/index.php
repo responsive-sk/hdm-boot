@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" <?= $theme::getHtmlAttributes() ?>>
 <head>
-    <?= $theme::renderHead($title ?? 'HDM Boot Documentation') ?>
+    <?= $theme::renderHead(
+        $title ?? 'HDM Boot Documentation',
+        null,
+        'Complete HDM Boot documentation covering architecture, guides, API references, deployment, and best practices. Everything you need to build modern PHP applications.'
+    ) ?>
 </head>
 <body class="<?= $theme::getBodyClass() ?> docs-page">
     <!-- Navigation -->

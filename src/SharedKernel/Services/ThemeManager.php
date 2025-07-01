@@ -258,14 +258,23 @@ class ThemeManager
         $assets = $this->getThemeAssets($theme);
         $html = '';
 
-        // CSS files
+        // CSS files - preload critical CSS
         foreach ($assets['css'] as $css) {
-            $html .= "<link rel=\"stylesheet\" href=\"{$css}\">\n";
+            // Preload CSS for better performance
+            $html .= "<link rel=\"preload\" href=\"{$css}\" as=\"style\" onload=\"this.onload=null;this.rel='stylesheet'\">\n";
+            $html .= "<noscript><link rel=\"stylesheet\" href=\"{$css}\"></noscript>\n";
         }
 
-        // JS files
+        // JS files - defer non-critical scripts
         foreach ($assets['js'] as $js) {
-            $html .= "<script type=\"module\" src=\"{$js}\"></script>\n";
+            // Check if this is a critical script (main app)
+            if (str_contains($js, 'app-')) {
+                // Critical script - load immediately but defer execution
+                $html .= "<script type=\"module\" src=\"{$js}\" defer></script>\n";
+            } else {
+                // Non-critical script - load with defer and lower priority
+                $html .= "<script type=\"module\" src=\"{$js}\" defer async></script>\n";
+            }
         }
 
         return $html;

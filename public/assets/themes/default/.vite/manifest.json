@@ -1,13 +1,25 @@
 {
+  "_vendor-alpine-Cm4okMZt.js": {
+    "file": "js/vendor-alpine-Cm4okMZt.js",
+    "name": "vendor-alpine"
+  },
+  "_vendor-gsap-CH_iu5NA.js": {
+    "file": "js/vendor-gsap-CH_iu5NA.js",
+    "name": "vendor-gsap"
+  },
   "assets/css/app.css": {
-    "file": "css/style-BHlk1wAi.css",
+    "file": "css/style-xxH2gNQa.css",
     "src": "assets/css/app.css",
     "isEntry": true
   },
   "assets/js/app.js": {
-    "file": "js/app-_xGVUo7H.js",
+    "file": "js/app-D8xKsq1w.js",
     "name": "app",
     "src": "assets/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_vendor-alpine-Cm4okMZt.js",
+      "_vendor-gsap-CH_iu5NA.js"
+    ]
   }
 }

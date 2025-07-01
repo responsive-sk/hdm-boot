@@ -23,9 +23,46 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]
 
-# Security headers
+# Performance: Cache headers for static assets
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # CSS and JavaScript - cache for 1 year
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+
+    # Images - cache for 1 year
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+
+    # Fonts - cache for 1 year
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
+
+# Performance: Cache-Control headers for versioned assets
 <IfModule mod_headers.c>
+    # Security headers (consolidated)
     Header always set X-Content-Type-Options nosniff
     Header always set X-Frame-Options DENY
     Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Cache versioned assets for 1 year (immutable for better performance)
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|woff|woff2)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # Cache HTML for shorter time
+    <FilesMatch "\.html$">
+        Header set Cache-Control "public, max-age=3600"
+    </FilesMatch>
 </IfModule>
