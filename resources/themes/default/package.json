@@ -23,6 +23,7 @@
     "cssnano": "^7.0.7",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
+    "terser": "^5.43.1",
     "vite": "^5.0.0"
   },
   "engines": {

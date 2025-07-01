@@ -16,6 +16,36 @@ class ThemeHelper
     private static ?ThemeManager $themeManager = null;
 
     /**
+     * Generate resource hints for better performance.
+     */
+    private static function generateResourceHints(?string $theme = null): string
+    {
+        $assets = self::getThemeManager()->getThemeAssets($theme);
+        $hints = '';
+
+        // DNS prefetch for external resources
+        $hints .= "<link rel=\"dns-prefetch\" href=\"//fonts.googleapis.com\">\n";
+        $hints .= "<link rel=\"dns-prefetch\" href=\"//fonts.gstatic.com\">\n";
+
+        // Preconnect to same origin for faster asset loading
+        $hints .= "<link rel=\"preconnect\" href=\"" . $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['HTTP_HOST'] . "\">\n";
+
+        // Preload critical assets
+        foreach ($assets['css'] as $css) {
+            $hints .= "<link rel=\"preload\" href=\"{$css}\" as=\"style\">\n";
+        }
+
+        // Preload critical JavaScript
+        foreach ($assets['js'] as $js) {
+            if (str_contains($js, 'app-')) {
+                $hints .= "<link rel=\"preload\" href=\"{$js}\" as=\"script\">\n";
+            }
+        }
+
+        return $hints;
+    }
+
+    /**
      * Get theme manager instance.
      */
     private static function getThemeManager(): ThemeManager
@@ -236,12 +266,16 @@ class ThemeHelper
         $defaultDescription = 'HDM Boot - Modern PHP framework with hexagonal architecture, blog system, and beautiful themes. Built for developers who value clean code and modern web standards.';
         $metaDescription = $description ?? $defaultDescription;
 
+        // Resource hints for better performance
+        $resourceHints = self::generateResourceHints($theme);
+
         return <<<HTML
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>{$title}</title>
             <meta name="description" content="{$metaDescription}">
             <meta name="theme-color" content="{$themeColor}">
+            {$resourceHints}
             {$metaTags}
             {$assets}
             HTML;

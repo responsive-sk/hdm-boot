@@ -265,16 +265,10 @@ class ThemeManager
             $html .= "<noscript><link rel=\"stylesheet\" href=\"{$css}\"></noscript>\n";
         }
 
-        // JS files - defer non-critical scripts
+        // JS files - single optimized bundle
         foreach ($assets['js'] as $js) {
-            // Check if this is a critical script (main app)
-            if (str_contains($js, 'app-')) {
-                // Critical script - load immediately but defer execution
-                $html .= "<script type=\"module\" src=\"{$js}\" defer></script>\n";
-            } else {
-                // Non-critical script - load with defer and lower priority
-                $html .= "<script type=\"module\" src=\"{$js}\" defer async></script>\n";
-            }
+            // Single bundle - load with defer for better performance
+            $html .= "<script type=\"module\" src=\"{$js}\" defer></script>\n";
         }
 
         return $html;

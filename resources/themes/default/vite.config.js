@@ -24,13 +24,8 @@ export default defineConfig({
         style: resolve(__dirname, 'assets/css/app.css')
       },
 
-      // Code splitting for better performance
+      // Single bundle for better performance on smaller apps
       output: {
-        manualChunks: {
-          // Vendor libraries
-          'vendor-gsap': ['gsap'],
-          'vendor-alpine': ['alpinejs']
-        },
         // Asset file naming
         assetFileNames: (assetInfo) => {
           const info = assetInfo.name.split('.')
@@ -56,7 +51,23 @@ export default defineConfig({
     },
     
     // Source maps for development
-    sourcemap: process.env.NODE_ENV === 'development'
+    sourcemap: process.env.NODE_ENV === 'development',
+
+    // Minification and optimization
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: process.env.NODE_ENV === 'production',
+        drop_debugger: process.env.NODE_ENV === 'production',
+        pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log'] : []
+      },
+      mangle: {
+        safari10: true
+      }
+    },
+
+    // Tree shaking
+    treeshake: true
   },
   
   // CSS configuration

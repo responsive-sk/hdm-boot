@@ -40,6 +40,9 @@ devDependencies:
   tailwindcss:
     specifier: ^3.3.6
     version: 3.4.17
+  terser:
+    specifier: ^5.43.1
+    version: 5.43.1
   vite:
     specifier: ^5.0.0
     version: 5.4.19(terser@5.43.1)
